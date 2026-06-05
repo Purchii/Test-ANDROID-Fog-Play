@@ -113,6 +113,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-004 manual runtime screen/focus map summaries;
 - TASK-006 fixture approval summaries;
 - TASK-007 network/offline safe runner summaries;
+- TASK-009 compatibility/device matrix summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
@@ -190,6 +191,43 @@ TASK-007 network/offline summaries may include only public-safe prerequisite sta
 ```
 
 Allowed aliases include `offline`, `reconnect`, `high_latency`, `intermittent_connectivity`, `transport_switch` and `captive_portal_like`. Public reports must not include endpoint values, packet captures, proxy configuration, TLS bypass instructions, raw logs, traffic dumps or executable device/network command recipes.
+
+## Compatibility/Device Matrix Summary
+
+TASK-009 compatibility summaries may include only public-safe aliases and category-level planned checks:
+
+```json
+{
+  "device_profiles": [
+    {
+      "alias": "device-template-001",
+      "target_category": "unknown",
+      "os_api_band": "unknown",
+      "form_factor": "unknown",
+      "display_class": "unknown",
+      "input_class": "unknown",
+      "network_class": "unknown",
+      "locale_class": "unknown",
+      "evidence_status": "unknown",
+      "notes": "Template only; no device inventory was collected by TASK-009."
+    }
+  ],
+  "planned_compatibility_checks": [
+    {
+      "id": "CDM-001",
+      "category": "os_api_band",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "artifact_refs": []
+    }
+  ]
+}
+```
+
+Allowed fields include device aliases, target category, OS/API buckets, form factor, display/input/network/locale category buckets, planned compatibility check categories, result, evidence status, risk level, redacted artifact aliases and blocked reasons.
+
+Public reports must not include real device serials, private lab identifiers, raw screenshots, raw logs, raw videos, APK paths, endpoint data, credentials, account identifiers or executable Android/device/runtime command recipes. Emulator/preflight rows do not replace confirmed Android TV release evidence.
 
 ## Redaction Rules
 

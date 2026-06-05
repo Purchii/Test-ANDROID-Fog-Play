@@ -52,6 +52,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-004 completed the manual runtime screen and TV focus map template foundation in fresh thread `TASK-004 - Manual runtime screen and TV focus map templates` on branch `qa/task-004-runtime-screen-focus-map` from `main` commit `3840a00`.
 - TASK-006 completed in fresh thread `TASK-006 - Test data and fixtures contract draft` on branch `qa/task-006-test-fixtures-contract` from `main` commit `474d0de`. Planner selected TASK-006 because TASK-005 runtime smoke remains blocked by missing approved build/device/config/fixture prerequisites. TASK-006 default-branch merge/push was authorized by explicit user command in `NON_AUTONOMOUS` mode.
 - TASK-007 completed in fresh thread `TASK-007 - Network/offline policy and safe runner` on branch `qa/task-007-network-offline-policy` from `main` commit `46a7e0f`. TASK-007 is scoped to public-safe network/offline policy and local fail-closed report generation only.
+- TASK-009 completed in fresh thread `TASK-009 - Compatibility/device matrix and report format` on branch `qa/task-009-device-matrix` from `main` commit `b50fb53`. Planner selected TASK-009 because TASK-005 runtime smoke remains blocked and TASK-008 is `NON_AUTONOMOUS` WebView/payment planning with fixture-sensitive approval boundaries.
 
 ## Runtime readiness
 
@@ -63,6 +64,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-004 added public-safe manual runtime screen/focus map templates and local fail-closed map report generation. Runtime screen/focus observation remains blocked until a future task records approved build/device/config/fixture/redaction/storage/cleanup prerequisites.
 - TASK-006 drafted the public-safe fixture approval contract and checklist for synthetic users, auth/session, stream, WebView, payment staging, network/offline, redaction, evidence storage and cleanup/rollback. This does not approve any real fixture values and does not execute runtime/device checks.
 - TASK-007 adds a public-safe network/offline policy and local safe runner. This does not approve any real network profile, does not execute device/network/backend/proxy/packet checks and does not confirm runtime behavior.
+- TASK-009 adds a public-safe compatibility/device matrix, report template and local fail-closed report generator. This does not approve any real device class, does not execute Android/device/APK/WebView/WebRTC/payment/network checks and does not confirm compatibility behavior.
 
 ## Evidence status policy
 

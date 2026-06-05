@@ -8,7 +8,7 @@ This file records what was actually verified. Do not claim runtime checks passed
 |---|---|---|---|---|---|
 | 2026-06-05 | TASK-000 planning | qa/task-000-bootstrap-codex-docs | `git status --short --branch`, `git remote -v`, remote HEAD/heads check | passed | Local repo had no commits; GitHub remote was empty. |
 | 2026-06-05 | TASK-000 bootstrap | qa/task-000-bootstrap-codex-docs | Public-safety policy review, staged forbidden-artifact scan, `git diff --cached --check`, multi-agent Docs/Security/QA review | passed | Raw artifacts and executable runtime recipes are excluded from public source-of-truth. |
-| 2026-06-05 | TASK-000 remote default verification | main | `git ls-remote --symref origin HEAD`, `git remote show origin` | blocked | `main` is pushed, but GitHub remote HEAD is `qa/task-000-bootstrap-codex-docs`; GitHub default branch must be changed to `main` via repository settings/API. |
+| 2026-06-05 | TASK-000 remote default verification | main | `git ls-remote --symref origin HEAD`, `git remote show origin` | passed | GitHub remote HEAD/default is `main`. |
 
 ## Known verification rules
 
@@ -20,7 +20,6 @@ This file records what was actually verified. Do not claim runtime checks passed
 
 ## Unverified zones
 
-- GitHub default branch UI/API correction to `main`; current remote HEAD is `qa/task-000-bootstrap-codex-docs`.
 - Runtime screen map.
 - Android TV device matrix.
 - QA accounts and fixtures.

@@ -113,6 +113,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-004 manual runtime screen/focus map summaries;
 - TASK-006 fixture approval summaries;
 - TASK-007 network/offline safe runner summaries;
+- TASK-008 WebView/payment safe runner summaries;
 - TASK-009 compatibility/device matrix summaries;
 - future approved runtime summaries after redaction and review.
 
@@ -228,6 +229,39 @@ TASK-009 compatibility summaries may include only public-safe aliases and catego
 Allowed fields include device aliases, target category, OS/API buckets, form factor, display/input/network/locale category buckets, planned compatibility check categories, result, evidence status, risk level, redacted artifact aliases and blocked reasons.
 
 Public reports must not include real device serials, private lab identifiers, raw screenshots, raw logs, raw videos, APK paths, endpoint data, credentials, account identifiers or executable Android/device/runtime command recipes. Emulator/preflight rows do not replace confirmed Android TV release evidence.
+
+## WebView/Payment Safe Summary
+
+TASK-008 WebView/payment summaries may include only public-safe prerequisite status, fixture aliases and category-level planned checks:
+
+```json
+{
+  "flow_aliases": [
+    {
+      "alias": "webview-payment-template-001",
+      "surface_category": "webview_payment",
+      "fixture_category": "payment_success_return",
+      "allowed_scope": "plan_only",
+      "evidence_status": "unknown",
+      "notes": "Public-safe alias only."
+    }
+  ],
+  "planned_webview_payment_checks": [
+    {
+      "id": "WPS-001",
+      "category": "webview_render_guard",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "artifact_refs": []
+    }
+  ]
+}
+```
+
+Allowed aliases include `web-legal-001`, `web-auth-boundary-001`, `payment-cancel-001`, `payment-failure-001`, `payment-pending-001`, `payment-duplicate-return-001` and `payment-success-return-001`.
+
+Public reports must not include private URLs, redirect chains, endpoints, headers, payloads, cookies, tokens, sessions, raw WebView logs, payment instruments, billing tokens, receipts, raw screenshots, APK paths, account identifiers or executable Android/device/runtime/network recipes.
 
 ## Redaction Rules
 

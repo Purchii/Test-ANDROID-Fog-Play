@@ -53,6 +53,24 @@ The generator is designed to fail closed:
 - complete metadata produces `not_run` screen/focus map templates only and never claims runtime behavior passed in TASK-004;
 - notes and artifact references are redacted before output.
 
+## Network/Offline Safe Runner
+
+`automation/network_offline_safe_runner/` contains the TASK-007 network/offline policy report generator. It is a local dry-run utility and does not interact with an Android device, app binary, backend, proxy, packet capture, network service or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved build metadata -> `blocked`;
+- missing approved target metadata -> `blocked`;
+- missing approved configuration metadata -> `blocked`;
+- missing network profile policy metadata -> `blocked`;
+- missing resource budget metadata -> `blocked`;
+- missing redaction policy metadata -> `blocked`;
+- missing evidence storage metadata -> `blocked`;
+- missing cleanup and rollback metadata -> `blocked`;
+- missing Security or QA review metadata -> `blocked`;
+- complete metadata produces a `not_run` network/offline plan only and never claims runtime behavior passed in TASK-007;
+- notes and artifact references are redacted before output.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

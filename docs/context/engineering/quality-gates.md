@@ -33,6 +33,7 @@ A task is done only when:
 - Screen/focus map report generators fail closed: absent prerequisites are `blocked`, template-only plans are `not_run`, and runtime facts remain `unknown`.
 - Fixture contracts and approval checklists fail closed: absent, expired, revoked or non-confirmed fixture approvals keep dependent runtime tasks `blocked`.
 - Payment-like fixture gates require staging-only, non-real-payment approval before execution.
+- Network/offline safe runners fail closed: absent or non-confirmed profile, budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`.
 
 ## Runtime Android gates
 
@@ -56,6 +57,20 @@ Future runtime, auth/session, stream, WebView, payment, network and offline task
 - credentials, private endpoints, real accounts, real payment data and raw evidence remain outside public source control;
 - Security/Prod-safety and QA reviewers approve the fixture boundary;
 - real payments, security bypasses and production mutation without cleanup remain forbidden.
+
+## Network/offline gates
+
+Future network/offline tasks may execute only when:
+
+- approved build, Android TV target and runtime configuration are recorded with `evidence_status=confirmed`;
+- network profile policy is approved using public-safe category aliases only;
+- resource budget covers duration, retry, traffic, account and stream limits;
+- Security/Prod-safety and QA reviewers approve the boundary before execution;
+- evidence storage and redaction are approved before capture;
+- cleanup or rollback restores normal connectivity and any mutable fixture state;
+- public reports exclude endpoint values, packet captures, proxy setup, TLS bypass details, raw traffic/log evidence and executable device/network recipes.
+
+TASK-007 local report generation is `PROD_SAFE`; real network/offline execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
 
 ## Merge gates
 

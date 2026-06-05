@@ -112,6 +112,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-002 exported component guard skeleton reports;
 - TASK-004 manual runtime screen/focus map summaries;
 - TASK-006 fixture approval summaries;
+- TASK-007 network/offline safe runner summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
@@ -168,6 +169,27 @@ TASK-006 fixture summaries may include only public-safe aliases and approval met
 ```
 
 Fixture approval requires `approval_status: approved` and `evidence_status: confirmed`. Fixture approval only allows future conditional execution; it does not confirm runtime behavior.
+
+## Network/Offline Summary
+
+TASK-007 network/offline summaries may include only public-safe prerequisite status and category-level planned checks:
+
+```json
+{
+  "planned_network_offline_checks": [
+    {
+      "id": "NO-001",
+      "category": "offline_startup",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "notes": "Network/offline execution is blocked until approved prerequisites exist."
+    }
+  ]
+}
+```
+
+Allowed aliases include `offline`, `reconnect`, `high_latency`, `intermittent_connectivity`, `transport_switch` and `captive_portal_like`. Public reports must not include endpoint values, packet captures, proxy configuration, TLS bypass instructions, raw logs, traffic dumps or executable device/network command recipes.
 
 ## Redaction Rules
 

@@ -21,7 +21,7 @@
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
 | TASK-006 | Test data and fixtures contract draft | NON_AUTONOMOUS | qa/task-006-test-fixtures-contract | completed |
-| TASK-007 | Network/offline policy and safe runner | BOUNDED_AUTONOMOUS after policy | qa/task-007-network-offline-policy | planned |
+| TASK-007 | Network/offline policy and safe runner | BOUNDED_AUTONOMOUS after policy | qa/task-007-network-offline-policy | completed |
 | TASK-008 | WebView/payment safe QA plan | NON_AUTONOMOUS | qa/task-008-webview-payment-safe-qa | planned |
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | planned |
 | TASK-010 | CI/nightly smoke plan | NON_AUTONOMOUS then BOUNDED_AUTONOMOUS | qa/task-010-ci-nightly-smoke | planned |
@@ -38,4 +38,4 @@ Planner selects the next task based on:
 
 ## Current selection note
 
-After TASK-004, Planner evaluated TASK-005 first. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture policy, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-006 was selected next because it defines the public-safe fixture contract needed to unblock future runtime-dependent tasks. TASK-006 default-branch merge/push was authorized by explicit user command in `NON_AUTONOMOUS` mode.
+After TASK-006, Planner evaluated TASK-005 first. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-007 was selected next because it creates the public-safe network/offline policy and fail-closed local runner needed before future network/offline runtime work. After TASK-007, runtime/device execution remains blocked until approved prerequisites are recorded; Planner should evaluate TASK-008 and TASK-009 against dependency readiness and verification value.

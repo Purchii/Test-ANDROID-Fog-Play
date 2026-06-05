@@ -75,6 +75,13 @@ DEFAULT_RELEASE_GATES = (
         "runtime_dependent": False,
         "description": "Evidence and artifact references are public-safe and redacted.",
     },
+    {
+        "id": "RG-007",
+        "name": "network_offline_recovery",
+        "risk_level": "R1",
+        "runtime_dependent": True,
+        "description": "Network/offline recovery outcome is confirmed by approved public-safe metadata.",
+    },
 )
 REDACTION_PATTERNS = (
     (re.compile(r"https?://[^\s)]+", re.IGNORECASE), "[REDACTED_URL]"),

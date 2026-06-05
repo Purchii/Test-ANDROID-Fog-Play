@@ -24,6 +24,8 @@ qa/task-001-runtime-discovery-smoke-bootstrap
 
 Thread title is human-readable. Branch name is Git-safe. Both must share the same task ID.
 
+The Codex project thread title must be the currently executed task title, not the branch name, repo name or a generic status label. Example: use `TASK-001 - Runtime discovery and smoke bootstrap`, not `qa/task-001-runtime-discovery-smoke-bootstrap`.
+
 ## Next task selection
 
 If the next task is not known when a completed thread hands off:

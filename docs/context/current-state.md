@@ -47,13 +47,14 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Public source-of-truth excludes `qa_reverse_analysis/raw/`, compiled cache files and the local reverse-analysis zip by default.
 - Public reverse-analysis context is summarized in `docs/context/reverse-analysis/`.
 - TASK-001 completed the runtime discovery and smoke bootstrap foundation in fresh thread `TASK-001 - Runtime discovery and smoke bootstrap` on branch `qa/task-001-runtime-discovery-smoke-bootstrap` from `main` commit `5a17c0f`.
+- TASK-002 completed the exported component guard checks skeleton in fresh thread `TASK-002 - Exported component guard checks skeleton` on branch `qa/task-002-exported-component-guards` from `main` commit `07cad5a`.
 
 ## Runtime readiness
 
 - Approved APK/build for runtime automation: `unknown`.
 - Approved Android TV device/emulator/config: `unknown`.
 - Approved QA accounts, stream fixtures and staging payment fixtures: `unknown`.
-- TASK-001 may create blocked-report tooling and public-safe discovery templates, but runtime/device execution remains blocked until a future task satisfies safety gates.
+- TASK-001 created blocked-report tooling and public-safe discovery templates; TASK-002 created exported component guard skeleton tooling. Runtime/device execution remains blocked until a future task satisfies safety gates.
 
 ## Evidence status policy
 

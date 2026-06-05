@@ -13,6 +13,18 @@ The generator is designed to fail closed:
 - missing approved configuration metadata -> `blocked`;
 - complete metadata still does not execute runtime checks in TASK-001.
 
+## Exported Component Guards
+
+`automation/exported_component_guards/` contains the TASK-002 exported component guard skeleton generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service, exported component or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved build metadata -> `blocked`;
+- missing approved target metadata -> `blocked`;
+- missing approved configuration metadata -> `blocked`;
+- missing approved guard scope metadata -> `blocked`;
+- complete metadata produces a `not_run` plan only and still does not execute runtime checks in TASK-002.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

@@ -37,6 +37,22 @@ The generator is designed to fail closed:
 - blocked, failed, not-run or non-confirmed R0/R1 gates keep the release decision blocked;
 - notes and artifact references are redacted before output.
 
+## Manual Runtime Maps
+
+`automation/manual_runtime_maps/` contains the TASK-004 manual runtime screen/focus map report generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service, WebView, WebRTC session or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved build metadata -> `blocked`;
+- missing approved target metadata -> `blocked`;
+- missing approved configuration metadata -> `blocked`;
+- missing redaction policy metadata -> `blocked`;
+- missing synthetic fixture policy metadata -> `blocked`;
+- missing evidence storage metadata -> `blocked`;
+- missing cleanup and rollback metadata -> `blocked`;
+- complete metadata produces `not_run` screen/focus map templates only and never claims runtime behavior passed in TASK-004;
+- notes and artifact references are redacted before output.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

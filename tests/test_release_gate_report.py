@@ -78,6 +78,14 @@ def test_network_offline_recovery_gate_is_runtime_dependent_r1():
     assert gate["runtime_dependent"] is True
 
 
+def test_compatibility_device_matrix_gate_is_runtime_dependent_r1():
+    gate = next(gate for gate in DEFAULT_RELEASE_GATES if gate["name"] == "compatibility_device_matrix")
+
+    assert gate["id"] == "RG-008"
+    assert gate["risk_level"] == "R1"
+    assert gate["runtime_dependent"] is True
+
+
 def test_complete_confirmed_pass_metadata_allows_release_pass(tmp_path):
     metadata = {
         "evidence_status": "confirmed",

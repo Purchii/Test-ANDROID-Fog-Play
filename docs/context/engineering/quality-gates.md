@@ -34,6 +34,7 @@ A task is done only when:
 - Fixture contracts and approval checklists fail closed: absent, expired, revoked or non-confirmed fixture approvals keep dependent runtime tasks `blocked`.
 - Payment-like fixture gates require staging-only, non-real-payment approval before execution.
 - Network/offline safe runners fail closed: absent or non-confirmed profile, budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`.
+- Compatibility/device matrix report generators fail closed: absent or non-confirmed build, target class, config, fixture, redaction, evidence storage, cleanup or review prerequisites keep compatibility execution `blocked`, and template-only matrix rows remain `not_run`/`unknown`.
 
 ## Runtime Android gates
 
@@ -71,6 +72,20 @@ Future network/offline tasks may execute only when:
 - public reports exclude endpoint values, packet captures, proxy setup, TLS bypass details, raw traffic/log evidence and executable device/network recipes.
 
 TASK-007 local report generation is `PROD_SAFE`; real network/offline execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
+
+## Compatibility/device matrix gates
+
+Future compatibility/device matrix execution may run only when:
+
+- approved build, Android TV target class and runtime configuration are recorded with `evidence_status=confirmed`;
+- approved device matrix policy uses public-safe category aliases only, never real serials or private lab identifiers;
+- WebView, WebRTC, payment, network/offline and auth/session rows have confirmed fixture approvals before execution;
+- Security/Prod-safety and QA reviewers approve the boundary before execution;
+- evidence storage and redaction are approved before capture;
+- cleanup or rollback is documented for any mutable fixture state;
+- public reports exclude raw screenshots, logs, videos, APK paths, endpoint values, account identifiers and executable Android/device/runtime recipes.
+
+TASK-009 local report generation is `PROD_SAFE`; real compatibility execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
 
 ## Merge gates
 

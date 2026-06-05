@@ -82,6 +82,13 @@ DEFAULT_RELEASE_GATES = (
         "runtime_dependent": True,
         "description": "Network/offline recovery outcome is confirmed by approved public-safe metadata.",
     },
+    {
+        "id": "RG-008",
+        "name": "compatibility_device_matrix",
+        "risk_level": "R1",
+        "runtime_dependent": True,
+        "description": "Compatibility/device matrix outcome is confirmed by approved public-safe metadata.",
+    },
 )
 REDACTION_PATTERNS = (
     (re.compile(r"https?://[^\s)]+", re.IGNORECASE), "[REDACTED_URL]"),

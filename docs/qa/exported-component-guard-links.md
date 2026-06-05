@@ -17,6 +17,9 @@ Use `confirmed`, `likely`, `hypothesis` or `unknown` for every future guard conc
 | Future task | Link target | Purpose | Evidence status |
 |---|---|---|---:|
 | TASK-002 | `docs/tasks/backlog.md` | Exported component guard checks skeleton. | `likely` |
+| TASK-002 | `docs/qa/exported-component-guard-checklist.md` | Category-level guard checklist and stop rules. | `likely` |
+| TASK-002 | `docs/qa/exported-component-guard-report-template.md` | Public-safe guard report template. | `likely` |
+| TASK-002 | `automation/exported_component_guards/generate_guard_report.py` | Local fail-closed guard skeleton report generator. | `likely` |
 | TASK-002 | `docs/context/reverse-analysis/public-risk-summary.md` | Public-safe risk context for exported surfaces. | `likely` |
 | TASK-002 | `docs/context/reverse-analysis/open-questions.md` | Product/security questions about intentional exposure and expected guards. | `unknown` |
 | TASK-003 | `docs/qa/evidence-schema.md` | Shared report fields and status vocabulary. | `likely` |
@@ -49,3 +52,7 @@ Future guard work must stop if it requires:
 ## TASK-001 Boundary
 
 TASK-001 creates links and planning language only. Actual guard-check implementation belongs to TASK-002 or a later approved task with its own branch, verification plan and safety review.
+
+## TASK-002 Boundary
+
+TASK-002 creates the public-safe guard skeleton only. Actual runtime guard execution remains blocked until a future approved task records build, target, configuration, guard scope, fixture and redaction approvals.

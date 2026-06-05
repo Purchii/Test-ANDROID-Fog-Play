@@ -83,6 +83,8 @@ Try `create_thread` up to three patient attempts before Worktree fallback. Do no
 
 Close subagents from inactive threads when they are no longer needed for handoff, review or debugging.
 
+At each task completion checkpoint, audit open subagents before final closure: preserve agents whose output is still needed, record/use required outputs in handoff, then close agents that are no longer needed. Do not leave inactive-thread agents open as an implicit continuation path for the next independent task.
+
 ## Strict multi-agent requirement
 
 Every bounded task must use real multi-agent/subagent delegation when available.

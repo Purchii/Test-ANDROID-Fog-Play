@@ -14,3 +14,4 @@
 | RISK-010 | A future independent task continues in an old thread. | High | active | Fresh-thread gate and final handoff create next thread. | Orchestrator |
 | RISK-011 | Autonomous default-branch push occurs without passing gates. | Critical | active | `BOUNDED_AUTONOMOUS` merge requires multi-agent, status, diff and redaction checks. | Git Reviewer |
 | RISK-012 | GitHub remote default branch points to task branch instead of `main`. | High | resolved | Repository owner changed GitHub default branch to `main`; Codex verified remote HEAD. | Git Reviewer |
+| RISK-013 | Subagents from inactive threads remain open and create audit or continuation confusion. | Medium | active | Completion checkpoint requires using/recording needed outputs, then closing agents no longer needed for review, handoff or debugging. | Orchestrator |

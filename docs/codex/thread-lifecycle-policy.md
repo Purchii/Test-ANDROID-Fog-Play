@@ -102,6 +102,13 @@ After the next fresh thread is accepted, close subagents from the previous inact
 
 Do not close subagents whose results are still needed for review, handoff, blocker diagnosis or audit.
 
+At the completion checkpoint for every task, the Orchestrator must explicitly audit open subagents:
+
+- keep any agent whose output is still needed for review, handoff or debugging;
+- record and use required outputs before closing;
+- close agents that are no longer needed after final handoff is fixed;
+- do not leave old inactive-thread agents open as an implicit continuation path for the next task.
+
 ## Subagent reuse
 
 Current-task subagents may be reused for follow-up review, clarification or verification inside the same task when that improves speed without reducing review quality.

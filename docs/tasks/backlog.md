@@ -10,7 +10,7 @@
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
-| TASK-001 | Runtime discovery and smoke bootstrap | BOUNDED_AUTONOMOUS with safety downgrade if blocked | qa/task-001-runtime-discovery-smoke-bootstrap | ready_next_fresh_thread |
+| TASK-001 | Runtime discovery and smoke bootstrap | BOUNDED_AUTONOMOUS with runtime execution blocked until fixtures approved | qa/task-001-runtime-discovery-smoke-bootstrap | review_passed_pending_integration |
 | TASK-002 | Exported component guard checks skeleton | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-002-exported-component-guards | planned |
 | TASK-003 | Reporting, evidence schema and release gate generator | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-003-evidence-release-gates | planned |
 | TASK-004 | Manual runtime screen and TV focus map templates | BOUNDED_AUTONOMOUS | qa/task-004-runtime-screen-focus-map | planned |

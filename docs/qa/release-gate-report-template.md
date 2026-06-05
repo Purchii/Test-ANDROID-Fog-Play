@@ -40,6 +40,7 @@ Use this template for public-safe release gate summaries. Do not attach raw arti
 | Auth/session guard remains enforced | TASK-001/TASK-002/future runtime | `not_run` | `unknown` | `R0` | Requires approved synthetic fixtures and product/security expectation. |
 | Evidence is redacted | TASK-003/TASK-004/future runtime | `blocked` | `unknown` | `R1` | Requires approved capture/redaction policy before raw evidence exists. |
 | Fixture approval contract satisfied | TASK-006/future approvals | `blocked` | `unknown` | `R1` | Requires confirmed fixture approval, storage and cleanup before fixture-dependent execution. |
+| Network/offline recovery remains bounded | TASK-007/future runtime | `not_run` | `unknown` | `R1` | Requires confirmed network profile, budget, redaction, evidence storage and cleanup before execution. |
 
 ## Release Decision
 
@@ -52,6 +53,7 @@ Decision rationale:
 - TASK-003 release gate generation is local and public-safe; it does not execute runtime checks.
 - TASK-004 manual maps provide public-safe screen/focus templates only; they do not execute runtime checks.
 - TASK-006 fixture contract defines approval prerequisites only; fixture approval does not prove runtime behavior.
+- TASK-007 network/offline safe runner creates blocked/not-run plans only; it does not execute network or runtime checks.
 
 ## Risks
 
@@ -60,6 +62,7 @@ Decision rationale:
 | RISK-008 | Runtime tests could be claimed as passed without device/build evidence. | High | `likely` | Release gates fail closed on absent runtime evidence. |
 | RISK-007 | Evidence could expose private values. | Critical | `likely` | Redaction-by-default and reviewer approval. |
 | RISK-015 | Release gates could emit false confidence from blocked/not-run inputs. | High | `hypothesis` | R0/R1 gates require confirmed pass evidence. |
+| RISK-019 | Network/offline checks could affect production traffic or publish private network evidence if run without approvals. | Critical | `likely` | TASK-007 keeps execution blocked until profile, budget, redaction, storage, cleanup and review are confirmed. |
 
 ## Unknowns
 
@@ -70,6 +73,7 @@ Decision rationale:
 | U-003 | Which fixtures and accounts are safe? | `unknown` | Product/QA/Security |
 | U-007 | Which R0/R1 gate threshold is accepted for release readiness? | `unknown` | Product/QA/Security |
 | U-008 | Which fixture approvals are confirmed for synthetic users, streams, WebView, payment staging and network/offline work? | `unknown` | Product/QA/Security/Backend/Payments/Streaming |
+| U-009 | Which network/offline profiles and recovery oracle are approved for Android TV runtime QA? | `unknown` | Product/QA/Security/Backend |
 
 ## Reviewer Sign-off
 

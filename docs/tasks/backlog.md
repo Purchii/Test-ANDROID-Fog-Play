@@ -22,7 +22,7 @@
 |---|---|---|---|---|
 | TASK-006 | Test data and fixtures contract draft | NON_AUTONOMOUS | qa/task-006-test-fixtures-contract | completed |
 | TASK-007 | Network/offline policy and safe runner | BOUNDED_AUTONOMOUS after policy | qa/task-007-network-offline-policy | completed |
-| TASK-008 | WebView/payment safe QA plan | NON_AUTONOMOUS | qa/task-008-webview-payment-safe-qa | planned |
+| TASK-008 | WebView/payment safe QA plan | NON_AUTONOMOUS | qa/task-008-webview-payment-safe-qa | completed |
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | completed |
 | TASK-010 | CI/nightly smoke plan | NON_AUTONOMOUS then BOUNDED_AUTONOMOUS | qa/task-010-ci-nightly-smoke | planned |
 
@@ -38,4 +38,4 @@ Planner selects the next task based on:
 
 ## Current selection note
 
-After TASK-007, Planner evaluated TASK-005, TASK-008 and TASK-009. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-008 remains planned with `NON_AUTONOMOUS` default because WebView/payment-safe planning is fixture and approval sensitive. TASK-009 was selected because it is public-safe, bounded, locally verifiable and reduces compatibility/device coverage risk without runtime execution. After TASK-009, runtime/device execution remains blocked until approved prerequisites are recorded; Planner should evaluate TASK-008 and TASK-010 against dependency readiness and verification value.
+After TASK-009, Planner and Security/Prod-safety evaluated TASK-008 and TASK-010. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-008 was selected in `NON_AUTONOMOUS` mode because WebView/payment-safe planning is fixture and approval sensitive, and TASK-010 CI/nightly smoke planning should inherit an explicit WebView/payment safety boundary. Runtime/device/WebView/payment execution remains blocked until approved prerequisites are recorded.

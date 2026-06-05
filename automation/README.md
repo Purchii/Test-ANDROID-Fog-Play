@@ -71,6 +71,26 @@ The generator is designed to fail closed:
 - complete metadata produces a `not_run` network/offline plan only and never claims runtime behavior passed in TASK-007;
 - notes and artifact references are redacted before output.
 
+## WebView/Payment Safe Runner
+
+`automation/webview_payment_safe_runner/` contains the TASK-008 WebView/payment safe QA plan report generator. It is a local dry-run utility and does not interact with an Android device, app binary, WebView, browser, redirect target, payment flow, backend, network service or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved build metadata -> `blocked`;
+- missing approved target metadata -> `blocked`;
+- missing approved configuration metadata -> `blocked`;
+- missing WebView fixture policy metadata -> `blocked`;
+- missing staging-only non-real-payment policy metadata -> `blocked`;
+- missing synthetic user policy metadata -> `blocked`;
+- missing resource budget metadata -> `blocked`;
+- missing redaction policy metadata -> `blocked`;
+- missing evidence storage metadata -> `blocked`;
+- missing cleanup and rollback metadata -> `blocked`;
+- missing Security or QA review metadata -> `blocked`;
+- complete metadata produces a `not_run` WebView/payment plan only and never claims runtime or payment behavior passed in TASK-008;
+- notes, flow aliases and artifact references are redacted before output.
+
 ## Compatibility/Device Matrix
 
 `automation/compatibility_device_matrix/` contains the TASK-009 compatibility/device matrix report generator. It is a local dry-run utility and does not interact with an Android device, app binary, WebView, WebRTC session, payment flow, network service or production environment.

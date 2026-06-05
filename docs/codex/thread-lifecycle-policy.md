@@ -6,7 +6,7 @@ Every new independent bounded task must start in a fresh Codex thread / agent ru
 
 A completed task thread is historical/inactive and must not implement the next independent task.
 
-The fresh-thread rule also applies to autonomous continuation: after one task is integrated, the next independent task starts from a new thread that reads current `main` and source-of-truth docs.
+The fresh-thread rule also applies to autonomous continuation: after one task is integrated and pushed to the remote default/trunk branch, the next independent task starts from a new thread that reads current `main` and source-of-truth docs.
 
 ## Thread and branch naming
 
@@ -30,12 +30,13 @@ The Codex project thread title must be the currently executed task title, not th
 
 If the next task is not known when a completed thread hands off:
 
-1. Create fresh continuation thread titled `NEXT_TASK_SELECTION_FROM_<default>@<sha>`.
-2. In that fresh thread, Planner reads `docs/tasks/backlog.md`.
-3. Planner selects the next bounded task.
-4. Rename the same fresh thread to the selected task title.
-5. Create a goal and task branch in that same thread.
-6. Do not create a second thread after task selection.
+1. Verify the completed task is merged and pushed to the remote default/trunk branch.
+2. Create fresh continuation thread titled `NEXT_TASK_SELECTION_FROM_<default>@<sha>`.
+3. In that fresh thread, Planner reads `docs/tasks/backlog.md`.
+4. Planner selects the next bounded task.
+5. Rename the same fresh thread to the selected task title.
+6. Create a goal and task branch in that same thread.
+7. Do not create a second thread after task selection.
 
 ## create_thread-first algorithm
 

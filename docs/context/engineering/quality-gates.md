@@ -35,6 +35,7 @@ A task is done only when:
 - Payment-like fixture gates require staging-only, non-real-payment approval before execution.
 - Network/offline safe runners fail closed: absent or non-confirmed profile, budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`.
 - Compatibility/device matrix report generators fail closed: absent or non-confirmed build, target class, config, fixture, redaction, evidence storage, cleanup or review prerequisites keep compatibility execution `blocked`, and template-only matrix rows remain `not_run`/`unknown`.
+- WebView/payment safe report generators fail closed: absent or non-confirmed WebView fixture policy, staging-only non-real-payment policy, synthetic user policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`, and template-only planned checks remain `not_run`/`unknown`.
 
 ## Runtime Android gates
 
@@ -87,6 +88,22 @@ Future compatibility/device matrix execution may run only when:
 
 TASK-009 local report generation is `PROD_SAFE`; real compatibility execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
 
+## WebView/payment gates
+
+Future WebView/payment execution may run only when:
+
+- approved build, Android TV target and runtime configuration are recorded with `evidence_status=confirmed`;
+- approved WebView fixture policy uses public-safe aliases only, never private URLs, redirect chains, headers, payloads, cookies or endpoints;
+- approved payment staging policy is staging-only, non-real-payment and excludes card, wallet, bank, billing token and receipt data from public reports;
+- synthetic user/session boundaries are approved when account-bound WebView or payment-like paths are in scope;
+- resource budget covers duration, retries, redirects, accounts and staging transaction attempts;
+- Security/Prod-safety and QA reviewers approve the boundary before execution;
+- evidence storage and redaction are approved before capture;
+- cleanup or rollback is documented for sessions and staging transaction state;
+- public reports exclude raw WebView logs, private redirect data, payment data, raw screenshots, APK paths, endpoint values and executable Android/device/runtime/network recipes.
+
+TASK-008 local report generation is `PROD_SAFE`; real WebView/payment execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:
@@ -99,3 +116,10 @@ To merge/push default branch in `BOUNDED_AUTONOMOUS`:
 - no R0/R1 blocker remains;
 - git status clean except intended changes;
 - no force-push needed.
+
+Before starting the next independent task in autonomous continuation:
+
+- the completed task branch must be merged into the detected default/trunk branch;
+- the detected default/trunk branch must be pushed to origin;
+- post-push verification must confirm local HEAD and `origin/<default-branch>` are aligned;
+- if this cannot be verified, record a blocker and do not start the next task.

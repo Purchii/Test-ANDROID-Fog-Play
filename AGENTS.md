@@ -67,6 +67,8 @@ Branch format:
 qa/task-001-runtime-discovery-smoke-bootstrap
 ```
 
+The Codex project thread must be named after the currently executed task title. Do not use a branch name, repository name or generic status as the project thread title.
+
 Determine the repository default branch automatically. Treat user wording `master` as “default/trunk branch”, not necessarily a literal branch named `master`.
 
 Never work directly on the default branch for implementation tasks.

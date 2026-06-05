@@ -25,6 +25,18 @@ The generator is designed to fail closed:
 - missing approved guard scope metadata -> `blocked`;
 - complete metadata produces a `not_run` plan only and still does not execute runtime checks in TASK-002.
 
+## Reporting and Release Gates
+
+`automation/reporting/` contains the TASK-003 release gate report generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service, WebView, WebRTC session or production environment.
+
+The generator is designed to fail closed:
+
+- missing release metadata -> `blocked`;
+- malformed metadata -> `blocked`;
+- runtime-dependent R0/R1 gates require `status=pass` and `evidence_status=confirmed`;
+- blocked, failed, not-run or non-confirmed R0/R1 gates keep the release decision blocked;
+- notes and artifact references are redacted before output.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

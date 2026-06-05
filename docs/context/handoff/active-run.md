@@ -2,34 +2,34 @@
 
 ## Run metadata
 
-Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-004 - Manual runtime screen and TV focus map templates`
+Mode: `NON_AUTONOMOUS`
+Thread title: `TASK-006 - Test data and fixtures contract draft`
 Thread status: `inactive_completed`
 Fresh thread verified: `yes`
-Task ID: `TASK-004`
-Task branch: `qa/task-004-runtime-screen-focus-map`
+Task ID: `TASK-006`
+Task branch: `qa/task-006-test-fixtures-contract`
 Default branch: `main`
-Base commit: `3840a0069d4a646a1bad18fd99d25c2fc2eabf73`
-Production safety classification: `PROD_SAFE` for public-safe docs, local screen/focus map report generation and local tests only
+Base commit: `474d0de62a552b48ead820cd2743b54313a07918`
+Production safety classification: `PROD_SAFE` for public-safe docs and local static checks only
 Multi-agent status: `complete_passed`
-Merge/push authority: `BOUNDED_AUTONOMOUS - default branch push allowed after gates`
-Default branch integration: `completed`
+Merge/push authority: `NON_AUTONOMOUS - default branch merge/push authorized by explicit user command on 2026-06-05`
+Default branch integration: `completed_by_user_command`
 
 ## Goal
 
-Create public-safe manual runtime screen and Android TV focus map templates, plus local fail-closed reporting support, without Android runtime/device execution, APK handling, endpoint extraction, raw evidence publication or production actions.
+Create a public-safe test data and fixture approval contract for future Android TV runtime, auth/session, stream, WebView, payment, network and offline QA work without collecting real fixture values, runtime evidence, endpoints, credentials or payment data.
 
-## Allowed files
+## Task selection rationale
 
-- `tasks/TASK_004_manual_runtime_screen_focus_map_templates.md`
-- `docs/qa/runtime-screen-map-template.md`
-- `docs/qa/tv-focus-map-template.md`
+`TASK-005 - Android TV install/launch/focus smoke implementation` remains blocked because approved build/APK, Android TV target, runtime configuration, fixture policy, redaction policy, evidence storage and cleanup/rollback prerequisites are still `unknown`. Planner selected `TASK-006` from the backlog because it is the smallest safe task that reduces the blocker preventing TASK-005.
+
+## Files changed
+
+- `tasks/TASK_006_test_data_and_fixtures_contract_draft.md`
+- `docs/qa/test-data-fixtures-contract.md`
+- `docs/qa/fixtures-approval-checklist.md`
 - `docs/qa/evidence-schema.md`
 - `docs/qa/release-gate-report-template.md`
-- `automation/README.md`
-- `automation/manual_runtime_maps/__init__.py`
-- `automation/manual_runtime_maps/generate_map_report.py`
-- `tests/test_manual_runtime_maps.py`
 - `docs/context/current-state.md`
 - `docs/context/handoff/active-run.md`
 - `docs/context/governance/risk-register.md`
@@ -43,86 +43,64 @@ Create public-safe manual runtime screen and Android TV focus map templates, plu
 - raw APK/AAB/DEX/native/signing artifacts;
 - raw logs, screenshots, videos, endpoint inventories, credentials, cookies, sessions or real user data;
 - executable Android device/runtime command recipes;
-- runtime/device execution, exported component probing or APK handling;
-- production mutation, load/fuzz probing or real payments;
-- committing `qa_reverse_analysis/`, raw artifacts, archives, compiled cache files or secrets.
-
-## Files changed
-
-- `tasks/TASK_004_manual_runtime_screen_focus_map_templates.md`
-- `docs/qa/runtime-screen-map-template.md`
-- `docs/qa/tv-focus-map-template.md`
-- `docs/qa/evidence-schema.md`
-- `docs/qa/release-gate-report-template.md`
-- `automation/README.md`
-- `automation/manual_runtime_maps/__init__.py`
-- `automation/manual_runtime_maps/generate_map_report.py`
-- `tests/test_manual_runtime_maps.py`
-- `docs/context/current-state.md`
-- `docs/context/handoff/active-run.md`
-- `docs/context/governance/risk-register.md`
-- `docs/context/engineering/quality-gates.md`
-- `docs/context/engineering/verification-memory.md`
-- `docs/tasks/backlog.md`
+- runtime/device execution, exported component probing, WebView/WebRTC/payment/network execution or APK handling;
+- production mutation, load/fuzz probing, security bypasses or real payments;
+- committing `qa_reverse_analysis/`, raw artifacts, archives, compiled cache files or secrets;
+- default branch merge/push in `NON_AUTONOMOUS` mode without explicit user command.
 
 ## Acceptance result
 
-- No forbidden artifact was requested or committed.
-- No executable runtime/device recipe was added.
-- Manual runtime screen map template exists and is linked from source-of-truth docs.
-- Manual TV focus map template exists and is linked from source-of-truth docs.
-- Templates include prerequisites, evidence status, redaction, screen aliases, transition mapping, initial focus, D-pad movement, focus trap, Back/Home and accessibility/localization fields.
-- Missing approved build, target, configuration, redaction policy, synthetic fixture policy, evidence storage or cleanup/rollback metadata produces `overall_status=blocked`.
-- Non-confirmed prerequisite evidence produces `overall_status=blocked`.
-- Complete public-safe confirmed metadata produces only a `not_run` mapping plan, never a fake runtime `pass`.
-- Notes and artifact-like references are redacted by default.
-- Runtime/device execution remains blocked until a future task records approved prerequisites.
-- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews completed or were remediated to pass.
+- No forbidden artifact, credential, private endpoint, real account, payment value, raw evidence or executable runtime/device recipe was requested or committed.
+- TASK-006 task spec declares mode, branch, production safety, scope, out-of-scope, acceptance, verification and stop conditions.
+- Public-safe fixture contract and approval checklist exist.
+- Contract covers synthetic QA users, auth/session states, stream fixtures, WebView fixtures, payment staging fixtures, network/offline profiles, evidence fixtures, redaction, evidence storage, cleanup/rollback, ownership, approval and evidence status.
+- Missing, expired, revoked or non-confirmed fixture approval keeps dependent runtime tasks `blocked`.
+- Payment-like QA requires staging-only, non-real-payment fixtures; real payment remains `PROD_FORBIDDEN`.
+- Fixture approval alone does not confirm runtime behavior.
+- Runtime/device/APK/WebView/WebRTC/network/payment execution remains blocked until a future task records approved prerequisites.
+- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews completed with no required remediation.
 
 ## Verification result
 
-- `git status --short --branch`: `passed`, intended TASK-004 changes on `qa/task-004-runtime-screen-focus-map`.
+- `git status --short --branch`: `passed`, intended TASK-006 changes on `qa/task-006-test-fixtures-contract`.
 - `git diff --check`: `passed`.
-- `python -m pytest -q tests\test_manual_runtime_maps.py`: `passed`, 9 tests.
 - `python -m pytest -q`: `passed`, 32 tests.
 - `python -m compileall automation tests`: `passed`.
-- `python -m automation.manual_runtime_maps.generate_map_report`: `passed`, generated `overall_status=blocked` with all seven prerequisite gates missing/non-confirmed.
-- Public-safe confirmed prerequisite dry-run: `passed`, generated `overall_status=not_run`, no runtime `pass`, screen/focus observations stayed `unknown`.
-- Public-safety scan: `passed`; matches were expected policy/test redaction terms only, with no committed forbidden artifacts, secrets/private endpoints, APK binaries, raw logs/screenshots, endpoint inventories or executable runtime/device recipes found in intended TASK-004 changes.
-- Runtime/device validation: `blocked`, out of scope and approved build/device/config/fixtures remain `unknown`.
+- Changed-file public-safety scan: `passed`; matches were expected policy/negative-control terms only, with no leaked values or executable Android recipes identified.
+- Diff-only forbidden-value scan: `passed`; no dangerous new URL/token/secret/ADB/runtime-command patterns found.
+- ASCII check for the three new TASK-006 deliverables: `passed`.
+- Runtime/device/APK/WebView/WebRTC/network/payment validation: `blocked`, out of scope and missing approved prerequisites.
 
 ## Multi-agent result
 
-- Orchestrator: `PASS`, run framing, implementation integration, verification and final gate consolidation complete.
-- Planner: `PASS`, bounded TASK-004 plan approved with template-only public-safe scope.
-- Builder: `PASS`, implemented manual runtime map generator/tests in assigned write scope.
-- QA Reviewer A: initial `BLOCK` for prerequisite evidence-status/schema mismatch; remediation applied and re-review `PASS`.
-- QA Reviewer B: initial `BLOCK` for incomplete runtime-map prerequisite set; remediation applied and re-review `PASS`.
-- Security/Prod-safety Reviewer: `PASS`, no R0/R1 concerns and no forbidden public repo content.
-- Docs/Scribe: initial `BLOCK` for final completion fields; remediation applied in active-run, verification memory, backlog and current-state.
+- Orchestrator: `PASS`, task selection, branch setup, source-of-truth integration, verification and final consolidation complete.
+- Planner: `PASS`, selected TASK-006 after confirming TASK-005 is blocked by missing runtime prerequisites.
+- Builder: `PASS`, created TASK-006 task spec, fixture contract and approval checklist in assigned write scope.
+- QA Reviewer A: `PASS`, acceptance criteria, evidence-status discipline and release/evidence coherence verified.
+- QA Reviewer B: `PASS`, Android TV/runtime/flakiness fixture coverage and TASK-005 blocked status verified.
+- Security/Prod-safety Reviewer: `PASS`, no R0/R1 blockers, no forbidden public repo content, `NON_AUTONOMOUS` restriction preserved.
+- Docs/Scribe: `PASS`, active-run/current-state/backlog/risk/quality/verification docs consistent.
 
 ## Deviations and remediation
 
-- QA Reviewer B found that generator prerequisites did not include synthetic fixture policy, evidence storage or cleanup/rollback. Remediation: generator, README, active-run and tests now require the full prerequisite set.
-- QA Reviewer A found that `present=true` with non-confirmed evidence could still produce `not_run`, and shared evidence schema omitted storage/cleanup fields. Remediation: generator now blocks unless every prerequisite has `evidence_status=confirmed`; tests and evidence-schema sample were updated.
-- Docs/Scribe found final-state gaps. Remediation: completion status, changed files, acceptance, verification, multi-agent results and next handoff are recorded here.
+- Builder intentionally limited writes to three deliverable files. Orchestrator updated source-of-truth docs within allowed task scope.
+- Initial source-of-truth patch failed because backlog text matching was too broad; remediation was to apply smaller patches and re-run verification.
+- No QA, Security or Docs remediation was required after independent reviews.
 
 ## Current evidence status
 
-- Fresh TASK-004 thread/title/goal: `confirmed`
+- Fresh TASK-006 thread/title/goal: `confirmed`
 - Remote default branch `main`: `confirmed`
-- TASK-003 merged to `main`: `confirmed`
-- TASK-004 docs/tooling/tests: `confirmed`
-- Manual screen/focus map template generation: `confirmed` by local tests and dry-runs
-- Runtime screen map behavior: `unknown`
-- First-focus behavior: `unknown`
-- D-pad movement behavior: `unknown`
+- TASK-004 merged to `main`: `confirmed`
+- TASK-006 docs and source-of-truth updates: `confirmed` by local checks and multi-agent review
+- TASK-005 runtime prerequisites: `unknown`
 - Approved build/device/config/fixtures availability: `unknown`
-- QA accounts, stream fixtures and payment staging fixtures: `unknown`
+- QA accounts, stream fixtures, WebView fixtures, payment staging fixtures and network/offline fixture approvals: `unknown`
 
 ## Next handoff
 
-- Current thread status: `inactive_completed` after final report, push/merge completion and subagent closure audit.
-- TASK-005 is the recommended next task only if approved build/device/config/fixture/redaction prerequisites are available; otherwise Planner should choose the next bounded safe task from backlog.
-- Runtime/device/APK/account/payment/stream execution remains blocked until a future task records approved prerequisites.
-- Next task branch must start from updated `main` after TASK-004 merge/push.
+- Current thread status: `inactive_completed` after final report, task branch commit/push, explicit default-branch merge authorization and subagent closure audit.
+- Task branch was approved for default-branch merge/push by explicit user command in `NON_AUTONOMOUS` mode.
+- TASK-005 remains blocked until approved build/device/config/fixture/redaction/storage/cleanup prerequisites are recorded.
+- Recommended next task after TASK-006 merge is `TASK-007 - Network/offline policy and safe runner` only if fixture policy is accepted; otherwise keep resolving fixture approvals/questions.
+- Next task branch must start from updated `main` after TASK-006 merge/push.

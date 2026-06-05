@@ -31,6 +31,8 @@ A task is done only when:
 - Log/screenshot artifacts are redacted or stored in ignored local evidence paths.
 - No destructive runtime or production commands by default.
 - Screen/focus map report generators fail closed: absent prerequisites are `blocked`, template-only plans are `not_run`, and runtime facts remain `unknown`.
+- Fixture contracts and approval checklists fail closed: absent, expired, revoked or non-confirmed fixture approvals keep dependent runtime tasks `blocked`.
+- Payment-like fixture gates require staging-only, non-real-payment approval before execution.
 
 ## Runtime Android gates
 
@@ -44,6 +46,16 @@ Runtime check can be marked passed only if:
 - report names exact device/app version.
 
 If device/APK/config missing, status is `blocked`, not `pass`.
+
+## Fixture gates
+
+Future runtime, auth/session, stream, WebView, payment, network and offline tasks may use fixtures only when:
+
+- fixture approval is recorded with `evidence_status=confirmed`;
+- owner roles, scope, allowed/disallowed flows, resource budget, redaction, evidence storage and cleanup/rollback are documented;
+- credentials, private endpoints, real accounts, real payment data and raw evidence remain outside public source control;
+- Security/Prod-safety and QA reviewers approve the fixture boundary;
+- real payments, security bypasses and production mutation without cleanup remain forbidden.
 
 ## Merge gates
 

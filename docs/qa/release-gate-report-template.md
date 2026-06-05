@@ -33,10 +33,10 @@ Use this template for public-safe release gate summaries. Do not attach raw arti
 | Gate | Source | Status | Evidence status | Risk level | Notes |
 |---|---|---:|---:|---:|---|
 | Runtime startup reaches first visible state | TASK-001/future runtime | `not_run` | `unknown` | `R0` | Runtime execution blocked until prerequisites are approved. |
-| First focus is visible and usable | TASK-001/future runtime | `not_run` | `unknown` | `R1` | Runtime execution blocked until prerequisites are approved. |
+| First focus is visible and usable | TASK-001/TASK-004/future runtime | `not_run` | `unknown` | `R1` | Runtime execution blocked until prerequisites are approved. |
 | Exported component guard plan exists | TASK-002 | `not_run` | `unknown` | `R1` | Skeleton exists; runtime guard behavior remains unknown. |
 | Auth/session guard remains enforced | TASK-001/TASK-002/future runtime | `not_run` | `unknown` | `R0` | Requires approved synthetic fixtures and product/security expectation. |
-| Evidence is redacted | TASK-003/future runtime | `blocked` | `unknown` | `R1` | Requires approved capture/redaction policy before raw evidence exists. |
+| Evidence is redacted | TASK-003/TASK-004/future runtime | `blocked` | `unknown` | `R1` | Requires approved capture/redaction policy before raw evidence exists. |
 
 ## Release Decision
 
@@ -47,6 +47,7 @@ Decision rationale:
 - R0/R1 gates require `status=pass` and `evidence_status=confirmed`.
 - Missing approved build/device/config/fixtures keeps runtime-dependent gates `blocked` or `not_run`.
 - TASK-003 release gate generation is local and public-safe; it does not execute runtime checks.
+- TASK-004 manual maps provide public-safe screen/focus templates only; they do not execute runtime checks.
 
 ## Risks
 

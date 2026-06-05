@@ -31,7 +31,7 @@ Invalid or missing evidence values must normalize to `unknown`, not to `confirme
 | `evidence_status` | enum | yes | `unknown` when no approved runtime evidence exists. |
 | `production_safety_classification` | enum | yes | Local generators are `PROD_SAFE`. |
 | `redaction_status` | enum | yes | `redacted` when private-looking notes or artifact refs were sanitized. |
-| `prerequisites` | object | yes | Approval state for build, target, config, fixtures and redaction policy. |
+| `prerequisites` | object | yes | Approval state for build, target, config, fixtures, redaction policy, evidence storage and cleanup/rollback. |
 | `release_gates` | array | yes | Each gate includes `id`, `name`, `status`, `evidence_status`, `risk_level`, `notes`. |
 | `blocked_reasons` | array | yes | Empty only when status is not blocked. |
 | `risks` | array | yes | Each risk includes `id`, `level`, `status`, `summary`. |
@@ -68,6 +68,16 @@ Invalid or missing evidence values must normalize to `unknown`, not to `confirme
     "present": false,
     "evidence_status": "unknown",
     "note": "No approved synthetic fixture policy was provided."
+  },
+  "evidence_storage": {
+    "present": false,
+    "evidence_status": "unknown",
+    "note": "No approved ignored evidence storage policy was provided."
+  },
+  "cleanup_rollback": {
+    "present": false,
+    "evidence_status": "unknown",
+    "note": "No approved cleanup and rollback policy was provided."
   }
 }
 ```
@@ -99,9 +109,41 @@ TASK-003 release reports may consume public-safe summaries from:
 
 - TASK-001 runtime smoke blocked reports;
 - TASK-002 exported component guard skeleton reports;
+- TASK-004 manual runtime screen/focus map summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
+
+## Manual Screen And Focus Map Summary
+
+TASK-004 map summaries may include only public-safe category-level fields:
+
+```json
+{
+  "screen_map_sections": [
+    {
+      "id": "SM-001",
+      "name": "first_screen",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R0",
+      "notes": "Runtime observation is blocked until approved prerequisites exist."
+    }
+  ],
+  "focus_map_checks": [
+    {
+      "id": "FM-001",
+      "name": "initial_focus",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "notes": "First-focus behavior is unknown before approved runtime evidence."
+    }
+  ]
+}
+```
+
+Allowed aliases include `screen-home-001` or `focus-home-primary-001` style public-safe identifiers. Do not include raw visible user data, private package/class names, private routes, raw screenshot paths, logs or executable device commands.
 
 ## Redaction Rules
 

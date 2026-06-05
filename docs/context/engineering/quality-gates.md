@@ -21,6 +21,7 @@ A task is done only when:
 - No secrets/private endpoints/PII/payment data introduced.
 - No product facts copied from unrelated reference projects.
 - Decisions and risks updated when workflow changes.
+- Manual screen/focus map templates use public-safe aliases and never claim runtime behavior without approved evidence.
 
 ## Automation gates
 
@@ -29,6 +30,7 @@ A task is done only when:
 - Reports include app version/device/status/evidence_status/risk_level.
 - Log/screenshot artifacts are redacted or stored in ignored local evidence paths.
 - No destructive runtime or production commands by default.
+- Screen/focus map report generators fail closed: absent prerequisites are `blocked`, template-only plans are `not_run`, and runtime facts remain `unknown`.
 
 ## Runtime Android gates
 

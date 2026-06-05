@@ -27,6 +27,8 @@ Use this template for public-safe release gate summaries. Do not attach raw arti
 | Approved configuration | `pass` / `blocked` / `not_run` | `unknown` |  |
 | Redaction policy | `pass` / `blocked` / `not_run` | `unknown` |  |
 | Synthetic fixture policy | `pass` / `blocked` / `not_run` | `unknown` |  |
+| Evidence storage | `pass` / `blocked` / `not_run` | `unknown` |  |
+| Cleanup/rollback | `pass` / `blocked` / `not_run` | `unknown` |  |
 
 ## Release Gate Summary
 
@@ -37,6 +39,7 @@ Use this template for public-safe release gate summaries. Do not attach raw arti
 | Exported component guard plan exists | TASK-002 | `not_run` | `unknown` | `R1` | Skeleton exists; runtime guard behavior remains unknown. |
 | Auth/session guard remains enforced | TASK-001/TASK-002/future runtime | `not_run` | `unknown` | `R0` | Requires approved synthetic fixtures and product/security expectation. |
 | Evidence is redacted | TASK-003/TASK-004/future runtime | `blocked` | `unknown` | `R1` | Requires approved capture/redaction policy before raw evidence exists. |
+| Fixture approval contract satisfied | TASK-006/future approvals | `blocked` | `unknown` | `R1` | Requires confirmed fixture approval, storage and cleanup before fixture-dependent execution. |
 
 ## Release Decision
 
@@ -48,6 +51,7 @@ Decision rationale:
 - Missing approved build/device/config/fixtures keeps runtime-dependent gates `blocked` or `not_run`.
 - TASK-003 release gate generation is local and public-safe; it does not execute runtime checks.
 - TASK-004 manual maps provide public-safe screen/focus templates only; they do not execute runtime checks.
+- TASK-006 fixture contract defines approval prerequisites only; fixture approval does not prove runtime behavior.
 
 ## Risks
 
@@ -65,6 +69,7 @@ Decision rationale:
 | U-002 | Which Android TV target is approved? | `unknown` | QA |
 | U-003 | Which fixtures and accounts are safe? | `unknown` | Product/QA/Security |
 | U-007 | Which R0/R1 gate threshold is accepted for release readiness? | `unknown` | Product/QA/Security |
+| U-008 | Which fixture approvals are confirmed for synthetic users, streams, WebView, payment staging and network/offline work? | `unknown` | Product/QA/Security/Backend/Payments/Streaming |
 
 ## Reviewer Sign-off
 

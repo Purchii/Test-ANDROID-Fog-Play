@@ -39,6 +39,7 @@ Invalid or missing evidence values must normalize to `unknown`, not to `confirme
 | `verification` | array | yes | Local checks and outcomes. |
 | `artifacts` | array | yes | References only to approved redacted artifacts. |
 | `review` | object | yes | Reviewer roles and result or pending status. |
+| `fixtures` | array | conditional | Public-safe fixture approval summaries; required for future fixture-dependent runtime tasks. |
 
 ## Prerequisites Object
 
@@ -110,6 +111,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-001 runtime smoke blocked reports;
 - TASK-002 exported component guard skeleton reports;
 - TASK-004 manual runtime screen/focus map summaries;
+- TASK-006 fixture approval summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
@@ -144,6 +146,28 @@ TASK-004 map summaries may include only public-safe category-level fields:
 ```
 
 Allowed aliases include `screen-home-001` or `focus-home-primary-001` style public-safe identifiers. Do not include raw visible user data, private package/class names, private routes, raw screenshot paths, logs or executable device commands.
+
+## Fixture Approval Summary
+
+TASK-006 fixture summaries may include only public-safe aliases and approval metadata:
+
+```json
+{
+  "fixture_id": "fixture-auth-session-001",
+  "fixture_class": "synthetic_user",
+  "approval_status": "pending",
+  "evidence_status": "unknown",
+  "production_safety_classification": "PROD_CONDITIONAL",
+  "owner_role": "QA/Security/Product",
+  "allowed_flows": ["category-level-only"],
+  "disallowed_flows": ["real_payment", "real_user_data"],
+  "redaction_status": "pending",
+  "evidence_storage": "pending",
+  "cleanup_rollback": "pending"
+}
+```
+
+Fixture approval requires `approval_status: approved` and `evidence_status: confirmed`. Fixture approval only allows future conditional execution; it does not confirm runtime behavior.
 
 ## Redaction Rules
 

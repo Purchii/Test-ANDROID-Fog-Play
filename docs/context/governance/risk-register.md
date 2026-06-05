@@ -13,3 +13,4 @@
 | RISK-009 | Public repository receives raw APK analysis, endpoint aliases or compiled cache artifacts. | Critical | active | `.gitignore`, public-safe summaries, secret/raw scan before commit. | Security Reviewer |
 | RISK-010 | A future independent task continues in an old thread. | High | active | Fresh-thread gate and final handoff create next thread. | Orchestrator |
 | RISK-011 | Autonomous default-branch push occurs without passing gates. | Critical | active | `BOUNDED_AUTONOMOUS` merge requires multi-agent, status, diff and redaction checks. | Git Reviewer |
+| RISK-012 | GitHub remote default branch points to task branch instead of `main`. | High | active | Change GitHub repository default branch to `main` before the next task branches from remote default. | Git Reviewer |

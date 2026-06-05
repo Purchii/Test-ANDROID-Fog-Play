@@ -65,10 +65,20 @@ Out of scope:
 
 - Local git baseline created: `main` at `9c5e079`.
 - Task branch created from `main`: `qa/task-000-bootstrap-codex-docs`.
+- Task branch pushed: `yes`.
+- `main` pushed: `yes`.
+- Remote HEAD/default after first pushes: `qa/task-000-bootstrap-codex-docs`.
+- Default branch UI/API correction to `main`: `blocked_tool_unavailable_gh_cli_missing`.
 - Docs/security/QA multi-agent reviews: `PASS`.
 - Staged forbidden artifact scan: `PASS`.
 - `git diff --cached --check`: `PASS`.
 - Runtime/device checks: not run; out of scope for TASK-000.
+
+## Handoff blocker
+
+GitHub remote was initially empty. Because the task branch was pushed before `main`, GitHub selected `qa/task-000-bootstrap-codex-docs` as remote HEAD/default. The intended default branch is documented as `main` and `main` is pushed, but repository settings must be corrected to make GitHub default branch `main`.
+
+Codex could not perform this correction because GitHub CLI is not installed in the environment. Do not start the next independent task until remote default branch is confirmed as `main`, or explicitly record a temporary exception.
 
 ## Stop conditions
 

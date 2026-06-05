@@ -43,6 +43,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 
 - GitHub remote was empty during TASK-000 bootstrap; `main` is initialized as the first default branch.
 - TASK-000 implementation branch is `qa/task-000-bootstrap-codex-docs`.
+- `main` is pushed, but GitHub remote HEAD/default must be corrected to `main` because the task branch was pushed first.
 - Public source-of-truth excludes `qa_reverse_analysis/raw/`, compiled cache files and the local reverse-analysis zip by default.
 - Public reverse-analysis context is summarized in `docs/context/reverse-analysis/`.
 - The next independent task must start in a fresh Codex thread from current `main`.

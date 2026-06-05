@@ -4,6 +4,8 @@
 
 Do not assume `master` literally. Determine default branch.
 
+User wording such as `master`, `trunk` or `default` means the actual detected repository default branch. In this repository the default branch is currently `main`.
+
 Suggested detection:
 
 ```bash
@@ -82,6 +84,12 @@ git merge --no-ff qa/task-xxx-short-slug
 # rerun relevant checks if merge changes working tree
 git push origin <default-branch>
 ```
+
+Autonomous continuation rule:
+
+- every completed `BOUNDED_AUTONOMOUS` task must be pushed to the remote default/trunk branch before Codex starts the next independent task;
+- do not create or continue the next task branch from a stale default branch;
+- if default-branch push fails, record the blocker and do not start the next task.
 
 ## Forbidden git actions
 

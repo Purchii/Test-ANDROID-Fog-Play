@@ -35,7 +35,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - One goal per task thread.
 - Branch per task from current default branch.
 - `NON_AUTONOMOUS`: no merge/push default branch without explicit user command.
-- `BOUNDED_AUTONOMOUS`: verified task branch may be merged/pushed to default branch.
+- `BOUNDED_AUTONOMOUS`: verified task branch must be merged/pushed to the detected default/trunk branch before starting the next independent task.
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
@@ -53,7 +53,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-006 completed in fresh thread `TASK-006 - Test data and fixtures contract draft` on branch `qa/task-006-test-fixtures-contract` from `main` commit `474d0de`. Planner selected TASK-006 because TASK-005 runtime smoke remains blocked by missing approved build/device/config/fixture prerequisites. TASK-006 default-branch merge/push was authorized by explicit user command in `NON_AUTONOMOUS` mode.
 - TASK-007 completed in fresh thread `TASK-007 - Network/offline policy and safe runner` on branch `qa/task-007-network-offline-policy` from `main` commit `46a7e0f`. TASK-007 is scoped to public-safe network/offline policy and local fail-closed report generation only.
 - TASK-009 completed in fresh thread `TASK-009 - Compatibility/device matrix and report format` on branch `qa/task-009-device-matrix` from `main` commit `b50fb53`. Planner selected TASK-009 because TASK-005 runtime smoke remains blocked and TASK-008 is `NON_AUTONOMOUS` WebView/payment planning with fixture-sensitive approval boundaries.
-- TASK-008 completed in fresh thread `TASK-008 - WebView/payment safe QA plan` on branch `qa/task-008-webview-payment-safe-qa` from `main` commit `d5887ca`. Planner and Security/Prod-safety selected TASK-008 before TASK-010 so CI/nightly planning can inherit an explicit WebView/payment safety boundary. TASK-008 remains `NON_AUTONOMOUS`; default branch merge/push requires explicit user command.
+- TASK-008 completed in fresh thread `TASK-008 - WebView/payment safe QA plan` on branch `qa/task-008-webview-payment-safe-qa` from `main` commit `d5887ca`. Planner and Security/Prod-safety selected TASK-008 before TASK-010 so CI/nightly planning can inherit an explicit WebView/payment safety boundary. TASK-008 was implemented in `NON_AUTONOMOUS`; default branch merge/push was authorized by explicit user command on 2026-06-06.
 
 ## Runtime readiness
 

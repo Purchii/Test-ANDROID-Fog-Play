@@ -116,3 +116,10 @@ To merge/push default branch in `BOUNDED_AUTONOMOUS`:
 - no R0/R1 blocker remains;
 - git status clean except intended changes;
 - no force-push needed.
+
+Before starting the next independent task in autonomous continuation:
+
+- the completed task branch must be merged into the detected default/trunk branch;
+- the detected default/trunk branch must be pushed to origin;
+- post-push verification must confirm local HEAD and `origin/<default-branch>` are aligned;
+- if this cannot be verified, record a blocker and do not start the next task.

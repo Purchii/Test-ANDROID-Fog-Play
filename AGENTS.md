@@ -73,9 +73,13 @@ Determine the repository default branch automatically. Treat user wording `maste
 
 Never work directly on the default branch for implementation tasks.
 
+In `BOUNDED_AUTONOMOUS`, a completed verified task must be integrated into the repository default/trunk branch and pushed to the remote default branch before starting the next independent task. User wording like `push to master` means push the actual detected default branch, currently `main`, unless the remote default changes.
+
 ## Thread lifecycle
 
 After a task is complete, the current thread becomes inactive. It may create/send exactly one fresh continuation thread using `create_thread` or the available equivalent. If the next task is unknown, the fresh thread may start as `NEXT_TASK_SELECTION_FROM_<default>@<sha>` and then must be renamed after Planner selects the task.
+
+For autonomous continuation, create or use the next independent task thread only after the completed task is pushed to the remote default/trunk branch.
 
 Do not implement the next independent task in a completed old thread.
 

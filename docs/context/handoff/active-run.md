@@ -12,8 +12,8 @@ Default branch: `main`
 Base commit: `d5887cabfd4e31ea3c67b6a16dda4048bb91b713`
 Production safety classification: `PROD_SAFE` for public-safe docs, local static checks and local fail-closed report generation only
 Multi-agent status: `complete_passed`
-Merge/push authority: `NON_AUTONOMOUS - task branch push allowed after checks if safe; default branch merge/push forbidden without explicit user command`
-Default branch integration: `not_authorized_in_non_autonomous`
+Merge/push authority: `NON_AUTONOMOUS completed; explicit user command on 2026-06-06 authorizes default branch merge/push for this completed task`
+Default branch integration: `completed_after_explicit_user_command_on_2026-06-06`
 
 ## Goal
 
@@ -57,11 +57,11 @@ Planner and Security/Prod-safety pre-checks selected `TASK-008 - WebView/payment
 - backend, proxy, packet capture, traffic mutation, TLS/pinning/security bypass or production interaction;
 - production mutation, load/fuzz probing, destructive actions or real payments;
 - committing `qa_reverse_analysis/`, raw artifacts, archives, compiled cache files or secrets;
-- default branch merge/push without explicit user command.
+- default branch merge/push before explicit user command; explicit authorization was given on 2026-06-06.
 
 ## Acceptance result
 
-- TASK-008 remained `NON_AUTONOMOUS`; default branch merge/push was not performed.
+- TASK-008 remained `NON_AUTONOMOUS` during implementation; default branch merge/push is authorized by explicit user command on 2026-06-06.
 - No forbidden artifact, credential, private endpoint, redirect chain, cookie, token, real account, real payment value, raw evidence, APK artifact or executable runtime/device/network recipe was requested or committed.
 - WebView/payment execution remains blocked unless staging-only non-real-payment fixture approvals are `confirmed`.
 - Public-safe WebView/payment plan and report template exist.
@@ -114,6 +114,6 @@ Planner and Security/Prod-safety pre-checks selected `TASK-008 - WebView/payment
 ## Next handoff
 
 - Current thread status: `inactive_completed` after final report, task branch push and subagent closure audit.
-- Default branch merge/push: not performed; requires explicit user command in `NON_AUTONOMOUS`.
+- Default branch merge/push: completed after explicit user command on 2026-06-06.
 - TASK-005 remains blocked until approved build/device/config/fixture/redaction/storage/cleanup prerequisites are recorded.
-- Recommended next task after TASK-008 integration approval: evaluate `TASK-010 - CI/nightly smoke plan` from updated `main`.
+- Recommended next task after TASK-008 integration: evaluate `TASK-010 - CI/nightly smoke plan` from updated `main`.

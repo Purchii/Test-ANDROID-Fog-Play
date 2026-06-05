@@ -75,6 +75,11 @@ Allowed:
 - push default branch;
 - create the next fresh thread after completion.
 
+Required before autonomous continuation:
+
+- after a `BOUNDED_AUTONOMOUS` task is complete and gates pass, Codex must merge the verified task branch into the detected default/trunk branch and push that default branch before starting the next independent task;
+- user wording such as `master` means the repository default/trunk branch, not necessarily a literal branch named `master`.
+
 Stop and ask when:
 
 - tests fail and cannot be fixed within scope;

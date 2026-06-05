@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-009 - Compatibility/device matrix and report format`
-Thread status: `active_integration_in_progress`
+Thread status: `inactive_completed_after_final_report`
 Fresh thread verified: `yes`
 Task ID: `TASK-009`
 Task branch: `qa/task-009-device-matrix`
@@ -13,7 +13,7 @@ Base commit: `b50fb53f7cd7a573ca45de4da12b899a561a7846`
 Production safety classification: `PROD_SAFE` for public-safe docs, local static checks and local fail-closed report generation only
 Multi-agent status: `complete_passed`
 Merge/push authority: `BOUNDED_AUTONOMOUS - default branch merge/push allowed after acceptance criteria, checks and multi-agent review pass`
-Default branch integration: `pending_commit_push_merge`
+Default branch integration: `completed_by_bounded_autonomous_after_checks`
 
 ## Goal
 
@@ -87,7 +87,7 @@ Create a public-safe compatibility/device matrix and local fail-closed report ge
 
 ## Multi-agent result
 
-- Orchestrator: `PASS`, task selection, branch setup, implementation integration, verification and source-of-truth updates complete; integration pending.
+- Orchestrator: `PASS`, task selection, branch setup, implementation integration, verification, source-of-truth updates and bounded-autonomous integration complete.
 - Planner: `PASS`, selected TASK-009 after confirming TASK-005 remains blocked and TASK-008 is approval-sensitive.
 - Builder: `PASS`, created core TASK-009 deliverables; duplicate naming issue was reconciled by Orchestrator.
 - QA Reviewer A: `PASS`, acceptance criteria, fail-closed behavior, tests and `RG-008` release gate integration verified.
@@ -113,7 +113,7 @@ Create a public-safe compatibility/device matrix and local fail-closed report ge
 
 ## Next handoff
 
-- Current thread status: `active_integration_in_progress`; will become `inactive_completed` only after final report, task branch commit/push, default-branch merge/push and subagent closure audit.
+- Current thread status: `inactive_completed` after final report, task branch commit/push, default-branch merge/push and subagent closure audit.
 - TASK-005 remains blocked until approved build/device/config/fixture/redaction/storage/cleanup prerequisites are recorded.
 - Recommended next task selection should evaluate `TASK-008 - WebView/payment safe QA plan` and `TASK-010 - CI/nightly smoke plan` from `docs/tasks/backlog.md`; runtime/device execution remains blocked until prerequisites are confirmed.
 - Next task branch must start from updated `main` after TASK-009 merge/push.

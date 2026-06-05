@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-004 - Manual runtime screen and TV focus map templates`
-Thread status: `completed_pending_merge`
+Thread status: `inactive_completed`
 Fresh thread verified: `yes`
 Task ID: `TASK-004`
 Task branch: `qa/task-004-runtime-screen-focus-map`
@@ -13,6 +13,7 @@ Base commit: `3840a0069d4a646a1bad18fd99d25c2fc2eabf73`
 Production safety classification: `PROD_SAFE` for public-safe docs, local screen/focus map report generation and local tests only
 Multi-agent status: `complete_passed`
 Merge/push authority: `BOUNDED_AUTONOMOUS - default branch push allowed after gates`
+Default branch integration: `completed`
 
 ## Goal
 
@@ -121,7 +122,7 @@ Create public-safe manual runtime screen and Android TV focus map templates, plu
 
 ## Next handoff
 
-- Current thread becomes `inactive_completed` after final report, push/merge completion and subagent closure audit.
+- Current thread status: `inactive_completed` after final report, push/merge completion and subagent closure audit.
 - TASK-005 is the recommended next task only if approved build/device/config/fixture/redaction prerequisites are available; otherwise Planner should choose the next bounded safe task from backlog.
 - Runtime/device/APK/account/payment/stream execution remains blocked until a future task records approved prerequisites.
 - Next task branch must start from updated `main` after TASK-004 merge/push.

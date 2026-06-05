@@ -1,0 +1,30 @@
+# Compiled/cache artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.class
+
+# Android/build artifacts
+*.apk
+*.aab
+*.apks
+*.dex
+*.so
+build/
+.gradle/
+
+# Secrets and signing material
+*.jks
+*.keystore
+*.pem
+*.key
+*.p12
+google-services.json
+local.properties
+.env
+.env.*
+
+# Raw/private local QA evidence is not public source-of-truth by default.
+qa_reverse_analysis/
+qa_reverse_analysis_documents.zip
+docs/context/reverse-analysis/raw/

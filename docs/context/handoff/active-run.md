@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-001 - Runtime discovery and smoke bootstrap`
-Thread status: `ready_for_integration`
+Thread status: `completed_pending_final_report`
 Fresh thread verified: `yes`
 Task ID: `TASK-001`
 Task branch: `qa/task-001-runtime-discovery-smoke-bootstrap`
@@ -120,3 +120,9 @@ Runtime/device checks are blocked for TASK-001 because approved build/device/con
 - Security/Prod-safety Reviewer: `PASS`, no R0/R1 concerns after redaction fix.
 - Docs/Scribe: `PASS`, final verification-memory and handoff updates requested and applied.
 - Subagent closure audit: `completed`; required outputs were captured, then all no-longer-needed subagents were closed.
+
+## Next handoff
+
+- Current thread becomes `inactive_completed` after final report.
+- TASK-002 is the recommended next task and must start in a fresh Codex thread from updated `main`.
+- Runtime/device/APK/account/payment/stream validation remains blocked until a future task records approved prerequisites.

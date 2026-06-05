@@ -46,7 +46,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - GitHub remote HEAD/default is confirmed as `main`.
 - Public source-of-truth excludes `qa_reverse_analysis/raw/`, compiled cache files and the local reverse-analysis zip by default.
 - Public reverse-analysis context is summarized in `docs/context/reverse-analysis/`.
-- TASK-001 is active in fresh thread `TASK-001 - Runtime discovery and smoke bootstrap` on branch `qa/task-001-runtime-discovery-smoke-bootstrap` from `main` commit `5a17c0f`.
+- TASK-001 completed the runtime discovery and smoke bootstrap foundation in fresh thread `TASK-001 - Runtime discovery and smoke bootstrap` on branch `qa/task-001-runtime-discovery-smoke-bootstrap` from `main` commit `5a17c0f`.
 
 ## Runtime readiness
 

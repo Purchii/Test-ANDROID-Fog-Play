@@ -4,7 +4,7 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-006 - Test data and fixtures contract draft`
-Thread status: `inactive_completed_pending_merge`
+Thread status: `inactive_completed`
 Fresh thread verified: `yes`
 Task ID: `TASK-006`
 Task branch: `qa/task-006-test-fixtures-contract`
@@ -12,8 +12,8 @@ Default branch: `main`
 Base commit: `474d0de62a552b48ead820cd2743b54313a07918`
 Production safety classification: `PROD_SAFE` for public-safe docs and local static checks only
 Multi-agent status: `complete_passed`
-Merge/push authority: `NON_AUTONOMOUS - task branch push allowed after gates; default branch merge/push requires explicit user command`
-Default branch integration: `not_allowed_without_user_command`
+Merge/push authority: `NON_AUTONOMOUS - default branch merge/push authorized by explicit user command on 2026-06-05`
+Default branch integration: `completed_by_user_command`
 
 ## Goal
 
@@ -99,8 +99,8 @@ Create a public-safe test data and fixture approval contract for future Android 
 
 ## Next handoff
 
-- Current thread status: `inactive_completed_pending_merge` after final report, task branch commit/push and subagent closure audit.
-- Task branch may be reviewed and merged only after explicit user command because mode is `NON_AUTONOMOUS`.
+- Current thread status: `inactive_completed` after final report, task branch commit/push, explicit default-branch merge authorization and subagent closure audit.
+- Task branch was approved for default-branch merge/push by explicit user command in `NON_AUTONOMOUS` mode.
 - TASK-005 remains blocked until approved build/device/config/fixture/redaction/storage/cleanup prerequisites are recorded.
 - Recommended next task after TASK-006 merge is `TASK-007 - Network/offline policy and safe runner` only if fixture policy is accepted; otherwise keep resolving fixture approvals/questions.
-- Next task branch must start from updated `main` after TASK-006 is explicitly merged and pushed by user-approved action.
+- Next task branch must start from updated `main` after TASK-006 merge/push.

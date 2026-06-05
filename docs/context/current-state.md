@@ -50,7 +50,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-002 completed the exported component guard checks skeleton in fresh thread `TASK-002 - Exported component guard checks skeleton` on branch `qa/task-002-exported-component-guards` from `main` commit `07cad5a`.
 - TASK-003 completed the shared reporting, evidence schema and release gate generator foundation in fresh thread `TASK-003 - Reporting, evidence schema and release gate generator` on branch `qa/task-003-evidence-release-gates` from `main` commit `e260b84`.
 - TASK-004 completed the manual runtime screen and TV focus map template foundation in fresh thread `TASK-004 - Manual runtime screen and TV focus map templates` on branch `qa/task-004-runtime-screen-focus-map` from `main` commit `3840a00`.
-- TASK-006 completed on task branch in fresh thread `TASK-006 - Test data and fixtures contract draft` on branch `qa/task-006-test-fixtures-contract` from `main` commit `474d0de`. Planner selected TASK-006 because TASK-005 runtime smoke remains blocked by missing approved build/device/config/fixture prerequisites. Because TASK-006 mode is `NON_AUTONOMOUS`, default-branch merge/push requires explicit user command.
+- TASK-006 completed in fresh thread `TASK-006 - Test data and fixtures contract draft` on branch `qa/task-006-test-fixtures-contract` from `main` commit `474d0de`. Planner selected TASK-006 because TASK-005 runtime smoke remains blocked by missing approved build/device/config/fixture prerequisites. TASK-006 default-branch merge/push was authorized by explicit user command in `NON_AUTONOMOUS` mode.
 
 ## Runtime readiness
 

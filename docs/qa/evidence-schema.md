@@ -115,6 +115,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-007 network/offline safe runner summaries;
 - TASK-008 WebView/payment safe runner summaries;
 - TASK-009 compatibility/device matrix summaries;
+- TASK-010 CI/nightly smoke summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
@@ -262,6 +263,39 @@ TASK-008 WebView/payment summaries may include only public-safe prerequisite sta
 Allowed aliases include `web-legal-001`, `web-auth-boundary-001`, `payment-cancel-001`, `payment-failure-001`, `payment-pending-001`, `payment-duplicate-return-001` and `payment-success-return-001`.
 
 Public reports must not include private URLs, redirect chains, endpoints, headers, payloads, cookies, tokens, sessions, raw WebView logs, payment instruments, billing tokens, receipts, raw screenshots, APK paths, account identifiers or executable Android/device/runtime/network recipes.
+
+## CI/Nightly Smoke Summary
+
+TASK-010 CI/nightly smoke summaries may include only public-safe prerequisite status, CI job aliases and category-level planned checks:
+
+```json
+{
+  "ci_jobs": [
+    {
+      "alias": "ci-nightly-template-001",
+      "job_category": "python_unit_tests",
+      "trigger_category": "manual_or_future_schedule",
+      "runner_category": "public_safe_runner",
+      "evidence_status": "unknown",
+      "notes": "Template only; no live CI schedule was created by TASK-010."
+    }
+  ],
+  "planned_ci_nightly_checks": [
+    {
+      "id": "CNS-001",
+      "category": "repository_hygiene",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "artifact_refs": []
+    }
+  ]
+}
+```
+
+Allowed fields include CI job aliases, category-level triggers, runner categories, planned check categories, result, evidence status, risk level, redacted artifact aliases and blocked reasons.
+
+Public reports must not include CI secrets, private runner credentials, deploy keys, private endpoints, raw logs, raw screenshots, APK paths, account identifiers, payment values or executable Android/device/runtime/network recipes.
 
 ## Redaction Rules
 

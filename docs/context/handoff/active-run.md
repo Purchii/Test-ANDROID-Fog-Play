@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-010 - CI/nightly smoke plan`
-Thread status: `completed_pending_default_integration`
+Thread status: `inactive_completed_after_default_push`
 Fresh thread verified: `yes`
 Task ID: `TASK-010`
 Task branch: `qa/task-010-ci-nightly-smoke`
@@ -13,7 +13,7 @@ Base commit: `61c8e050384ada878dc1955f396439eb5546754f`
 Production safety classification: `PROD_SAFE` for public-safe docs, local static checks and local fail-closed report generation only
 Multi-agent status: `complete_passed`
 Merge/push authority: `BOUNDED_AUTONOMOUS; user confirmed autonomous default-branch push on 2026-06-11 after all gates pass`
-Default branch integration: `pending_final_git_gate`
+Default branch integration: `completed_after_bounded_autonomous_gate_on_2026-06-11`
 
 ## Goal
 
@@ -125,6 +125,8 @@ Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live 
 
 - Fresh TASK-010 thread/title/goal: `confirmed`
 - Remote default branch `main@61c8e05`: `confirmed`
+- TASK-010 task branch push: `confirmed`
+- TASK-010 default branch merge/push: `confirmed` at `main@478f4fc1f87938ec08c9d3b36a96c9b54ebc46dc`
 - TASK-008 merged to `main`: `confirmed`
 - TASK-005 runtime prerequisites: `unknown`
 - Approved build/device/config/fixtures availability: `unknown`
@@ -133,6 +135,6 @@ Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live 
 
 ## Next handoff
 
-- Current thread status: `completed_pending_default_integration`.
-- Default branch merge/push: pending final git gate.
-- Next independent task must not start in this thread; after TASK-010 integration, create exactly one fresh continuation thread from updated `main`.
+- Current thread status: `inactive_completed_after_default_push`.
+- Default branch merge/push: completed; post-push verification confirmed `HEAD == origin/main == 478f4fc1f87938ec08c9d3b36a96c9b54ebc46dc` and `origin/qa/task-010-ci-nightly-smoke` is merged into `origin/main`.
+- Next independent task must not start in this thread; create exactly one fresh continuation thread from updated `main`.

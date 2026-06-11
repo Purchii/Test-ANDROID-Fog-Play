@@ -94,6 +94,14 @@ def test_webview_payment_safe_boundary_gate_is_runtime_dependent_r1():
     assert gate["runtime_dependent"] is True
 
 
+def test_ci_nightly_smoke_readiness_gate_is_runtime_dependent_r1():
+    gate = next(gate for gate in DEFAULT_RELEASE_GATES if gate["name"] == "ci_nightly_smoke_readiness")
+
+    assert gate["id"] == "RG-010"
+    assert gate["risk_level"] == "R1"
+    assert gate["runtime_dependent"] is True
+
+
 def test_complete_confirmed_pass_metadata_allows_release_pass(tmp_path):
     metadata = {
         "evidence_status": "confirmed",

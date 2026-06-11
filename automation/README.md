@@ -109,6 +109,24 @@ The generator is designed to fail closed:
 - complete metadata produces a `not_run` compatibility matrix only and never claims runtime behavior passed in TASK-009;
 - notes and artifact references are redacted before output.
 
+## CI/Nightly Smoke
+
+`automation/ci_nightly_smoke/` contains the TASK-010 CI/nightly smoke plan report generator. It is a local dry-run utility and does not create live CI schedules, access CI secrets, upload artifacts, install private dependencies, or interact with an Android device, app binary, WebView, WebRTC session, payment flow, network service or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved static CI scope metadata -> `blocked`;
+- missing approved schedule policy metadata -> `blocked`;
+- missing repository safety policy metadata -> `blocked`;
+- missing resource budget metadata -> `blocked`;
+- missing redaction policy metadata -> `blocked`;
+- missing evidence storage metadata -> `blocked`;
+- missing artifact retention policy metadata -> `blocked`;
+- missing dependency policy metadata -> `blocked`;
+- missing Security or QA review metadata -> `blocked`;
+- complete metadata produces a `not_run` CI/nightly plan only and never claims live CI, runtime or device behavior passed in TASK-010;
+- notes, CI job aliases and artifact references are redacted before output.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

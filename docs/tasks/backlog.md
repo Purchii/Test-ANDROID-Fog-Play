@@ -24,7 +24,7 @@
 | TASK-007 | Network/offline policy and safe runner | BOUNDED_AUTONOMOUS after policy | qa/task-007-network-offline-policy | completed |
 | TASK-008 | WebView/payment safe QA plan | NON_AUTONOMOUS | qa/task-008-webview-payment-safe-qa | completed |
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | completed |
-| TASK-010 | CI/nightly smoke plan | NON_AUTONOMOUS then BOUNDED_AUTONOMOUS | qa/task-010-ci-nightly-smoke | planned |
+| TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 
 ## Selection rule
 
@@ -38,4 +38,4 @@ Planner selects the next task based on:
 
 ## Current selection note
 
-After TASK-009, Planner and Security/Prod-safety evaluated TASK-008 and TASK-010. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-008 was selected in `NON_AUTONOMOUS` mode because WebView/payment-safe planning is fixture and approval sensitive, and TASK-010 CI/nightly smoke planning should inherit an explicit WebView/payment safety boundary. Runtime/device/WebView/payment execution remains blocked until approved prerequisites are recorded.
+After TASK-008 integration, Planner and Security/Prod-safety evaluated TASK-005 and TASK-010. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-010 was completed in `BOUNDED_AUTONOMOUS` mode for public-safe local planning only because CI/nightly planning can now inherit explicit WebView/payment, network/offline and compatibility safety boundaries. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded.

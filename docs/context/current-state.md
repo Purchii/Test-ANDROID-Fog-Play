@@ -54,6 +54,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-007 completed in fresh thread `TASK-007 - Network/offline policy and safe runner` on branch `qa/task-007-network-offline-policy` from `main` commit `46a7e0f`. TASK-007 is scoped to public-safe network/offline policy and local fail-closed report generation only.
 - TASK-009 completed in fresh thread `TASK-009 - Compatibility/device matrix and report format` on branch `qa/task-009-device-matrix` from `main` commit `b50fb53`. Planner selected TASK-009 because TASK-005 runtime smoke remains blocked and TASK-008 is `NON_AUTONOMOUS` WebView/payment planning with fixture-sensitive approval boundaries.
 - TASK-008 completed in fresh thread `TASK-008 - WebView/payment safe QA plan` on branch `qa/task-008-webview-payment-safe-qa` from `main` commit `d5887ca`. Planner and Security/Prod-safety selected TASK-008 before TASK-010 so CI/nightly planning can inherit an explicit WebView/payment safety boundary. TASK-008 was implemented in `NON_AUTONOMOUS`; default branch merge/push was authorized by explicit user command on 2026-06-06.
+- TASK-010 completed in fresh thread `TASK-010 - CI/nightly smoke plan` on branch `qa/task-010-ci-nightly-smoke` from `main` commit `61c8e05`. Planner selected TASK-010 because TASK-005 runtime smoke remains blocked and CI/nightly planning can now inherit the explicit WebView/payment, network/offline and compatibility safety boundaries.
 
 ## Runtime readiness
 
@@ -67,6 +68,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-007 adds a public-safe network/offline policy and local safe runner. This does not approve any real network profile, does not execute device/network/backend/proxy/packet checks and does not confirm runtime behavior.
 - TASK-009 adds a public-safe compatibility/device matrix, report template and local fail-closed report generator. This does not approve any real device class, does not execute Android/device/APK/WebView/WebRTC/payment/network checks and does not confirm compatibility behavior.
 - TASK-008 adds a public-safe WebView/payment QA plan, report template and local fail-closed report generator. This does not approve any real WebView fixture, payment staging fixture, account, redirect, endpoint or payment flow; it does not execute Android/device/APK/WebView/browser/payment/network checks and does not confirm runtime behavior.
+- TASK-010 adds a public-safe CI/nightly smoke plan, report template and local fail-closed report generator. This does not approve live CI scheduling, CI secrets, private runners, artifact uploads, Android/device/APK/WebView/WebRTC/payment/network checks or production interaction; it does not confirm live CI or runtime behavior.
 
 ## Evidence status policy
 

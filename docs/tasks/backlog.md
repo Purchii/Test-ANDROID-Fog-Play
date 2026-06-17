@@ -31,7 +31,7 @@
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
-| TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | completed final gates; pending default integration |
+| TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | completed |
 
 ## Selection rule
 

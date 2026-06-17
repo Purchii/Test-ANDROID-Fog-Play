@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-012 - Safe task prioritization and approval-dependency map`
-Thread status: `active_final_gate_passed_pending_default_integration`
+Thread status: `inactive_completed_after_default_push`
 Fresh thread verified: `yes`
 Task ID: `TASK-012`
 Task branch: `qa/task-012-safe-task-prioritization`
@@ -13,7 +13,7 @@ Base commit: `f90c32d659e8b4daa0f346ec11cc7b95e7175cd1`
 Production safety classification: `PROD_SAFE` for public-safe docs and local static checks only
 Multi-agent status: `complete_passed_after_docs_remediation`
 Merge/push authority: `BOUNDED_AUTONOMOUS; default branch merge/push allowed only after all gates and reviews pass`
-Default branch integration: `pending_orchestrator_merge_gate`
+Default branch integration: `completed_after_bounded_autonomous_gate_on_2026-06-18`
 
 ## Goal
 
@@ -111,16 +111,16 @@ Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live 
 
 - Fresh TASK-012 thread/title/goal: `confirmed`
 - Remote default branch `main@f90c32d`: `confirmed`
-- TASK-012 task branch push: `pending`
-- TASK-012 default branch merge/push: `pending`
+- TASK-012 task branch push: `confirmed`
+- TASK-012 default branch merge/push: `confirmed`
 - TASK-005 runtime prerequisites: `unknown`
 - Approved build/device/config/fixtures availability: `unknown`
 - Confirmed runtime/WebView/WebRTC/payment/network/live CI behavior: `unknown`
 
 ## Next handoff
 
-- Current thread status: `active_final_gate_passed_pending_default_integration`.
-- Default branch merge/push: pending Orchestrator git integration gate.
+- Current thread status: `inactive_completed_after_default_push`.
+- Default branch merge/push: completed; post-push verification confirmed local `HEAD` and `origin/main` aligned and `origin/qa/task-012-safe-task-prioritization` is merged into `origin/main`.
 - Next autonomous task priority: if no new public-safe bounded backlog task is added and runtime approvals remain `unknown`, stop at next-task selection and request missing category-level approvals instead of starting TASK-005 or any runtime-dependent execution.
 
 ## Stop conditions

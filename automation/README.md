@@ -127,6 +127,27 @@ The generator is designed to fail closed:
 - complete metadata produces a `not_run` CI/nightly plan only and never claims live CI, runtime or device behavior passed in TASK-010;
 - notes, CI job aliases and artifact references are redacted before output.
 
+## Navigation Transition Map
+
+`automation/navigation_transition_map/` contains the TASK-011 navigation transition map report generator. It is a local dry-run utility and does not interact with an Android device, app binary, WebView, WebRTC session, payment flow, network service or production environment.
+
+The generator is designed to fail closed:
+
+- missing approved build metadata -> `blocked`;
+- missing approved target metadata -> `blocked`;
+- missing approved configuration metadata -> `blocked`;
+- missing transition scope metadata -> `blocked`;
+- missing screen alias policy metadata -> `blocked`;
+- missing input event policy metadata -> `blocked`;
+- missing fixture policy metadata -> `blocked`;
+- missing resource budget metadata -> `blocked`;
+- missing redaction policy metadata -> `blocked`;
+- missing evidence storage metadata -> `blocked`;
+- missing cleanup and rollback metadata -> `blocked`;
+- missing Security or QA review metadata -> `blocked`;
+- complete metadata produces a `not_run` navigation transition plan only and never claims runtime transition behavior passed in TASK-011;
+- notes, transition aliases and artifact references are redacted before output.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

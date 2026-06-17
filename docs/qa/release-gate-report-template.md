@@ -44,6 +44,7 @@ Use this template for public-safe release gate summaries. Do not attach raw arti
 | `RG-008` | Compatibility/device matrix baseline covered | TASK-009/future runtime | `not_run` | `unknown` | `R1` | Requires confirmed approved build, target classes, configuration, fixtures, redaction and real runtime evidence. |
 | `RG-009` | WebView/payment-safe boundary remains enforced | TASK-008/future runtime | `not_run` | `unknown` | `R1` | Requires confirmed WebView fixtures, staging-only non-real-payment fixtures, redaction, cleanup and real runtime evidence. |
 | `RG-010` | CI/nightly smoke readiness remains bounded | TASK-010/future CI | `not_run` | `unknown` | `R1` | Requires confirmed static CI scope, schedule policy, resource budget, artifact retention, redaction and reviewer approvals before live scheduling. |
+| `RG-011` | Navigation transition coverage remains bounded | TASK-011/future runtime | `not_run` | `unknown` | `R1` | Requires confirmed approved transition evidence before any route or navigation behavior can pass. |
 
 ## Release Decision
 
@@ -60,6 +61,7 @@ Decision rationale:
 - TASK-008 WebView/payment safe runner creates blocked/not-run plans only; it does not execute WebView, browser, redirect, payment, network or runtime checks.
 - TASK-009 compatibility/device matrix creates blocked/not-run plans only; it does not execute Android TV compatibility checks.
 - TASK-010 CI/nightly smoke runner creates blocked/not-run plans only; it does not create live CI schedules, access CI secrets or execute runtime checks.
+- TASK-011 navigation transition map creates blocked/not-run plans only; it does not execute Android TV navigation or confirm route coverage.
 
 ## Risks
 
@@ -72,6 +74,7 @@ Decision rationale:
 | RISK-020 | Compatibility/device matrix planning could be mistaken for confirmed device coverage. | High | `likely` | TASK-009 keeps rows blocked/not-run until approved runtime evidence exists. |
 | RISK-021 | WebView/payment planning could be mistaken for safe payment execution or could expose private redirect/payment data. | Critical | `likely` | TASK-008 keeps execution blocked until staging-only non-real-payment fixtures, redaction, cleanup and reviewer approvals are confirmed. |
 | RISK-022 | CI/nightly smoke planning could be mistaken for live CI approval or could publish raw CI artifacts/secrets. | High | `likely` | TASK-010 keeps live scheduling blocked until scope, schedule, retention, redaction, resource budget and reviewer approvals are confirmed. |
+| RISK-023 | Navigation transition planning could be mistaken for confirmed route coverage. | High | `likely` | TASK-011 keeps transition rows blocked/not-run until approved runtime evidence exists. |
 
 ## Unknowns
 
@@ -86,6 +89,7 @@ Decision rationale:
 | U-010 | Which Android TV device classes, OS/API buckets and compatibility scope are approved for QA? | `unknown` | Product/QA/Security |
 | U-011 | Which WebView fixtures and staging-only non-real-payment states are approved for QA? | `unknown` | Product/QA/Security/Payments |
 | U-012 | Which CI/nightly scope, cadence, artifact retention and runner resource budget are approved? | `unknown` | QA/Security/DevOps |
+| U-013 | Which navigation transition categories and guard expectations are approved for runtime confirmation? | `unknown` | Product/QA/Security |
 
 ## Reviewer Sign-off
 

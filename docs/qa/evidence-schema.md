@@ -116,6 +116,7 @@ TASK-003 release reports may consume public-safe summaries from:
 - TASK-008 WebView/payment safe runner summaries;
 - TASK-009 compatibility/device matrix summaries;
 - TASK-010 CI/nightly smoke summaries;
+- TASK-011 navigation transition map summaries;
 - future approved runtime summaries after redaction and review.
 
 Only structured public-safe summary fields may be used. Do not embed raw command output, raw logs, screenshots, videos, endpoint inventories, component inventories, credentials or private identifiers.
@@ -296,6 +297,41 @@ TASK-010 CI/nightly smoke summaries may include only public-safe prerequisite st
 Allowed fields include CI job aliases, category-level triggers, runner categories, planned check categories, result, evidence status, risk level, redacted artifact aliases and blocked reasons.
 
 Public reports must not include CI secrets, private runner credentials, deploy keys, private endpoints, raw logs, raw screenshots, APK paths, account identifiers, payment values or executable Android/device/runtime/network recipes.
+
+## Navigation Transition Summary
+
+TASK-011 navigation transition summaries may include only public-safe aliases and category-level planned checks:
+
+```json
+{
+  "transition_edges": [
+    {
+      "alias": "transition-startup-catalog-001",
+      "from_screen_category": "startup",
+      "to_screen_category": "catalog",
+      "action_category": "dpad_select",
+      "guard_category": "none_or_unknown",
+      "fixture_dependency": "none_or_unknown",
+      "evidence_status": "unknown",
+      "notes": "Template only; no runtime navigation was executed by TASK-011."
+    }
+  ],
+  "planned_transitions": [
+    {
+      "id": "NTM-001",
+      "category": "startup_to_catalog",
+      "result": "not_run",
+      "evidence_status": "unknown",
+      "risk_level": "R1",
+      "artifact_refs": []
+    }
+  ]
+}
+```
+
+Allowed fields include transition aliases, screen categories, action categories, guard categories, fixture dependency categories, planned transition check categories, result, evidence status, risk level, redacted artifact aliases and blocked reasons.
+
+Public reports must not include private route values, deeplink values, package or class names, endpoint data, redirect chains, raw screenshots, raw logs, raw videos, APK paths, account identifiers, payment values or executable Android/device/runtime command recipes.
 
 ## Redaction Rules
 

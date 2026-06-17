@@ -25,6 +25,13 @@
 | TASK-008 | WebView/payment safe QA plan | NON_AUTONOMOUS | qa/task-008-webview-payment-safe-qa | completed |
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | completed |
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
+| TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
+
+## P3 - safe autonomous planning before user-answer-dependent runtime work
+
+| ID | Title | Mode default | Branch | Status |
+|---|---|---|---|---|
+| TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | proposed |
 
 ## Selection rule
 
@@ -36,6 +43,12 @@ Planner selects the next task based on:
 4. smallest useful rollback-sized branch;
 5. no production safety blocker.
 
+## Safe autonomous priority policy
+
+Until approved runtime prerequisites are recorded with `evidence_status=confirmed`, autonomous continuation should prioritize public-safe planning, templates, local fail-closed generators, redaction tests, release-gate wiring and documentation tasks that do not require user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
+
+Tasks that require user answers, approvals or external fixtures must stay blocked or proposed until those answers are recorded. This includes runtime smoke, real transition observation, WebView/payment execution, network/offline execution, compatibility execution, live CI scheduling and any task needing approved build/device/config/fixture metadata.
+
 ## Current selection note
 
-After TASK-008 integration, Planner and Security/Prod-safety evaluated TASK-005 and TASK-010. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-010 was completed in `BOUNDED_AUTONOMOUS` mode for public-safe local planning only because CI/nightly planning can now inherit explicit WebView/payment, network/offline and compatibility safety boundaries. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded.
+After TASK-010 integration, Planner and Security/Prod-safety evaluated user-requested transition work. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-011 completed in `BOUNDED_AUTONOMOUS` mode for public-safe local planning only because navigation transition mapping can extend TASK-004 without runtime/device/APK execution. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded.

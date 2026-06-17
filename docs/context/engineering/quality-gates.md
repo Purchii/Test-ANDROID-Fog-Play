@@ -37,6 +37,7 @@ A task is done only when:
 - Compatibility/device matrix report generators fail closed: absent or non-confirmed build, target class, config, fixture, redaction, evidence storage, cleanup or review prerequisites keep compatibility execution `blocked`, and template-only matrix rows remain `not_run`/`unknown`.
 - WebView/payment safe report generators fail closed: absent or non-confirmed WebView fixture policy, staging-only non-real-payment policy, synthetic user policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`, and template-only planned checks remain `not_run`/`unknown`.
 - CI/nightly smoke report generators fail closed: absent or non-confirmed static CI scope, schedule policy, repository safety policy, resource budget, redaction, evidence storage, artifact retention, dependency policy or review prerequisites keep CI/nightly execution `blocked`, and template-only planned checks remain `not_run`/`unknown`.
+- Navigation transition map report generators fail closed: absent or non-confirmed build, target, config, navigation scope, screen alias policy, input event policy, fixture policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep transition execution `blocked`, and template-only transition rows remain `not_run`/`unknown`.
 
 ## Runtime Android gates
 
@@ -118,6 +119,20 @@ Future CI/nightly execution may run only when:
 - public reports exclude CI secrets, private runner credentials, raw logs, raw screenshots, APK paths, endpoint values, account identifiers, payment values and executable Android/device/runtime recipes.
 
 TASK-010 local report generation is `PROD_SAFE`; live CI scheduling and runtime lanes remain `PROD_CONDITIONAL` and blocked until these gates are satisfied.
+
+## Navigation transition gates
+
+Future navigation transition execution may run only when:
+
+- approved build, Android TV target and runtime configuration are recorded with `evidence_status=confirmed`;
+- transition scope uses public-safe screen and action category aliases only, never private routes, deeplinks, package/class names or endpoint values;
+- resource budget covers duration, retry, account/session, stream and Back/Home traversal limits;
+- Security/Prod-safety and QA reviewers approve the boundary before execution;
+- evidence storage and redaction are approved before capture;
+- cleanup or rollback is documented for any mutable session, stream, WebView or account state;
+- public reports exclude raw screenshots, logs, videos, APK paths, endpoint values, account identifiers, payment values, raw route/deeplink values and executable Android/device/runtime recipes.
+
+TASK-011 local report generation is `PROD_SAFE`; real navigation transition execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
 
 ## Merge gates
 

@@ -31,7 +31,7 @@
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
-| TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | proposed |
+| TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | completed final gates; pending default integration |
 
 ## Selection rule
 
@@ -51,4 +51,4 @@ Tasks that require user answers, approvals or external fixtures must stay blocke
 
 ## Current selection note
 
-After TASK-010 integration, Planner and Security/Prod-safety evaluated user-requested transition work. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. TASK-011 completed in `BOUNDED_AUTONOMOUS` mode for public-safe local planning only because navigation transition mapping can extend TASK-004 without runtime/device/APK execution. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded.
+After TASK-011 integration and source-of-truth handoff correction, Planner and Security/Prod-safety selected TASK-012 in `BOUNDED_AUTONOMOUS` mode for public-safe docs only. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded with `evidence_status=confirmed`.

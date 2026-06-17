@@ -38,6 +38,7 @@ A task is done only when:
 - WebView/payment safe report generators fail closed: absent or non-confirmed WebView fixture policy, staging-only non-real-payment policy, synthetic user policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep dependent tasks `blocked`, and template-only planned checks remain `not_run`/`unknown`.
 - CI/nightly smoke report generators fail closed: absent or non-confirmed static CI scope, schedule policy, repository safety policy, resource budget, redaction, evidence storage, artifact retention, dependency policy or review prerequisites keep CI/nightly execution `blocked`, and template-only planned checks remain `not_run`/`unknown`.
 - Navigation transition map report generators fail closed: absent or non-confirmed build, target, config, navigation scope, screen alias policy, input event policy, fixture policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep transition execution `blocked`, and template-only transition rows remain `not_run`/`unknown`.
+- Safe task prioritization and approval-dependency maps are planning-only: they may select public-safe docs/static work, but they must keep runtime/device/APK/WebView/WebRTC/payment/network/live CI tasks `blocked` until every required dependency is `present=true`, `evidence_status=confirmed` and reviewed.
 
 ## Runtime Android gates
 
@@ -133,6 +134,19 @@ Future navigation transition execution may run only when:
 - public reports exclude raw screenshots, logs, videos, APK paths, endpoint values, account identifiers, payment values, raw route/deeplink values and executable Android/device/runtime recipes.
 
 TASK-011 local report generation is `PROD_SAFE`; real navigation transition execution remains `PROD_CONDITIONAL` and blocked until these gates are satisfied.
+
+## Safe task prioritization gates
+
+Future autonomous task selection may proceed only when:
+
+- the candidate task is in `docs/tasks/backlog.md` or explicitly requested by the user;
+- scope, branch, acceptance criteria and verification are bounded;
+- the task is public-safe docs/static/fail-closed work, or all conditional execution dependencies are confirmed;
+- approval dependencies are category-level only and exclude private values, raw evidence, APK paths, endpoints, credentials, account identifiers, payment values and executable runtime recipes;
+- strict multi-agent Planner, QA and Security review is available;
+- no R0/R1 blocker remains.
+
+TASK-012 documentation is `PROD_SAFE`; it does not approve runtime/device/APK/WebView/WebRTC/payment/network/live CI execution.
 
 ## Merge gates
 

@@ -103,6 +103,13 @@ DEFAULT_RELEASE_GATES = (
         "runtime_dependent": True,
         "description": "CI/nightly smoke readiness is confirmed by approved public-safe metadata.",
     },
+    {
+        "id": "RG-011",
+        "name": "navigation_transition_coverage",
+        "risk_level": "R1",
+        "runtime_dependent": True,
+        "description": "Navigation transition coverage is confirmed by approved public-safe metadata.",
+    },
 )
 REDACTION_PATTERNS = (
     (re.compile(r"https?://[^\s)]+", re.IGNORECASE), "[REDACTED_URL]"),

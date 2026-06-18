@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-013 - Next-task selection blocker and safe backlog refresh`
-Thread status: `active_finalizing_before_default_push`
+Thread status: `inactive_completed_after_default_merge_pending_push`
 Fresh thread verified: `yes`
 Task ID: `TASK-013`
 Task branch: `qa/task-013-next-task-selection-safe-backlog-refresh`
@@ -111,14 +111,16 @@ Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live 
 - Fresh TASK-013 thread/title/goal: `confirmed`
 - Remote default branch `main@3cee73e`: `confirmed`
 - TASK-013 task branch creation: `confirmed`
+- TASK-013 task branch push: `confirmed`
+- TASK-013 default branch merge: `confirmed_local_pending_remote_push`
 - TASK-005 runtime prerequisites: `unknown`
 - Approved build/device/config/fixtures availability: `unknown`
 - Confirmed runtime/WebView/WebRTC/payment/network/live CI behavior: `unknown`
 
 ## Next handoff
 
-- Current thread status: `active_finalizing_before_default_push`.
-- Default branch merge/push: pending final git checks, commit, task branch push, default branch merge and remote push.
+- Current thread status: `inactive_completed_after_default_merge_pending_push`.
+- Default branch merge/push: local default branch merge completed; remote default branch push pending final integration-record commit and post-push verification.
 - Next autonomous task priority after default push: select a proposed P4 public-safe task from `docs/tasks/backlog.md`, with TASK-014 currently first by backlog order.
 - Runtime-dependent tasks remain blocked until approval dependencies are `confirmed`.
 

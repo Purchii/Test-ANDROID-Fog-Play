@@ -37,7 +37,7 @@
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
-| TASK-013 | Next-task selection blocker and safe backlog refresh | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-013-next-task-selection-safe-backlog-refresh | in progress |
+| TASK-013 | Next-task selection blocker and safe backlog refresh | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-013-next-task-selection-safe-backlog-refresh | completed |
 | TASK-014 | Public repository safety scan checklist and local guard plan | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-014-public-repo-safety-scan | proposed |
 | TASK-015 | Approval metadata schema validator | BOUNDED_AUTONOMOUS for local fail-closed validation only | qa/task-015-approval-metadata-validator | proposed |
 | TASK-016 | TASK-005 runtime smoke specification draft only | BOUNDED_AUTONOMOUS for public-safe docs only; execution blocked | qa/task-016-task-005-spec-draft | proposed |

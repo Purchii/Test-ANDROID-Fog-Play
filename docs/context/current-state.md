@@ -1,4 +1,4 @@
-﻿# Current state — MTC Fog Play Android QA
+# Current state - MTC Fog Play Android QA
 
 ## Project
 
@@ -57,6 +57,8 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-010 completed in fresh thread `TASK-010 - CI/nightly smoke plan` on branch `qa/task-010-ci-nightly-smoke` from `main` commit `61c8e05`. Planner selected TASK-010 because TASK-005 runtime smoke remains blocked and CI/nightly planning can now inherit the explicit WebView/payment, network/offline and compatibility safety boundaries.
 - TASK-011 completed in fresh thread `TASK-011 - Navigation transition map and coverage model` on branch `qa/task-011-navigation-transition-map` from `main` commit `aa3af9a`. Planner and Security/Prod-safety selected TASK-011 as a user-requested, public-safe navigation transition planning layer because it can extend TASK-004 without runtime/device/APK execution.
 - TASK-012 completed in fresh thread `TASK-012 - Safe task prioritization and approval-dependency map` on branch `qa/task-012-safe-task-prioritization` from `main` commit `f90c32d`. Planner and Security/Prod-safety selected TASK-012 because runtime/device-dependent work remains blocked and the next safe autonomous step is to map approval dependencies before selecting user-answer-dependent runtime tasks.
+- Post-TASK-012 next-task selection confirmed `main` and `origin/main` aligned at `3cee73e441f0fa945ed4632b47d2880cfae9951f`, with completed task branches merged into the detected default branch. No eligible unfinished public-safe backlog task remained; TASK-005 stayed blocked by missing confirmed runtime prerequisites.
+- TASK-013 is in progress in thread `TASK-013 - Next-task selection blocker and safe backlog refresh` on branch `qa/task-013-next-task-selection-safe-backlog-refresh` from `main` commit `3cee73e`. It records the next-task selection blocker and adds proposed public-safe follow-up tasks that do not require user answers, private data, APK handling, device execution or production interaction.
 
 ## Runtime readiness
 
@@ -73,6 +75,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-010 adds a public-safe CI/nightly smoke plan, report template and local fail-closed report generator. This does not approve live CI scheduling, CI secrets, private runners, artifact uploads, Android/device/APK/WebView/WebRTC/payment/network checks or production interaction; it does not confirm live CI or runtime behavior.
 - TASK-011 adds a public-safe navigation transition map, report template and local fail-closed report generator. This follows official Android TV navigation guidance at category level: efficient, predictable and intuitive navigation, 4-way D-pad traversal, Back/Home semantics, clear paths to focusable controls and axis-based hierarchy. This does not approve Android/device/APK execution, private route/deeplink capture, raw evidence, WebView/WebRTC/payment/network checks or production interaction; it does not confirm transition behavior.
 - TASK-012 adds a public-safe prioritization and approval-dependency map. This does not approve any build, target, config, fixture, runtime execution, WebView/WebRTC/payment/network/live CI action or production interaction; it only records category-level gates that must be confirmed before future conditional work can be selected.
+- TASK-013 adds no runtime capability. It refreshes backlog/source-of-truth state so future autonomous work can select only public-safe docs/static/fail-closed tasks until runtime prerequisites are confirmed.
 
 ## Evidence status policy
 

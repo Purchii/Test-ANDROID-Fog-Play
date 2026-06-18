@@ -39,6 +39,7 @@ A task is done only when:
 - CI/nightly smoke report generators fail closed: absent or non-confirmed static CI scope, schedule policy, repository safety policy, resource budget, redaction, evidence storage, artifact retention, dependency policy or review prerequisites keep CI/nightly execution `blocked`, and template-only planned checks remain `not_run`/`unknown`.
 - Navigation transition map report generators fail closed: absent or non-confirmed build, target, config, navigation scope, screen alias policy, input event policy, fixture policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep transition execution `blocked`, and template-only transition rows remain `not_run`/`unknown`.
 - Safe task prioritization and approval-dependency maps are planning-only: they may select public-safe docs/static work, but they must keep runtime/device/APK/WebView/WebRTC/payment/network/live CI tasks `blocked` until every required dependency is `present=true`, `evidence_status=confirmed` and reviewed.
+- Next-task selection blocker and safe backlog refresh docs must not approve execution: proposed follow-up tasks may be selected only when they are public-safe, bounded, locally verifiable and require no user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
 
 ## Runtime Android gates
 
@@ -147,6 +148,19 @@ Future autonomous task selection may proceed only when:
 - no R0/R1 blocker remains.
 
 TASK-012 documentation is `PROD_SAFE`; it does not approve runtime/device/APK/WebView/WebRTC/payment/network/live CI execution.
+
+## Safe backlog refresh gates
+
+Future autonomous selection from refreshed backlog entries may proceed only when:
+
+- the candidate task is explicitly listed as `proposed` in `docs/tasks/backlog.md` or explicitly requested by the user;
+- the task specification can be created using public-safe category-level content only;
+- the task is docs/static/local-only or fail-closed local tooling;
+- no approved build, APK, target, runtime configuration, fixture, secret, private endpoint, account, payment data, raw evidence or live CI access is required;
+- strict multi-agent Planner, QA, Security/Prod-safety and Docs/Scribe review is available;
+- TASK-005 and runtime-dependent tasks remain blocked unless their approval dependencies are confirmed.
+
+TASK-013 documentation is `PROD_SAFE`; it only records a selection blocker and proposed public-safe backlog. It does not approve runtime/device/APK/WebView/WebRTC/payment/network/live CI execution.
 
 ## Merge gates
 

@@ -3,42 +3,40 @@
 ## Run metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-012 - Safe task prioritization and approval-dependency map`
-Thread status: `inactive_completed_after_default_push`
+Thread title: `TASK-013 - Next-task selection blocker and safe backlog refresh`
+Thread status: `active_finalizing_before_default_push`
 Fresh thread verified: `yes`
-Task ID: `TASK-012`
-Task branch: `qa/task-012-safe-task-prioritization`
+Task ID: `TASK-013`
+Task branch: `qa/task-013-next-task-selection-safe-backlog-refresh`
 Default branch: `main`
-Base commit: `f90c32d659e8b4daa0f346ec11cc7b95e7175cd1`
+Base commit: `3cee73e441f0fa945ed4632b47d2880cfae9951f`
 Production safety classification: `PROD_SAFE` for public-safe docs and local static checks only
 Multi-agent status: `complete_passed_after_docs_remediation`
 Merge/push authority: `BOUNDED_AUTONOMOUS; default branch merge/push allowed only after all gates and reviews pass`
-Default branch integration: `completed_after_bounded_autonomous_gate_on_2026-06-18`
 
 ## Goal
 
-Create a public-safe task prioritization and approval-dependency map so future autonomous continuation can select only safe public tasks until runtime/device/APK/WebView/WebRTC/payment/network/live CI prerequisites are confirmed.
+Record the post-TASK-012 next-task selection blocker and refresh the backlog with proposed public-safe tasks that can run without user answers, secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
 
 ## Task selection rationale
 
-TASK-012 was selected because:
+TASK-013 was selected because:
 
-- `docs/tasks/backlog.md` lists TASK-012 as the next proposed P3 task;
-- TASK-005 and other runtime-dependent work remain blocked while approved build/device/config/fixtures are `unknown`;
-- TASK-011 handoff recommended safe public planning and approval-dependency mapping before user-answer-dependent runtime work;
-- Planner and Security/Prod-safety gave `PASS_TO_START_IMPLEMENTATION_WITH_BOUNDARIES`.
+- TASK-012 completed and was integrated into `main`;
+- post-TASK-012 next-task selection confirmed `HEAD == origin/main == 3cee73e441f0fa945ed4632b47d2880cfae9951f`;
+- all completed task branches were merged into the detected default branch;
+- the only unfinished listed task was TASK-005, which remained blocked by missing confirmed runtime prerequisites;
+- the user explicitly asked to continue with tasks that do not require additional answers.
 
 ## Allowed files
 
-- `tasks/TASK_012_safe_task_prioritization_approval_dependency_map.md`
-- `docs/qa/safe-task-prioritization.md`
-- `docs/qa/approval-dependency-map.md`
+- `tasks/TASK_013_next_task_selection_blocker_safe_backlog_refresh.md`
+- `docs/tasks/backlog.md`
 - `docs/context/current-state.md`
 - `docs/context/handoff/active-run.md`
-- `docs/context/governance/risk-register.md`
-- `docs/context/engineering/quality-gates.md`
 - `docs/context/engineering/verification-memory.md`
-- `docs/tasks/backlog.md`
+- `docs/context/engineering/quality-gates.md` if reviewer-required
+- `docs/context/governance/risk-register.md` if reviewer-required
 
 ## Forbidden files/actions
 
@@ -54,74 +52,75 @@ TASK-012 was selected because:
 
 ## Acceptance criteria
 
-- TASK-012 remains public-safe and docs-only.
-- Completed, blocked and proposed tasks are mapped with conservative evidence status.
-- Runtime-dependent work remains blocked until required approvals are `confirmed`.
-- The dependency map covers build, target, config, fixture, budget, redaction, evidence storage, cleanup/rollback, QA review and Security review gates.
-- No private value, raw evidence, endpoint, APK path, executable runtime/device/network recipe, secret, real account or payment data is introduced.
-- The prioritization model gives a clear next-task decision path without approving execution.
+- TASK-013 remains public-safe and docs-only.
+- The post-TASK-012 next-task selection blocker is recorded.
+- `docs/tasks/backlog.md` no longer presents TASK-012 as the current selected next task.
+- Proposed follow-up tasks are public-safe, bounded and do not require user answers or runtime approvals.
+- TASK-005 remains blocked until required approvals are `confirmed`.
+- No private value, raw evidence, endpoint, APK path, executable runtime/device/network/live CI recipe, secret, real account or payment data is introduced.
+- Verification memory records the checks actually run.
 - Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews complete.
 
 ## Acceptance result
 
-- TASK-012 remained public-safe and docs-only.
-- Completed, blocked and proposed tasks were mapped with conservative evidence status.
-- Runtime-dependent work remains blocked until required approvals are `confirmed`.
-- The dependency map covers build, target, config, fixture, budget, redaction, evidence storage, cleanup/rollback, QA review and Security review gates.
+- TASK-013 remained public-safe and docs-only.
+- The post-TASK-012 next-task selection blocker was recorded.
+- `docs/tasks/backlog.md` no longer presents TASK-012 as the current selected next task.
+- Proposed P4 follow-up tasks were added as public-safe, bounded and not requiring user answers or runtime approvals.
+- TASK-005 remains blocked until required approvals are `confirmed`.
 - No private value, raw evidence, endpoint, APK path, executable runtime/device/network/live CI recipe, secret, real account or payment data was introduced.
-- The prioritization model gives a clear next-task decision path without approving execution.
-- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews completed; Docs/Scribe blockers were remediated.
+- Verification memory records the checks actually run.
+- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews completed after remediation.
 
 ## Verification plan
 
 - `git status --short --branch`;
 - `git diff --check`;
 - inspect changed diff;
-- verify ASCII-only content for TASK-012 markdown deliverables;
+- ASCII check for TASK-013 markdown deliverables;
 - changed-file public-safety scan;
-- diff-only forbidden-value scan;
 - `python -m pytest -q`;
+- `python -m compileall automation tests`;
 - multi-agent QA, Security/Prod-safety and Docs/Scribe review.
 
-Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live CI execution is not run for TASK-012.
+Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live CI execution is not run for TASK-013.
 
 ## Verification result
 
-- `git status --short --branch`: `passed`, intended TASK-012 changes on `qa/task-012-safe-task-prioritization`.
+- `git status --short --branch`: `passed`, intended TASK-013 docs changes on `qa/task-013-next-task-selection-safe-backlog-refresh`.
 - `git diff --check`: `passed`.
-- ASCII check for TASK-012 markdown deliverables: `passed`.
+- ASCII check for TASK-013 changed markdown deliverables: `passed`.
+- Changed-file public-safety scan: `passed`; matches were expected policy/context terms and the public repository URL only.
 - `python -m pytest -q`: `passed`, 96 tests.
 - `python -m compileall automation tests`: `passed`.
-- Changed-file public-safety scan: `passed`; matches were expected policy-forbidden terms and existing public project context only.
-- Added-lines forbidden-value scan: `passed`; the only long hexadecimal hit was the public base commit hash `f90c32d659e8b4daa0f346ec11cc7b95e7175cd1`.
 - Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live CI validation: `blocked`, out of scope and missing approved prerequisites.
-- Multi-agent QA, Security/Prod-safety and Docs/Scribe review: `passed` after Docs/Scribe remediation.
+- Multi-agent QA, Security/Prod-safety, Builder and Docs/Scribe review: `passed_after_remediation`.
 
 ## Multi-agent result
 
 - Orchestrator: `PASS`, task framing, branch setup, implementation integration, verification and source-of-truth updates complete.
-- Planner: `PASS`, selected TASK-012 as public-safe approval-dependency mapping before user-answer-dependent runtime tasks.
-- Builder: `PASS`, created docs-only prioritization and dependency map deliverables.
-- QA Reviewer A: `PASS`, acceptance criteria, gates and docs-only verification reviewed; no blocking findings.
-- QA Reviewer B: `PASS`, Android TV/runtime/flakiness/evidence boundaries verified; runtime-dependent work remains blocked.
-- Security/Prod-safety Reviewer: `PASS`, no R0/R1 blockers, no forbidden public repo content, no runnable runtime/device/network recipes.
-- Docs/Scribe: `PASS_AFTER_REMEDIATION`, initially blocked on verification memory, active-run finalization, backlog/current-state final status and approval record schema; all were remediated.
+- Planner: `PASS_TO_IMPLEMENT`, selected TASK-013 as public-safe docs/static backlog refresh after TASK-012 blocker.
+- Builder: `PASS`, confirmed implementation is docs-only, public-safe and keeps TASK-005 blocked.
+- QA Reviewer A: `PASS_AFTER_REMEDIATION`, initial blockers on verification-memory status and untracked task spec were remediated.
+- QA Reviewer B: `PASS`, runtime boundary and false-confidence controls verified.
+- Security/Prod-safety Reviewer: `PASS`, no secrets, private endpoints, raw evidence, APK artifacts, executable runtime recipes, source/decompiled code, payment data or production actions introduced.
+- Docs/Scribe: `PASS_AFTER_REMEDIATION`, requested final active-run sections, Builder role and verification-memory finalization; remediation completed.
 
 ## Current evidence status
 
-- Fresh TASK-012 thread/title/goal: `confirmed`
-- Remote default branch `main@f90c32d`: `confirmed`
-- TASK-012 task branch push: `confirmed`
-- TASK-012 default branch merge/push: `confirmed`
+- Fresh TASK-013 thread/title/goal: `confirmed`
+- Remote default branch `main@3cee73e`: `confirmed`
+- TASK-013 task branch creation: `confirmed`
 - TASK-005 runtime prerequisites: `unknown`
 - Approved build/device/config/fixtures availability: `unknown`
 - Confirmed runtime/WebView/WebRTC/payment/network/live CI behavior: `unknown`
 
 ## Next handoff
 
-- Current thread status: `inactive_completed_after_default_push`.
-- Default branch merge/push: completed; post-push verification confirmed local `HEAD` and `origin/main` aligned and `origin/qa/task-012-safe-task-prioritization` is merged into `origin/main`.
-- Next autonomous task priority: if no new public-safe bounded backlog task is added and runtime approvals remain `unknown`, stop at next-task selection and request missing category-level approvals instead of starting TASK-005 or any runtime-dependent execution.
+- Current thread status: `active_finalizing_before_default_push`.
+- Default branch merge/push: pending final git checks, commit, task branch push, default branch merge and remote push.
+- Next autonomous task priority after default push: select a proposed P4 public-safe task from `docs/tasks/backlog.md`, with TASK-014 currently first by backlog order.
+- Runtime-dependent tasks remain blocked until approval dependencies are `confirmed`.
 
 ## Stop conditions
 

@@ -1,12 +1,12 @@
-# Backlog — Android QA Codex bounded tasks
+# Backlog - Android QA Codex bounded tasks
 
-## P0 — workflow/source-of-truth bootstrap
+## P0 - workflow/source-of-truth bootstrap
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
 | TASK-000 | Bootstrap Codex docs and source-of-truth | BOUNDED_AUTONOMOUS | qa/task-000-bootstrap-codex-docs | completed |
 
-## P1 — first QA foundation
+## P1 - first QA foundation
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
@@ -16,7 +16,7 @@
 | TASK-004 | Manual runtime screen and TV focus map templates | BOUNDED_AUTONOMOUS | qa/task-004-runtime-screen-focus-map | completed |
 | TASK-005 | Android TV install/launch/focus smoke implementation | BOUNDED_AUTONOMOUS with device/APK caveat | qa/task-005-android-tv-smoke | blocked until approved build/device/config/fixtures |
 
-## P2 — fixtures-dependent QA
+## P2 - fixtures-dependent QA
 
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
@@ -32,6 +32,17 @@
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
 | TASK-012 | Safe task prioritization and approval-dependency map | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-012-safe-task-prioritization | completed |
+
+## P4 - safe autonomous work without new user approvals
+
+| ID | Title | Mode default | Branch | Status |
+|---|---|---|---|---|
+| TASK-013 | Next-task selection blocker and safe backlog refresh | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-013-next-task-selection-safe-backlog-refresh | in progress |
+| TASK-014 | Public repository safety scan checklist and local guard plan | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-014-public-repo-safety-scan | proposed |
+| TASK-015 | Approval metadata schema validator | BOUNDED_AUTONOMOUS for local fail-closed validation only | qa/task-015-approval-metadata-validator | proposed |
+| TASK-016 | TASK-005 runtime smoke specification draft only | BOUNDED_AUTONOMOUS for public-safe docs only; execution blocked | qa/task-016-task-005-spec-draft | proposed |
+| TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | proposed |
+| TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | proposed |
 
 ## Selection rule
 
@@ -51,4 +62,6 @@ Tasks that require user answers, approvals or external fixtures must stay blocke
 
 ## Current selection note
 
-After TASK-011 integration and source-of-truth handoff correction, Planner and Security/Prod-safety selected TASK-012 in `BOUNDED_AUTONOMOUS` mode for public-safe docs only. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage and cleanup/rollback are still `unknown`. Runtime/device/WebView/payment/network/live CI execution remains blocked until approved prerequisites are recorded with `evidence_status=confirmed`.
+After TASK-012 integration, a next-task selection checkpoint confirmed that no eligible unfinished public-safe task remained in the backlog. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage, cleanup/rollback, QA review and Security/Prod-safety review are still `unknown` or not confirmed.
+
+Planner may continue autonomously with proposed P4 tasks only when the selected task is public-safe, bounded, verifiable locally and does not require user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction. Runtime/device/APK/WebView/WebRTC/payment/network/live CI execution remains blocked until approved prerequisites are recorded with `evidence_status=confirmed`.

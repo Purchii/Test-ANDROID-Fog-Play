@@ -4,11 +4,13 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-015A/016 - Approval validator hardening and ADB device/build inventory preflight`
-Thread status: `active_ready_for_task_branch_push`
+Thread status: `active_task_branch_pushed`
 Fresh thread verified: `yes`
 Task ID: `TASK-015A/016`
 Task branch: `qa/task-015a-016-approval-validator-adb-inventory-preflight`
 Default branch: `main`
+Task branch pushed: `yes`
+Latest task commit: `e95dd2d` plus final handoff status update
 Production safety classification: `PROD_SAFE` for validator/docs/tests; `PROD_CONDITIONAL` for owner-approved local ADB inventory allowlist only
 Multi-agent status: `complete_passed_after_remediation`
 Merge/push authority: `NON_AUTONOMOUS`; do not merge or push default branch without explicit user command

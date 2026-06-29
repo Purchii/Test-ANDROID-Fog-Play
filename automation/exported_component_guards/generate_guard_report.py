@@ -176,6 +176,8 @@ def build_report(metadata_path: Path | None = None) -> dict[str, Any]:
     for name, value in prerequisites.items():
         if not value["present"]:
             blocked_reasons.append(f"{name} is not approved or not present.")
+        if value["evidence_status"] != "confirmed":
+            blocked_reasons.append(f"{name} does not have confirmed evidence.")
 
     overall_status = "blocked" if blocked_reasons else "not_run"
     execution_notes = [

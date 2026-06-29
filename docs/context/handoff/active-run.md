@@ -2,139 +2,120 @@
 
 ## Run metadata
 
-Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-013 - Next-task selection blocker and safe backlog refresh`
-Thread status: `inactive_completed_after_default_merge_pending_push`
+Mode: `NON_AUTONOMOUS`
+Thread title: `TASK-015 - Approval Metadata Schema Validator`
+Thread status: `completed_pending_user_integration`
 Fresh thread verified: `yes`
-Task ID: `TASK-013`
-Task branch: `qa/task-013-next-task-selection-safe-backlog-refresh`
+Task ID: `TASK-015`
+Task branch: `qa/task-015-approval-metadata-validator`
 Default branch: `main`
-Base commit: `3cee73e441f0fa945ed4632b47d2880cfae9951f`
-Production safety classification: `PROD_SAFE` for public-safe docs and local static checks only
-Multi-agent status: `complete_passed_after_docs_remediation`
-Merge/push authority: `BOUNDED_AUTONOMOUS; default branch merge/push allowed only after all gates and reviews pass`
+Base commit: `a44dba8988e545911a7074b410a958e7953cb1c0`
+Production safety classification: `PROD_SAFE` for public-safe docs, schema, local validator and unit tests only
+Multi-agent status: `complete_passed_after_remediation`
+Merge/push authority: `NON_AUTONOMOUS`; do not merge or push default branch without explicit user command
 
 ## Goal
 
-Record the post-TASK-012 next-task selection blocker and refresh the backlog with proposed public-safe tasks that can run without user answers, secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
+Implement a public-safe approval metadata schema validator for future TASK-005
+limited runtime readiness, while keeping APK/device/runtime/raw evidence actions
+blocked.
 
 ## Task selection rationale
 
-TASK-013 was selected because:
-
-- TASK-012 completed and was integrated into `main`;
-- post-TASK-012 next-task selection confirmed `HEAD == origin/main == 3cee73e441f0fa945ed4632b47d2880cfae9951f`;
-- all completed task branches were merged into the detected default branch;
-- the only unfinished listed task was TASK-005, which remained blocked by missing confirmed runtime prerequisites;
-- the user explicitly asked to continue with tasks that do not require additional answers.
+The user explicitly selected TASK-015 after an approval audit context. The
+repository checkout initially pointed at `qa/task-014-public-repo-safety-scan`,
+but that branch matched `main` and had no local TASK-014 changes. TASK-015 was
+started on its own branch from current `main` to avoid task mixing.
 
 ## Allowed files
 
-- `tasks/TASK_013_next_task_selection_blocker_safe_backlog_refresh.md`
-- `docs/tasks/backlog.md`
-- `docs/context/current-state.md`
-- `docs/context/handoff/active-run.md`
-- `docs/context/engineering/verification-memory.md`
-- `docs/context/engineering/quality-gates.md` if reviewer-required
-- `docs/context/governance/risk-register.md` if reviewer-required
+- `automation/approvals/*`
+- `tests/test_approval_metadata_validator.py`
+- `docs/approvals/*`
+- `tasks/TASK_015_approval_metadata_schema_validator.md`
+- `README.md`
+- `pyproject.toml`
+- `.gitignore`
+- targeted safety regression files for release gates and exported component guards
+- source-of-truth context docs for TASK-015 handoff and verification
 
 ## Forbidden files/actions
 
-- application source code, decompiled code, smali or method bodies;
-- APK/AAB/DEX/native/signing artifacts;
-- raw logs, screenshots, videos, packet captures, dumps, endpoint inventories, credentials, cookies, sessions, real device serials or real user data;
-- private routes, deeplinks, URLs, redirect chains, headers, payloads, endpoint values, account identifiers, payment data or raw visible private text;
-- executable Android device/runtime/network/backend/proxy/payment/live CI recipes;
-- runtime/device execution, exported component probing, WebView/browser/redirect/payment/network execution or APK handling;
-- backend, proxy, packet capture, traffic mutation, TLS/pinning/security bypass or production interaction;
-- production mutation, load/fuzz probing, destructive actions or real payments;
-- committing `qa_reverse_analysis/`, raw artifacts, archives, compiled cache files or secrets.
-
-## Acceptance criteria
-
-- TASK-013 remains public-safe and docs-only.
-- The post-TASK-012 next-task selection blocker is recorded.
-- `docs/tasks/backlog.md` no longer presents TASK-012 as the current selected next task.
-- Proposed follow-up tasks are public-safe, bounded and do not require user answers or runtime approvals.
-- TASK-005 remains blocked until required approvals are `confirmed`.
-- No private value, raw evidence, endpoint, APK path, executable runtime/device/network/live CI recipe, secret, real account or payment data is introduced.
-- Verification memory records the checks actually run.
-- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews complete.
+- APK/AAB/APKS/XAPK or signing artifacts;
+- raw phone, OTP, token, cookie, session or credential values;
+- raw screenshots, logs, videos, packet captures or dumps;
+- device serial, IMEI, MAC, Android ID, Google account or personal identifier;
+- private endpoint, route, deeplink, redirect chain, header or payload details;
+- APK/device/emulator/runtime execution;
+- WebView, WebRTC, payment, network, backend or live CI execution;
+- decompilation, patching, resigning, security bypass or production mutation.
 
 ## Acceptance result
 
-- TASK-013 remained public-safe and docs-only.
-- The post-TASK-012 next-task selection blocker was recorded.
-- `docs/tasks/backlog.md` no longer presents TASK-012 as the current selected next task.
-- Proposed P4 follow-up tasks were added as public-safe, bounded and not requiring user answers or runtime approvals.
-- TASK-005 remains blocked until required approvals are `confirmed`.
-- No private value, raw evidence, endpoint, APK path, executable runtime/device/network/live CI recipe, secret, real account or payment data was introduced.
-- Verification memory records the checks actually run.
-- Multi-agent Planner, Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety Reviewer and Docs/Scribe reviews completed after remediation.
+- Approval metadata example, policies and device/user templates were added.
+- Local validator returns `blocked` or `approved_for_limited_runtime` only.
+- Validator always returns `runtime_execution_status=not_run`.
+- Pending example metadata is blocked.
+- Unit tests cover happy path and required hard blockers.
+- Release gate reviewer approval gating was added.
+- TASK-002 guard prerequisite evidence gating was added.
+- README, pytest config and `.gitignore` were added/updated.
 
 ## Verification plan
 
 - `git status --short --branch`;
 - `git diff --check`;
-- inspect changed diff;
-- ASCII check for TASK-013 markdown deliverables;
-- changed-file public-safety scan;
+- `pytest -q`;
 - `python -m pytest -q`;
 - `python -m compileall automation tests`;
+- approval validator CLI dry-run against the pending example;
+- public-safety scan for forbidden committed content;
+- manual diff review;
 - multi-agent QA, Security/Prod-safety and Docs/Scribe review.
-
-Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live CI execution is not run for TASK-013.
 
 ## Verification result
 
-- `git status --short --branch`: `passed`, intended TASK-013 docs changes on `qa/task-013-next-task-selection-safe-backlog-refresh`.
-- `git diff --check`: `passed`.
-- ASCII check for TASK-013 changed markdown deliverables: `passed`.
-- Changed-file public-safety scan: `passed`; matches were expected policy/context terms and the public repository URL only.
-- `python -m pytest -q`: `passed`, 96 tests.
+- `python -m pytest -q tests\test_approval_metadata_validator.py`: `passed`, 27 tests.
+- `python -m pytest -q tests\test_release_gate_report.py tests\test_exported_component_guards.py`: `passed`, 27 tests.
+- `python -m pytest -q tests\test_approval_metadata_validator.py tests\test_release_gate_report.py tests\test_exported_component_guards.py`: `passed`, 54 tests.
+- `pytest -q`: `passed`, 127 tests.
+- `python -m pytest -q`: `passed`, 127 tests.
 - `python -m compileall automation tests`: `passed`.
-- Runtime/device/APK/WebView/WebRTC/browser/redirect/payment/backend/network/live CI validation: `blocked`, out of scope and missing approved prerequisites.
-- Multi-agent QA, Security/Prod-safety, Builder and Docs/Scribe review: `passed_after_remediation`.
+- Approval validator CLI dry-run: `passed`; pending example report is `blocked` and runtime remains `not_run`.
+- `git status --short --branch`: `passed`; running on `qa/task-015-approval-metadata-validator` with intended TASK-015 changes.
+- `git diff --check`: `passed`.
+- Public-safety scan: `passed`; findings were placeholder OTP policy text and synthetic malicious unit-test samples only.
+- Manual diff review: `passed_after_remediation`; QA A found path traversal and identity false-pass risks, both remediated with tests and re-reviewed.
+- Runtime/device/APK/WebView/WebRTC/payment/network/live CI validation: `blocked`, out of scope and forbidden for TASK-015.
 
 ## Multi-agent result
 
-- Orchestrator: `PASS`, task framing, branch setup, implementation integration, verification and source-of-truth updates complete.
-- Planner: `PASS_TO_IMPLEMENT`, selected TASK-013 as public-safe docs/static backlog refresh after TASK-012 blocker.
-- Builder: `PASS`, confirmed implementation is docs-only, public-safe and keeps TASK-005 blocked.
-- QA Reviewer A: `PASS_AFTER_REMEDIATION`, initial blockers on verification-memory status and untracked task spec were remediated.
-- QA Reviewer B: `PASS`, runtime boundary and false-confidence controls verified.
-- Security/Prod-safety Reviewer: `PASS`, no secrets, private endpoints, raw evidence, APK artifacts, executable runtime recipes, source/decompiled code, payment data or production actions introduced.
-- Docs/Scribe: `PASS_AFTER_REMEDIATION`, requested final active-run sections, Builder role and verification-memory finalization; remediation completed.
+- Orchestrator: `PASS`, scope, branch, verification and final consolidation complete.
+- Planner: `PASS_TO_IMPLEMENT`, selected public-safe validator/docs/tests scope and noted TASK-014 branch isolation requirement.
+- Builder: `PASS_AFTER_REMEDIATION`, implemented validator, docs, tests, safety regressions and QA A false-pass fixes.
+- QA Reviewer A: `PASS_AFTER_REMEDIATION`, identified nested `.qa_local/` traversal and schema/task identity false-pass risks; re-review passed after fixes.
+- QA Reviewer B: `PASS`, confirmed runtime/device/APK boundaries and no runtime false-pass.
+- Security/Prod-safety Reviewer: `PASS`, confirmed no APK/raw evidence/secrets/private identifiers/runtime recipes and validator hard blockers.
+- Docs/Scribe: `PASS_AFTER_REMEDIATION`, identified handoff/status, verification record, README and TASK-016 backlog inconsistencies; remediation completed.
 
 ## Current evidence status
 
-- Fresh TASK-013 thread/title/goal: `confirmed`
-- Remote default branch `main@3cee73e`: `confirmed`
-- TASK-013 task branch creation: `confirmed`
-- TASK-013 task branch push: `confirmed`
-- TASK-013 default branch merge: `confirmed_local_pending_remote_push`
-- TASK-005 runtime prerequisites: `unknown`
-- Approved build/device/config/fixtures availability: `unknown`
-- Confirmed runtime/WebView/WebRTC/payment/network/live CI behavior: `unknown`
+- TASK-015 branch from `main@a44dba8`: `confirmed`
+- Approval validator local unit-test behavior: `confirmed`
+- Pending example metadata blocks runtime approval: `confirmed`
+- Runtime/device/APK execution: `not_run`
+- Approved build/device/config for TASK-005: `unknown`
+- Evidence capture policy final owner approval: `unknown`
 
 ## Next handoff
 
-- Current thread status: `inactive_completed_after_default_merge_pending_push`.
-- Default branch merge/push: local default branch merge completed; remote default branch push pending final integration-record commit and post-push verification.
-- Next autonomous task priority after default push: select a proposed P4 public-safe task from `docs/tasks/backlog.md`, with TASK-014 currently first by backlog order.
-- Runtime-dependent tasks remain blocked until approval dependencies are `confirmed`.
+- Current thread status: `completed_pending_user_integration`.
+- TASK-014 remains proposed/not integrated in this repository state.
+- Recommended next task after TASK-015: TASK-016 device/build inventory and runtime preflight draft, then TASK-005 limited runtime smoke only after explicit confirmed approvals.
 
 ## Stop conditions
 
-Stop and ask for user or Orchestrator guidance if any requested change would require:
-
-- runtime/device/APK execution;
-- Android runtime command recipes;
-- private route/deeplink, endpoint, URL, redirect chain, cookie, token or payment data discovery, extraction or publication;
-- WebView, WebRTC, browser, redirect, payment, network, backend, proxy or packet interaction;
-- source code or decompiled code;
-- private endpoints, secrets, tokens, cookies, sessions or production credentials;
-- real accounts, real user data or real payment instruments;
-- raw logs, screenshots, videos, packet captures, dumps or endpoint inventories;
-- production mutation, load testing, security bypasses or destructive actions;
-- failing quality gates, unavailable real subagents or R0/R1 reviewer blockers.
+Stop and ask for user guidance if any requested change would require runtime,
+device, APK, WebView, WebRTC, payment, network, live CI, secrets, private
+endpoints, raw evidence, production mutation, decompilation, patching, resigning
+or security bypass actions.

@@ -333,6 +333,37 @@ Allowed fields include transition aliases, screen categories, action categories,
 
 Public reports must not include private route values, deeplink values, package or class names, endpoint data, redirect chains, raw screenshots, raw logs, raw videos, APK paths, account identifiers, payment values or executable Android/device/runtime command recipes.
 
+## Approval Metadata Validation Summary
+
+TASK-015 approval validation summaries may include only public-safe approval
+metadata and normalized gate outcomes:
+
+```json
+{
+  "approval_decision": "blocked",
+  "runtime_execution_status": "not_run",
+  "runtime_evidence_status": "unknown",
+  "blocked_reasons": [
+    "approval_status must be approved."
+  ],
+  "normalized_summary": {
+    "task_id": "TASK-005",
+    "approved_build_alias": "task-005-local-apk-001",
+    "approved_device_aliases": ["tv-001"]
+  }
+}
+```
+
+Allowed fields include build aliases, device aliases, synthetic user alias,
+fixture status, review status and local ignored path patterns under `.qa_local/`.
+
+Public reports must not include raw APKs, absolute user paths, raw phone/OTP,
+tokens, cookies, sessions, private endpoints, raw evidence, device serials,
+IMEI, MAC, Android ID, Google account identifiers or executable runtime/device
+recipes.
+
+Approval validation is not runtime evidence. It must not produce runtime `pass`.
+
 ## Redaction Rules
 
 Reports may reference only:

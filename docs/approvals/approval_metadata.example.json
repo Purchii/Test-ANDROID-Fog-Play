@@ -1,0 +1,151 @@
+{
+  "schema_version": "task-015-approval-metadata-v1",
+  "task_id": "TASK-005",
+  "scope_version": "task-005-limited-runtime-smoke-v1",
+  "approval_status": "pending",
+  "approval_evidence_status": "unknown",
+  "expires_at": "YYYY-MM-DD",
+  "approved_by_role": "project_owner",
+  "approved_build_apk": {
+    "approved": false,
+    "build_alias": "task-005-local-apk-001",
+    "storage_policy": "local_ignored_path_only",
+    "expected_local_path_pattern": ".qa_local/apks/task-005/app-under-test.apk",
+    "sha256_required": true,
+    "sha256_public_value_allowed": false,
+    "allowed_actions": [
+      "install",
+      "launch",
+      "observe"
+    ],
+    "forbidden_actions": [
+      "commit",
+      "upload",
+      "archive",
+      "decompile",
+      "patch",
+      "resign",
+      "extract_private_endpoints",
+      "extract_secrets"
+    ]
+  },
+  "approved_targets": {
+    "approved": false,
+    "device_aliases": [],
+    "allowed_categories": [
+      "physical_android_tv",
+      "google_tv",
+      "android_stb",
+      "aosp_stb",
+      "android_phone_secondary"
+    ],
+    "device_aliases_required": true,
+    "forbidden_identifiers": [
+      "serial",
+      "imei",
+      "mac",
+      "android_id",
+      "google_account",
+      "personal_device_identifier"
+    ]
+  },
+  "runtime_execution": {
+    "allowed": false,
+    "allowed_after_tasks": [
+      "TASK-015",
+      "TASK-016"
+    ],
+    "allowed_scope": [
+      "install",
+      "launch",
+      "first_visible_state",
+      "synthetic_login_if_required",
+      "initial_focus",
+      "minimal_dpad_navigation",
+      "back_home",
+      "background_foreground",
+      "force_stop_relaunch",
+      "crash_anr_logcat_observation",
+      "redacted_evidence_summary"
+    ],
+    "forbidden_scope": [
+      "payment",
+      "subscription",
+      "purchase",
+      "stream",
+      "webrtc",
+      "media_playback",
+      "webview",
+      "redirect_flow",
+      "production_mutation",
+      "security_bypass",
+      "decompilation",
+      "patching",
+      "resigning"
+    ]
+  },
+  "synthetic_qa_user": {
+    "approved": false,
+    "alias": "qa-user-phone-001",
+    "raw_phone_allowed_in_public_docs": false,
+    "raw_otp_allowed_in_public_docs": false,
+    "local_secret_file_pattern": ".qa_local/secrets/qa_user.env",
+    "repo_allowed_file": "docs/approvals/qa_user.env.example",
+    "allowed_auth_scope": [
+      "login",
+      "logout",
+      "session_persistence"
+    ],
+    "forbidden_account_actions": [
+      "payment",
+      "purchase",
+      "profile_mutation",
+      "destructive_account_action"
+    ]
+  },
+  "fixtures": {
+    "stream_fixture": "out_of_scope",
+    "webview_fixture": "out_of_scope",
+    "payment_staging_fixture": "out_of_scope"
+  },
+  "evidence_capture": {
+    "status": "pending_explicit_owner_confirmation",
+    "screenshots": "pending",
+    "logs_logcat": "pending",
+    "videos": "pending",
+    "recommended_default": {
+      "screenshots": "yes_local_only_redacted_summary",
+      "logs_logcat": "yes_local_only_redacted_summary",
+      "videos": "no_by_default"
+    },
+    "raw_storage_policy": "local_ignored_path_only",
+    "raw_storage_path_pattern": ".qa_local/evidence/task-005/",
+    "public_report_policy": "redacted_summaries_only",
+    "retention_days": null
+  },
+  "cleanup_rollback": {
+    "approved": true,
+    "allowed_levels": [
+      "C1_background_foreground",
+      "C2_force_stop_relaunch",
+      "C3_clear_cache",
+      "C4_clear_app_data"
+    ],
+    "requires_separate_approval": [
+      "C5_uninstall_reinstall"
+    ],
+    "authorized_zone_scopes": [
+      "force_stop_relaunch_with_auth_state_preserved",
+      "background_foreground_without_force_stop"
+    ],
+    "clean_state_scope": "clear_app_data_before_scenario_and_record_precondition"
+  },
+  "required_reviews": {
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety_reviewer": "pending",
+    "docs_scribe": "pending"
+  },
+  "expected_validator_decision_for_this_example": "blocked"
+}
+

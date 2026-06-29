@@ -1,61 +1,75 @@
 # Device inventory template.
-# Store real local inventory in an ignored file, for example:
-# .qa_local/devices/device_inventory.local.yaml
+# Store raw local inventory in ignored files under .qa_local/devices/.
 # Public docs may use only aliases and non-sensitive category data.
 
 schema_version: task-016-device-inventory-draft-1
 owner: project_owner
 sensitive_identifiers_forbidden:
   - serial
+  - ip_address
   - imei
   - mac
   - android_id
   - google_account
+  - full_build_fingerprint
+  - phone_number
+  - otp
+  - owner_name
+  - room_or_location_label
   - personal_device_identifier
 
 devices:
-  - alias: tv-001
+  - device_alias: tv-tcl-001
+    runtime_profile_alias: tv-tcl-a11-001
     priority: P0
-    category: Android TV
-    manufacturer_model: "<safe public model or local-only>"
-    android_version: "<Android version or unknown>"
-    api_level: "<API level or unknown>"
-    form_factor: TV
-    input_method: D-pad remote
+    category: android_tv
+    android_major: 11
+    api_level: 30
+    form_factor: tv
+    input_method: dpad_remote
     screen_class: "HD/FHD/4K/unknown"
     google_play_services: "yes/no/unknown"
     adb_available: "yes/no/unknown"
-    install_method: "adb install/manual/unknown"
-    network: "Wi-Fi/Ethernet/unknown"
-    notes: "No serials, IMEI, MAC, Android ID or accounts."
+    classification_confidence: "heuristic/manual_confirmed/unknown"
+    manual_review_required: true
+    forbidden_identifiers_excluded: true
+    runtime_execution_status: not_run
+    apk_install_status: not_run
+    app_launch_status: not_run
 
-  - alias: stb-001
+  - device_alias: stb-xiaomi-001
+    runtime_profile_alias: stb-xiaomi-a12-001
     priority: P0
-    category: Android/AOSP set-top box
-    manufacturer_model: "<safe public model or local-only>"
-    android_version: "<Android version or unknown>"
-    api_level: "<API level or unknown>"
-    form_factor: set-top-box
-    input_method: D-pad remote
+    category: android_stb
+    android_major: 12
+    api_level: 31
+    form_factor: stb
+    input_method: dpad_remote
     screen_class: "HD/FHD/4K/unknown"
     google_play_services: "yes/no/unknown"
     adb_available: "yes/no/unknown"
-    install_method: "adb install/manual/unknown"
-    network: "Wi-Fi/Ethernet/unknown"
-    notes: "No serials, IMEI, MAC, Android ID or accounts."
+    classification_confidence: "heuristic/manual_confirmed/unknown"
+    manual_review_required: true
+    forbidden_identifiers_excluded: true
+    runtime_execution_status: not_run
+    apk_install_status: not_run
+    app_launch_status: not_run
 
-  - alias: phone-001
+  - device_alias: phone-samsung-001
+    runtime_profile_alias: phone-samsung-a14-001
     priority: P2
-    category: Android phone secondary compatibility target
-    manufacturer_model: "<safe public model or local-only>"
-    android_version: "<Android version or unknown>"
-    api_level: "<API level or unknown>"
+    category: android_phone_secondary
+    android_major: 14
+    api_level: 34
     form_factor: phone
     input_method: touch
     screen_class: mobile
     google_play_services: "yes/no/unknown"
     adb_available: "yes/no/unknown"
-    install_method: "adb install/manual/unknown"
-    network: "Wi-Fi/mobile/unknown"
+    classification_confidence: "heuristic/manual_confirmed/unknown"
+    manual_review_required: true
+    forbidden_identifiers_excluded: true
+    runtime_execution_status: not_run
+    apk_install_status: not_run
+    app_launch_status: not_run
     notes: "Phone does not replace Android TV or D-pad QA."
-

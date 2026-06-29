@@ -26,9 +26,26 @@ def _happy_metadata():
         },
         "approved_targets": {
             "approved": True,
-            "device_aliases": ["tv-001", "stb-001"],
+            "device_aliases": ["tv-tcl-001"],
             "allowed_categories": ["physical_android_tv", "android_stb"],
             "device_aliases_required": True,
+            "devices": [
+                {
+                    "device_alias": "tv-tcl-001",
+                    "runtime_profile_alias": "tv-tcl-a11-001",
+                    "category": "android_tv",
+                    "priority": "P0",
+                    "form_factor": "tv",
+                    "input_method": "dpad_remote",
+                    "android_major": 11,
+                    "api_level": 30,
+                    "adb_available": "yes",
+                    "google_play_services": "yes",
+                    "classification_confidence": "manual_confirmed",
+                    "manual_review_required": False,
+                    "forbidden_identifiers_excluded": True,
+                }
+            ],
         },
         "runtime_execution": {
             "allowed": True,
@@ -42,6 +59,8 @@ def _happy_metadata():
                 "back_home",
                 "background_foreground",
                 "force_stop_relaunch",
+                "clear_cache_if_preapproved",
+                "clear_app_data_before_after_clean_state",
                 "crash_anr_logcat_observation",
                 "redacted_evidence_summary",
             ],
@@ -171,6 +190,20 @@ def test_apk_path_outside_qa_local_blocks(tmp_path):
     assert any("expected_local_path_pattern" in reason for reason in report["blocked_reasons"])
 
 
+@pytest.mark.parametrize("value", [None, "", "bad alias", "build"])
+def test_missing_or_invalid_build_alias_blocks(tmp_path, value):
+    def mutate(metadata):
+        if value is None:
+            del metadata["approved_build_apk"]["build_alias"]
+        else:
+            metadata["approved_build_apk"]["build_alias"] = value
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_build_apk.build_alias" in reason for reason in report["blocked_reasons"])
+
+
 def test_nested_path_traversal_inside_qa_local_blocks(tmp_path):
     def mutate(metadata):
         metadata["evidence_capture"]["raw_storage_path_pattern"] = ".qa_local/evidence/../../outside"
@@ -272,6 +305,208 @@ def test_c5_cleanup_without_separate_approval_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("C5 uninstall/reinstall requires separate approval" in reason for reason in report["blocked_reasons"])
+
+
+def test_invalid_fixture_status_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["fixtures"]["stream_fixture"] = "maybe"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("fixtures.stream_fixture" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("status", ["approved", "pending", "blocked"])
+def test_task_005_fixture_status_must_remain_out_of_scope(tmp_path, status):
+    def mutate(metadata):
+        metadata["fixtures"]["stream_fixture"] = status
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("fixtures.stream_fixture must be out_of_scope" in reason for reason in report["blocked_reasons"])
+
+
+def test_invalid_evidence_capture_value_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["evidence_capture"]["screenshots"] = "maybe"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("evidence_capture.screenshots" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("logs_logcat", "maybe"),
+        ("videos", "maybe"),
+        ("logs_logcat", "pending"),
+        ("videos", "pending"),
+    ],
+)
+def test_logs_and_video_evidence_values_block_when_invalid_or_pending(tmp_path, field, value):
+    def mutate(metadata):
+        metadata["evidence_capture"][field] = value
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any(f"evidence_capture.{field}" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_cleanup_level_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["allowed_levels"].append("C6_wipe_device")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("cleanup_rollback.allowed_levels" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_runtime_scope_blocks_even_without_known_forbidden_term(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].append("orientation_check")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_execution.allowed_scope contains unsupported item" in reason for reason in report["blocked_reasons"])
+
+
+def test_profile_mutation_runtime_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].append("profile_mutation")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("profile_mutation" in reason for reason in report["blocked_reasons"])
+
+
+def test_empty_approved_by_role_blocks(tmp_path):
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"approved_by_role": ""}))
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_by_role" in reason for reason in report["blocked_reasons"])
+
+
+def test_invalid_approved_by_role_blocks(tmp_path):
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"approved_by_role": "release_manager"}))
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_by_role" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("role", ["qa_lead", "security_prod_safety_reviewer"])
+def test_allowed_non_owner_approved_by_roles_pass_happy_metadata(tmp_path, role):
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"approved_by_role": role}))
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+def test_unsafe_device_alias_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["device_alias"] = "tv-oleg-livingroom-abc123"
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = "tv-oleg-livingroom-a11-abc123"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_split_location_label_device_alias_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = ["tv-living-room-001"]
+        metadata["approved_targets"]["devices"][0]["device_alias"] = "tv-living-room-001"
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = "tv-living-room-a11-001"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_allowed_categories_blocks(tmp_path):
+    def mutate(metadata):
+        del metadata["approved_targets"]["allowed_categories"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_targets.allowed_categories" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_runtime_profile_alias_blocks(tmp_path):
+    def mutate(metadata):
+        del metadata["approved_targets"]["devices"][0]["runtime_profile_alias"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_profile_alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_unsupported_structured_target_category_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["category"] = "smart_fridge"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("category is unsupported" in reason for reason in report["blocked_reasons"])
+
+
+def test_target_without_forbidden_identifier_exclusion_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["forbidden_identifiers_excluded"] = False
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_identifiers_excluded" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_login_requires_approved_synthetic_user(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["approved"] = False
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("synthetic_login_if_required" in reason for reason in report["blocked_reasons"])
+
+
+def test_phone_only_target_blocks_task_005(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = ["phone-samsung-001"]
+        metadata["approved_targets"]["allowed_categories"] = ["android_phone_secondary"]
+        metadata["approved_targets"]["devices"] = [
+            {
+                "device_alias": "phone-samsung-001",
+                "runtime_profile_alias": "phone-samsung-a14-001",
+                "category": "android_phone_secondary",
+                "priority": "P2",
+                "form_factor": "phone",
+                "input_method": "touch",
+                "android_major": 14,
+                "api_level": 34,
+                "adb_available": "yes",
+                "google_play_services": "yes",
+                "classification_confidence": "manual_confirmed",
+                "manual_review_required": False,
+                "forbidden_identifiers_excluded": True,
+            }
+        ]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("P0 Android TV/STB D-pad target" in reason for reason in report["blocked_reasons"])
 
 
 def test_missing_metadata_path_blocks(tmp_path):

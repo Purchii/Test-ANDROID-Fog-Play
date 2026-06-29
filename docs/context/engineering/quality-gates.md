@@ -40,7 +40,8 @@ A task is done only when:
 - Navigation transition map report generators fail closed: absent or non-confirmed build, target, config, navigation scope, screen alias policy, input event policy, fixture policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep transition execution `blocked`, and template-only transition rows remain `not_run`/`unknown`.
 - Safe task prioritization and approval-dependency maps are planning-only: they may select public-safe docs/static work, but they must keep runtime/device/APK/WebView/WebRTC/payment/network/live CI tasks `blocked` until every required dependency is `present=true`, `evidence_status=confirmed` and reviewed.
 - Next-task selection blocker and safe backlog refresh docs must not approve execution: proposed follow-up tasks may be selected only when they are public-safe, bounded, locally verifiable and require no user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
-- Approval metadata validators must fail closed: missing/malformed/non-object metadata, missing required fields, non-approved or non-confirmed approvals, expired approvals, missing build/target aliases, pending evidence policy, non-local ignored storage, forbidden runtime scope, raw phone/OTP, device identifiers, C5 cleanup without separate approval, and missing/pending reviews keep runtime approval `blocked`. A valid approval report may return only `approved_for_limited_runtime` with `runtime_execution_status=not_run`; it must not claim runtime pass.
+- Approval metadata validators must fail closed: missing/malformed/non-object metadata, missing required fields, non-approved or non-confirmed approvals, expired approvals, missing approver role, unsupported approver role, missing build/target aliases, missing structured targets, unsafe device aliases, phone-only TASK-005 target sets, invalid fixture statuses, non-out-of-scope current stream/WebView/payment fixtures, pending/blocked/invalid evidence policy, non-local ignored storage, unsupported runtime scope, forbidden runtime scope, raw phone/OTP, device identifiers, unknown cleanup levels, C5 cleanup without separate approval, and missing/pending reviews keep runtime approval `blocked`. A valid approval report may return only `approved_for_limited_runtime` with `runtime_execution_status=not_run`; it must not claim runtime pass.
+- ADB device inventory preflight must be inventory-only: default execution makes no ADB calls and returns blocked/not-run; owner-approved `--allow-adb` may run only `adb devices -l`, safe getprop fields, `wm size`, `wm density` and `pm list features`; raw serial/IP data must stay under `.qa_local/devices/`; public-safe inventory must exclude raw identifiers and always report runtime/app statuses as `not_run`.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 
@@ -180,6 +181,31 @@ Future TASK-005 limited runtime smoke may be considered only after:
 - required QA, Security/Prod-safety and Docs reviews are approved or confirmed.
 
 TASK-015 validation is `PROD_SAFE`; Android runtime execution remains `PROD_CONDITIONAL` and blocked until a separate task executes under confirmed approvals.
+
+## ADB device inventory preflight gates
+
+TASK-016 local ADB inventory may run only after owner approval and only through
+the preflight allowlist. It must not install, launch, start activities, use
+monkey, collect logcat, capture screenshots/videos, run WebView/WebRTC/payment
+flows, mutate accounts/profiles or modify APKs.
+
+Generated local raw files must remain ignored under `.qa_local/devices/`:
+
+```text
+.qa_local/devices/raw_adb_devices.json
+.qa_local/devices/serial_alias_map.json
+.qa_local/devices/preflight_report.json
+```
+
+Generated public-safe inventory remains ignored until manually reviewed:
+
+```text
+.qa_local/devices/device_inventory.public_safe.generated.json
+```
+
+TASK-016 inventory evidence can confirm only device/build inventory collection,
+alias generation and redaction. It cannot confirm APK install, app launch,
+runtime smoke, WebView, WebRTC, payment or navigation behavior.
 
 ## Merge gates
 

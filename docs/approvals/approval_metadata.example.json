@@ -40,6 +40,23 @@
       "android_phone_secondary"
     ],
     "device_aliases_required": true,
+    "devices": [
+      {
+        "device_alias": "tv-tcl-001",
+        "runtime_profile_alias": "tv-tcl-a11-001",
+        "category": "android_tv",
+        "priority": "P0",
+        "form_factor": "tv",
+        "input_method": "dpad_remote",
+        "android_major": 11,
+        "api_level": 30,
+        "adb_available": "yes",
+        "google_play_services": "yes",
+        "classification_confidence": "manual_confirmed",
+        "manual_review_required": false,
+        "forbidden_identifiers_excluded": true
+      }
+    ],
     "forbidden_identifiers": [
       "serial",
       "imei",
@@ -65,6 +82,8 @@
       "back_home",
       "background_foreground",
       "force_stop_relaunch",
+      "clear_cache_if_preapproved",
+      "clear_app_data_before_after_clean_state",
       "crash_anr_logcat_observation",
       "redacted_evidence_summary"
     ],
@@ -148,4 +167,3 @@
   },
   "expected_validator_decision_for_this_example": "blocked"
 }
-

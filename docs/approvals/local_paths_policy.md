@@ -15,7 +15,10 @@ device identifiers or machine-specific absolute paths.
       app-under-test.apk
       SHA256.txt
   devices/
-    device_inventory.local.yaml
+    raw_adb_devices.json
+    serial_alias_map.json
+    preflight_report.json
+    device_inventory.public_safe.generated.json
   evidence/
     task-005/
   secrets/
@@ -30,8 +33,12 @@ Allowed in public docs:
 .qa_local/apks/task-005/app-under-test.apk
 .qa_local/evidence/task-005/
 .qa_local/secrets/qa_user.env
+.qa_local/devices/raw_adb_devices.json
+.qa_local/devices/serial_alias_map.json
+.qa_local/devices/preflight_report.json
+.qa_local/devices/device_inventory.public_safe.generated.json
 build alias: task-005-local-apk-001
-device aliases: tv-001, stb-001, phone-001
+device aliases: tv-tcl-001, stb-xiaomi-001, phone-samsung-001
 synthetic user alias: qa-user-phone-001
 ```
 
@@ -43,7 +50,7 @@ absolute paths under a real user profile
 raw phone number or OTP
 tokens, cookies, sessions or credentials
 raw screenshots, logs or videos
-serial, IMEI, MAC or Android ID
+serial, IP address, IMEI, MAC, Android ID, full build fingerprint or Google account
 private endpoint, route or deeplink details
 ```
 
@@ -53,4 +60,3 @@ APK files can be placed only in ignored local storage by the owner or a local
 developer. The repository may reference a build alias. Public reports do not
 need to publish the APK hash; if a hash is used, keep the raw file and local
 hash record in ignored storage.
-

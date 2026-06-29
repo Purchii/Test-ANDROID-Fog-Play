@@ -4,7 +4,7 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-015 - Approval Metadata Schema Validator`
-Thread status: `completed_pending_user_integration`
+Thread status: `inactive_completed_after_default_push`
 Fresh thread verified: `yes`
 Task ID: `TASK-015`
 Task branch: `qa/task-015-approval-metadata-validator`
@@ -12,7 +12,7 @@ Default branch: `main`
 Base commit: `a44dba8988e545911a7074b410a958e7953cb1c0`
 Production safety classification: `PROD_SAFE` for public-safe docs, schema, local validator and unit tests only
 Multi-agent status: `complete_passed_after_remediation`
-Merge/push authority: `NON_AUTONOMOUS`; do not merge or push default branch without explicit user command
+Merge/push authority: `NON_AUTONOMOUS`; default branch merge/push authorized by explicit user command `пушь в мастер`
 
 ## Goal
 
@@ -101,6 +101,8 @@ started on its own branch from current `main` to avoid task mixing.
 ## Current evidence status
 
 - TASK-015 branch from `main@a44dba8`: `confirmed`
+- TASK-015 task branch commit and push: `confirmed`
+- TASK-015 merge to default branch `main`: `confirmed`
 - Approval validator local unit-test behavior: `confirmed`
 - Pending example metadata blocks runtime approval: `confirmed`
 - Runtime/device/APK execution: `not_run`
@@ -109,7 +111,8 @@ started on its own branch from current `main` to avoid task mixing.
 
 ## Next handoff
 
-- Current thread status: `completed_pending_user_integration`.
+- Current thread status: `inactive_completed_after_default_push`.
+- Default branch integration: `main` merge/push authorized by explicit user command.
 - TASK-014 remains proposed/not integrated in this repository state.
 - Recommended next task after TASK-015: TASK-016 device/build inventory and runtime preflight draft, then TASK-005 limited runtime smoke only after explicit confirmed approvals.
 

@@ -54,11 +54,11 @@ Forbidden:
 - APK patching;
 - mutating real user/payment state;
 - tests without cleanup for mutable flows.
-- committing raw APK dumps, compiled cache files, endpoint inventories or executable device command recipes to a public repository.
+- committing raw APK dumps, compiled cache files, endpoint inventories or executable device command recipes to a public repository, except the exact owner-approved TASK-016 ADB inventory allowlist documented for local preflight.
 
 ## Public repository rule
 
-Public source-of-truth docs may describe approved runtime categories, prerequisites and safety gates. They must not publish direct device command recipes, raw dumps, compiled artifacts, secrets, real endpoints or low-level private evidence.
+Public source-of-truth docs may describe approved runtime categories, prerequisites and safety gates. They must not publish direct device command recipes, raw dumps, compiled artifacts, secrets, real endpoints or low-level private evidence, except the narrow TASK-016 local ADB inventory allowlist after owner approval. Runtime/app/device recipes outside that allowlist remain forbidden.
 
 ## Stop rule
 

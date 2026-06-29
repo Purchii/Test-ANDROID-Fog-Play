@@ -5,11 +5,17 @@ WebView / WebRTC testing of MTC Fog Play.
 
 ## Current Safety Status
 
-- Runtime/device/APK execution is blocked until explicit confirmed approvals.
+- APK install/launch/runtime smoke execution is blocked until explicit confirmed
+  approvals.
+- TASK-016 allows inventory-only local ADB preflight after owner approval; raw
+  ADB output and serial alias maps remain under ignored `.qa_local/devices/`.
 - APK files, raw evidence, secrets, private endpoints and device identifiers are
   local-only and ignored by default.
 - Reports and validators fail closed when evidence is missing or not confirmed.
 - TASK-015 adds approval metadata validation only; it does not run the app.
+- TASK-015A hardens approval validation with strict allowlists.
+- TASK-016 inventory preflight does not install, launch, capture logcat,
+  screenshots or videos, and always reports runtime/app statuses as `not_run`.
 
 ## Source Of Truth
 
@@ -38,10 +44,26 @@ pytest -q
 python -m pytest -q
 python -m compileall automation tests
 python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.example.json
+python automation/device_inventory/generate_adb_device_inventory.py
 ```
 
 These commands are local and public-safe. They must not connect to devices, run
 APK files, capture raw evidence or contact production systems.
+
+Owner-approved local inventory command for TASK-016 only:
+
+```bash
+python automation/device_inventory/generate_adb_device_inventory.py \
+  --allow-adb \
+  --raw-output .qa_local/devices/raw_adb_devices.json \
+  --alias-map .qa_local/devices/serial_alias_map.json \
+  --public-output .qa_local/devices/device_inventory.public_safe.generated.json \
+  --report .qa_local/devices/preflight_report.json
+```
+
+This command may run only the approved ADB inventory allowlist and must not
+install, launch, smoke test, use logcat, capture screenshots/videos or mutate
+device/account/application state.
 
 ## Local-Only Artifacts
 

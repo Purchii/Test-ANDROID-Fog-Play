@@ -40,6 +40,9 @@ A task is done only when:
 - Navigation transition map report generators fail closed: absent or non-confirmed build, target, config, navigation scope, screen alias policy, input event policy, fixture policy, resource budget, redaction, evidence storage, cleanup or review prerequisites keep transition execution `blocked`, and template-only transition rows remain `not_run`/`unknown`.
 - Safe task prioritization and approval-dependency maps are planning-only: they may select public-safe docs/static work, but they must keep runtime/device/APK/WebView/WebRTC/payment/network/live CI tasks `blocked` until every required dependency is `present=true`, `evidence_status=confirmed` and reviewed.
 - Next-task selection blocker and safe backlog refresh docs must not approve execution: proposed follow-up tasks may be selected only when they are public-safe, bounded, locally verifiable and require no user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
+- Approval metadata validators must fail closed: missing/malformed/non-object metadata, missing required fields, non-approved or non-confirmed approvals, expired approvals, missing build/target aliases, pending evidence policy, non-local ignored storage, forbidden runtime scope, raw phone/OTP, device identifiers, C5 cleanup without separate approval, and missing/pending reviews keep runtime approval `blocked`. A valid approval report may return only `approved_for_limited_runtime` with `runtime_execution_status=not_run`; it must not claim runtime pass.
+- Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
+- Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 
 ## Runtime Android gates
 
@@ -161,6 +164,22 @@ Future autonomous selection from refreshed backlog entries may proceed only when
 - TASK-005 and runtime-dependent tasks remain blocked unless their approval dependencies are confirmed.
 
 TASK-013 documentation is `PROD_SAFE`; it only records a selection blocker and proposed public-safe backlog. It does not approve runtime/device/APK/WebView/WebRTC/payment/network/live CI execution.
+
+## Approval metadata gates
+
+Future TASK-005 limited runtime smoke may be considered only after:
+
+- approval metadata validates as `approved_for_limited_runtime`;
+- approval evidence is `confirmed` and unexpired;
+- approved build is represented by a public-safe alias and local ignored `.qa_local/` path pattern;
+- approved targets use aliases only, such as `tv-001`, `stb-001` or `phone-001`;
+- evidence capture policy is explicit and non-pending;
+- raw storage policy is local ignored storage;
+- cleanup/rollback levels exclude C5 unless separately approved;
+- stream, WebView and payment fixtures remain out of scope unless separately approved;
+- required QA, Security/Prod-safety and Docs reviews are approved or confirmed.
+
+TASK-015 validation is `PROD_SAFE`; Android runtime execution remains `PROD_CONDITIONAL` and blocked until a separate task executes under confirmed approvals.
 
 ## Merge gates
 

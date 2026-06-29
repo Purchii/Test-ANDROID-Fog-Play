@@ -135,6 +135,63 @@ def test_complete_confirmed_pass_metadata_allows_release_pass(tmp_path):
     assert all(gate["evidence_status"] == "confirmed" for gate in report["release_gates"])
 
 
+def test_all_gates_pass_but_missing_review_blocks_release(tmp_path):
+    metadata = {
+        "prerequisites": _confirmed_prerequisites(),
+        "release_gates": _confirmed_pass_gates(),
+    }
+    metadata_path = tmp_path / "release_metadata.json"
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    report = build_report(metadata_path)
+
+    assert report["release_decision"] == "blocked"
+    assert any("qa_reviewer_a review must be approved or confirmed" in reason for reason in report["blocked_reasons"])
+
+
+def test_all_gates_pass_but_pending_security_review_blocks_release(tmp_path):
+    metadata = {
+        "prerequisites": _confirmed_prerequisites(),
+        "release_gates": _confirmed_pass_gates(),
+        "review": {
+            "qa_reviewer_a": "approved",
+            "qa_reviewer_b": "approved",
+            "security_prod_safety_reviewer": "pending",
+            "docs_scribe": "approved",
+        },
+    }
+    metadata_path = tmp_path / "release_metadata.json"
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    report = build_report(metadata_path)
+
+    assert report["release_decision"] == "blocked"
+    assert any(
+        "security_prod_safety_reviewer review must be approved or confirmed" in reason
+        for reason in report["blocked_reasons"]
+    )
+
+
+def test_all_gates_pass_and_all_reviews_confirmed_allows_release_pass(tmp_path):
+    metadata = {
+        "prerequisites": _confirmed_prerequisites(),
+        "release_gates": _confirmed_pass_gates(),
+        "review": {
+            "qa_reviewer_a": "confirmed",
+            "qa_reviewer_b": "approved",
+            "security_prod_safety_reviewer": "confirmed",
+            "docs_scribe": "approved",
+        },
+    }
+    metadata_path = tmp_path / "release_metadata.json"
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    report = build_report(metadata_path)
+
+    assert report["release_decision"] == "pass"
+    assert report["blocked_reasons"] == []
+
+
 def test_complete_not_run_metadata_does_not_fake_runtime_pass(tmp_path):
     metadata = {
         "prerequisites": _confirmed_prerequisites(),
@@ -274,7 +331,7 @@ def test_metadata_derived_risks_unknowns_verification_and_review_are_redacted(tm
             }
         ],
         "review": {
-            "qa_reviewer_a": "approved session=secret-value",
+            "qa_reviewer_a": "approved",
             "qa_reviewer_b": "approved",
             "security_prod_safety_reviewer": "approved",
             "docs_scribe": "approved",

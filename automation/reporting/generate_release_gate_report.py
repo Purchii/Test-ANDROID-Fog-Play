@@ -25,6 +25,13 @@ PRODUCTION_SAFETY_CLASSIFICATION = "PROD_SAFE"
 EVIDENCE_STATUSES = {"confirmed", "likely", "hypothesis", "unknown"}
 GATE_STATUSES = {"pass", "fail", "blocked", "not_run"}
 PASSABLE_GATE_STATUSES = {"pass"}
+REQUIRED_REVIEWERS = (
+    "qa_reviewer_a",
+    "qa_reviewer_b",
+    "security_prod_safety_reviewer",
+    "docs_scribe",
+)
+PASSING_REVIEW_STATUSES = {"approved", "confirmed"}
 REQUIRED_PREREQUISITES = (
     "approved_build",
     "approved_target",
@@ -343,6 +350,14 @@ def _normalize_review(raw_review: Any) -> tuple[dict[str, str], bool]:
     return review, redacted
 
 
+def _review_blockers(review: dict[str, str]) -> list[str]:
+    blocked_reasons = []
+    for reviewer in REQUIRED_REVIEWERS:
+        if review.get(reviewer, "pending").strip().lower() not in PASSING_REVIEW_STATUSES:
+            blocked_reasons.append(f"{reviewer} review must be approved or confirmed.")
+    return blocked_reasons
+
+
 def build_report(metadata_path: Path | None = None) -> dict[str, Any]:
     metadata, load_reasons = _load_metadata(metadata_path)
     metadata_present = not load_reasons
@@ -405,6 +420,8 @@ def build_report(metadata_path: Path | None = None) -> dict[str, Any]:
     redacted = redacted or risk_redacted or unknown_redacted or verification_redacted
     review, review_redacted = _normalize_review(metadata.get("review"))
     redacted = redacted or review_redacted
+    review_reasons = _review_blockers(review)
+    blocked_reasons.extend(review_reasons)
 
     r0_r1_gates = [gate for gate in release_gates if gate["risk_level"] in {"R0", "R1"}]
     release_decision = "pass"
@@ -412,6 +429,8 @@ def build_report(metadata_path: Path | None = None) -> dict[str, Any]:
         if gate["status"] != "pass" or gate["evidence_status"] != "confirmed":
             release_decision = "blocked"
             break
+    if review_reasons:
+        release_decision = "blocked"
 
     evidence_status = "confirmed" if release_decision == "pass" else "unknown"
     overall_status = release_decision

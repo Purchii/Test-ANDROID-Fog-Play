@@ -25,6 +25,20 @@ local.properties
 .env.*
 
 # Raw/private local QA evidence is not public source-of-truth by default.
+.qa_local/
 qa_reverse_analysis/
 qa_reverse_analysis_documents.zip
 docs/context/reverse-analysis/raw/
+
+# Packaged Android artifacts must remain local-only.
+*.xapk
+
+# Raw evidence artifacts must remain local-only.
+*.mp4
+*.webm
+*.mov
+*.mkv
+*.log
+logcat*.txt
+screenrecord*.mp4
+screenshot*.png

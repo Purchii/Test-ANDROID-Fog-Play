@@ -154,10 +154,43 @@ def test_invalid_evidence_status_normalizes_to_unknown_without_runtime_pass(tmp_
 
     report = build_report(metadata_path)
 
-    assert report["overall_status"] == "not_run"
+    assert report["overall_status"] == "blocked"
     assert report["prerequisites"]["approved_build"]["evidence_status"] == "unknown"
+    assert any("approved_build does not have confirmed evidence" in reason for reason in report["blocked_reasons"])
     assert all(case["result"] != "pass" for case in report["guard_cases"])
     assert all(item["result"] != "pass" for item in report["verification"])
+
+
+def test_present_guard_prerequisite_with_likely_evidence_blocks(tmp_path):
+    metadata = {
+        "approved_build": {
+            "present": True,
+            "evidence_status": "confirmed",
+            "note": "Public-safe build note.",
+        },
+        "approved_target": {
+            "present": True,
+            "evidence_status": "likely",
+            "note": "Public-safe target note.",
+        },
+        "approved_config": {
+            "present": True,
+            "evidence_status": "confirmed",
+            "note": "Public-safe config note.",
+        },
+        "approved_guard_scope": {
+            "present": True,
+            "evidence_status": "confirmed",
+            "note": "Public-safe guard scope note.",
+        },
+    }
+    metadata_path = tmp_path / "guard_metadata.json"
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    report = build_report(metadata_path)
+
+    assert report["overall_status"] == "blocked"
+    assert any("approved_target does not have confirmed evidence" in reason for reason in report["blocked_reasons"])
 
 
 def test_guard_metadata_with_utf8_bom_is_supported(tmp_path):

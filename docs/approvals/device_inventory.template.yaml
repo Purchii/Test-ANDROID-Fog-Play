@@ -1,0 +1,61 @@
+# Device inventory template.
+# Store real local inventory in an ignored file, for example:
+# .qa_local/devices/device_inventory.local.yaml
+# Public docs may use only aliases and non-sensitive category data.
+
+schema_version: task-016-device-inventory-draft-1
+owner: project_owner
+sensitive_identifiers_forbidden:
+  - serial
+  - imei
+  - mac
+  - android_id
+  - google_account
+  - personal_device_identifier
+
+devices:
+  - alias: tv-001
+    priority: P0
+    category: Android TV
+    manufacturer_model: "<safe public model or local-only>"
+    android_version: "<Android version or unknown>"
+    api_level: "<API level or unknown>"
+    form_factor: TV
+    input_method: D-pad remote
+    screen_class: "HD/FHD/4K/unknown"
+    google_play_services: "yes/no/unknown"
+    adb_available: "yes/no/unknown"
+    install_method: "adb install/manual/unknown"
+    network: "Wi-Fi/Ethernet/unknown"
+    notes: "No serials, IMEI, MAC, Android ID or accounts."
+
+  - alias: stb-001
+    priority: P0
+    category: Android/AOSP set-top box
+    manufacturer_model: "<safe public model or local-only>"
+    android_version: "<Android version or unknown>"
+    api_level: "<API level or unknown>"
+    form_factor: set-top-box
+    input_method: D-pad remote
+    screen_class: "HD/FHD/4K/unknown"
+    google_play_services: "yes/no/unknown"
+    adb_available: "yes/no/unknown"
+    install_method: "adb install/manual/unknown"
+    network: "Wi-Fi/Ethernet/unknown"
+    notes: "No serials, IMEI, MAC, Android ID or accounts."
+
+  - alias: phone-001
+    priority: P2
+    category: Android phone secondary compatibility target
+    manufacturer_model: "<safe public model or local-only>"
+    android_version: "<Android version or unknown>"
+    api_level: "<API level or unknown>"
+    form_factor: phone
+    input_method: touch
+    screen_class: mobile
+    google_play_services: "yes/no/unknown"
+    adb_available: "yes/no/unknown"
+    install_method: "adb install/manual/unknown"
+    network: "Wi-Fi/mobile/unknown"
+    notes: "Phone does not replace Android TV or D-pad QA."
+

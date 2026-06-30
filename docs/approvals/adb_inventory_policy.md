@@ -1,6 +1,6 @@
 # ADB Inventory Policy
 
-Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
+Task: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
 
 Production safety classification: `PROD_CONDITIONAL` for owner-approved local
 ADB inventory only. Default CLI execution is `PROD_SAFE` and makes no ADB calls.
@@ -116,6 +116,12 @@ prefix/index and Android major, alias/form-factor mismatches, Android
 major/API sanity mismatches, duplicate aliases, `public_device_count` mismatch,
 unknown public device fields and any device that is not
 heuristic/manual-review-required/not-run.
+
+TASK-015G/017B additionally requires owner-review export validation to reject
+missing or extra redaction guarantee keys, any redaction guarantee value other
+than `true`, malformed category/priority/form-factor/input/ADB/Google Play
+services/screen-class enum values and any auto-promotion to
+`manual_confirmed`.
 
 The owner handoff is recorded in:
 

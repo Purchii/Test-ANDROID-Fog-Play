@@ -24,6 +24,28 @@ RUNTIME_EXECUTION_STATUS = "not_run"
 APK_INSTALL_STATUS = "not_run"
 APP_LAUNCH_STATUS = "not_run"
 OWNER_REVIEW_BOUNDARY = "not approved for TASK-005 until owner/QA manual review"
+REQUIRED_REDACTION_GUARANTEE_KEYS = {
+    "adb_serial_excluded",
+    "android_id_excluded",
+    "full_build_fingerprint_excluded",
+    "google_account_excluded",
+    "imei_excluded",
+    "ip_excluded",
+    "mac_excluded",
+    "phone_otp_excluded",
+}
+REVIEW_DEVICE_CATEGORIES = {
+    "android_tv",
+    "google_tv",
+    "android_stb",
+    "aosp_stb",
+    "android_phone_secondary",
+}
+REVIEW_PRIORITIES = {"P0", "P1", "P2"}
+REVIEW_FORM_FACTORS = {"tv", "stb", "phone", "tablet", "emulator", "unknown"}
+REVIEW_INPUT_METHODS = {"dpad_remote", "touch", "keyboard_mouse", "unknown"}
+YES_NO_UNKNOWN = {"yes", "no", "unknown"}
+REVIEW_SCREEN_CLASSES = {"hd_or_unknown", "fhd_or_unknown", "4k_or_unknown", "mobile", "mobile_or_unknown", "unknown"}
 
 SAFE_GETPROP_FIELDS = (
     "ro.product.manufacturer",
@@ -636,8 +658,18 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
     if public_payload.get("public_safety_findings") != []:
         errors.append("public_safety_findings must be empty before owner-review export.")
     redaction_guarantees = public_payload.get("redaction_guarantees")
-    if not isinstance(redaction_guarantees, dict) or any(value is not True for value in redaction_guarantees.values()):
-        errors.append("all redaction_guarantees must be true before owner-review export.")
+    if not isinstance(redaction_guarantees, dict):
+        errors.append("redaction_guarantees must be an object before owner-review export.")
+    else:
+        redaction_keys = set(redaction_guarantees)
+        missing_redaction_keys = sorted(REQUIRED_REDACTION_GUARANTEE_KEYS - redaction_keys)
+        extra_redaction_keys = sorted(redaction_keys - REQUIRED_REDACTION_GUARANTEE_KEYS)
+        if missing_redaction_keys:
+            errors.append(f"redaction_guarantees is missing required keys: {missing_redaction_keys}.")
+        if extra_redaction_keys:
+            errors.append(f"redaction_guarantees contains unsupported keys: {extra_redaction_keys}.")
+        if any(value is not True for value in redaction_guarantees.values()):
+            errors.append("all redaction_guarantees must be true before owner-review export.")
     if _public_safety_findings(public_payload):
         errors.append("public-safe inventory contains forbidden identifier-like values.")
 
@@ -685,6 +717,20 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
         form_factor = exported.get("form_factor")
         android_major = exported.get("android_major")
         api_level = exported.get("api_level")
+        if exported.get("category") not in REVIEW_DEVICE_CATEGORIES:
+            errors.append(f"devices[{index}].category is unsupported.")
+        if exported.get("priority") not in REVIEW_PRIORITIES:
+            errors.append(f"devices[{index}].priority is unsupported.")
+        if exported.get("form_factor") not in REVIEW_FORM_FACTORS:
+            errors.append(f"devices[{index}].form_factor is unsupported.")
+        if exported.get("input_method") not in REVIEW_INPUT_METHODS:
+            errors.append(f"devices[{index}].input_method is unsupported.")
+        if exported.get("adb_available") not in YES_NO_UNKNOWN:
+            errors.append(f"devices[{index}].adb_available is unsupported.")
+        if exported.get("google_play_services") not in YES_NO_UNKNOWN:
+            errors.append(f"devices[{index}].google_play_services is unsupported.")
+        if exported.get("screen_class") not in REVIEW_SCREEN_CLASSES:
+            errors.append(f"devices[{index}].screen_class is unsupported.")
         if (
             not isinstance(device_alias, str)
             or DEVICE_ALIAS_RE.fullmatch(device_alias) is None

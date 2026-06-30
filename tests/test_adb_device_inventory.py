@@ -459,6 +459,22 @@ def test_owner_review_export_blocks_public_safety_findings():
         build_public_safe_review_inventory(payload)
 
 
+def test_owner_review_export_blocks_missing_redaction_guarantees():
+    payload = _public_safe_inventory_payload()
+    payload["redaction_guarantees"] = {}
+
+    with pytest.raises(ValueError, match="redaction_guarantees"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_missing_required_redaction_key():
+    payload = _public_safe_inventory_payload()
+    del payload["redaction_guarantees"]["ip_excluded"]
+
+    with pytest.raises(ValueError, match="ip_excluded"):
+        build_public_safe_review_inventory(payload)
+
+
 def test_owner_review_export_blocks_runtime_status_drift():
     payload = _public_safe_inventory_payload()
     payload["devices"][0]["runtime_execution_status"] = "pass"
@@ -533,4 +549,24 @@ def test_owner_review_export_blocks_unknown_top_level_public_fields():
     payload["owner_label"] = "review"
 
     with pytest.raises(ValueError, match="unsupported top-level fields"):
+        build_public_safe_review_inventory(payload)
+
+
+@pytest.mark.parametrize(
+    "field,value,match",
+    [
+        ("category", "smart_fridge", "category"),
+        ("priority", "P9", "priority"),
+        ("form_factor", "watch", "form_factor"),
+        ("input_method", "voice", "input_method"),
+        ("adb_available", "maybe", "adb_available"),
+        ("google_play_services", "maybe", "google_play_services"),
+        ("screen_class", "home_livingroom", "screen_class"),
+    ],
+)
+def test_owner_review_export_blocks_malformed_public_enums(field, value, match):
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0][field] = value
+
+    with pytest.raises(ValueError, match=match):
         build_public_safe_review_inventory(payload)

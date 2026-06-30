@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
+Task: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -58,16 +58,17 @@ review status: approved/confirmed/pending/blocked/rejected
 
 - Approval status is not `approved`.
 - Approval evidence status is not `confirmed`.
-- Expiration is missing, invalid or expired.
+- Expiration is missing, invalid, expired or more than 30 days after validation
+  time.
 - TASK-005 has no approved build alias and local ignored APK storage policy.
 - APK path pattern is outside `.qa_local/` or uses a user-specific absolute path.
-- APK path pattern is not under `.qa_local/apks/task-005/` or does not end
-  with `.apk`.
+- APK path pattern is not exactly `.qa_local/apks/task-005/app-under-test.apk`.
 - TASK-005 APK metadata omits `sha256_required: true`, allows the public SHA-256
   value, uses a build alias containing reserved identifier/security tokens or
   identifier-like values, permits actions outside `install`, `launch` and
-  `observe`, or omits critical forbidden actions such as `decompile` or
-  `extract_secrets`.
+  `observe`, or has any `forbidden_actions` value outside the exact TASK-005
+  required set: `commit`, `upload`, `archive`, `decompile`, `patch`, `resign`,
+  `extract_private_endpoints` and `extract_secrets`.
 - APK action lists contain duplicate values.
 - Approved runtime metadata contains fields outside the documented strict
   top-level and section-level allowlists.
@@ -80,6 +81,9 @@ review status: approved/confirmed/pending/blocked/rejected
 - Approved targets are not approved or do not include structured public-safe
   device targets with `device_alias` and `runtime_profile_alias`.
 - Approved targets omit `allowed_categories`.
+- Approved targets omit `forbidden_identifiers`, include duplicates, include
+  unsupported values or miss any required value: `serial`, `imei`, `mac`,
+  `android_id`, `google_account` and `personal_device_identifier`.
 - Approved targets omit `device_aliases_required: true`.
 - Approved target aliases do not match the TASK-016 grammar, contain reserved
   identifier/security/account tokens, contain IP/fingerprint-like values, or
@@ -137,7 +141,7 @@ review status: approved/confirmed/pending/blocked/rejected
   is not true.
 - `synthetic_qa_user.approved` is true but the public alias is not
   `qa-user-phone-001`, `local_secret_file_pattern` is missing or outside
-  `.qa_local/secrets/`, does not end with `.env`, or `repo_allowed_file` is
+  the exact `.qa_local/secrets/qa_user.env` path, or `repo_allowed_file` is
   missing, under `.qa_local/` or not a repository placeholder/template path such as
   `docs/approvals/qa_user.env.example`.
 - Synthetic auth scope contains anything except `login`, `logout` or
@@ -146,6 +150,8 @@ review status: approved/confirmed/pending/blocked/rejected
 - Synthetic forbidden account actions are missing `payment`, `purchase`,
   `profile_mutation` or `destructive_account_action`, or contain unsupported
   typo values.
+- Optional synthetic auth scope and forbidden account action fields are
+  validated when present even if auth is out of scope.
 - `runtime_execution.auth_mode` is missing, outside
   `synthetic_login_if_required`, `auth_out_of_scope` or `no_auth_required`, or
   inconsistent with the presence/absence of `synthetic_login_if_required` in
@@ -164,7 +170,7 @@ review status: approved/confirmed/pending/blocked/rejected
   disabled for local redacted summaries.
 - Public report policy is anything other than `redacted_summaries_only`.
 - Raw evidence storage is not local ignored storage.
-- Raw evidence storage path is not under `.qa_local/evidence/task-005/`.
+- Raw evidence storage path is not exactly `.qa_local/evidence/task-005/`.
 - Evidence capture is approved for local redacted summaries but
   `retention_days` is missing, not an integer or outside `1..30`.
 - Cleanup levels are missing, outside C1-C4, or include C5 in allowed runtime
@@ -271,6 +277,14 @@ TASK-015F/017A adds final export validation. The export must fail closed if:
 - a device contains public fields outside the allowlist;
 - any device is not heuristic/manual-review-required/not-run.
 
+TASK-015G/017B adds residual strictness. The export must also fail closed if:
+
+- redaction guarantees do not contain the exact required key set with all
+  values `true`;
+- device category, priority, form factor, input method, ADB availability,
+  Google Play services or screen class contains a value outside the documented
+  public-safe enum set.
+
 ## Reviewer Gate
 
 The required reviewers are:
@@ -311,3 +325,5 @@ See also:
 
 - `docs/approvals/device_alias_policy.md`
 - `docs/approvals/adb_inventory_policy.md`
+- `docs/approvals/task005_owner_approval_inputs.template.json`
+- `docs/approvals/task005_owner_approval_checklist.md`

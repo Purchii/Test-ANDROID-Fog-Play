@@ -1,0 +1,41 @@
+{
+  "schema_version": "task-005-owner-approval-inputs-template-v1",
+  "task_id": "TASK-005",
+  "status": "template_not_approved",
+  "production_safety_classification": "PROD_SAFE_TEMPLATE_ONLY",
+  "runtime_execution_status": "not_run",
+  "selected_target": {
+    "device_alias": "<copy from docs/approvals/task005_owner_device_review.md>",
+    "runtime_profile_alias": "<copy from docs/approvals/task005_owner_device_review.md>",
+    "classification_confidence": "manual_confirmed",
+    "manual_review_required": false
+  },
+  "apk": {
+    "build_alias": "task-005-local-apk-001",
+    "expected_local_path_pattern": ".qa_local/apks/task-005/app-under-test.apk",
+    "sha256_recorded_locally": true
+  },
+  "synthetic_qa_user": {
+    "alias": "qa-user-phone-001",
+    "local_secret_file_pattern": ".qa_local/secrets/qa_user.env",
+    "repo_allowed_file": "docs/approvals/qa_user.env.example"
+  },
+  "evidence_capture": {
+    "screenshots": "yes_local_only_redacted_summary",
+    "logs_logcat": "yes_local_only_redacted_summary",
+    "videos": "no_by_default",
+    "raw_storage_path_pattern": ".qa_local/evidence/task-005/",
+    "public_report_policy": "redacted_summaries_only",
+    "retention_days": 7
+  },
+  "runtime_execution": {
+    "separate_task005_runtime_approval_required": true,
+    "allowed_to_run_from_this_template": false
+  },
+  "public_safety_notes": [
+    "Do not add raw phone numbers, OTPs, tokens, cookies, sessions or credentials.",
+    "Do not add raw ADB serials, IP addresses, MAC addresses, IMEI, Android ID, Google account or full build fingerprint.",
+    "Do not add APK hash values, APK paths outside .qa_local, screenshots, logs, videos, private endpoints, routes or deeplinks.",
+    "This template is owner input material only and does not approve TASK-005 runtime smoke."
+  ]
+}

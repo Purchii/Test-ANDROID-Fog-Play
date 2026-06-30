@@ -37,6 +37,7 @@ docs/context/reverse-analysis/raw/
 
 # Packaged Android artifacts must remain local-only.
 *.xapk
+safe_archives/
 
 # Raw evidence artifacts must remain local-only.
 *.mp4

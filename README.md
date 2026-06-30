@@ -14,6 +14,8 @@ WebView / WebRTC testing of MTC Fog Play.
 - Reports and validators fail closed when evidence is missing or not confirmed.
 - TASK-015 adds approval metadata validation only; it does not run the app.
 - TASK-015A hardens approval validation with strict allowlists.
+- TASK-015C/016B hardens approval/device inventory consistency without runtime
+  execution.
 - TASK-016 inventory preflight does not install, launch, capture logcat,
   screenshots or videos, and always reports runtime/app statuses as `not_run`.
 

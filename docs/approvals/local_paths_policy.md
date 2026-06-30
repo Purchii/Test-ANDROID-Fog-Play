@@ -38,7 +38,7 @@ Allowed in public docs:
 .qa_local/devices/preflight_report.json
 .qa_local/devices/device_inventory.public_safe.generated.json
 build alias: task-005-local-apk-001
-device aliases: tv-tcl-001, stb-xiaomi-001, unknown-samsung-001
+device aliases: tv-tcl-001, stb-xiaomi-001, phone-samsung-001
 synthetic user alias: qa-user-phone-001
 ```
 

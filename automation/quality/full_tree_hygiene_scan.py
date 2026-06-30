@@ -9,6 +9,7 @@ the current diff so historical whitespace issues cannot hide behind a clean
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -44,22 +45,72 @@ BINARY_EXTENSIONS = {
     ".zip",
 }
 
+CACHE_AND_BUILD_DIRECTORIES = {
+    ".cache",
+    ".coverage",
+    ".eggs",
+    ".gradle",
+    ".mypy_cache",
+    ".nox",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "build",
+    "coverage",
+    "dist",
+    "htmlcov",
+    "node_modules",
+    "out",
+    "target",
+}
+
+PUBLIC_SAFE_EXCLUDED_DIRECTORIES = {
+    ".git",
+    ".qa_local",
+    *CACHE_AND_BUILD_DIRECTORIES,
+}
+
+
+class GitTrackedScanUnavailable(RuntimeError):
+    """Raised when git tracked-file discovery cannot be used."""
+
 
 def _tracked_files(root: Path) -> list[Path]:
-    completed = subprocess.run(
-        ["git", "-c", f"safe.directory={root.as_posix()}", "ls-files", "-z"],
-        cwd=root,
-        capture_output=True,
-        text=False,
-        check=False,
-    )
+    try:
+        completed = subprocess.run(
+            ["git", "-c", f"safe.directory={root.as_posix()}", "ls-files", "-z"],
+            cwd=root,
+            capture_output=True,
+            text=False,
+            check=False,
+        )
+    except FileNotFoundError as exc:
+        raise GitTrackedScanUnavailable("git executable is unavailable") from exc
     if completed.returncode != 0:
-        raise RuntimeError("git ls-files failed")
+        raise GitTrackedScanUnavailable("root is not a git checkout or git ls-files failed")
     return [root / raw.decode("utf-8") for raw in completed.stdout.split(b"\0") if raw]
 
 
 def _looks_binary(path: Path) -> bool:
     return path.suffix.lower() in BINARY_EXTENSIONS
+
+
+def _public_safe_tree_files(root: Path) -> list[Path]:
+    paths: list[Path] = []
+    for current_root, dir_names, file_names in os.walk(root):
+        dir_names[:] = [
+            name
+            for name in dir_names
+            if name not in PUBLIC_SAFE_EXCLUDED_DIRECTORIES
+            and not name.endswith((".egg-info", ".dist-info"))
+        ]
+        for file_name in file_names:
+            path = Path(current_root) / file_name
+            if not _looks_binary(path):
+                paths.append(path)
+    return sorted(paths)
 
 
 def _scan_file(path: Path) -> list[str]:
@@ -96,13 +147,40 @@ def scan_paths(paths: Iterable[Path]) -> list[str]:
     return issues
 
 
+def _paths_for_mode(root: Path, mode: str) -> list[Path]:
+    if mode == "tracked":
+        return _tracked_files(root)
+    if mode == "public-safe-tree":
+        return _public_safe_tree_files(root)
+
+    try:
+        return _tracked_files(root)
+    except GitTrackedScanUnavailable:
+        return _public_safe_tree_files(root)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Scan tracked text files for whitespace and EOF hygiene.")
     parser.add_argument("--root", type=Path, default=Path("."), help="Repository root. Defaults to current directory.")
+    parser.add_argument(
+        "--mode",
+        choices=("auto", "tracked", "public-safe-tree"),
+        default="auto",
+        help=(
+            "Scan mode. auto uses git tracked files when available and falls back "
+            "to a public-safe tree scan outside git checkouts."
+        ),
+    )
     args = parser.parse_args(argv)
 
     root = args.root.resolve()
-    issues = scan_paths(_tracked_files(root))
+    try:
+        paths = _paths_for_mode(root, args.mode)
+    except GitTrackedScanUnavailable as exc:
+        sys.stdout.write(f"full_tree_hygiene=blocked\nreason={exc}\n")
+        return 2
+
+    issues = scan_paths(paths)
     if issues:
         sys.stdout.write("\n".join(str(issue) for issue in issues) + "\n")
         return 1

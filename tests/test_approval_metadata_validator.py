@@ -76,6 +76,21 @@ def _happy_metadata():
                 "crash_anr_logcat_observation",
                 "redacted_evidence_summary",
             ],
+            "forbidden_scope": [
+                "payment",
+                "subscription",
+                "purchase",
+                "stream",
+                "webrtc",
+                "media_playback",
+                "webview",
+                "redirect_flow",
+                "production_mutation",
+                "security_bypass",
+                "decompilation",
+                "patching",
+                "resigning",
+            ],
         },
         "synthetic_qa_user": {
             "approved": True,
@@ -221,6 +236,9 @@ def test_apk_path_outside_qa_local_blocks(tmp_path):
         ".qa_local/evidence/task-005/app.apk",
         ".qa_local/devices/app.apk",
         ".qa_local/apks/task-005/app-under-test.txt",
+        ".qa_local/apks/task-005/app.apk.tmp.apk",
+        ".qa_local/apks/task-005/*.apk",
+        ".qa_local/apks/task-005/secrets/app-under-test.apk",
     ],
 )
 def test_apk_path_must_use_task005_apk_family_and_extension(tmp_path, path):
@@ -336,6 +354,33 @@ def test_unexpected_task_id_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("task_id must be TASK-005" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_top_level_field_blocks_approved_metadata(tmp_path):
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"comment": "reviewed"}))
+
+    assert report["approval_decision"] == "blocked"
+    assert any("metadata contains unsupported fields" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_fixture_field_blocks_approved_metadata(tmp_path):
+    def mutate(metadata):
+        metadata["fixtures"]["other_fixture"] = "approved"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("fixtures contains unsupported fields" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_required_reviewer_field_blocks_approved_metadata(tmp_path):
+    def mutate(metadata):
+        metadata["required_reviews"]["legal_reviewer"] = "rejected"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("required_reviews contains unsupported fields" in reason for reason in report["blocked_reasons"])
 
 
 def test_raw_phone_number_in_metadata_blocks(tmp_path):
@@ -699,6 +744,8 @@ def test_synthetic_user_repo_allowed_file_cannot_be_local_secret(tmp_path):
         ".qa_local/apks/task-005/app.apk",
         ".qa_local/devices/raw_adb_devices.json",
         ".qa_local/secrets/qa_user.txt",
+        ".qa_local/secrets/apks/qa_user.env",
+        ".qa_local/secrets/devices/qa_user.env",
     ],
 )
 def test_synthetic_secret_path_must_use_secret_env_family(tmp_path, path):
@@ -731,6 +778,17 @@ def test_synthetic_user_safe_repo_allowed_file_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize("path", ["qa_user.env.example", "docs/secrets/qa_user.env.example"])
+def test_synthetic_user_repo_allowed_file_must_use_exact_approved_template(tmp_path, path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["repo_allowed_file"] = path
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("repo_allowed_file" in reason for reason in report["blocked_reasons"])
 
 
 def test_synthetic_allowed_auth_scope_blocks_payment(tmp_path):
@@ -945,6 +1003,19 @@ def test_extra_manual_confirmed_tv_category_with_phone_form_factor_blocks(tmp_pa
     assert any("form_factor must be tv or stb" in reason for reason in report["blocked_reasons"])
 
 
+def test_stable_device_alias_must_not_contain_android_version_token(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = ["tv-tcl-a11-001"]
+        metadata["approved_targets"]["devices"][0]["device_alias"] = "tv-tcl-a11-001"
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = "tv-tcl-a11-a11-001"
+        metadata["approved_targets"]["devices"][0]["android_major"] = 11
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_alias" in reason for reason in report["blocked_reasons"])
+
+
 @pytest.mark.parametrize(
     "runtime_profile_alias,android_major",
     [
@@ -968,6 +1039,19 @@ def test_runtime_profile_alias_must_match_device_alias_prefix_index_and_android_
     assert any("runtime_profile_alias must preserve" in reason for reason in report["blocked_reasons"])
 
 
+@pytest.mark.parametrize("android_major,api_level", [(13, 30), (16, 30)])
+def test_android_major_api_level_mismatch_blocks(tmp_path, android_major, api_level):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["android_major"] = android_major
+        metadata["approved_targets"]["devices"][0]["api_level"] = api_level
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = f"tv-tcl-a{android_major}-001"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("Android major/API sanity map" in reason for reason in report["blocked_reasons"])
+
+
 def test_empty_runtime_scope_blocks(tmp_path):
     def mutate(metadata):
         metadata["runtime_execution"]["allowed_scope"] = []
@@ -986,6 +1070,36 @@ def test_duplicate_runtime_scope_item_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("runtime_execution.allowed_scope must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_empty_runtime_forbidden_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["forbidden_scope"] = []
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_execution.forbidden_scope must be a non-empty list" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_required_runtime_forbidden_scope_term_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["forbidden_scope"].remove("payment")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_execution.forbidden_scope is missing required items" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_runtime_forbidden_scope_item_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["forbidden_scope"].append("payment")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_execution.forbidden_scope must not contain duplicates" in reason for reason in report["blocked_reasons"])
 
 
 def test_missing_core_runtime_scope_blocks(tmp_path):
@@ -1052,6 +1166,7 @@ def test_raw_evidence_public_report_policy_blocks(tmp_path):
         ".qa_local/apks/task-005/",
         ".qa_local/secrets/",
         ".qa_local/devices/",
+        ".qa_local/evidence/task-005/secrets/",
     ],
 )
 def test_evidence_path_must_use_task005_evidence_family(tmp_path, path):
@@ -1223,6 +1338,48 @@ def test_duplicate_cleanup_level_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("cleanup_rollback.allowed_levels must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_synthetic_allowed_auth_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["allowed_auth_scope"].append("login")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_auth_scope must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_synthetic_forbidden_account_actions_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["forbidden_account_actions"].append("payment")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_account_actions must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_cleanup_requires_separate_approval_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["requires_separate_approval"].append("C5_uninstall_reinstall")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("requires_separate_approval must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_cleanup_authorized_zone_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["authorized_zone_scopes"].append(
+            "force_stop_relaunch_with_auth_state_preserved"
+        )
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("authorized_zone_scopes must not contain duplicates" in reason for reason in report["blocked_reasons"])
 
 
 def test_missing_cleanup_requires_separate_approval_blocks(tmp_path):

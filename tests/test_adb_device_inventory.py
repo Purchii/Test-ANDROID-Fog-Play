@@ -474,3 +474,63 @@ def test_owner_review_export_does_not_allow_auto_manual_confirmed_promotion():
 
     with pytest.raises(ValueError, match="classification_confidence"):
         build_public_safe_review_inventory(payload)
+
+
+@pytest.mark.parametrize(
+    "field,value,match",
+    [
+        ("device_alias", "bad alias", "device_alias"),
+        ("runtime_profile_alias", "bad runtime", "runtime_profile_alias"),
+    ],
+)
+def test_owner_review_export_blocks_malformed_aliases(field, value, match):
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0][field] = value
+
+    with pytest.raises(ValueError, match=match):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_stable_alias_with_android_version_token():
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0]["device_alias"] = "tv-tcl-a11-001"
+    payload["devices"][0]["runtime_profile_alias"] = "tv-tcl-a11-a11-001"
+    payload["devices"][0]["android_major"] = 11
+    payload["devices"][0]["api_level"] = 30
+
+    with pytest.raises(ValueError, match="device_alias"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_duplicate_device_aliases():
+    payload = _public_safe_inventory_payload()
+    duplicate = dict(payload["devices"][0])
+    duplicate["runtime_profile_alias"] = "tv-tcl-a11-002"
+    payload["devices"].append(duplicate)
+
+    with pytest.raises(ValueError, match="duplicate device_alias"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_public_device_count_mismatch():
+    payload = _public_safe_inventory_payload()
+    payload["public_device_count"] = 99
+
+    with pytest.raises(ValueError, match="public_device_count"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_unknown_public_device_fields():
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0]["owner_label"] = "review"
+
+    with pytest.raises(ValueError, match="unsupported public fields"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_unknown_top_level_public_fields():
+    payload = _public_safe_inventory_payload()
+    payload["owner_label"] = "review"
+
+    with pytest.raises(ValueError, match="unsupported top-level fields"):
+        build_public_safe_review_inventory(payload)

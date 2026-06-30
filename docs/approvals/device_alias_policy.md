@@ -1,6 +1,6 @@
 # Device Alias Policy
 
-Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
+Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
 
 Production safety classification: `PROD_SAFE` for docs, schemas, validators and
 unit tests. This policy does not approve Android runtime execution.
@@ -27,6 +27,10 @@ Allowed runtime profile alias grammar:
 ```
 
 Grammar alone is not enough. Semantic reserved-token validation must also pass.
+
+Stable `device_alias` values must not include Android-version-like tokens such
+as `a9`, `a10`, `a11`, `a12`, `a13`, `a14`, `a15` or `a16`. Android major is
+encoded only in `runtime_profile_alias`.
 
 ## Reserved Tokens
 
@@ -89,6 +93,23 @@ Runtime profile aliases for approval metadata must preserve the stable device
 alias prefix and index while encoding the same Android major version as
 `android_major`. For example, `tv-tcl-001` maps to `tv-tcl-a11-001` only when
 `android_major: 11`.
+
+The project-local Android major/API sanity map is:
+
+```text
+Android 9  -> API 28
+Android 10 -> API 29
+Android 11 -> API 30
+Android 12 -> API 31 or 32
+Android 13 -> API 33
+Android 14 -> API 34
+Android 15 -> API 35
+Android 16 -> API 36
+```
+
+This is a sanity guard for project approval metadata and owner-review export,
+not a universal Android authority. Future unknown major versions block until
+the map is updated or the target is kept manual-review-only.
 
 TASK-016C generated inventory aliases are heuristic output. They remain
 manual-review-required and must not be copied into TASK-005 approval metadata

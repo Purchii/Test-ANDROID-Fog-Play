@@ -38,6 +38,69 @@ REQUIRED_TOP_LEVEL_FIELDS = (
     "cleanup_rollback",
     "required_reviews",
 )
+ALLOWED_TOP_LEVEL_FIELDS = set(REQUIRED_TOP_LEVEL_FIELDS)
+APPROVED_BUILD_APK_ALLOWED_FIELDS = {
+    "approved",
+    "build_alias",
+    "storage_policy",
+    "expected_local_path_pattern",
+    "sha256_required",
+    "sha256_public_value_allowed",
+    "allowed_actions",
+    "forbidden_actions",
+}
+APPROVED_TARGETS_ALLOWED_FIELDS = {
+    "approved",
+    "device_aliases",
+    "allowed_categories",
+    "device_aliases_required",
+    "devices",
+    "forbidden_identifiers",
+}
+RUNTIME_EXECUTION_ALLOWED_FIELDS = {
+    "allowed",
+    "auth_mode",
+    "allowed_scope",
+    "forbidden_scope",
+}
+SYNTHETIC_QA_USER_ALLOWED_FIELDS = {
+    "approved",
+    "alias",
+    "raw_phone_allowed_in_public_docs",
+    "raw_otp_allowed_in_public_docs",
+    "local_secret_file_pattern",
+    "repo_allowed_file",
+    "allowed_auth_scope",
+    "forbidden_account_actions",
+}
+FIXTURES_ALLOWED_FIELDS = {
+    "stream_fixture",
+    "webview_fixture",
+    "payment_staging_fixture",
+}
+EVIDENCE_CAPTURE_ALLOWED_FIELDS = {
+    "status",
+    "screenshots",
+    "logs_logcat",
+    "videos",
+    "raw_storage_policy",
+    "raw_storage_path_pattern",
+    "public_report_policy",
+    "retention_days",
+}
+CLEANUP_ROLLBACK_ALLOWED_FIELDS = {
+    "approved",
+    "allowed_levels",
+    "requires_separate_approval",
+    "authorized_zone_scopes",
+    "clean_state_scope",
+}
+REQUIRED_REVIEWS_ALLOWED_FIELDS = {
+    "qa_reviewer_a",
+    "qa_reviewer_b",
+    "security_prod_safety_reviewer",
+    "docs_scribe",
+}
 APPROVAL_STATUSES = {"approved", "pending", "blocked", "revoked"}
 EVIDENCE_STATUSES = {"confirmed", "likely", "hypothesis", "unknown"}
 FIXTURE_STATUSES = {"approved", "out_of_scope", "pending", "blocked"}
@@ -121,6 +184,21 @@ FORBIDDEN_SCOPE_TERMS = {
     "account_mutation",
     "destructive_account_action",
     "real_user_data_changes",
+    "production_mutation",
+    "security_bypass",
+    "decompilation",
+    "patching",
+    "resigning",
+}
+REQUIRED_FORBIDDEN_SCOPE_TERMS = {
+    "payment",
+    "subscription",
+    "purchase",
+    "stream",
+    "webrtc",
+    "media_playback",
+    "webview",
+    "redirect_flow",
     "production_mutation",
     "security_bypass",
     "decompilation",
@@ -258,6 +336,19 @@ RESERVED_ALIAS_TOKENS = {
     "session",
     *BLOCKED_ALIAS_LABELS,
 }
+ANDROID_VERSION_API_LEVELS = {
+    9: {28},
+    10: {29},
+    11: {30},
+    12: {31, 32},
+    13: {33},
+    14: {34},
+    15: {35},
+    16: {36},
+}
+ANDROID_VERSION_TOKEN_RE = re.compile(r"^a(?:[9]|1[0-9]|[2-9][0-9])$")
+FORBIDDEN_PATH_LABELS = {"apks", "secrets", "devices"}
+APPROVED_REPO_TEMPLATE_PATHS = {"docs/approvals/qa_user.env.example"}
 BUILD_RESERVED_ALIAS_TOKENS = {
     "api-key",
     "api_key",
@@ -443,39 +534,47 @@ def _path_contains_forbidden_public_value(path_value: Any) -> bool:
 
 def _path_is_task005_apk(path_value: Any) -> bool:
     parts = _path_parts(path_value)
+    filename = parts[-1] if parts else ""
+    lowered_filename = filename.lower()
     return (
         parts[:3] == [".qa_local", "apks", "task-005"]
-        and len(parts) >= 4
-        and parts[-1].endswith(".apk")
+        and len(parts) == 4
+        and "*" not in filename
+        and lowered_filename.endswith(".apk")
+        and lowered_filename.count(".apk") == 1
         and not _path_contains_forbidden_public_value(path_value)
     )
 
 
 def _path_is_synthetic_secret(path_value: Any) -> bool:
     parts = _path_parts(path_value)
+    filename = parts[-1] if parts else ""
     return (
         parts[:2] == [".qa_local", "secrets"]
-        and len(parts) >= 3
-        and parts[-1].endswith(".env")
+        and len(parts) == 3
+        and "*" not in filename
+        and filename.endswith(".env")
+        and filename.count(".env") == 1
         and not _path_contains_forbidden_public_value(path_value)
     )
 
 
 def _path_is_task005_evidence(path_value: Any) -> bool:
     parts = _path_parts(path_value)
-    return parts[:3] == [".qa_local", "evidence", "task-005"] and not _path_contains_forbidden_public_value(path_value)
+    if parts[:3] != [".qa_local", "evidence", "task-005"]:
+        return False
+    if len(parts) > 4:
+        return False
+    if len(parts) == 4 and parts[3] in FORBIDDEN_PATH_LABELS:
+        return False
+    return not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_repo_template(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
     normalized = path_value.replace("\\", "/").strip()
-    if normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized):
-        return False
-    parts = [part for part in normalized.split("/") if part not in {"", "."}]
-    if ".." in parts or parts[:1] == [".qa_local"]:
-        return False
-    return normalized.endswith(".example") or normalized.endswith(".template") or ".example." in normalized
+    return normalized in APPROVED_REPO_TEMPLATE_PATHS
 
 
 def _duplicate_items(values: Any) -> list[str]:
@@ -560,6 +659,29 @@ def _scan_for_forbidden_public_values(metadata: dict[str, Any]) -> list[str]:
 
 def _validate_required_fields(metadata: dict[str, Any]) -> list[str]:
     return [f"Required field {field} is missing." for field in REQUIRED_TOP_LEVEL_FIELDS if field not in metadata]
+
+
+def _unknown_fields(payload: Any, allowed: set[str], path: str) -> list[str]:
+    if not isinstance(payload, dict):
+        return []
+    extra_fields = sorted(set(payload) - allowed)
+    return [f"{path} contains unsupported fields: {extra_fields}."] if extra_fields else []
+
+
+def _validate_schema_fields(metadata: dict[str, Any]) -> list[str]:
+    if _as_lower(metadata.get("approval_status")) != "approved":
+        return []
+    reasons: list[str] = []
+    reasons.extend(_unknown_fields(metadata, ALLOWED_TOP_LEVEL_FIELDS, "metadata"))
+    reasons.extend(_unknown_fields(metadata.get("approved_build_apk"), APPROVED_BUILD_APK_ALLOWED_FIELDS, "approved_build_apk"))
+    reasons.extend(_unknown_fields(metadata.get("approved_targets"), APPROVED_TARGETS_ALLOWED_FIELDS, "approved_targets"))
+    reasons.extend(_unknown_fields(metadata.get("runtime_execution"), RUNTIME_EXECUTION_ALLOWED_FIELDS, "runtime_execution"))
+    reasons.extend(_unknown_fields(metadata.get("synthetic_qa_user"), SYNTHETIC_QA_USER_ALLOWED_FIELDS, "synthetic_qa_user"))
+    reasons.extend(_unknown_fields(metadata.get("fixtures"), FIXTURES_ALLOWED_FIELDS, "fixtures"))
+    reasons.extend(_unknown_fields(metadata.get("evidence_capture"), EVIDENCE_CAPTURE_ALLOWED_FIELDS, "evidence_capture"))
+    reasons.extend(_unknown_fields(metadata.get("cleanup_rollback"), CLEANUP_ROLLBACK_ALLOWED_FIELDS, "cleanup_rollback"))
+    reasons.extend(_unknown_fields(metadata.get("required_reviews"), REQUIRED_REVIEWS_ALLOWED_FIELDS, "required_reviews"))
+    return reasons
 
 
 def _validate_identity(metadata: dict[str, Any]) -> list[str]:
@@ -681,6 +803,8 @@ def _alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
     parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
     if "phone" in parts and not (form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]):
         return True
+    if any(ANDROID_VERSION_TOKEN_RE.fullmatch(part) for part in parts):
+        return True
     if BLOCKED_ALIAS_PATTERN.search(normalized):
         return True
     if _tokens_without_allowed_phone(normalized, form_factor) & RESERVED_ALIAS_TOKENS:
@@ -724,8 +848,18 @@ def _valid_runtime_profile_alias(alias: Any, form_factor: Any = None) -> bool:
     return (
         isinstance(alias, str)
         and RUNTIME_PROFILE_ALIAS_RE.fullmatch(alias.strip()) is not None
-        and not _alias_has_forbidden_content(alias, form_factor)
+        and not _runtime_profile_alias_has_forbidden_content(alias, form_factor)
     )
+
+
+def _runtime_profile_alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
+    if not isinstance(alias, str):
+        return True
+    normalized = alias.strip().lower()
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    filtered_parts = [part for part in parts if not ANDROID_VERSION_TOKEN_RE.fullmatch(part)]
+    filtered_alias = "-".join(filtered_parts)
+    return _alias_has_forbidden_content(filtered_alias, form_factor)
 
 
 def _device_alias_matches_form_factor(alias: str, form_factor: str) -> bool:
@@ -742,6 +876,15 @@ def _runtime_alias_matches_device(device_alias: str, runtime_profile_alias: str,
         and runtime_index == _alias_index(device_alias)
         and runtime_major == android_major
     )
+
+
+def _api_level_matches_android_major(android_major: Any, api_level: Any) -> bool:
+    if not isinstance(android_major, int) or isinstance(android_major, bool):
+        return False
+    if not isinstance(api_level, int) or isinstance(api_level, bool):
+        return False
+    expected_levels = ANDROID_VERSION_API_LEVELS.get(android_major)
+    return expected_levels is not None and api_level in expected_levels
 
 
 def _validate_targets(metadata: dict[str, Any]) -> list[str]:
@@ -839,6 +982,10 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             reasons.append(f"approved_targets.devices[{index}].android_major must be a positive integer.")
         if not isinstance(device.get("api_level"), int) or device.get("api_level") < 1:
             reasons.append(f"approved_targets.devices[{index}].api_level must be a positive integer.")
+        elif not _api_level_matches_android_major(device.get("android_major"), device.get("api_level")):
+            reasons.append(
+                f"approved_targets.devices[{index}].api_level must match the local Android major/API sanity map."
+            )
         if device.get("adb_available") not in YES_NO_UNKNOWN:
             reasons.append(f"approved_targets.devices[{index}].adb_available is unsupported.")
         if device.get("google_play_services") not in YES_NO_UNKNOWN:
@@ -938,6 +1085,21 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
             if _contains_scope_term(item, term):
                 reasons.append(f"runtime_execution.allowed_scope contains forbidden area: {item}.")
 
+    forbidden_scope = runtime.get("forbidden_scope")
+    if not isinstance(forbidden_scope, list) or not forbidden_scope:
+        reasons.append("runtime_execution.forbidden_scope must be a non-empty list.")
+    else:
+        duplicates = _duplicate_items(forbidden_scope)
+        if duplicates:
+            reasons.append(f"runtime_execution.forbidden_scope must not contain duplicates: {duplicates}.")
+        normalized_forbidden_scope = {str(item) for item in forbidden_scope}
+        unsupported = sorted(normalized_forbidden_scope - FORBIDDEN_SCOPE_TERMS)
+        missing = sorted(REQUIRED_FORBIDDEN_SCOPE_TERMS - normalized_forbidden_scope)
+        if unsupported:
+            reasons.append(f"runtime_execution.forbidden_scope contains unsupported items: {unsupported}.")
+        if missing:
+            reasons.append(f"runtime_execution.forbidden_scope is missing required items: {missing}.")
+
     synthetic_login_in_scope = "synthetic_login_if_required" in allowed_scope
     if synthetic_login_in_scope and auth_mode != "synthetic_login_if_required":
         reasons.append("runtime_execution.auth_mode must be synthetic_login_if_required when synthetic login is in scope.")
@@ -993,6 +1155,9 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
             reasons.append("synthetic_qa_user.allowed_auth_scope must be a non-empty list.")
         else:
             normalized_auth_scope = {str(item) for item in auth_scope}
+            duplicates = _duplicate_items(auth_scope)
+            if duplicates:
+                reasons.append(f"synthetic_qa_user.allowed_auth_scope must not contain duplicates: {duplicates}.")
             unsupported = sorted(normalized_auth_scope - SYNTHETIC_ALLOWED_AUTH_SCOPE)
             missing = sorted(SYNTHETIC_REQUIRED_AUTH_SCOPE_FOR_LOGIN - normalized_auth_scope)
             if unsupported:
@@ -1005,6 +1170,9 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
             reasons.append("synthetic_qa_user.forbidden_account_actions must be a non-empty list.")
         else:
             normalized_forbidden_actions = {str(item) for item in forbidden_actions}
+            duplicates = _duplicate_items(forbidden_actions)
+            if duplicates:
+                reasons.append(f"synthetic_qa_user.forbidden_account_actions must not contain duplicates: {duplicates}.")
             unsupported = sorted(normalized_forbidden_actions - SYNTHETIC_ALLOWED_FORBIDDEN_ACCOUNT_ACTIONS)
             missing = sorted(SYNTHETIC_REQUIRED_FORBIDDEN_ACCOUNT_ACTIONS - normalized_forbidden_actions)
             if unsupported:
@@ -1109,6 +1277,9 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(separate, list) or not separate:
         reasons.append("cleanup_rollback.requires_separate_approval must be a non-empty list.")
     else:
+        duplicates = _duplicate_items(separate)
+        if duplicates:
+            reasons.append(f"cleanup_rollback.requires_separate_approval must not contain duplicates: {duplicates}.")
         unsupported_separate = sorted({str(level) for level in separate} - CLEANUP_ALLOWED_SEPARATE_APPROVALS)
         missing_separate = sorted(CLEANUP_REQUIRED_SEPARATE_APPROVALS - {str(level) for level in separate})
         if unsupported_separate:
@@ -1119,6 +1290,9 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(authorized_zone_scopes, list) or not authorized_zone_scopes:
         reasons.append("cleanup_rollback.authorized_zone_scopes must be a non-empty list.")
     else:
+        duplicates = _duplicate_items(authorized_zone_scopes)
+        if duplicates:
+            reasons.append(f"cleanup_rollback.authorized_zone_scopes must not contain duplicates: {duplicates}.")
         unsupported_scopes = sorted({str(scope) for scope in authorized_zone_scopes} - CLEANUP_ALLOWED_AUTHORIZED_ZONE_SCOPES)
         if unsupported_scopes:
             reasons.append(f"cleanup_rollback.authorized_zone_scopes contains unsupported values: {unsupported_scopes}.")
@@ -1183,6 +1357,7 @@ def build_report(metadata_path: Path | None = None, now: datetime | None = None)
 
     if metadata:
         blocked_reasons.extend(_validate_required_fields(metadata))
+        blocked_reasons.extend(_validate_schema_fields(metadata))
         blocked_reasons.extend(_validate_identity(metadata))
 
         approval_status = _normalize_enum(metadata.get("approval_status"), APPROVAL_STATUSES, default="blocked")

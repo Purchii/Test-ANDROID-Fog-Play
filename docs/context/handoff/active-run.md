@@ -4,14 +4,14 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-015D/016C - Approval hardening and gated ADB inventory`
-Thread status: `completed_local_pending_user_review`
+Thread status: `inactive_completed_default_pushed`
 Fresh thread verified: `not_created_by_current_agent`
 Task ID: `TASK-015D/016C`
 Task branch: `qa/task-015d-016c-approval-hardening-adb-inventory`
 Default branch: `main`
 Base commit: `4294eb1`
-Task branch pushed: `not_done`
-Default branch merge/push: `forbidden_without_explicit_user_command`
+Task branch pushed: `yes`
+Default branch merge/push: `authorized_by_user_command_push_to_master_interpreted_as_main`
 Production safety classification: `PROD_SAFE` for docs, validators, tests and
 default no-ADB dry-runs; `PROD_CONDITIONAL` for Phase B inventory-only ADB
 after the Phase A hard gate and owner approval.

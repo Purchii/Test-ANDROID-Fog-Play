@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015A/016 - Approval validator hardening and ADB device/build inventory preflight`
+Task: `TASK-015B/016A - Final approval validator hardening and ADB inventory rerun/preflight`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -61,16 +61,26 @@ review status: approved/confirmed/pending/blocked/rejected
 - Expiration is missing, invalid or expired.
 - TASK-005 has no approved build alias and local ignored APK storage policy.
 - APK path pattern is outside `.qa_local/` or uses a user-specific absolute path.
+- TASK-005 APK metadata omits `sha256_required: true`, allows the public SHA-256
+  value, permits actions outside `install`, `launch` and `observe`, or omits
+  critical forbidden actions such as `decompile` or `extract_secrets`.
 - `approved_by_role` is empty or not one of `project_owner`, `qa_lead` or
   `security_prod_safety_reviewer`.
 - Approved targets are not approved or do not include structured public-safe
   device targets with `device_alias` and `runtime_profile_alias`.
 - Approved targets omit `allowed_categories`.
-- Approved target aliases do not match the TASK-016 grammar or contain obvious
-  owner/location labels such as `oleg`, `home`, `livingroom`, `bedroom`,
-  `office`, `kitchen`, `personal` or `private`.
-- TASK-005 approval metadata has only phone secondary targets and no P0
-  Android TV/STB D-pad target.
+- Approved targets omit `device_aliases_required: true`.
+- Approved target aliases do not match the TASK-016 grammar, contain reserved
+  identifier/security/account tokens, contain IP/fingerprint-like values, or
+  contain owner/location labels such as `oleg`, `home`, `livingroom`,
+  `bedroom`, `office`, `kitchen`, `personal` or `private`.
+- `approved_targets.device_aliases` and structured
+  `approved_targets.devices[*].device_alias` disagree.
+- TASK-005 approval metadata has no actionable P0 Android TV/STB D-pad target
+  with `adb_available: yes`, `classification_confidence: manual_confirmed`,
+  `manual_review_required: false` and `forbidden_identifiers_excluded: true`.
+- Structured target categories are inconsistent with
+  `approved_targets.allowed_categories`.
 - Device metadata includes serials, IMEI, MAC, Android ID, Google account or personal identifiers.
 - Runtime scope includes anything outside the exact TASK-005 allowlist:
   `install`, `launch`, `first_visible_state`, `synthetic_login_if_required`,
@@ -78,6 +88,11 @@ review status: approved/confirmed/pending/blocked/rejected
   `background_foreground`, `force_stop_relaunch`,
   `clear_cache_if_preapproved`, `clear_app_data_before_after_clean_state`,
   `crash_anr_logcat_observation`, `redacted_evidence_summary`.
+- Runtime scope is empty or misses the TASK-005 core subset: `install`,
+  `launch`, `first_visible_state`, `initial_focus`,
+  `minimal_dpad_navigation`, `back_home`, `background_foreground`,
+  `force_stop_relaunch`, `crash_anr_logcat_observation` and
+  `redacted_evidence_summary`.
 - Runtime scope includes payment, subscription, purchase, billing, checkout,
   card, wallet, bank, transaction, invoice, receipt, stream, WebRTC, media,
   video, playback, player, cloud/game stream, WebView, browser, custom tab,
@@ -93,6 +108,7 @@ review status: approved/confirmed/pending/blocked/rejected
 - Synthetic QA user metadata includes raw phone or OTP values.
 - Evidence capture values are missing, pending, blocked or outside the exact
   allowed enum values.
+- Public report policy is anything other than `redacted_summaries_only`.
 - Raw evidence storage is not local ignored storage.
 - Cleanup levels are missing, outside C1-C4, or include C5 without separate
   approval.
@@ -136,6 +152,17 @@ Raw ADB output, serials and alias maps remain local-only under
 serial, IP address, MAC, IMEI, Android ID, Google account, full build
 fingerprint, phone number, OTP, owner name or room/location labels.
 
+Generated TASK-016 inventory is heuristic by default:
+
+```text
+classification_confidence: heuristic
+manual_review_required: true
+```
+
+Owner/QA review must copy selected targets into approval metadata as
+`manual_confirmed` with `manual_review_required: false` before TASK-005 can be
+approved for limited runtime.
+
 ## Reviewer Gate
 
 The required reviewers are:
@@ -156,7 +183,7 @@ Allowed:
 
 - Build alias such as `task-005-local-apk-001`.
 - Device aliases such as `tv-tcl-001`, `stb-xiaomi-001` or
-  `phone-samsung-001`.
+  `unknown-samsung-001`.
 - Runtime profile aliases such as `tv-tcl-a11-001`.
 - Synthetic user alias `qa-user-phone-001`.
 - Local ignored path patterns under `.qa_local/`.
@@ -171,3 +198,8 @@ Forbidden:
 - Private endpoint, route, deeplink, redirect chain, header or payload details.
 - Runtime/device command recipes outside the exact owner-approved TASK-016 ADB
   inventory allowlist and any security bypass instructions.
+
+See also:
+
+- `docs/approvals/device_alias_policy.md`
+- `docs/approvals/adb_inventory_policy.md`

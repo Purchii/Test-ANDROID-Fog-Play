@@ -41,7 +41,9 @@ A task is done only when:
 - Safe task prioritization and approval-dependency maps are planning-only: they may select public-safe docs/static work, but they must keep runtime/device/APK/WebView/WebRTC/payment/network/live CI tasks `blocked` until every required dependency is `present=true`, `evidence_status=confirmed` and reviewed.
 - Next-task selection blocker and safe backlog refresh docs must not approve execution: proposed follow-up tasks may be selected only when they are public-safe, bounded, locally verifiable and require no user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
 - Approval metadata validators must fail closed: missing/malformed/non-object metadata, missing required fields, non-approved or non-confirmed approvals, expired approvals, missing approver role, unsupported approver role, missing build/target aliases, missing structured targets, unsafe device aliases, phone-only TASK-005 target sets, invalid fixture statuses, non-out-of-scope current stream/WebView/payment fixtures, pending/blocked/invalid evidence policy, non-local ignored storage, unsupported runtime scope, forbidden runtime scope, raw phone/OTP, device identifiers, unknown cleanup levels, C5 cleanup without separate approval, and missing/pending reviews keep runtime approval `blocked`. A valid approval report may return only `approved_for_limited_runtime` with `runtime_execution_status=not_run`; it must not claim runtime pass.
+- Final approval metadata validators must also block non-actionable P0 TV/STB targets, `adb_available` other than `yes`, heuristic/manual-review-required runtime targets, reserved alias tokens, empty or incomplete TASK-005 runtime scope, raw-evidence public report policies, weak APK SHA-256 policy, incomplete APK allowed actions, forbidden build actions in `allowed_actions`, missing critical forbidden build actions and mismatched allowed/structured target categories.
 - ADB device inventory preflight must be inventory-only: default execution makes no ADB calls and returns blocked/not-run; owner-approved `--allow-adb` may run only `adb devices -l`, safe getprop fields, `wm size`, `wm density` and `pm list features`; raw serial/IP data must stay under `.qa_local/devices/`; public-safe inventory must exclude raw identifiers and always report runtime/app statuses as `not_run`.
+- ADB device inventory must validate existing alias-map entries before using them in public-safe output. Unsafe persisted aliases block public inventory rather than being trusted.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 
@@ -173,7 +175,8 @@ Future TASK-005 limited runtime smoke may be considered only after:
 - approval metadata validates as `approved_for_limited_runtime`;
 - approval evidence is `confirmed` and unexpired;
 - approved build is represented by a public-safe alias and local ignored `.qa_local/` path pattern;
-- approved targets use aliases only, such as `tv-001`, `stb-001` or `phone-001`;
+- approved targets use public-safe aliases only;
+- approved runtime targets include at least one manually confirmed P0 Android TV/STB D-pad target with ADB available and manual review no longer required;
 - evidence capture policy is explicit and non-pending;
 - raw storage policy is local ignored storage;
 - cleanup/rollback levels exclude C5 unless separately approved;

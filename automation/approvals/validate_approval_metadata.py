@@ -65,6 +65,29 @@ TASK_005_ALLOWED_RUNTIME_SCOPE = {
     "crash_anr_logcat_observation",
     "redacted_evidence_summary",
 }
+TASK_005_REQUIRED_RUNTIME_SCOPE = {
+    "install",
+    "launch",
+    "first_visible_state",
+    "initial_focus",
+    "minimal_dpad_navigation",
+    "back_home",
+    "background_foreground",
+    "force_stop_relaunch",
+    "crash_anr_logcat_observation",
+    "redacted_evidence_summary",
+}
+BUILD_ALLOWED_ACTIONS = {"install", "launch", "observe"}
+BUILD_REQUIRED_FORBIDDEN_ACTIONS = {
+    "commit",
+    "upload",
+    "archive",
+    "decompile",
+    "patch",
+    "resign",
+    "extract_private_endpoints",
+    "extract_secrets",
+}
 FORBIDDEN_SCOPE_TERMS = {
     "stream",
     "webrtc",
@@ -145,6 +168,13 @@ TARGET_ALLOWED_CATEGORIES = {
     "aosp_stb",
     "android_phone_secondary",
 }
+TARGET_CATEGORY_TO_STRUCTURED = {
+    "physical_android_tv": "android_tv",
+    "google_tv": "google_tv",
+    "android_stb": "android_stb",
+    "aosp_stb": "aosp_stb",
+    "android_phone_secondary": "android_phone_secondary",
+}
 STRUCTURED_TARGET_CATEGORIES = {
     "android_tv",
     "google_tv",
@@ -162,8 +192,48 @@ RUNTIME_PROFILE_ALIAS_RE = re.compile(
     r"^(tv|stb|phone|tablet|emulator|unknown)-[a-z0-9]+(?:-[a-z0-9]+)*-a[0-9]{1,2}-[0-9]{3}$"
 )
 BUILD_ALIAS_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$")
-BLOCKED_ALIAS_LABELS = {"oleg", "home", "livingroom", "bedroom", "office", "kitchen", "personal", "private"}
-BLOCKED_ALIAS_PATTERN = re.compile(r"\b(?:oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private)\b")
+BLOCKED_ALIAS_LABELS = {
+    "oleg",
+    "home",
+    "livingroom",
+    "living-room",
+    "living_room",
+    "bedroom",
+    "office",
+    "kitchen",
+    "personal",
+    "private",
+}
+RESERVED_ALIAS_TOKENS = {
+    "serial",
+    "serialnumber",
+    "serial-number",
+    "serial_number",
+    "imei",
+    "imsi",
+    "mac",
+    "macaddress",
+    "mac-address",
+    "mac_address",
+    "androidid",
+    "android-id",
+    "android_id",
+    "google-account",
+    "google_account",
+    "account",
+    "phone",
+    "otp",
+    "token",
+    "secret",
+    "password",
+    "cookie",
+    "session",
+    *BLOCKED_ALIAS_LABELS,
+}
+BLOCKED_ALIAS_PATTERN = re.compile(
+    r"\b(?:oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private)\b"
+)
+FINGERPRINT_LIKE_RE = re.compile(r"[a-z0-9_.-]+/[a-z0-9_.-]+/[a-z0-9_.-]+:[0-9]", re.IGNORECASE)
 FORBIDDEN_IDENTIFIER_KEYS = {
     "serial",
     "serial_number",
@@ -363,7 +433,44 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
         reasons.append("approved_build_apk.storage_policy must be local_ignored_path_only.")
     if not _path_is_local_ignored(build.get("expected_local_path_pattern")):
         reasons.append("approved_build_apk.expected_local_path_pattern must stay under .qa_local/.")
+    if build.get("sha256_required") is not True:
+        reasons.append("approved_build_apk.sha256_required must be true.")
+    if build.get("sha256_public_value_allowed") is not False:
+        reasons.append("approved_build_apk.sha256_public_value_allowed must be false.")
+
+    allowed_actions = build.get("allowed_actions")
+    if not isinstance(allowed_actions, list) or not allowed_actions:
+        reasons.append("approved_build_apk.allowed_actions must be a non-empty list.")
+    else:
+        normalized_allowed_actions = {str(action) for action in allowed_actions}
+        unsupported_allowed = sorted(normalized_allowed_actions - BUILD_ALLOWED_ACTIONS)
+        if unsupported_allowed:
+            reasons.append(f"approved_build_apk.allowed_actions contains unsupported actions: {unsupported_allowed}.")
+        missing_allowed = sorted(BUILD_ALLOWED_ACTIONS - normalized_allowed_actions)
+        if missing_allowed:
+            reasons.append(f"approved_build_apk.allowed_actions is missing required actions: {missing_allowed}.")
+
+    forbidden_actions = build.get("forbidden_actions")
+    if not isinstance(forbidden_actions, list) or not forbidden_actions:
+        reasons.append("approved_build_apk.forbidden_actions must be a non-empty list.")
+    else:
+        missing_forbidden = sorted(BUILD_REQUIRED_FORBIDDEN_ACTIONS - {str(action) for action in forbidden_actions})
+        if missing_forbidden:
+            reasons.append(f"approved_build_apk.forbidden_actions is missing required actions: {missing_forbidden}.")
     return reasons
+
+
+def _alias_tokens(alias: str) -> set[str]:
+    normalized = alias.strip().lower()
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    tokens = set(parts)
+    for start in range(len(parts)):
+        for end in range(start + 2, min(len(parts), start + 4) + 1):
+            joined = "".join(parts[start:end])
+            tokens.add(joined)
+            tokens.add("-".join(parts[start:end]))
+            tokens.add("_".join(parts[start:end]))
+    return tokens
 
 
 def _alias_has_forbidden_content(alias: Any) -> bool:
@@ -374,7 +481,15 @@ def _alias_has_forbidden_content(alias: Any) -> bool:
         return True
     if BLOCKED_ALIAS_PATTERN.search(normalized):
         return True
-    return bool(IP_RE.search(normalized) or MAC_RE.search(normalized) or IMEI_RE.search(normalized))
+    if _alias_tokens(normalized) & RESERVED_ALIAS_TOKENS:
+        return True
+    return bool(
+        IP_RE.search(normalized)
+        or MAC_RE.search(normalized)
+        or IMEI_RE.search(normalized)
+        or ANDROID_ID_RE.search(normalized)
+        or FINGERPRINT_LIKE_RE.search(normalized)
+    )
 
 
 def _valid_device_alias(alias: Any) -> bool:
@@ -396,15 +511,26 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
         return ["approved_targets must be an object."]
     if targets.get("approved") is not True:
         reasons.append("approved_targets.approved must be true.")
+    if targets.get("device_aliases_required") is not True:
+        reasons.append("approved_targets.device_aliases_required must be true.")
     categories = targets.get("allowed_categories")
+    normalized_allowed_categories: set[str] = set()
     if not isinstance(categories, list) or not categories:
         reasons.append("approved_targets.allowed_categories must list approved target categories.")
     else:
         unsupported_categories = [str(category) for category in categories if str(category) not in TARGET_ALLOWED_CATEGORIES]
         if unsupported_categories:
             reasons.append(f"approved_targets.allowed_categories contains unsupported categories: {unsupported_categories}.")
+        normalized_allowed_categories = {
+            TARGET_CATEGORY_TO_STRUCTURED[str(category)]
+            for category in categories
+            if str(category) in TARGET_CATEGORY_TO_STRUCTURED
+        }
 
-    aliases = targets.get("device_aliases") or targets.get("approved_device_aliases")
+    aliases = targets.get("device_aliases")
+    if aliases is None and targets.get("device_aliases_required") is not True:
+        aliases = targets.get("approved_device_aliases")
+    listed_aliases: set[str] = set()
     if aliases is not None:
         if not isinstance(aliases, list) or not aliases:
             reasons.append("approved_targets.device_aliases must be a non-empty list when present.")
@@ -412,13 +538,21 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             for alias in aliases:
                 if not _valid_device_alias(alias):
                     reasons.append(f"approved_targets.device_aliases contains unsafe alias: {alias}.")
+                if isinstance(alias, str):
+                    listed_aliases.add(alias.strip())
+            if len(listed_aliases) != len([alias for alias in aliases if isinstance(alias, str)]):
+                reasons.append("approved_targets.device_aliases must not contain duplicates.")
+    elif targets.get("device_aliases_required") is True:
+        reasons.append("approved_targets.device_aliases must be present when device_aliases_required=true.")
 
     devices = targets.get("devices")
     if not isinstance(devices, list) or not devices:
         reasons.append("approved_targets.devices must include structured device targets.")
         return reasons
 
-    has_p0_tv_stb_dpad = False
+    has_actionable_p0_tv_stb_dpad = False
+    structured_aliases: list[str] = []
+    runtime_aliases: list[str] = []
     required_device_fields = {
         "device_alias",
         "runtime_profile_alias",
@@ -442,10 +576,18 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             reasons.append(f"approved_targets.devices[{index}].{field} is missing.")
         if not _valid_device_alias(device.get("device_alias")):
             reasons.append(f"approved_targets.devices[{index}].device_alias is unsafe or invalid.")
+        elif isinstance(device.get("device_alias"), str):
+            structured_aliases.append(device["device_alias"].strip())
         if not _valid_runtime_profile_alias(device.get("runtime_profile_alias")):
             reasons.append(f"approved_targets.devices[{index}].runtime_profile_alias is unsafe or invalid.")
+        elif isinstance(device.get("runtime_profile_alias"), str):
+            runtime_aliases.append(device["runtime_profile_alias"].strip())
         if device.get("category") not in STRUCTURED_TARGET_CATEGORIES:
             reasons.append(f"approved_targets.devices[{index}].category is unsupported.")
+        elif normalized_allowed_categories and device.get("category") not in normalized_allowed_categories:
+            reasons.append(
+                f"approved_targets.devices[{index}].category is not allowed by approved_targets.allowed_categories."
+            )
         if device.get("priority") not in TARGET_PRIORITIES:
             reasons.append(f"approved_targets.devices[{index}].priority is unsupported.")
         if device.get("form_factor") not in {"tv", "stb", "phone", "tablet", "emulator", "unknown"}:
@@ -473,10 +615,35 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             and device.get("form_factor") in TV_STB_FORM_FACTORS
             and device.get("input_method") == "dpad_remote"
         ):
-            has_p0_tv_stb_dpad = True
+            if device.get("adb_available") != "yes":
+                reasons.append(f"approved_targets.devices[{index}].adb_available must be yes for runtime approval.")
+            if device.get("classification_confidence") != "manual_confirmed":
+                reasons.append(
+                    f"approved_targets.devices[{index}].classification_confidence must be manual_confirmed for runtime approval."
+                )
+            if device.get("manual_review_required") is not False:
+                reasons.append(f"approved_targets.devices[{index}].manual_review_required must be false for runtime approval.")
+            if (
+                device.get("adb_available") == "yes"
+                and device.get("classification_confidence") == "manual_confirmed"
+                and device.get("manual_review_required") is False
+                and device.get("forbidden_identifiers_excluded") is True
+            ):
+                has_actionable_p0_tv_stb_dpad = True
 
-    if not has_p0_tv_stb_dpad:
-        reasons.append("TASK-005 approval requires at least one P0 Android TV/STB D-pad target.")
+    if len(set(structured_aliases)) != len(structured_aliases):
+        reasons.append("approved_targets.devices device_alias values must not contain duplicates.")
+    if len(set(runtime_aliases)) != len(runtime_aliases):
+        reasons.append("approved_targets.devices runtime_profile_alias values must not contain duplicates.")
+    if listed_aliases:
+        missing_from_structured = sorted(listed_aliases - set(structured_aliases))
+        missing_from_list = sorted(set(structured_aliases) - listed_aliases)
+        if missing_from_structured:
+            reasons.append(f"approved_targets.device_aliases contains aliases missing from structured devices: {missing_from_structured}.")
+        if missing_from_list:
+            reasons.append(f"approved_targets.devices contains aliases missing from device_aliases: {missing_from_list}.")
+    if not has_actionable_p0_tv_stb_dpad:
+        reasons.append("TASK-005 approval requires at least one actionable P0 Android TV/STB D-pad target.")
     return reasons
 
 
@@ -489,6 +656,11 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
         reasons.append("runtime_execution.allowed must be true for TASK-005 approval metadata.")
 
     allowed_scope = _stringify_scope(runtime.get("allowed_scope"))
+    if metadata.get("task_id") == DEFAULT_TASK_ID and not allowed_scope:
+        reasons.append("runtime_execution.allowed_scope must be a non-empty list for TASK-005 approval metadata.")
+    missing_core_scope = sorted(TASK_005_REQUIRED_RUNTIME_SCOPE - set(allowed_scope))
+    if metadata.get("task_id") == DEFAULT_TASK_ID and missing_core_scope:
+        reasons.append(f"runtime_execution.allowed_scope is missing required TASK-005 core items: {missing_core_scope}.")
     for item in allowed_scope:
         if item not in TASK_005_ALLOWED_RUNTIME_SCOPE:
             reasons.append(f"runtime_execution.allowed_scope contains unsupported item: {item}.")
@@ -559,6 +731,8 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
         reasons.append("evidence_capture.raw_storage_policy must be local_ignored_path_only.")
     if not _path_is_local_ignored(evidence.get("raw_storage_path_pattern")):
         reasons.append("evidence_capture.raw_storage_path_pattern must stay under .qa_local/.")
+    if evidence.get("public_report_policy") != "redacted_summaries_only":
+        reasons.append("evidence_capture.public_report_policy must be redacted_summaries_only.")
     for field in ("screenshots", "logs_logcat"):
         value = _as_lower(evidence.get(field))
         if value not in EVIDENCE_CAPTURE_IMAGE_LOG_VALUES:

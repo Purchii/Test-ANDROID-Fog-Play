@@ -236,6 +236,15 @@ RESERVED_ALIAS_TOKENS = {
     *BLOCKED_ALIAS_LABELS,
 }
 BUILD_RESERVED_ALIAS_TOKENS = {
+    "api-key",
+    "api_key",
+    "apikey",
+    "extract-secrets",
+    "extract_secrets",
+    "extractsecrets",
+    "private-endpoints",
+    "private_endpoints",
+    "privateendpoints",
     "secret",
     "token",
     "password",
@@ -254,6 +263,25 @@ BUILD_RESERVED_ALIAS_TOKENS = {
     "android-id",
     "android_id",
     "phone",
+    "otp",
+    "account",
+    "google-account",
+    "google_account",
+}
+APPROVED_TARGET_DEVICE_ALLOWED_FIELDS = {
+    "device_alias",
+    "runtime_profile_alias",
+    "category",
+    "priority",
+    "form_factor",
+    "input_method",
+    "android_major",
+    "api_level",
+    "adb_available",
+    "google_play_services",
+    "classification_confidence",
+    "manual_review_required",
+    "forbidden_identifiers_excluded",
 }
 BLOCKED_ALIAS_PATTERN = re.compile(
     r"\b(?:oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private)\b"
@@ -359,6 +387,31 @@ def _path_is_local_ignored(path_value: Any) -> bool:
     return parts[:1] == [".qa_local"] and ".." not in parts
 
 
+def _path_is_repo_template(path_value: Any) -> bool:
+    if not isinstance(path_value, str):
+        return False
+    normalized = path_value.replace("\\", "/").strip()
+    if normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized):
+        return False
+    parts = [part for part in normalized.split("/") if part not in {"", "."}]
+    if ".." in parts or parts[:1] == [".qa_local"]:
+        return False
+    return normalized.endswith(".example") or normalized.endswith(".template") or ".example." in normalized
+
+
+def _duplicate_items(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for value in values:
+        normalized = str(value)
+        if normalized in seen:
+            duplicates.add(normalized)
+        seen.add(normalized)
+    return sorted(duplicates)
+
+
 def _iter_json(value: Any, path: str = "$") -> list[tuple[str, Any]]:
     items = [(path, value)]
     if isinstance(value, dict):
@@ -406,6 +459,8 @@ def _scan_for_forbidden_public_values(metadata: dict[str, Any]) -> list[str]:
 
         if PHONE_RE.search(text) and sum(char.isdigit() for char in text) >= 10:
             reasons.append(f"Phone-like public value is present at {path}.")
+        if IP_RE.search(text):
+            reasons.append(f"IP-like public value is present at {path}.")
         if MAC_RE.search(text):
             reasons.append(f"MAC-like public value is present at {path}.")
         if IMEI_RE.search(text):
@@ -471,6 +526,9 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(allowed_actions, list) or not allowed_actions:
         reasons.append("approved_build_apk.allowed_actions must be a non-empty list.")
     else:
+        duplicates = _duplicate_items(allowed_actions)
+        if duplicates:
+            reasons.append(f"approved_build_apk.allowed_actions must not contain duplicates: {duplicates}.")
         normalized_allowed_actions = {str(action) for action in allowed_actions}
         unsupported_allowed = sorted(normalized_allowed_actions - BUILD_ALLOWED_ACTIONS)
         if unsupported_allowed:
@@ -483,6 +541,9 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(forbidden_actions, list) or not forbidden_actions:
         reasons.append("approved_build_apk.forbidden_actions must be a non-empty list.")
     else:
+        duplicates = _duplicate_items(forbidden_actions)
+        if duplicates:
+            reasons.append(f"approved_build_apk.forbidden_actions must not contain duplicates: {duplicates}.")
         missing_forbidden = sorted(BUILD_REQUIRED_FORBIDDEN_ACTIONS - {str(action) for action in forbidden_actions})
         if missing_forbidden:
             reasons.append(f"approved_build_apk.forbidden_actions is missing required actions: {missing_forbidden}.")
@@ -616,6 +677,9 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(categories, list) or not categories:
         reasons.append("approved_targets.allowed_categories must list approved target categories.")
     else:
+        duplicates = _duplicate_items(categories)
+        if duplicates:
+            reasons.append(f"approved_targets.allowed_categories must not contain duplicates: {duplicates}.")
         unsupported_categories = [str(category) for category in categories if str(category) not in TARGET_ALLOWED_CATEGORIES]
         if unsupported_categories:
             reasons.append(f"approved_targets.allowed_categories contains unsupported categories: {unsupported_categories}.")
@@ -651,26 +715,14 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
     has_actionable_p0_tv_stb_dpad = False
     structured_aliases: list[str] = []
     runtime_aliases: list[str] = []
-    required_device_fields = {
-        "device_alias",
-        "runtime_profile_alias",
-        "category",
-        "priority",
-        "form_factor",
-        "input_method",
-        "android_major",
-        "api_level",
-        "adb_available",
-        "google_play_services",
-        "classification_confidence",
-        "manual_review_required",
-        "forbidden_identifiers_excluded",
-    }
     for index, device in enumerate(devices):
         if not isinstance(device, dict):
             reasons.append(f"approved_targets.devices[{index}] must be an object.")
             continue
-        for field in sorted(required_device_fields - set(device)):
+        extra_fields = sorted(set(device) - APPROVED_TARGET_DEVICE_ALLOWED_FIELDS)
+        if extra_fields:
+            reasons.append(f"approved_targets.devices[{index}] contains unsupported public metadata fields: {extra_fields}.")
+        for field in sorted(APPROVED_TARGET_DEVICE_ALLOWED_FIELDS - set(device)):
             reasons.append(f"approved_targets.devices[{index}].{field} is missing.")
         form_factor = device.get("form_factor")
         device_alias = device.get("device_alias")
@@ -786,6 +838,9 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
         reasons.append("runtime_execution.allowed must be true for TASK-005 approval metadata.")
 
     allowed_scope = _stringify_scope(runtime.get("allowed_scope"))
+    duplicates = _duplicate_items(runtime.get("allowed_scope"))
+    if duplicates:
+        reasons.append(f"runtime_execution.allowed_scope must not contain duplicates: {duplicates}.")
     auth_mode = _as_lower(runtime.get("auth_mode"))
     if auth_mode not in AUTH_MODES:
         reasons.append("runtime_execution.auth_mode must be one of synthetic_login_if_required, auth_out_of_scope, no_auth_required.")
@@ -841,8 +896,15 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
     if user.get("approved") is True and user.get("raw_otp_allowed_in_public_docs") is not False:
         reasons.append("synthetic_qa_user raw OTP must be forbidden in public docs.")
     local_secret_file = user.get("local_secret_file_pattern")
+    if user.get("approved") is True and local_secret_file is None:
+        reasons.append("synthetic_qa_user.approved requires local_secret_file_pattern under .qa_local/.")
     if local_secret_file is not None and not _path_is_local_ignored(local_secret_file):
         reasons.append("synthetic_qa_user.local_secret_file_pattern must stay under .qa_local/.")
+    repo_allowed_file = user.get("repo_allowed_file")
+    if user.get("approved") is True and repo_allowed_file is None:
+        reasons.append("synthetic_qa_user.approved requires repo_allowed_file template path.")
+    if repo_allowed_file is not None and not _path_is_repo_template(repo_allowed_file):
+        reasons.append("synthetic_qa_user.repo_allowed_file must be a repository placeholder/template path outside .qa_local/.")
     return reasons
 
 
@@ -920,6 +982,9 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(levels, list) or not levels:
         reasons.append("cleanup_rollback.allowed_levels must not be empty.")
         return reasons
+    duplicates = _duplicate_items(levels)
+    if duplicates:
+        reasons.append(f"cleanup_rollback.allowed_levels must not contain duplicates: {duplicates}.")
     unsupported_levels = [str(level) for level in levels if str(level) not in CLEANUP_ALLOWED_LEVELS]
     if unsupported_levels:
         reasons.append(f"cleanup_rollback.allowed_levels contains unsupported levels: {unsupported_levels}.")

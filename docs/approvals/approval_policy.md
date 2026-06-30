@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015C/016B - Approval/device-inventory consistency polish and local ADB inventory readiness`
+Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -66,6 +66,11 @@ review status: approved/confirmed/pending/blocked/rejected
   identifier-like values, permits actions outside `install`, `launch` and
   `observe`, or omits critical forbidden actions such as `decompile` or
   `extract_secrets`.
+- APK action lists contain duplicate values.
+- Build aliases contain compound reserved token forms such as `api-key`,
+  `apikey`, `api_key`, `extract-secrets`, `extract_secrets`,
+  `extractsecrets`, `private-endpoints`, `private_endpoints` or
+  `privateendpoints`.
 - `approved_by_role` is empty or not one of `project_owner`, `qa_lead` or
   `security_prod_safety_reviewer`.
 - Approved targets are not approved or do not include structured public-safe
@@ -89,6 +94,9 @@ review status: approved/confirmed/pending/blocked/rejected
 - Structured target categories are inconsistent with
   `approved_targets.allowed_categories`.
 - Device metadata includes serials, IMEI, MAC, Android ID, Google account or personal identifiers.
+- Structured `approved_targets.devices[*]` includes fields outside the
+  documented public-safe allowlist.
+- Approval metadata contains IP-like values in any JSON field.
 - Runtime scope includes anything outside the exact TASK-005 allowlist:
   `install`, `launch`, `first_visible_state`, `synthetic_login_if_required`,
   `initial_focus`, `minimal_dpad_navigation`, `back_home`,
@@ -112,6 +120,11 @@ review status: approved/confirmed/pending/blocked/rejected
   `out_of_scope`.
 - `synthetic_login_if_required` is in scope but `synthetic_qa_user.approved`
   is not true.
+- `synthetic_qa_user.approved` is true but the public alias is not
+  `qa-user-phone-001`, `local_secret_file_pattern` is missing or outside
+  `.qa_local/`, or `repo_allowed_file` is missing, under `.qa_local/` or not a
+  repository placeholder/template path such as
+  `docs/approvals/qa_user.env.example`.
 - `runtime_execution.auth_mode` is missing, outside
   `synthetic_login_if_required`, `auth_out_of_scope` or `no_auth_required`, or
   inconsistent with the presence/absence of `synthetic_login_if_required` in
@@ -130,13 +143,25 @@ review status: approved/confirmed/pending/blocked/rejected
 - Raw evidence storage is not local ignored storage.
 - Cleanup levels are missing, outside C1-C4, or include C5 without separate
   approval.
+- Runtime scope, cleanup levels, build actions or allowed target categories
+  contain duplicate values.
 - Any required reviewer is not `approved` or `confirmed`.
+
+## TASK-015D/016C Two-Phase Gate
+
+TASK-015D/016C has two phases:
+
+- Phase A: approval hardening and documentation/tests.
+- Phase B: owner-approved inventory-only ADB preflight.
+
+Phase B is blocked until Phase A passes. Even after Phase A passes, Phase B
+does not approve TASK-005 runtime execution.
 
 ## TASK-016 Inventory Preflight
 
-TASK-016 may run only owner-approved inventory commands and only with
-`--allow-adb`. The default command must not call ADB and must return a
-blocked/not-run report.
+TASK-016C may run only owner-approved inventory commands, only with
+`--allow-adb`, and only after the TASK-015D Phase A hard gate passes. The
+default command must not call ADB and must return a blocked/not-run report.
 
 This is the only approved device-command exception in this policy: the exact
 TASK-016 inventory allowlist below is permitted for local preflight after owner

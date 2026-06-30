@@ -16,6 +16,8 @@ WebView / WebRTC testing of MTC Fog Play.
 - TASK-015A hardens approval validation with strict allowlists.
 - TASK-015C/016B hardens approval/device inventory consistency without runtime
   execution.
+- TASK-015D/016C uses a two-phase hard gate: Phase B inventory-only ADB is
+  blocked until Phase A approval hardening passes.
 - TASK-016 inventory preflight does not install, launch, capture logcat,
   screenshots or videos, and always reports runtime/app statuses as `not_run`.
 
@@ -66,6 +68,10 @@ python automation/device_inventory/generate_adb_device_inventory.py \
 This command may run only the approved ADB inventory allowlist and must not
 install, launch, smoke test, use logcat, capture screenshots/videos or mutate
 device/account/application state.
+
+For TASK-015D/016C, this command is Phase B only. It may not run until the
+Phase A approval-hardening gate passes, and generated inventory remains
+heuristic/manual-review-required until separate owner/QA manual review.
 
 ## Local-Only Artifacts
 

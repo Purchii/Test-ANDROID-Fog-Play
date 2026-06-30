@@ -121,19 +121,21 @@ def _write_json(path: Path | None, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _path_is_under_qa_local(path: Path | None) -> bool:
+def _path_is_under_qa_local_devices(path: Path | None) -> bool:
     if path is None:
         return True
     normalized = path.as_posix()
     parts = [part for part in normalized.split("/") if part not in {"", "."}]
-    return parts[:1] == [".qa_local"] and ".." not in parts
+    if parts[:2] != [".qa_local", "devices"] or ".." in parts:
+        return False
+    return not any(IP_RE.fullmatch(part) or MAC_RE.fullmatch(part) or ANDROID_ID_RE.fullmatch(part) for part in parts)
 
 
 def _local_only_path_errors(*paths: tuple[str, Path | None]) -> list[str]:
     return [
-        f"{label} must stay under .qa_local/ because it may contain local-only identifiers."
+        f"{label} must stay under .qa_local/devices/ because it may contain local-only identifiers."
         for label, path in paths
-        if not _path_is_under_qa_local(path)
+        if not _path_is_under_qa_local_devices(path)
     ]
 
 
@@ -574,7 +576,7 @@ def build_inventory(
         ("--public-output", public_output),
         ("--report", report_path),
     )
-    if allow_adb and path_errors:
+    if path_errors:
         return _preflight_report("blocked", path_errors, 0)
 
     report, raw_payload, alias_map, public_payload = build_report(

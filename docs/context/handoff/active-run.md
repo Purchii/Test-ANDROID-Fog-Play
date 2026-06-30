@@ -4,14 +4,14 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-015E/017 - Final approval metadata hardening + public-safe device inventory review package`
-Thread status: `active_verified_pending_commit`
+Thread status: `active_merged_pending_default_push`
 Fresh thread verified: `current_thread_renamed_for_task`
 Task ID: `TASK-015E/017`
 Task branch: `qa/task-015e-017-final-metadata-inventory-review`
 Default branch: `main`
 Base commit: `07018c2`
-Task branch pushed: `pending`
-Default branch merge/push: `pending_after_all_gates`
+Task branch pushed: `yes`
+Default branch merge/push: `local_main_merge_complete_push_pending`
 Production safety classification: `PROD_SAFE` for docs, validators, tests,
 hygiene scans and default no-ADB dry-runs; `PROD_CONDITIONAL` for optional
 Phase B inventory-only ADB refresh after Phase A passes.
@@ -108,7 +108,7 @@ until a separate approved runtime task.
 
 ## Multi-agent result
 
-- Orchestrator: `PASS_PENDING_COMMIT`
+- Orchestrator: `PASS_PENDING_DEFAULT_PUSH`
 - Planner: `PASS_READ_ONLY`
 - Builder: `PASS`
 - QA Reviewer A: `PASS_READ_ONLY_STATIC_FINAL_REVIEW`

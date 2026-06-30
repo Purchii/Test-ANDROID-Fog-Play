@@ -87,6 +87,25 @@ RESERVED_ALIAS_TOKENS = {
     "session",
     *BLOCKED_ALIAS_LABELS,
 }
+ANDROID_VERSION_API_LEVELS = {
+    9: {28},
+    10: {29},
+    11: {30},
+    12: {31, 32},
+    13: {33},
+    14: {34},
+    15: {35},
+    16: {36},
+}
+ANDROID_VERSION_TOKEN_RE = re.compile(r"^a(?:[9]|1[0-9]|[2-9][0-9])$")
+FORM_FACTOR_ALIAS_PREFIXES = {
+    "tv": {"tv"},
+    "stb": {"stb"},
+    "phone": {"phone"},
+    "tablet": {"tablet"},
+    "emulator": {"emulator"},
+    "unknown": {"unknown"},
+}
 BLOCKED_LABEL_PATTERN = r"oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private"
 BLOCKED_PUBLIC_LABEL_RE = re.compile(rf"\b(?:{BLOCKED_LABEL_PATTERN})\b", re.IGNORECASE)
 ALIAS_RE = DEVICE_ALIAS_RE
@@ -375,6 +394,8 @@ def _alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
     parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
     if "phone" in parts and not (form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]):
         return True
+    if any(ANDROID_VERSION_TOKEN_RE.fullmatch(part) for part in parts):
+        return True
     if BLOCKED_PUBLIC_LABEL_RE.search(normalized):
         return True
     if _tokens_without_allowed_phone(normalized, form_factor) & RESERVED_ALIAS_TOKENS:
@@ -390,6 +411,15 @@ def _alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
         or OTP_RE.search(normalized)
         or SECRET_PAIR_RE.search(normalized)
     )
+
+
+def _runtime_profile_alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
+    if not isinstance(alias, str):
+        return True
+    normalized = alias.strip().lower()
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    filtered_alias = "-".join(part for part in parts if not ANDROID_VERSION_TOKEN_RE.fullmatch(part))
+    return _alias_has_forbidden_content(filtered_alias, form_factor)
 
 
 def _alias_map_entry(serial: str, raw: dict[str, Any], existing_map: dict[str, Any]) -> dict[str, str]:
@@ -420,6 +450,22 @@ def _runtime_alias_matches_device(device_alias: str, runtime_profile_alias: str,
         and runtime_index == _alias_index(device_alias)
         and runtime_major == android_major
     )
+
+
+def _api_level_matches_android_major(android_major: Any, api_level: Any) -> bool:
+    if not isinstance(android_major, int) or isinstance(android_major, bool):
+        return False
+    if not isinstance(api_level, int) or isinstance(api_level, bool):
+        return False
+    expected_levels = ANDROID_VERSION_API_LEVELS.get(android_major)
+    return expected_levels is not None and api_level in expected_levels
+
+
+def _alias_matches_form_factor(alias: Any, form_factor: Any) -> bool:
+    if not isinstance(alias, str) or not isinstance(form_factor, str):
+        return False
+    allowed_prefixes = FORM_FACTOR_ALIAS_PREFIXES.get(form_factor)
+    return allowed_prefixes is not None and _alias_form_factor(alias) in allowed_prefixes
 
 
 def _collect_device(serial: str, runner: Runner) -> dict[str, Any]:
@@ -566,6 +612,22 @@ def _public_inventory(devices: list[dict[str, Any]]) -> dict[str, Any]:
 
 def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[str, Any]:
     errors: list[str] = []
+    allowed_top_level_fields = {
+        "schema_version",
+        "generated_at_utc",
+        "source",
+        "runtime_execution_status",
+        "apk_install_status",
+        "app_launch_status",
+        "devices",
+        "redaction_guarantees",
+        "redaction_status",
+        "public_safety_findings",
+        "public_device_count",
+    }
+    extra_top_level_fields = sorted(set(public_payload) - allowed_top_level_fields)
+    if extra_top_level_fields:
+        errors.append(f"public inventory contains unsupported top-level fields: {extra_top_level_fields}.")
     if public_payload.get("schema_version") != PUBLIC_SCHEMA_VERSION:
         errors.append(f"schema_version must be {PUBLIC_SCHEMA_VERSION}.")
     for field in ("runtime_execution_status", "apk_install_status", "app_launch_status"):
@@ -583,6 +645,9 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
     if not isinstance(devices, list):
         errors.append("devices must be a list.")
         devices = []
+    public_device_count = public_payload.get("public_device_count")
+    if public_device_count is not None and public_device_count != len(devices):
+        errors.append("public_device_count must match devices length before owner-review export.")
 
     review_devices: list[dict[str, Any]] = []
     allowed_device_fields = {
@@ -608,7 +673,41 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
         if not isinstance(device, dict):
             errors.append(f"devices[{index}] must be an object.")
             continue
+        extra_fields = sorted(set(device) - allowed_device_fields)
+        if extra_fields:
+            errors.append(f"devices[{index}] contains unsupported public fields: {extra_fields}.")
         exported = {field: device.get(field) for field in sorted(allowed_device_fields) if field in device}
+        missing_fields = sorted(allowed_device_fields - set(exported))
+        if missing_fields:
+            errors.append(f"devices[{index}] is missing public fields: {missing_fields}.")
+        device_alias = exported.get("device_alias")
+        runtime_profile_alias = exported.get("runtime_profile_alias")
+        form_factor = exported.get("form_factor")
+        android_major = exported.get("android_major")
+        api_level = exported.get("api_level")
+        if (
+            not isinstance(device_alias, str)
+            or DEVICE_ALIAS_RE.fullmatch(device_alias) is None
+            or _alias_has_forbidden_content(device_alias, form_factor)
+        ):
+            errors.append(f"devices[{index}].device_alias is invalid or unsafe.")
+        if (
+            not isinstance(runtime_profile_alias, str)
+            or RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None
+            or _runtime_profile_alias_has_forbidden_content(runtime_profile_alias, form_factor)
+        ):
+            errors.append(f"devices[{index}].runtime_profile_alias is invalid or unsafe.")
+        if isinstance(device_alias, str) and not _alias_matches_form_factor(device_alias, form_factor):
+            errors.append(f"devices[{index}].device_alias prefix must match form_factor.")
+        if (
+            isinstance(device_alias, str)
+            and isinstance(runtime_profile_alias, str)
+            and isinstance(android_major, int)
+            and not _runtime_alias_matches_device(device_alias, runtime_profile_alias, android_major)
+        ):
+            errors.append(f"devices[{index}].runtime_profile_alias must preserve device_alias prefix/index and android_major.")
+        if not _api_level_matches_android_major(android_major, api_level):
+            errors.append(f"devices[{index}].api_level must match the local Android major/API sanity map.")
         if exported.get("classification_confidence") != "heuristic":
             errors.append(f"devices[{index}].classification_confidence must remain heuristic.")
         if exported.get("manual_review_required") is not True:
@@ -619,6 +718,13 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
         if exported.get("forbidden_identifiers_excluded") is not True:
             errors.append(f"devices[{index}].forbidden_identifiers_excluded must be true.")
         review_devices.append(exported)
+
+    device_aliases = [device.get("device_alias") for device in review_devices]
+    runtime_aliases = [device.get("runtime_profile_alias") for device in review_devices]
+    if len(set(device_aliases)) != len(device_aliases):
+        errors.append("devices must not contain duplicate device_alias values.")
+    if len(set(runtime_aliases)) != len(runtime_aliases):
+        errors.append("devices must not contain duplicate runtime_profile_alias values.")
 
     if errors:
         raise ValueError("; ".join(sorted(set(errors))))
@@ -751,16 +857,20 @@ def _aliases_are_valid(public_payload: dict[str, Any]) -> bool:
         android_major = device.get("android_major")
         if DEVICE_ALIAS_RE.fullmatch(device_alias) is None or _alias_has_forbidden_content(device_alias, form_factor):
             return False
-        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None or _alias_has_forbidden_content(
+        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None or _runtime_profile_alias_has_forbidden_content(
             runtime_profile_alias,
             form_factor,
         ):
+            return False
+        if not _alias_matches_form_factor(device_alias, form_factor):
             return False
         if isinstance(android_major, int) and android_major > 0 and not _runtime_alias_matches_device(
             device_alias,
             runtime_profile_alias,
             android_major,
         ):
+            return False
+        if not _api_level_matches_android_major(android_major, device.get("api_level")):
             return False
     return True
 

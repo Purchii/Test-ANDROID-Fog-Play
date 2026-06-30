@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
+Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -69,6 +69,8 @@ review status: approved/confirmed/pending/blocked/rejected
   `observe`, or omits critical forbidden actions such as `decompile` or
   `extract_secrets`.
 - APK action lists contain duplicate values.
+- Approved runtime metadata contains fields outside the documented strict
+  top-level and section-level allowlists.
 - Build aliases contain compound reserved token forms such as `api-key`,
   `apikey`, `api_key`, `extract-secrets`, `extract_secrets`,
   `extractsecrets`, `private-endpoints`, `private_endpoints` or
@@ -83,6 +85,9 @@ review status: approved/confirmed/pending/blocked/rejected
   identifier/security/account tokens, contain IP/fingerprint-like values, or
   contain owner/location labels such as `oleg`, `home`, `livingroom`,
   `bedroom`, `office`, `kitchen`, `personal` or `private`.
+- Stable `device_alias` values contain Android-version tokens such as `a9`,
+  `a10`, `a11`, `a12`, `a13`, `a14`, `a15` or `a16`. Android major belongs
+  only in `runtime_profile_alias`.
 - `approved_targets.device_aliases` and structured
   `approved_targets.devices[*].device_alias` disagree.
 - TASK-005 approval metadata has no actionable P0 Android TV/STB D-pad target
@@ -91,6 +96,10 @@ review status: approved/confirmed/pending/blocked/rejected
 - Runtime target aliases are inconsistent: `runtime_profile_alias` must preserve
   the `device_alias` prefix and index and its `a<android_major>` segment must
   match `android_major`.
+- Android major and API level do not match the project-local sanity map:
+  Android 9 -> API 28, 10 -> 29, 11 -> 30, 12 -> 31 or 32, 13 -> 33,
+  14 -> 34, 15 -> 35, 16 -> 36. This is a sanity guard, not a universal Android
+  authority; unknown future majors block until the map is updated.
 - Manual-confirmed TV/STB approval targets use an alias first segment that does
   not match the structured `form_factor`.
 - Structured target categories are inconsistent with
@@ -115,6 +124,10 @@ review status: approved/confirmed/pending/blocked/rejected
   video, playback, player, cloud/game stream, WebView, browser, custom tab,
   URL load, redirect, profile/account mutation, real-user data changes,
   production mutation, security bypass, decompilation, patching or resigning.
+- `runtime_execution.forbidden_scope` is missing, empty, duplicated, contains
+  unsupported values or omits required forbidden areas: payment, subscription,
+  purchase, stream, WebRTC, media playback, WebView, redirect flow, production
+  mutation, security bypass, decompilation, patching and resigning.
 - Stream, WebView or payment fixtures are `out_of_scope` while runtime scope includes those flows.
 - Fixture statuses use anything outside `approved`, `out_of_scope`, `pending`
   or `blocked`.
@@ -165,6 +178,8 @@ review status: approved/confirmed/pending/blocked/rejected
   `clear_app_data_before_scenario_and_record_precondition`.
 - Runtime scope, cleanup levels, build actions or allowed target categories
   contain duplicate values.
+- Synthetic auth scope, synthetic forbidden account actions, cleanup separate
+  approvals or cleanup authorized zone scopes contain duplicate values.
 - Any required reviewer is not `approved` or `confirmed`.
 
 ## TASK-015D/016C Two-Phase Gate
@@ -226,9 +241,9 @@ Owner/QA review must copy selected targets into approval metadata as
 `manual_confirmed` with `manual_review_required: false` before TASK-005 can be
 approved for limited runtime.
 
-## TASK-015E/017 Owner-Review Export
+## TASK-015E/017 And TASK-015F/017A Owner-Review Export
 
-TASK-015E/017 may create
+TASK-015E/017 and TASK-015F/017A may create or validate
 `docs/approvals/device_inventory.public_safe.review.json` only from an existing
 sanitized generated inventory with:
 
@@ -243,6 +258,18 @@ sanitized generated inventory with:
 The review export must explicitly state that it is not approved for TASK-005
 until owner/QA manual review. It must not automatically create
 `manual_confirmed` targets.
+
+TASK-015F/017A adds final export validation. The export must fail closed if:
+
+- alias grammar or semantic reserved-token checks fail;
+- stable aliases contain Android-version tokens;
+- runtime aliases do not preserve stable alias prefix/index and Android major;
+- alias prefix does not match form factor;
+- Android major/API level sanity fails;
+- duplicate device or runtime aliases are present;
+- optional `public_device_count` does not match actual device count;
+- a device contains public fields outside the allowlist;
+- any device is not heuristic/manual-review-required/not-run.
 
 ## Reviewer Gate
 

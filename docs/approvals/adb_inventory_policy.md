@@ -1,6 +1,6 @@
 # ADB Inventory Policy
 
-Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
+Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
 
 Production safety classification: `PROD_CONDITIONAL` for owner-approved local
 ADB inventory only. Default CLI execution is `PROD_SAFE` and makes no ADB calls.
@@ -108,3 +108,17 @@ file from the ignored generated public-safe inventory only if:
 
 The review export is owner-review material only. It is not TASK-005 approval and
 must not mark devices `manual_confirmed`.
+
+TASK-015F/017A hardens the owner-review export validator. Before export, the
+tool must reject malformed stable or runtime aliases, stable aliases containing
+Android-version tokens, runtime aliases that do not preserve stable alias
+prefix/index and Android major, alias/form-factor mismatches, Android
+major/API sanity mismatches, duplicate aliases, `public_device_count` mismatch,
+unknown public device fields and any device that is not
+heuristic/manual-review-required/not-run.
+
+The owner handoff is recorded in:
+
+```text
+docs/approvals/task005_owner_device_review.md
+```

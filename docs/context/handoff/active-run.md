@@ -2,119 +2,110 @@
 
 ## Run metadata
 
-Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-015E/017 - Final approval metadata hardening + public-safe device inventory review package`
-Thread status: `inactive_completed_default_pushed`
+Mode: `NON_AUTONOMOUS`
+Thread title: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
+Thread status: `inactive_completed_default_push_authorized`
 Fresh thread verified: `current_thread_renamed_for_task`
-Task ID: `TASK-015E/017`
-Task branch: `qa/task-015e-017-final-metadata-inventory-review`
+Task ID: `TASK-015F/017A`
+Task branch: `qa/task-015f-017a-final-strict-schema-owner-target-handoff`
 Default branch: `main`
-Base commit: `07018c2`
+Base commit: `e4eae81`
 Task branch pushed: `yes`
-Default branch merge/push: `merged_and_pushed_to_origin_main`
-Production safety classification: `PROD_SAFE` for docs, validators, tests,
-hygiene scans and default no-ADB dry-runs; `PROD_CONDITIONAL` for optional
-Phase B inventory-only ADB refresh after Phase A passes.
-Multi-agent status: `complete_passed`
+Default branch merge/push: `user_authorized_push_to_master_interpreted_as_main`
+Production safety classification: `PROD_SAFE` for docs, validators, schemas,
+synthetic unit tests, full-tree hygiene scan, public-safe review export
+validation and owner handoff.
+Multi-agent status: `complete_passed_after_remediation`
 
 ## Goal
 
-Complete combined TASK-015E/017:
+Complete TASK-015F/017A final strict-schema polish and owner target review
+handoff:
 
-- Phase A: final approval metadata, path-family, synthetic QA user, evidence
-  retention, cleanup rollback and tree hygiene hardening.
-- Phase B: create a public-safe owner-review inventory package from existing
-  sanitized TASK-016C output if available after Phase A passes.
+- close remaining approval metadata validator false-pass cases;
+- make full-tree hygiene scanner portable for both git checkouts and extracted
+  public-safe archive trees;
+- harden public-safe device inventory review export validation;
+- add owner-facing TASK-005 P0 TV/STB target review handoff;
+- keep TASK-005 runtime smoke `blocked` / `not_run`.
 
-This task must not install, launch or run the app. TASK-005 remains blocked
-until a separate approved runtime task.
+## Allowed scope
 
-## Changed scope
+- docs;
+- validators;
+- schemas;
+- synthetic unit tests;
+- full-tree hygiene scans;
+- default no-ADB dry-runs;
+- public-safe owner-review inventory validation.
 
-- Approval validator now uses exact local path-family checks for TASK-005 APK,
-  synthetic secret and raw evidence paths.
-- Approval validator blocks unsupported synthetic auth scope, incomplete
-  synthetic login scope, incomplete or typo forbidden account actions and
-  raw-public phone/OTP flags in every auth mode.
-- Approval validator requires bounded evidence retention when local redacted
-  summaries are approved.
-- Approval validator validates cleanup `requires_separate_approval`,
-  `authorized_zone_scopes` and `clean_state_scope`.
-- Full-tree hygiene scanner checks tracked text files for trailing whitespace,
-  blank EOF and missing final newline.
-- Device inventory tooling can export a repository-safe owner-review inventory
-  only from already sanitized generated public-safe inventory.
+## Forbidden actions
 
-## Phase A verification
+- APK/AAB/APKS/XAPK handling;
+- `adb install`;
+- `am start`;
+- `monkey`;
+- `logcat`;
+- screenshots, screenrecord or videos;
+- APK install, app launch or runtime smoke;
+- WebView, WebRTC, stream/media playback, payment, subscription or purchase
+  flows;
+- decompile, patch, resign or security bypass;
+- production mutation;
+- secrets, private endpoints, raw evidence or raw device identifiers.
 
-- `git status --short --branch`: branch
-  `qa/task-015e-017-final-metadata-inventory-review` with intended modified and
-  new files only.
-- `git diff --check`: passed.
-- `git diff --cached --check`: passed; no staged diff at Phase A gate.
-- `python automation/quality/full_tree_hygiene_scan.py`:
-  `full_tree_hygiene=pass`.
-- `python -m pytest -q tests/test_approval_metadata_validator.py tests/test_adb_device_inventory.py tests/test_full_tree_hygiene_scan.py`:
-  206 passed.
-- `pytest -q`: 306 passed.
-- `python -m pytest -q`: 306 passed.
-- `python -m compileall -q automation tests`: passed.
-- `python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.example.json`:
-  `approval_decision=blocked`, `runtime_execution_status=not_run`.
-- `python automation/device_inventory/generate_adb_device_inventory.py`:
-  `overall_status=blocked`, `runtime_execution_status=not_run`,
-  `apk_install_status=not_run`, `app_launch_status=not_run`; no ADB call.
-- Public-safety scan: no tracked/staged APK/AAB/APKS/XAPK, no tracked/staged
-  `.qa_local/`, no tracked raw evidence artifacts, `.qa_local/*` ignored, and
-  high-confidence raw identifier scan found no committed raw values outside
-  expected policy/test terminology.
-- Final sandbox rerun note: after the sandbox user changed, system `python` was
-  unavailable and bundled Python lacked `pytest`; bundled-Python reruns of
-  `full_tree_hygiene_scan.py`, `compileall`, approval validator CLI, default
-  no-ADB inventory CLI and draft validator CLI passed. The full pytest results
-  above were produced before that environment change in the same task run.
+## Acceptance criteria
 
-## Phase B result
+- approval validator blocks strict schema/key drift, broad path variants,
+  stable aliases with Android-version tokens, Android major/API mismatch,
+  duplicate auxiliary approval lists and invalid `runtime_execution.forbidden_scope`;
+- hygiene scanner supports `--mode auto`, `--mode tracked` and
+  `--mode public-safe-tree`;
+- owner-review export blocks malformed aliases, alias/form-factor/API drift,
+  duplicate aliases, count mismatch, unknown public fields and auto-promotion;
+- `docs/approvals/task005_owner_device_review.md` lists the 6 P0 TV/STB
+  candidates and states that owner/QA manual confirmation is required;
+- example and draft approval metadata remain `blocked` / `not_run`;
+- TASK-005 remains `blocked` / `not_run`.
 
-- Phase B executed after Phase A gate passed.
-- Used existing sanitized local input:
-  `.qa_local/devices/device_inventory.public_safe.generated.json`.
-- No inventory refresh was needed; no ADB command was run in Phase B.
-- Existing sanitized inventory summary:
-  - public device count: `11`;
-  - `public_safety_findings: []`;
-  - `runtime_execution_status: not_run`;
-  - `apk_install_status: not_run`;
-  - `app_launch_status: not_run`;
-  - bad heuristic/manual-review invariant count: `0`.
-- Created `docs/approvals/device_inventory.public_safe.review.json`.
-- Created `docs/approvals/task005_selected_target.template.json`.
-- Created blocked draft `docs/approvals/approval_metadata.task005.draft.json`;
-  validator reports `approval_decision=blocked` and
-  `runtime_execution_status=not_run`.
-- All exported devices remain `classification_confidence: heuristic` and
-  `manual_review_required: true`.
-- Raw outputs remain only under ignored `.qa_local/devices/` and were not
-  committed.
+## Verification plan
+
+Required commands:
+
+```text
+git status --short --branch
+git diff --check
+git diff --cached --check
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python -m pytest -q tests/test_approval_metadata_validator.py tests/test_adb_device_inventory.py tests/test_full_tree_hygiene_scan.py
+pytest -q
+python -m pytest -q
+python -m compileall -q automation tests
+python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.example.json
+python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.task005.draft.json
+python automation/device_inventory/generate_adb_device_inventory.py
+```
 
 ## Current evidence status
 
-- Phase A gate: `confirmed_passed`
-- Phase B public-safe owner-review export: `confirmed_from_existing_sanitized_inventory`
 - TASK-005 runtime execution: `blocked`
 - APK install/app launch/logcat/screenshots/videos/WebView/WebRTC/payment:
   `not_run`
 - Manual owner/QA review of generated inventory: `not_run`
+- Owner-review P0 candidates: `6`, from
+  `docs/approvals/device_inventory.public_safe.review.json`
+- Verification: `passed_after_qa_a_remediation`
 
 ## Multi-agent result
 
 - Orchestrator: `PASS`
-- Planner: `PASS_READ_ONLY`
-- Builder: `PASS`
-- QA Reviewer A: `PASS_READ_ONLY_STATIC_FINAL_REVIEW`
+- Planner: `PASS_READ_ONLY_PLAN`
+- Builder: `PASS_HYGIENE_SCANNER_SCOPE`
+- QA Reviewer A: `PASS_AFTER_TOP_LEVEL_OWNER_REVIEW_FIELD_ALLOWLIST_REMEDIATION`
 - QA Reviewer B: `PASS_READ_ONLY_FINAL_REVIEW`
-- Security/Prod-safety Reviewer: `PASS_READ_ONLY_FINAL_REVIEW`
-- Docs/Scribe: `PASS_READ_ONLY_GUIDANCE_RECORDED`
+- Security/Prod-safety Reviewer: `PASS_FINAL_REVIEW`
+- Docs/Scribe: `PASS_AFTER_STATE_RECONCILIATION`
 
 ## Stop conditions
 
@@ -123,4 +114,4 @@ install/launch, app runtime smoke, `am start`, `monkey`, `logcat`,
 screenshots, videos, WebView, WebRTC, stream/media playback, payment,
 subscription, purchase, account/profile mutation, secrets, private endpoints,
 raw evidence publication, production mutation, decompilation, patching,
-resigning or security bypass.
+resigning, security bypass or default branch merge/push.

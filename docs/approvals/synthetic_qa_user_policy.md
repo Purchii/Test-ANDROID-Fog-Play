@@ -1,6 +1,6 @@
 # Synthetic QA User Policy
 
-Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
+Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
 
 The project may use a synthetic QA user only through a public-safe alias.
 TASK-015D/016C does not approve login or runtime use of that alias. Any future
@@ -33,9 +33,13 @@ local_secret_file_pattern: .qa_local/secrets/qa_user.env
 repo_allowed_file: docs/approvals/qa_user.env.example
 ```
 
-The local secret path must remain under `.qa_local/`. The repository allowed
-file must be a placeholder/template path outside `.qa_local/`; a real
-`.qa_local/secrets/qa_user.env` file must never be committed.
+The local secret path must be the direct local-only secret file
+`.qa_local/secrets/qa_user.env` or a documented direct `.env` child under
+`.qa_local/secrets/`. Nested confusing path labels such as `apks` or `devices`
+are blocked. The repository allowed file is
+`docs/approvals/qa_user.env.example`; root-level or secret-looking docs paths
+are blocked. A real `.qa_local/secrets/qa_user.env` file must never be
+committed.
 
 Allowed local-only keys:
 
@@ -101,3 +105,6 @@ destructive_account_action
 Unsupported typo values block approval. The raw-public flags
 `raw_phone_allowed_in_public_docs` and `raw_otp_allowed_in_public_docs` must
 always be `false`, including no-auth metadata variants.
+
+Duplicate values in `allowed_auth_scope` or `forbidden_account_actions` block
+approval.

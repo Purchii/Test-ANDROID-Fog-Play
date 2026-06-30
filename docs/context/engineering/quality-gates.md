@@ -61,9 +61,22 @@ A task is done only when:
   devices. The export must not contain raw `.qa_local` paths or raw identifiers,
   and it must explicitly say it is not approved for TASK-005 until owner/QA
   manual review.
+- TASK-015F/017A strict schema polish must block unknown approved-metadata
+  fields, broad or nested local path variants, stable device aliases with
+  Android-version tokens, Android major/API mismatches, duplicate auxiliary
+  approval lists and invalid `runtime_execution.forbidden_scope`.
+- TASK-015F/017A owner-review export validation must block malformed aliases,
+  stable aliases with Android-version tokens, runtime alias prefix/index/major
+  drift, alias/form-factor mismatch, Android major/API mismatch, duplicate
+  aliases, `public_device_count` mismatch, unknown public fields and any device
+  that is not heuristic/manual-review-required/not-run.
 - Full-tree hygiene must scan tracked text files for trailing whitespace, blank
   line at EOF and missing final newline; a clean `git diff --check` alone is
   not enough for this gate.
+- Full-tree hygiene must also support extracted public-safe archive validation:
+  default `--mode auto` uses git tracked files in a checkout and falls back to
+  `--mode public-safe-tree` outside git while excluding `.git/`, `.qa_local/`,
+  caches, build artifacts and binary extensions.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 

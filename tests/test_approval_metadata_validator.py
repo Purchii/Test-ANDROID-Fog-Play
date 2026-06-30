@@ -85,6 +85,12 @@ def _happy_metadata():
             "local_secret_file_pattern": ".qa_local/secrets/qa_user.env",
             "repo_allowed_file": "docs/approvals/qa_user.env.example",
             "allowed_auth_scope": ["login", "logout", "session_persistence"],
+            "forbidden_account_actions": [
+                "payment",
+                "purchase",
+                "profile_mutation",
+                "destructive_account_action",
+            ],
         },
         "fixtures": {
             "stream_fixture": "out_of_scope",
@@ -99,6 +105,7 @@ def _happy_metadata():
             "raw_storage_policy": "local_ignored_path_only",
             "raw_storage_path_pattern": ".qa_local/evidence/task-005/",
             "public_report_policy": "redacted_summaries_only",
+            "retention_days": 7,
         },
         "cleanup_rollback": {
             "approved": True,
@@ -109,6 +116,11 @@ def _happy_metadata():
                 "C4_clear_app_data",
             ],
             "requires_separate_approval": ["C5_uninstall_reinstall"],
+            "authorized_zone_scopes": [
+                "force_stop_relaunch_with_auth_state_preserved",
+                "background_foreground_without_force_stop",
+            ],
+            "clean_state_scope": "clear_app_data_before_scenario_and_record_precondition",
         },
         "required_reviews": {
             "qa_reviewer_a": "approved",
@@ -200,6 +212,36 @@ def test_apk_path_outside_qa_local_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("expected_local_path_pattern" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".qa_local/secrets/app-under-test.apk",
+        ".qa_local/evidence/task-005/app.apk",
+        ".qa_local/devices/app.apk",
+        ".qa_local/apks/task-005/app-under-test.txt",
+    ],
+)
+def test_apk_path_must_use_task005_apk_family_and_extension(tmp_path, path):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["expected_local_path_pattern"] = path
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any(".qa_local/apks/task-005/" in reason for reason in report["blocked_reasons"])
+
+
+def test_task005_apk_path_family_and_extension_passes(tmp_path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["approved_build_apk"].update(
+            {"expected_local_path_pattern": ".qa_local/apks/task-005/app-under-test.apk"}
+        ),
+    )
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
 
 
 @pytest.mark.parametrize("value", [None, "", "bad alias", "build"])
@@ -651,6 +693,35 @@ def test_synthetic_user_repo_allowed_file_cannot_be_local_secret(tmp_path):
     assert any("repo_allowed_file" in reason for reason in report["blocked_reasons"])
 
 
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".qa_local/apks/task-005/app.apk",
+        ".qa_local/devices/raw_adb_devices.json",
+        ".qa_local/secrets/qa_user.txt",
+    ],
+)
+def test_synthetic_secret_path_must_use_secret_env_family(tmp_path, path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["local_secret_file_pattern"] = path
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any(".qa_local/secrets/" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_secret_env_path_passes(tmp_path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["synthetic_qa_user"].update(
+            {"local_secret_file_pattern": ".qa_local/secrets/qa_user.env"}
+        ),
+    )
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
 def test_synthetic_user_safe_repo_allowed_file_passes(tmp_path):
     report = _report_for(
         tmp_path,
@@ -660,6 +731,65 @@ def test_synthetic_user_safe_repo_allowed_file_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+def test_synthetic_allowed_auth_scope_blocks_payment(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["allowed_auth_scope"] = ["login", "payment"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_auth_scope" in reason and "payment" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_login_requires_session_persistence_auth_scope(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["allowed_auth_scope"] = ["login"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_auth_scope" in reason and "session_persistence" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_forbidden_account_actions_must_include_payment(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["forbidden_account_actions"].remove("payment")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_account_actions" in reason and "payment" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_forbidden_account_actions_block_typos(tmp_path):
+    def mutate(metadata):
+        metadata["synthetic_qa_user"]["forbidden_account_actions"] = [
+            "payment",
+            "purchaze",
+            "profile_mutation",
+            "destructive_account_action",
+        ]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_account_actions" in reason and "purchaze" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("field", ["raw_phone_allowed_in_public_docs", "raw_otp_allowed_in_public_docs"])
+def test_no_auth_metadata_still_blocks_raw_public_synthetic_flags(tmp_path, field):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+        metadata["runtime_execution"]["auth_mode"] = "no_auth_required"
+        metadata["synthetic_qa_user"]["approved"] = False
+        metadata["synthetic_qa_user"][field] = True
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("public docs" in reason for reason in report["blocked_reasons"])
 
 
 def test_phone_only_target_blocks_task_005(tmp_path):
@@ -916,6 +1046,52 @@ def test_raw_evidence_public_report_policy_blocks(tmp_path):
     assert any("public_report_policy" in reason for reason in report["blocked_reasons"])
 
 
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".qa_local/apks/task-005/",
+        ".qa_local/secrets/",
+        ".qa_local/devices/",
+    ],
+)
+def test_evidence_path_must_use_task005_evidence_family(tmp_path, path):
+    def mutate(metadata):
+        metadata["evidence_capture"]["raw_storage_path_pattern"] = path
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any(".qa_local/evidence/task-005/" in reason for reason in report["blocked_reasons"])
+
+
+def test_task005_evidence_path_passes(tmp_path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["evidence_capture"].update(
+            {"raw_storage_path_pattern": ".qa_local/evidence/task-005/"}
+        ),
+    )
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize("retention_days", [None, 0, -1, 3650, "7", 7.5])
+def test_evidence_retention_days_must_be_bounded_integer(tmp_path, retention_days):
+    def mutate(metadata):
+        metadata["evidence_capture"]["retention_days"] = retention_days
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("retention_days" in reason for reason in report["blocked_reasons"])
+
+
+def test_evidence_retention_days_seven_passes(tmp_path):
+    report = _report_for(tmp_path, lambda metadata: metadata["evidence_capture"].update({"retention_days": 7}))
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
 def test_apk_sha256_required_false_blocks(tmp_path):
     def mutate(metadata):
         metadata["approved_build_apk"]["sha256_required"] = False
@@ -1047,6 +1223,46 @@ def test_duplicate_cleanup_level_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("cleanup_rollback.allowed_levels must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_cleanup_requires_separate_approval_blocks(tmp_path):
+    def mutate(metadata):
+        del metadata["cleanup_rollback"]["requires_separate_approval"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("requires_separate_approval" in reason for reason in report["blocked_reasons"])
+
+
+def test_empty_cleanup_requires_separate_approval_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["requires_separate_approval"] = []
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("requires_separate_approval" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_cleanup_authorized_zone_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["authorized_zone_scopes"].append("wipe_device")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("authorized_zone_scopes" in reason and "wipe_device" in reason for reason in report["blocked_reasons"])
+
+
+def test_unknown_cleanup_clean_state_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["cleanup_rollback"]["clean_state_scope"] = "factory_reset"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("clean_state_scope" in reason for reason in report["blocked_reasons"])
 
 
 def test_missing_metadata_path_blocks(tmp_path):

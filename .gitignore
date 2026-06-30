@@ -1,8 +1,12 @@
 # Compiled/cache artifacts
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *.pyo
 *.class
+.coverage
+htmlcov/
+coverage.xml
 
 # Android/build artifacts
 *.apk

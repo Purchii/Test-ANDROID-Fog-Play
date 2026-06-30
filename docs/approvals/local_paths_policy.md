@@ -1,6 +1,6 @@
 # Local Paths Policy
 
-Task: `TASK-015 - Approval Metadata Schema Validator`
+Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
 
 Local QA artifacts are ignored by default. Public source control may document
 path patterns, but must not commit raw APKs, raw evidence, secrets, private
@@ -60,3 +60,16 @@ APK files can be placed only in ignored local storage by the owner or a local
 developer. The repository may reference a build alias. Public reports do not
 need to publish the APK hash; if a hash is used, keep the raw file and local
 hash record in ignored storage.
+
+Approval metadata must use exact local path families:
+
+- APK/build path: `.qa_local/apks/task-005/*.apk`, preferably
+  `.qa_local/apks/task-005/app-under-test.apk`.
+- Synthetic QA secret path: `.qa_local/secrets/*.env`, preferably
+  `.qa_local/secrets/qa_user.env`.
+- Evidence path: `.qa_local/evidence/task-005/`.
+- ADB inventory local paths: `.qa_local/devices/`.
+
+Cross-family paths are blocked. For example, APK paths under
+`.qa_local/secrets/`, evidence under `.qa_local/apks/`, synthetic secrets under
+`.qa_local/devices/`, absolute user paths and `..` traversal are invalid.

@@ -1,0 +1,15 @@
+{
+  "adb_available": "yes",
+  "android_major": 13,
+  "api_level": 33,
+  "category": "android_tv",
+  "classification_confidence": "manual_confirmed",
+  "device_alias": "tv-reviewed-001",
+  "forbidden_identifiers_excluded": true,
+  "form_factor": "tv",
+  "google_play_services": "unknown",
+  "input_method": "dpad_remote",
+  "manual_review_required": false,
+  "priority": "P0",
+  "runtime_profile_alias": "tv-reviewed-a13-001"
+}

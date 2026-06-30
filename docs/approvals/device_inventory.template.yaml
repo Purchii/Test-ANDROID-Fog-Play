@@ -4,6 +4,7 @@
 
 schema_version: task-016-device-inventory-draft-1
 owner: project_owner
+owner_review_boundary: "not approved for TASK-005 until owner/QA manual review"
 sensitive_identifiers_forbidden:
   - serial
   - ip_address

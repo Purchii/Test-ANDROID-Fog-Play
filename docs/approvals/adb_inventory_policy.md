@@ -1,6 +1,6 @@
 # ADB Inventory Policy
 
-Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
+Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
 
 Production safety classification: `PROD_CONDITIONAL` for owner-approved local
 ADB inventory only. Default CLI execution is `PROD_SAFE` and makes no ADB calls.
@@ -92,3 +92,19 @@ Android TV/STB D-pad target.
 
 No TASK-016C output confirms app launch, first visible state, focus behavior,
 WebView, WebRTC, payment or runtime smoke.
+
+## TASK-015E/017 Owner-Review Export
+
+After the Phase A gate passes, TASK-015E/017 may derive a committed owner-review
+file from the ignored generated public-safe inventory only if:
+
+- `public_safety_findings` is empty;
+- all redaction guarantees are true;
+- no raw ADB serial, IP, MAC, IMEI, Android ID, Google account, full
+  fingerprint, phone, OTP, owner label or raw `.qa_local` path is present;
+- runtime, APK install and app launch statuses are all `not_run`;
+- every generated device remains `classification_confidence: heuristic`;
+- every generated device remains `manual_review_required: true`.
+
+The review export is owner-review material only. It is not TASK-005 approval and
+must not mark devices `manual_confirmed`.

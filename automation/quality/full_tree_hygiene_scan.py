@@ -1,0 +1,114 @@
+"""Scan tracked text files for whitespace and EOF hygiene issues.
+
+This tool is local-only and performs no Android, device, APK, network or
+production interaction. It intentionally scans tracked files instead of only
+the current diff so historical whitespace issues cannot hide behind a clean
+`git diff --check`.
+"""
+
+from __future__ import annotations
+
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+from typing import Iterable
+
+
+BINARY_EXTENSIONS = {
+    ".7z",
+    ".aab",
+    ".apk",
+    ".apks",
+    ".bin",
+    ".bmp",
+    ".class",
+    ".dex",
+    ".gif",
+    ".gz",
+    ".ico",
+    ".jar",
+    ".jpeg",
+    ".jpg",
+    ".keystore",
+    ".mov",
+    ".mp4",
+    ".pdf",
+    ".png",
+    ".pyd",
+    ".pyc",
+    ".pyo",
+    ".so",
+    ".webm",
+    ".xapk",
+    ".zip",
+}
+
+
+def _tracked_files(root: Path) -> list[Path]:
+    completed = subprocess.run(
+        ["git", "-c", f"safe.directory={root.as_posix()}", "ls-files", "-z"],
+        cwd=root,
+        capture_output=True,
+        text=False,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError("git ls-files failed")
+    return [root / raw.decode("utf-8") for raw in completed.stdout.split(b"\0") if raw]
+
+
+def _looks_binary(path: Path) -> bool:
+    return path.suffix.lower() in BINARY_EXTENSIONS
+
+
+def _scan_file(path: Path) -> list[str]:
+    if _looks_binary(path):
+        return []
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        return [f"{path}: unable to read file: {exc}"]
+    if b"\0" in data:
+        return []
+
+    issues: list[str] = []
+    if data and not data.endswith(b"\n"):
+        issues.append(f"{path}: missing final newline")
+
+    lines = data.splitlines(keepends=True)
+    for index, raw_line in enumerate(lines, start=1):
+        content = raw_line.rstrip(b"\r\n")
+        if content.endswith((b" ", b"\t")):
+            issues.append(f"{path}:{index}: trailing whitespace")
+
+    if len(lines) >= 2 and lines[-1].rstrip(b"\r\n") == b"":
+        issues.append(f"{path}: blank line at EOF")
+
+    return issues
+
+
+def scan_paths(paths: Iterable[Path]) -> list[str]:
+    issues: list[str] = []
+    for path in paths:
+        if path.is_file():
+            issues.extend(_scan_file(path))
+    return issues
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Scan tracked text files for whitespace and EOF hygiene.")
+    parser.add_argument("--root", type=Path, default=Path("."), help="Repository root. Defaults to current directory.")
+    args = parser.parse_args(argv)
+
+    root = args.root.resolve()
+    issues = scan_paths(_tracked_files(root))
+    if issues:
+        sys.stdout.write("\n".join(str(issue) for issue in issues) + "\n")
+        return 1
+    sys.stdout.write("full_tree_hygiene=pass\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

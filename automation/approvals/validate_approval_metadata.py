@@ -160,12 +160,35 @@ AUTH_MODES = {
     "auth_out_of_scope",
     "no_auth_required",
 }
+SYNTHETIC_ALLOWED_AUTH_SCOPE = {"login", "logout", "session_persistence"}
+SYNTHETIC_REQUIRED_AUTH_SCOPE_FOR_LOGIN = {"login", "session_persistence"}
+SYNTHETIC_ALLOWED_FORBIDDEN_ACCOUNT_ACTIONS = {
+    "payment",
+    "purchase",
+    "subscription",
+    "profile_mutation",
+    "destructive_account_action",
+    "real_user_data_changes",
+}
+SYNTHETIC_REQUIRED_FORBIDDEN_ACCOUNT_ACTIONS = {
+    "payment",
+    "purchase",
+    "profile_mutation",
+    "destructive_account_action",
+}
 CLEANUP_ALLOWED_LEVELS = {
     "C1_background_foreground",
     "C2_force_stop_relaunch",
     "C3_clear_cache",
     "C4_clear_app_data",
 }
+CLEANUP_REQUIRED_SEPARATE_APPROVALS = {"C5_uninstall_reinstall"}
+CLEANUP_ALLOWED_SEPARATE_APPROVALS = {"C5_uninstall_reinstall"}
+CLEANUP_ALLOWED_AUTHORIZED_ZONE_SCOPES = {
+    "force_stop_relaunch_with_auth_state_preserved",
+    "background_foreground_without_force_stop",
+}
+CLEANUP_REQUIRED_CLEAN_STATE_SCOPE = "clear_app_data_before_scenario_and_record_precondition"
 TARGET_ALLOWED_CATEGORIES = {
     "physical_android_tv",
     "google_tv",
@@ -387,6 +410,62 @@ def _path_is_local_ignored(path_value: Any) -> bool:
     return parts[:1] == [".qa_local"] and ".." not in parts
 
 
+def _path_parts(path_value: Any) -> list[str]:
+    if not isinstance(path_value, str):
+        return []
+    normalized = path_value.replace("\\", "/").strip()
+    if normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized):
+        return []
+    parts = [part for part in normalized.split("/") if part not in {"", "."}]
+    if ".." in parts:
+        return []
+    return parts
+
+
+def _path_is_under_family(path_value: Any, family: str) -> bool:
+    return _path_parts(path_value)[:2] == [".qa_local", family]
+
+
+def _path_contains_forbidden_public_value(path_value: Any) -> bool:
+    if not isinstance(path_value, str):
+        return True
+    normalized = path_value.replace("\\", "/").strip()
+    return bool(
+        IP_RE.search(normalized)
+        or PHONE_RE.search(normalized)
+        or MAC_RE.search(normalized)
+        or IMEI_RE.search(normalized)
+        or ANDROID_ID_RE.search(normalized)
+        or FINGERPRINT_LIKE_RE.search(normalized)
+        or SECRET_PAIR_RE.search(normalized)
+    )
+
+
+def _path_is_task005_apk(path_value: Any) -> bool:
+    parts = _path_parts(path_value)
+    return (
+        parts[:3] == [".qa_local", "apks", "task-005"]
+        and len(parts) >= 4
+        and parts[-1].endswith(".apk")
+        and not _path_contains_forbidden_public_value(path_value)
+    )
+
+
+def _path_is_synthetic_secret(path_value: Any) -> bool:
+    parts = _path_parts(path_value)
+    return (
+        parts[:2] == [".qa_local", "secrets"]
+        and len(parts) >= 3
+        and parts[-1].endswith(".env")
+        and not _path_contains_forbidden_public_value(path_value)
+    )
+
+
+def _path_is_task005_evidence(path_value: Any) -> bool:
+    parts = _path_parts(path_value)
+    return parts[:3] == [".qa_local", "evidence", "task-005"] and not _path_contains_forbidden_public_value(path_value)
+
+
 def _path_is_repo_template(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
@@ -515,8 +594,10 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
         reasons.append("approved_build_apk.build_alias must be a non-empty public-safe build alias.")
     if build.get("storage_policy") != "local_ignored_path_only":
         reasons.append("approved_build_apk.storage_policy must be local_ignored_path_only.")
-    if not _path_is_local_ignored(build.get("expected_local_path_pattern")):
-        reasons.append("approved_build_apk.expected_local_path_pattern must stay under .qa_local/.")
+    if not _path_is_task005_apk(build.get("expected_local_path_pattern")):
+        reasons.append(
+            "approved_build_apk.expected_local_path_pattern must stay under .qa_local/apks/task-005/ and end with .apk."
+        )
     if build.get("sha256_required") is not True:
         reasons.append("approved_build_apk.sha256_required must be true.")
     if build.get("sha256_public_value_allowed") is not False:
@@ -891,20 +972,45 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
         reasons.append("synthetic_qa_user.approved=false requires explicit auth_out_of_scope or no_auth_required auth_mode.")
     if user.get("approved") is True and user.get("alias") != "qa-user-phone-001":
         reasons.append("synthetic_qa_user.approved requires public alias qa-user-phone-001.")
-    if user.get("approved") is True and user.get("raw_phone_allowed_in_public_docs") is not False:
+    if user.get("raw_phone_allowed_in_public_docs") is not False:
         reasons.append("synthetic_qa_user raw phone must be forbidden in public docs.")
-    if user.get("approved") is True and user.get("raw_otp_allowed_in_public_docs") is not False:
+    if user.get("raw_otp_allowed_in_public_docs") is not False:
         reasons.append("synthetic_qa_user raw OTP must be forbidden in public docs.")
     local_secret_file = user.get("local_secret_file_pattern")
     if user.get("approved") is True and local_secret_file is None:
-        reasons.append("synthetic_qa_user.approved requires local_secret_file_pattern under .qa_local/.")
-    if local_secret_file is not None and not _path_is_local_ignored(local_secret_file):
-        reasons.append("synthetic_qa_user.local_secret_file_pattern must stay under .qa_local/.")
+        reasons.append("synthetic_qa_user.approved requires local_secret_file_pattern under .qa_local/secrets/.")
+    if local_secret_file is not None and not _path_is_synthetic_secret(local_secret_file):
+        reasons.append("synthetic_qa_user.local_secret_file_pattern must stay under .qa_local/secrets/ and end with .env.")
     repo_allowed_file = user.get("repo_allowed_file")
     if user.get("approved") is True and repo_allowed_file is None:
         reasons.append("synthetic_qa_user.approved requires repo_allowed_file template path.")
     if repo_allowed_file is not None and not _path_is_repo_template(repo_allowed_file):
         reasons.append("synthetic_qa_user.repo_allowed_file must be a repository placeholder/template path outside .qa_local/.")
+
+    auth_scope = user.get("allowed_auth_scope")
+    if user.get("approved") is True or synthetic_login_in_scope:
+        if not isinstance(auth_scope, list) or not auth_scope:
+            reasons.append("synthetic_qa_user.allowed_auth_scope must be a non-empty list.")
+        else:
+            normalized_auth_scope = {str(item) for item in auth_scope}
+            unsupported = sorted(normalized_auth_scope - SYNTHETIC_ALLOWED_AUTH_SCOPE)
+            missing = sorted(SYNTHETIC_REQUIRED_AUTH_SCOPE_FOR_LOGIN - normalized_auth_scope)
+            if unsupported:
+                reasons.append(f"synthetic_qa_user.allowed_auth_scope contains unsupported values: {unsupported}.")
+            if synthetic_login_in_scope and missing:
+                reasons.append(f"synthetic_qa_user.allowed_auth_scope is missing required values: {missing}.")
+
+        forbidden_actions = user.get("forbidden_account_actions")
+        if not isinstance(forbidden_actions, list) or not forbidden_actions:
+            reasons.append("synthetic_qa_user.forbidden_account_actions must be a non-empty list.")
+        else:
+            normalized_forbidden_actions = {str(item) for item in forbidden_actions}
+            unsupported = sorted(normalized_forbidden_actions - SYNTHETIC_ALLOWED_FORBIDDEN_ACCOUNT_ACTIONS)
+            missing = sorted(SYNTHETIC_REQUIRED_FORBIDDEN_ACCOUNT_ACTIONS - normalized_forbidden_actions)
+            if unsupported:
+                reasons.append(f"synthetic_qa_user.forbidden_account_actions contains unsupported values: {unsupported}.")
+            if missing:
+                reasons.append(f"synthetic_qa_user.forbidden_account_actions is missing required values: {missing}.")
     return reasons
 
 
@@ -937,8 +1043,8 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
         reasons.append("evidence_capture.status must be explicit and non-pending for runtime approval.")
     if evidence.get("raw_storage_policy") != "local_ignored_path_only":
         reasons.append("evidence_capture.raw_storage_policy must be local_ignored_path_only.")
-    if not _path_is_local_ignored(evidence.get("raw_storage_path_pattern")):
-        reasons.append("evidence_capture.raw_storage_path_pattern must stay under .qa_local/.")
+    if not _path_is_task005_evidence(evidence.get("raw_storage_path_pattern")):
+        reasons.append("evidence_capture.raw_storage_path_pattern must stay under .qa_local/evidence/task-005/.")
     if evidence.get("public_report_policy") != "redacted_summaries_only":
         reasons.append("evidence_capture.public_report_policy must be redacted_summaries_only.")
     for field in ("screenshots", "logs_logcat"):
@@ -952,6 +1058,15 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
         reasons.append("evidence_capture.videos must use an approved exact value.")
     elif video_value in {"pending", "blocked"}:
         reasons.append("evidence_capture.videos must be explicit and non-pending.")
+
+    capture_requested = any(
+        _as_lower(evidence.get(field)) == "yes_local_only_redacted_summary"
+        for field in ("screenshots", "logs_logcat", "videos")
+    )
+    if status == "approved_local_redacted_summary_only" and capture_requested:
+        retention_days = evidence.get("retention_days")
+        if not isinstance(retention_days, int) or isinstance(retention_days, bool) or not 1 <= retention_days <= 30:
+            reasons.append("evidence_capture.retention_days must be an integer from 1 to 30 when evidence capture is approved.")
 
     if (
         "crash_anr_logcat_observation" in allowed_scope
@@ -989,9 +1104,26 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if unsupported_levels:
         reasons.append(f"cleanup_rollback.allowed_levels contains unsupported levels: {unsupported_levels}.")
     if any("C5" in str(level) for level in levels):
-        separate = cleanup.get("separate_approvals") or cleanup.get("separate_approved_levels") or []
-        if not isinstance(separate, list) or not any("C5" in str(level) for level in separate):
-            reasons.append("C5 uninstall/reinstall requires separate approval.")
+        reasons.append("C5 uninstall/reinstall requires separate approval and must not be listed in allowed_levels.")
+    separate = cleanup.get("requires_separate_approval")
+    if not isinstance(separate, list) or not separate:
+        reasons.append("cleanup_rollback.requires_separate_approval must be a non-empty list.")
+    else:
+        unsupported_separate = sorted({str(level) for level in separate} - CLEANUP_ALLOWED_SEPARATE_APPROVALS)
+        missing_separate = sorted(CLEANUP_REQUIRED_SEPARATE_APPROVALS - {str(level) for level in separate})
+        if unsupported_separate:
+            reasons.append(f"cleanup_rollback.requires_separate_approval contains unsupported values: {unsupported_separate}.")
+        if missing_separate:
+            reasons.append(f"cleanup_rollback.requires_separate_approval is missing required values: {missing_separate}.")
+    authorized_zone_scopes = cleanup.get("authorized_zone_scopes")
+    if not isinstance(authorized_zone_scopes, list) or not authorized_zone_scopes:
+        reasons.append("cleanup_rollback.authorized_zone_scopes must be a non-empty list.")
+    else:
+        unsupported_scopes = sorted({str(scope) for scope in authorized_zone_scopes} - CLEANUP_ALLOWED_AUTHORIZED_ZONE_SCOPES)
+        if unsupported_scopes:
+            reasons.append(f"cleanup_rollback.authorized_zone_scopes contains unsupported values: {unsupported_scopes}.")
+    if cleanup.get("clean_state_scope") != CLEANUP_REQUIRED_CLEAN_STATE_SCOPE:
+        reasons.append(f"cleanup_rollback.clean_state_scope must be {CLEANUP_REQUIRED_CLEAN_STATE_SCOPE}.")
     return reasons
 
 

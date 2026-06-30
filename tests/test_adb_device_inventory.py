@@ -4,7 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from automation.device_inventory.generate_adb_device_inventory import build_inventory, build_report, main
+from automation.device_inventory.generate_adb_device_inventory import (
+    build_inventory,
+    build_public_safe_review_inventory,
+    build_report,
+    main,
+)
 
 
 class FakeAdb:
@@ -418,3 +423,54 @@ def test_cli_writes_local_outputs_and_not_run_statuses(tmp_path, monkeypatch):
     assert public_payload["runtime_execution_status"] == "not_run"
     assert public_payload["apk_install_status"] == "not_run"
     assert public_payload["app_launch_status"] == "not_run"
+
+
+def _public_safe_inventory_payload():
+    fake = FakeAdb(_responses(serial="ABC123", manufacturer="TCL", model="TV", release="11", sdk="30"))
+    _report, _raw, _alias_map, public_payload = build_report(allow_adb=True, runner=fake)
+    public_payload["redaction_status"] = "not_applicable"
+    public_payload["public_safety_findings"] = []
+    return public_payload
+
+
+def test_owner_review_export_preserves_heuristic_manual_review_and_not_run_statuses():
+    review_payload = build_public_safe_review_inventory(_public_safe_inventory_payload())
+
+    assert review_payload["owner_review_boundary"] == "not approved for TASK-005 until owner/QA manual review"
+    assert review_payload["runtime_execution_status"] == "not_run"
+    assert review_payload["apk_install_status"] == "not_run"
+    assert review_payload["app_launch_status"] == "not_run"
+    assert review_payload["public_device_count"] == 1
+    device = review_payload["devices"][0]
+    assert device["classification_confidence"] == "heuristic"
+    assert device["manual_review_required"] is True
+    assert device["runtime_execution_status"] == "not_run"
+    assert device["apk_install_status"] == "not_run"
+    assert device["app_launch_status"] == "not_run"
+    assert "ABC123" not in json.dumps(review_payload)
+    assert ".qa_local" not in json.dumps(review_payload)
+
+
+def test_owner_review_export_blocks_public_safety_findings():
+    payload = _public_safe_inventory_payload()
+    payload["public_safety_findings"] = ["Forbidden public identifier-like value at $.devices[0].device_alias."]
+
+    with pytest.raises(ValueError, match="public_safety_findings"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_runtime_status_drift():
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0]["runtime_execution_status"] = "pass"
+
+    with pytest.raises(ValueError, match="runtime_execution_status"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_does_not_allow_auto_manual_confirmed_promotion():
+    payload = _public_safe_inventory_payload()
+    payload["devices"][0]["classification_confidence"] = "manual_confirmed"
+    payload["devices"][0]["manual_review_required"] = False
+
+    with pytest.raises(ValueError, match="classification_confidence"):
+        build_public_safe_review_inventory(payload)

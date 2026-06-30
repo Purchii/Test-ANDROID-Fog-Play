@@ -47,7 +47,44 @@ SECRET_PAIR_RE = re.compile(
     r"\b(token|secret|password|cookie|session|authorization|api[_-]?key|bearer)\s*[:=]\s*[^\s,;]+",
     re.IGNORECASE,
 )
-BLOCKED_ALIAS_LABELS = {"oleg", "home", "livingroom", "bedroom", "office", "kitchen", "personal", "private"}
+BLOCKED_ALIAS_LABELS = {
+    "oleg",
+    "home",
+    "livingroom",
+    "living-room",
+    "living_room",
+    "bedroom",
+    "office",
+    "kitchen",
+    "personal",
+    "private",
+}
+RESERVED_ALIAS_TOKENS = {
+    "serial",
+    "serialnumber",
+    "serial-number",
+    "serial_number",
+    "imei",
+    "imsi",
+    "mac",
+    "macaddress",
+    "mac-address",
+    "mac_address",
+    "androidid",
+    "android-id",
+    "android_id",
+    "google-account",
+    "google_account",
+    "account",
+    "phone",
+    "otp",
+    "token",
+    "secret",
+    "password",
+    "cookie",
+    "session",
+    *BLOCKED_ALIAS_LABELS,
+}
 BLOCKED_LABEL_PATTERN = r"oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private"
 BLOCKED_PUBLIC_LABEL_RE = re.compile(rf"\b(?:{BLOCKED_LABEL_PATTERN})\b", re.IGNORECASE)
 ALIAS_RE = DEVICE_ALIAS_RE
@@ -277,6 +314,42 @@ def _public_payload_is_safe(payload: Any) -> bool:
     return not _has_forbidden_public_value(payload)
 
 
+def _alias_tokens(alias: str) -> set[str]:
+    normalized = alias.strip().lower()
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    tokens = set(parts)
+    for start in range(len(parts)):
+        for end in range(start + 2, min(len(parts), start + 4) + 1):
+            joined = "".join(parts[start:end])
+            tokens.add(joined)
+            tokens.add("-".join(parts[start:end]))
+            tokens.add("_".join(parts[start:end]))
+    return tokens
+
+
+def _alias_has_forbidden_content(alias: Any) -> bool:
+    if not isinstance(alias, str):
+        return True
+    normalized = alias.strip().lower()
+    if not normalized:
+        return True
+    if BLOCKED_PUBLIC_LABEL_RE.search(normalized):
+        return True
+    if _alias_tokens(normalized) & RESERVED_ALIAS_TOKENS:
+        return True
+    return bool(
+        IP_RE.search(normalized)
+        or MAC_RE.search(normalized)
+        or IMEI_RE.search(normalized)
+        or ANDROID_ID_RE.search(normalized)
+        or FINGERPRINT_RE.search(normalized)
+        or EMAIL_RE.search(normalized)
+        or (PHONE_RE.search(normalized) and sum(char.isdigit() for char in normalized) >= 10)
+        or OTP_RE.search(normalized)
+        or SECRET_PAIR_RE.search(normalized)
+    )
+
+
 def _alias_map_entry(serial: str, raw: dict[str, Any], existing_map: dict[str, Any]) -> dict[str, str]:
     if isinstance(existing_map.get(serial), dict):
         entry = existing_map[serial]
@@ -285,6 +358,8 @@ def _alias_map_entry(serial: str, raw: dict[str, Any], existing_map: dict[str, A
 
     manufacturer = _safe_slug(raw.get("manufacturer", "aosp"))
     form_factor = raw.get("form_factor", "unknown")
+    if form_factor == "phone":
+        form_factor = "unknown"
     index = f"{len(existing_map) + 1:03d}"
     return {"device_alias": f"{form_factor}-{manufacturer}-{index}", "index": index}
 
@@ -405,6 +480,9 @@ def build_report(
         blocked_reasons.append("No authorized ADB devices were collected.")
     if not _public_payload_is_safe(public_payload):
         blocked_reasons.append("Public-safe inventory sanitizer detected forbidden identifier-like values.")
+        public_payload["devices"] = []
+    if public_payload["devices"] and not _aliases_are_valid(public_payload):
+        blocked_reasons.append("Public-safe inventory sanitizer detected unsafe alias-map values.")
         public_payload["devices"] = []
 
     status = "blocked" if blocked_reasons else "not_run"
@@ -529,9 +607,11 @@ def _preflight_report(status: str, blocked_reasons: list[str], public_device_cou
 
 def _aliases_are_valid(public_payload: dict[str, Any]) -> bool:
     for device in public_payload.get("devices", []):
-        if DEVICE_ALIAS_RE.fullmatch(device.get("device_alias", "")) is None:
+        device_alias = device.get("device_alias", "")
+        runtime_profile_alias = device.get("runtime_profile_alias", "")
+        if DEVICE_ALIAS_RE.fullmatch(device_alias) is None or _alias_has_forbidden_content(device_alias):
             return False
-        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(device.get("runtime_profile_alias", "")) is None:
+        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None or _alias_has_forbidden_content(runtime_profile_alias):
             return False
     return True
 

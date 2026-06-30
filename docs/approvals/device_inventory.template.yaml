@@ -55,8 +55,8 @@ devices:
     apk_install_status: not_run
     app_launch_status: not_run
 
-  - device_alias: phone-samsung-001
-    runtime_profile_alias: phone-samsung-a14-001
+  - device_alias: unknown-samsung-001
+    runtime_profile_alias: unknown-samsung-a14-001
     priority: P2
     category: android_phone_secondary
     android_major: 14

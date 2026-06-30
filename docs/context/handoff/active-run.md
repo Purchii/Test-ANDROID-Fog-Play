@@ -3,35 +3,34 @@
 ## Run metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-015A/016 - Approval validator hardening and ADB device/build inventory preflight`
-Thread status: `inactive_completed_after_default_push`
+Thread title: `TASK-015B/016A - Final approval validator hardening and ADB inventory rerun/preflight`
+Thread status: `active_verification_complete_pending_final_review`
 Fresh thread verified: `yes`
-Task ID: `TASK-015A/016`
-Task branch: `qa/task-015a-016-approval-validator-adb-inventory-preflight`
+Task ID: `TASK-015B/016A`
+Task branch: `qa/task-015b-016a-final-validator-adb-preflight`
 Default branch: `main`
-Task branch pushed: `yes`
-Default branch merge/push: `completed`
-Latest task branch commit: `c16a171`
-Production safety classification: `PROD_SAFE` for validator/docs/tests; `PROD_CONDITIONAL` for owner-approved local ADB inventory allowlist only
+Task branch pushed: `pending`
+Default branch merge/push: `not_authorized_in_non_autonomous`
+Production safety classification: `PROD_SAFE` for validator/docs/tests/default dry-runs; `PROD_CONDITIONAL` for owner-approved TASK-016A local ADB inventory allowlist only
 Multi-agent status: `complete_passed_after_remediation`
-Merge/push authority: `NON_AUTONOMOUS`; default branch merge/push authorized by explicit user command `пушь в мастер`
+Merge/push authority: `NON_AUTONOMOUS`; default branch merge/push requires explicit user command
 
 ## Goal
 
-Harden approval metadata validation for future TASK-005 readiness and collect
-only TASK-016 ADB device/build inventory preflight evidence without installing,
-launching or running the app.
+Close the remaining post TASK-015A/016 approval-validator false-pass cases and
+harden TASK-016A inventory alias-map reuse without installing, launching or
+running the app.
 
 ## Allowed files
 
 - `automation/approvals/validate_approval_metadata.py`
 - `tests/test_approval_metadata_validator.py`
-- `automation/device_inventory/*`
+- `automation/device_inventory/generate_adb_device_inventory.py`
 - `tests/test_adb_device_inventory.py`
 - `docs/approvals/*`
-- `tasks/TASK_015A_016_approval_validator_adb_inventory_preflight.md`
-- `README.md`
-- source-of-truth context docs for active run, gates, risks, current state and verification memory
+- `tasks/TASK_015B_016A_final_validator_adb_preflight.md`
+- source-of-truth context docs for active run, gates, risks, current state,
+  backlog and verification memory
 
 ## Forbidden files/actions
 
@@ -47,44 +46,45 @@ launching or running the app.
 
 ## Acceptance status
 
-- TASK-015A regression tests added for the audit false-pass matrix.
-- Approval validator now uses strict allowlists for approver role, fixtures,
-  evidence capture, runtime scope, cleanup levels, structured target aliases
-  and synthetic user approval.
-- TASK-016 ADB inventory preflight CLI added. Default command performs no ADB
-  calls. `--allow-adb` is limited to the approved inventory command allowlist.
-- Real local ADB inventory was attempted with owner-approved `--allow-adb` and
-  local platform-tools path; it generated ignored `.qa_local/devices/` outputs.
-- The final approved inventory run did not see authorized ADB devices and
-  generated an empty public-safe inventory with blocked reason
-  `No authorized ADB devices were collected.`
-- Public-safe generated inventory had no forbidden identifier regex findings
-  and `runtime_execution_status`, `apk_install_status` and
-  `app_launch_status` as `not_run`.
+- TASK-015B validator now requires an actionable P0 Android TV/STB D-pad target
+  with `adb_available=yes`, `classification_confidence=manual_confirmed`,
+  `manual_review_required=false` and forbidden identifiers excluded.
+- Runtime target aliases now pass grammar and reserved-token checks.
+- Runtime scope must be non-empty and include the TASK-005 core subset.
+- Evidence capture must use redacted summaries only.
+- APK/build metadata must require local ignored storage, SHA-256 validation and
+  strict action allow/forbid lists.
+- Allowed target categories must match structured target categories.
+- TASK-016A inventory validates existing alias-map entries before public output.
+- Generated phone-category inventory uses a safe public alias prefix that does
+  not contain the reserved `phone` token.
+- Default inventory CLI made no ADB call and returned `blocked`/`not_run`.
+- Owner-approved local ADB inventory command ran and produced ignored
+  `.qa_local/devices/` outputs, but no authorized devices were collected because
+  `adb devices -l` failed.
 - APK install/launch/runtime smoke was not run.
 
-## Verification plan
+## Verification results
 
-- `git status --short --branch`
-- `git diff --check`
-- `python -m pytest -q tests\test_approval_metadata_validator.py`
-- `python -m pytest -q tests\test_adb_device_inventory.py`
-- `pytest -q`
-- `python -m pytest -q`
-- `python -m compileall -q automation tests`
-- Approval validator CLI dry-run against pending example metadata.
-- TASK-016 default CLI dry-run with no ADB.
-- TASK-016 owner-approved local ADB inventory command.
-- Public-safe inventory forbidden identifier scan.
-- Multi-agent QA, Security/Prod-safety and Docs/Scribe review.
+- `git status --short --branch`: branch `qa/task-015b-016a-final-validator-adb-preflight` with intended modifications only; `.qa_local/` ignored.
+- `git diff --check`: passed.
+- `python -m pytest -q tests\test_approval_metadata_validator.py tests\test_adb_device_inventory.py`: 104 passed.
+- `pytest -q`: 204 passed.
+- `python -m pytest -q`: 204 passed.
+- `python -m compileall -q automation tests`: passed.
+- `python automation\approvals\validate_approval_metadata.py --metadata docs\approvals\approval_metadata.example.json`: `approval_decision=blocked`, `runtime_execution_status=not_run`.
+- `python automation\device_inventory\generate_adb_device_inventory.py`: `overall_status=blocked`, no ADB calls, `runtime_execution_status=not_run`.
+- Owner-approved TASK-016A local ADB inventory command: `overall_status=blocked`, `public_device_count=0`, blocked reasons include `adb devices -l failed` and `No authorized ADB devices were collected`.
+- Public-safe inventory output: empty devices, no public safety findings, runtime/app statuses `not_run`.
+- Public-safety scan: no tracked APK/raw evidence/local `.qa_local` outputs; only synthetic identifier-like regression values and forbidden-action policy examples were detected.
 
 ## Current evidence status
 
 - Task branch: `confirmed`
-- Validator unit-test behavior: `confirmed`
-- TASK-016 mocked command allowlist behavior: `confirmed`
-- TASK-016 local ADB inventory command execution: `confirmed`
-- TASK-016 authorized device collection: `blocked_no_authorized_devices_visible`
+- Validator false-pass regression behavior: `confirmed`
+- TASK-016A alias-map sanitizer behavior: `confirmed`
+- TASK-016A local ADB inventory command execution: `confirmed`
+- TASK-016A authorized device collection: `blocked_no_authorized_devices_visible`
 - Public-safe inventory forbidden identifier scan: `confirmed`
 - APK install status: `not_run`
 - App launch status: `not_run`
@@ -93,13 +93,13 @@ launching or running the app.
 
 ## Multi-agent result
 
-- Orchestrator: `PASS`, scoped TASK-015A/016, enforced NON_AUTONOMOUS branch policy and final consolidation.
-- Planner: `PASS`, acceptance and verification plan produced.
-- Builder: `PASS`, implemented TASK-016 inventory preflight and mocked tests.
-- QA Reviewer A: `PASS_AFTER_REMEDIATION`, found missing build alias hard blocker; fixed with validator logic and tests.
-- QA Reviewer B: `PASS`, Android TV/ADB inventory boundaries and not-run statuses reviewed.
-- Security/Prod-safety Reviewer: `PASS_AFTER_REMEDIATION`, found owner/location label leaks in public aliases; fixed with scrubber and regressions.
-- Docs/Scribe: `PASS_AFTER_REMEDIATION`, fixed verification-memory and policy exception wording for TASK-016 inventory allowlist.
+- Orchestrator: `PASS`, scoped task, remediation, verification and final consolidation complete.
+- Planner: `PASS`, plan and acceptance criteria produced.
+- Builder: `PASS`, implementation completed in task branch.
+- QA Reviewer A: `PASS_AFTER_REMEDIATION`; found legacy alias fallback and incomplete allowed-actions requirements, both fixed with regressions.
+- QA Reviewer B: `PASS_AFTER_REMEDIATION`; runtime/ADB boundary passed, diff-check EOF blocker fixed after remediation.
+- Security/Prod-safety Reviewer: `PASS`, pre-implementation safety checklist completed.
+- Docs/Scribe: `PASS_AFTER_REMEDIATION`; final current-state count and reviewer-status notes fixed.
 
 ## Stop conditions
 

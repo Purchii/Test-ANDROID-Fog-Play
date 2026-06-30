@@ -41,6 +41,7 @@
 | TASK-014 | Public repository safety scan checklist and local guard plan | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-014-public-repo-safety-scan | proposed |
 | TASK-015 | Approval metadata schema validator | BOUNDED_AUTONOMOUS for local fail-closed validation only | qa/task-015-approval-metadata-validator | completed |
 | TASK-015A/016 | Approval validator hardening and ADB device/build inventory preflight | NON_AUTONOMOUS; validator/docs/tests are PROD_SAFE; local ADB inventory is owner-approved PROD_CONDITIONAL | qa/task-015a-016-approval-validator-adb-inventory-preflight | completed |
+| TASK-015B/016A | Final approval validator hardening and ADB inventory rerun/preflight | NON_AUTONOMOUS; validator/docs/tests are PROD_SAFE; local ADB inventory is owner-approved PROD_CONDITIONAL | qa/task-015b-016a-final-validator-adb-preflight | active verification complete; task branch push pending |
 | TASK-016 | Device/build inventory and runtime preflight draft | BOUNDED_AUTONOMOUS for public-safe docs/local validation only; runtime execution blocked | qa/task-016-device-build-runtime-preflight | superseded by completed TASK-015A/016 |
 | TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | proposed |
 | TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | proposed |

@@ -23,6 +23,17 @@ def _happy_metadata():
             "expected_local_path_pattern": ".qa_local/apks/task-005/app-under-test.apk",
             "sha256_required": True,
             "sha256_public_value_allowed": False,
+            "allowed_actions": ["install", "launch", "observe"],
+            "forbidden_actions": [
+                "commit",
+                "upload",
+                "archive",
+                "decompile",
+                "patch",
+                "resign",
+                "extract_private_endpoints",
+                "extract_secrets",
+            ],
         },
         "approved_targets": {
             "approved": True,
@@ -483,12 +494,12 @@ def test_synthetic_login_requires_approved_synthetic_user(tmp_path):
 
 def test_phone_only_target_blocks_task_005(tmp_path):
     def mutate(metadata):
-        metadata["approved_targets"]["device_aliases"] = ["phone-samsung-001"]
+        metadata["approved_targets"]["device_aliases"] = ["unknown-samsung-001"]
         metadata["approved_targets"]["allowed_categories"] = ["android_phone_secondary"]
         metadata["approved_targets"]["devices"] = [
             {
-                "device_alias": "phone-samsung-001",
-                "runtime_profile_alias": "phone-samsung-a14-001",
+                "device_alias": "unknown-samsung-001",
+                "runtime_profile_alias": "unknown-samsung-a14-001",
                 "category": "android_phone_secondary",
                 "priority": "P2",
                 "form_factor": "phone",
@@ -506,7 +517,186 @@ def test_phone_only_target_blocks_task_005(tmp_path):
     report = _report_for(tmp_path, mutate)
 
     assert report["approval_decision"] == "blocked"
-    assert any("P0 Android TV/STB D-pad target" in reason for reason in report["blocked_reasons"])
+    assert any("actionable P0 Android TV/STB D-pad target" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("adb_available", ["no", "unknown"])
+def test_p0_tv_stb_target_without_adb_available_yes_blocks(tmp_path, adb_available):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["adb_available"] = adb_available
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("adb_available must be yes" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("confidence", ["heuristic", "manual_review", "unknown"])
+def test_p0_tv_stb_target_without_manual_confirmed_classification_blocks(tmp_path, confidence):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["classification_confidence"] = confidence
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("classification_confidence must be manual_confirmed" in reason for reason in report["blocked_reasons"])
+
+
+def test_p0_tv_stb_target_with_manual_review_required_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["manual_review_required"] = True
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("manual_review_required must be false" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "device_alias,runtime_profile_alias",
+    [
+        ("tv-serial-001", "tv-serial-a11-001"),
+        ("tv-google-account-001", "tv-google-account-a11-001"),
+        ("tv-phone-001", "tv-phone-a11-001"),
+        ("tv-otp-001", "tv-otp-a11-001"),
+        ("tv-androidid-001", "tv-androidid-a11-001"),
+        ("tv-token-001", "tv-token-a11-001"),
+        ("tv-session-001", "tv-session-a11-001"),
+    ],
+)
+def test_reserved_alias_tokens_block_device_aliases_and_runtime_profiles(tmp_path, device_alias, runtime_profile_alias):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = [device_alias]
+        metadata["approved_targets"]["devices"][0]["device_alias"] = device_alias
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = runtime_profile_alias
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_empty_runtime_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"] = []
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_scope must be a non-empty list" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_core_runtime_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("initial_focus")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("missing required TASK-005 core items" in reason for reason in report["blocked_reasons"])
+
+
+def test_raw_evidence_public_report_policy_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["evidence_capture"]["public_report_policy"] = "raw_evidence_allowed"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("public_report_policy" in reason for reason in report["blocked_reasons"])
+
+
+def test_apk_sha256_required_false_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["sha256_required"] = False
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("sha256_required" in reason for reason in report["blocked_reasons"])
+
+
+def test_apk_sha256_public_value_allowed_true_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["sha256_public_value_allowed"] = True
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("sha256_public_value_allowed" in reason for reason in report["blocked_reasons"])
+
+
+def test_apk_allowed_actions_containing_decompile_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["allowed_actions"].append("decompile")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_actions" in reason and "decompile" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("missing_action", ["install", "launch", "observe"])
+def test_apk_allowed_actions_missing_required_action_blocks(tmp_path, missing_action):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["allowed_actions"].remove(missing_action)
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_actions" in reason and missing_action in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("missing_action", ["decompile", "extract_secrets"])
+def test_apk_forbidden_actions_missing_critical_action_blocks(tmp_path, missing_action):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["forbidden_actions"].remove(missing_action)
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_actions" in reason and missing_action in reason for reason in report["blocked_reasons"])
+
+
+def test_phone_only_allowed_categories_with_tv_device_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["allowed_categories"] = ["android_phone_secondary"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("category is not allowed" in reason for reason in report["blocked_reasons"])
+
+
+def test_device_aliases_must_match_structured_devices(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = ["tv-sony-001"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_aliases contains aliases missing" in reason for reason in report["blocked_reasons"])
+
+
+def test_empty_device_aliases_block_even_with_legacy_approved_device_aliases(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = []
+        metadata["approved_targets"]["approved_device_aliases"] = ["tv-tcl-001"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_aliases must be a non-empty list" in reason for reason in report["blocked_reasons"])
+
+
+def test_duplicate_device_aliases_block(tmp_path):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"].append(deepcopy(metadata["approved_targets"]["devices"][0]))
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("device_alias values must not contain duplicates" in reason for reason in report["blocked_reasons"])
 
 
 def test_missing_metadata_path_blocks(tmp_path):

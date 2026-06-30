@@ -2,6 +2,8 @@ import json
 import subprocess
 from pathlib import Path
 
+import pytest
+
 from automation.device_inventory.generate_adb_device_inventory import build_inventory, build_report, main
 
 
@@ -128,6 +130,8 @@ def test_leanback_features_classify_tv():
     assert device["category"] == "android_tv"
     assert device["form_factor"] == "tv"
     assert device["input_method"] == "dpad_remote"
+    assert device["classification_confidence"] == "heuristic"
+    assert device["manual_review_required"] is True
 
 
 def test_touchscreen_only_classifies_phone_secondary():
@@ -174,6 +178,48 @@ def test_public_sanitizer_blocks_identifier_like_values(tmp_path):
     assert report["overall_status"] == "blocked"
     assert any("sanitizer" in reason for reason in report["blocked_reasons"])
     assert public_payload["devices"] == []
+
+
+@pytest.mark.parametrize(
+    "unsafe_alias",
+    [
+        "tv-serial-001",
+        "tv-phone-001",
+        "tv-otp-001",
+        "tv-androidid-001",
+        "tv-google-account-001",
+    ],
+)
+def test_existing_alias_map_reserved_tokens_block_public_inventory(tmp_path, unsafe_alias):
+    alias_map = tmp_path / "serial_alias_map.json"
+    alias_map.write_text(
+        json.dumps({"ABC123": {"device_alias": unsafe_alias, "index": "001"}}),
+        encoding="utf-8",
+    )
+    fake = FakeAdb(_responses(serial="ABC123", manufacturer="TCL", model="TV"))
+
+    report, _raw, alias_map_payload, public_payload = build_report(allow_adb=True, alias_map_path=alias_map, runner=fake)
+
+    assert alias_map_payload["ABC123"]["device_alias"] == unsafe_alias
+    assert report["overall_status"] == "blocked"
+    assert any("unsafe alias-map values" in reason for reason in report["blocked_reasons"])
+    assert public_payload["devices"] == []
+
+
+def test_existing_alias_map_safe_alias_passes_public_inventory(tmp_path):
+    alias_map = tmp_path / "serial_alias_map.json"
+    alias_map.write_text(
+        json.dumps({"ABC123": {"device_alias": "tv-tcl-001", "index": "001"}}),
+        encoding="utf-8",
+    )
+    fake = FakeAdb(_responses(serial="ABC123", manufacturer="TCL", model="TV", release="11", sdk="30"))
+
+    report, _raw, alias_map_payload, public_payload = build_report(allow_adb=True, alias_map_path=alias_map, runner=fake)
+
+    assert report["overall_status"] == "not_run"
+    assert alias_map_payload["ABC123"]["device_alias"] == "tv-tcl-001"
+    assert public_payload["devices"][0]["device_alias"] == "tv-tcl-001"
+    assert public_payload["devices"][0]["runtime_profile_alias"] == "tv-tcl-a11-001"
 
 
 def test_owner_and_location_labels_are_excluded_from_public_inventory():

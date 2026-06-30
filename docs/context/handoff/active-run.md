@@ -4,12 +4,12 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-015B/016A - Final approval validator hardening and ADB inventory rerun/preflight`
-Thread status: `active_verification_complete_pending_final_review`
+Thread status: `inactive_completed_task_branch_pushed`
 Fresh thread verified: `yes`
 Task ID: `TASK-015B/016A`
 Task branch: `qa/task-015b-016a-final-validator-adb-preflight`
 Default branch: `main`
-Task branch pushed: `pending`
+Task branch pushed: `yes`
 Default branch merge/push: `not_authorized_in_non_autonomous`
 Production safety classification: `PROD_SAFE` for validator/docs/tests/default dry-runs; `PROD_CONDITIONAL` for owner-approved TASK-016A local ADB inventory allowlist only
 Multi-agent status: `complete_passed_after_remediation`

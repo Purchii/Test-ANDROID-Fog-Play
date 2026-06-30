@@ -1,8 +1,11 @@
 # Synthetic QA User Policy
 
-Task: `TASK-015 - Approval Metadata Schema Validator`
+Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
 
 The project may use a synthetic QA user only through a public-safe alias.
+TASK-015D/016C does not approve login or runtime use of that alias. Any future
+TASK-005 synthetic login remains blocked until approval metadata, fixture
+policy, evidence storage, cleanup and required reviews are confirmed.
 
 ## Public Representation
 
@@ -22,6 +25,17 @@ Recommended ignored local path:
 ```text
 .qa_local/secrets/qa_user.env
 ```
+
+When `synthetic_qa_user.approved: true`, approval metadata must include both:
+
+```text
+local_secret_file_pattern: .qa_local/secrets/qa_user.env
+repo_allowed_file: docs/approvals/qa_user.env.example
+```
+
+The local secret path must remain under `.qa_local/`. The repository allowed
+file must be a placeholder/template path outside `.qa_local/`; a real
+`.qa_local/secrets/qa_user.env` file must never be committed.
 
 Allowed local-only keys:
 
@@ -56,4 +70,3 @@ profile_mutation
 destructive_account_action
 real_user_data_changes
 ```
-

@@ -1,6 +1,6 @@
 # Device Alias Policy
 
-Task: `TASK-015C/016B - Approval/device-inventory consistency polish and local ADB inventory readiness`
+Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
 
 Production safety classification: `PROD_SAFE` for docs, schemas, validators and
 unit tests. This policy does not approve Android runtime execution.
@@ -89,6 +89,11 @@ Runtime profile aliases for approval metadata must preserve the stable device
 alias prefix and index while encoding the same Android major version as
 `android_major`. For example, `tv-tcl-001` maps to `tv-tcl-a11-001` only when
 `android_major: 11`.
+
+TASK-016C generated inventory aliases are heuristic output. They remain
+manual-review-required and must not be copied into TASK-005 approval metadata
+until separate owner/QA review confirms the alias, form factor, input method
+and target priority.
 
 ## Runtime Approval Boundary
 

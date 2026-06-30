@@ -65,6 +65,7 @@ def test_missing_adb_binary_blocks_without_crash():
 
 
 def test_allow_adb_output_paths_must_stay_under_qa_local(tmp_path):
+    fake = FakeAdb({})
     report = build_inventory(
         allow_adb=True,
         raw_output=Path(".qa_local/devices/raw_adb_devices.json"),
@@ -72,11 +73,56 @@ def test_allow_adb_output_paths_must_stay_under_qa_local(tmp_path):
         public_output=tmp_path / "public.json",
         report_path=Path(".qa_local/devices/preflight_report.json"),
         write_files=False,
-        runner=FakeAdb({}),
+        runner=fake,
     )
 
     assert report["overall_status"] == "blocked"
-    assert any("--public-output must stay under .qa_local/" in reason for reason in report["blocked_reasons"])
+    assert fake.calls == []
+    assert any("--public-output must stay under .qa_local/devices/" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "kwargs,expected",
+    [
+        ({"raw_output": Path("docs/raw_adb_devices.json")}, "--raw-output"),
+        ({"alias_map_path": Path("docs/serial_alias_map.json")}, "--alias-map"),
+        ({"public_output": Path("docs/approvals/device_inventory.generated.json")}, "--public-output"),
+        ({"report_path": Path("docs/preflight_report.json")}, "--report"),
+        ({"raw_output": Path(".qa_local/devices/192.168.0.1/raw.json")}, "--raw-output"),
+    ],
+)
+def test_output_path_errors_block_before_adb_call(kwargs, expected):
+    fake = FakeAdb(_responses(serial="ABC123"))
+    defaults = {
+        "raw_output": Path(".qa_local/devices/raw_adb_devices.json"),
+        "alias_map_path": Path(".qa_local/devices/serial_alias_map.json"),
+        "public_output": Path(".qa_local/devices/device_inventory.public_safe.generated.json"),
+        "report_path": Path(".qa_local/devices/preflight_report.json"),
+    }
+    defaults.update(kwargs)
+
+    report = build_inventory(allow_adb=True, write_files=False, runner=fake, **defaults)
+
+    assert report["overall_status"] == "blocked"
+    assert fake.calls == []
+    assert any(expected in reason for reason in report["blocked_reasons"])
+
+
+def test_default_cli_with_unsafe_output_path_blocks_before_adb_call():
+    fake = FakeAdb({})
+
+    report = build_inventory(
+        allow_adb=False,
+        raw_output=Path("docs/raw_adb_devices.json"),
+        alias_map_path=Path(".qa_local/devices/serial_alias_map.json"),
+        public_output=Path(".qa_local/devices/device_inventory.public_safe.generated.json"),
+        report_path=Path(".qa_local/devices/preflight_report.json"),
+        write_files=False,
+        runner=fake,
+    )
+
+    assert report["overall_status"] == "blocked"
+    assert fake.calls == []
 
 
 def test_usb_serial_remains_local_only():
@@ -343,11 +389,12 @@ def test_android_update_preserves_device_alias_and_changes_runtime_profile(tmp_p
     assert device["runtime_profile_alias"] == "stb-xiaomi-a13-001"
 
 
-def test_cli_writes_local_outputs_and_not_run_statuses(tmp_path):
-    raw_output = tmp_path / "raw_adb_devices.json"
-    alias_map = tmp_path / "serial_alias_map.json"
-    public_output = tmp_path / "device_inventory.public_safe.generated.json"
-    report_output = tmp_path / "preflight_report.json"
+def test_cli_writes_local_outputs_and_not_run_statuses(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    raw_output = Path(".qa_local/devices/raw_adb_devices.json")
+    alias_map = Path(".qa_local/devices/serial_alias_map.json")
+    public_output = Path(".qa_local/devices/device_inventory.public_safe.generated.json")
+    report_output = Path(".qa_local/devices/preflight_report.json")
 
     exit_code = main(
         [

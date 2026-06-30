@@ -1,14 +1,23 @@
 # ADB Inventory Policy
 
-Task: `TASK-015C/016B - Approval/device-inventory consistency polish and local ADB inventory readiness`
+Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
 
 Production safety classification: `PROD_CONDITIONAL` for owner-approved local
 ADB inventory only. Default CLI execution is `PROD_SAFE` and makes no ADB calls.
 
+## Two-Phase Hard Gate
+
+TASK-015D/016C Phase A is approval hardening. TASK-016C Phase B is blocked until
+Phase A passes.
+
+Phase B remains inventory-only even when approved. It cannot install, launch,
+smoke test, collect runtime evidence or approve TASK-005.
+
 ## Allowed Scope
 
-TASK-016B may run only inventory commands through
-`automation/device_inventory/generate_adb_device_inventory.py --allow-adb`.
+TASK-016C may run only inventory commands through
+`automation/device_inventory/generate_adb_device_inventory.py --allow-adb`
+after the Phase A hard gate passes and owner approval is present.
 
 Allowed commands:
 
@@ -57,6 +66,12 @@ Raw outputs and alias maps must stay ignored under `.qa_local/devices/`:
 
 These files must not be committed.
 
+TASK-016C output path validation must happen before any ADB invocation. Raw
+output, alias map, generated public-safe inventory and preflight report paths
+must all stay under `.qa_local/devices/`; absolute paths, `..`, repository docs
+paths, `/tmp`-style public leakage and IP/identifier-like path segments block
+the command before ADB is called.
+
 Phone-category secondary devices may use public-safe aliases such as
 `phone-samsung-001` and `phone-samsung-a14-001`. This does not make them
 eligible P0 TASK-005 targets; TASK-005 still requires a manual-confirmed P0
@@ -64,13 +79,16 @@ Android TV/STB D-pad target.
 
 ## Manual Review Workflow
 
-1. TASK-016B collects raw local-only ADB inventory when devices are visible.
-2. TASK-016B generates public-safe inventory with heuristic classification.
-3. Owner/QA reviews aliases, categories, form factor, input method and target
+1. TASK-015D Phase A approval hardening passes.
+2. TASK-016C collects raw local-only ADB inventory when owner approval is
+   present and devices are visible.
+3. TASK-016C generates public-safe inventory with heuristic classification and
+   `manual_review_required: true`.
+4. Owner/QA reviews aliases, categories, form factor, input method and target
    priority.
-4. Approved TASK-005 metadata copies selected targets as `manual_confirmed` and
+5. Approved TASK-005 metadata copies selected targets as `manual_confirmed` and
    `manual_review_required: false`.
-5. Only then can the approval validator return `approved_for_limited_runtime`.
+6. Only then can the approval validator return `approved_for_limited_runtime`.
 
-No TASK-016B output confirms app launch, first visible state, focus behavior,
+No TASK-016C output confirms app launch, first visible state, focus behavior,
 WebView, WebRTC, payment or runtime smoke.

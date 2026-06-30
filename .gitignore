@@ -23,6 +23,7 @@ google-services.json
 local.properties
 .env
 .env.*
+*.env
 
 # Raw/private local QA evidence is not public source-of-truth by default.
 .qa_local/

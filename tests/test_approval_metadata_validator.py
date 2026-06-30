@@ -1,10 +1,15 @@
 import json
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
 
 from automation.approvals.validate_approval_metadata import build_report, main
+
+
+def _future_expiration(days=7):
+    return (datetime.now(timezone.utc) + timedelta(days=days)).date().isoformat()
 
 
 def _happy_metadata():
@@ -14,7 +19,7 @@ def _happy_metadata():
         "scope_version": "task-005-limited-runtime-smoke-v1",
         "approval_status": "approved",
         "approval_evidence_status": "confirmed",
-        "expires_at": "2099-01-01",
+        "expires_at": _future_expiration(),
         "approved_by_role": "project_owner",
         "approved_build_apk": {
             "approved": True,
@@ -56,6 +61,14 @@ def _happy_metadata():
                     "manual_review_required": False,
                     "forbidden_identifiers_excluded": True,
                 }
+            ],
+            "forbidden_identifiers": [
+                "serial",
+                "imei",
+                "mac",
+                "android_id",
+                "google_account",
+                "personal_device_identifier",
             ],
         },
         "runtime_execution": {
@@ -152,11 +165,11 @@ def _write_metadata(tmp_path, metadata):
     return path
 
 
-def _report_for(tmp_path, mutator=None):
+def _report_for(tmp_path, mutator=None, now=None):
     metadata = _happy_metadata()
     if mutator is not None:
         mutator(metadata)
-    return build_report(_write_metadata(tmp_path, metadata))
+    return build_report(_write_metadata(tmp_path, metadata), now=now)
 
 
 def test_happy_path_approves_limited_runtime_but_runtime_remains_not_run(tmp_path):
@@ -211,6 +224,22 @@ def test_expired_approval_blocks(tmp_path):
     assert any("expires_at" in reason for reason in report["blocked_reasons"])
 
 
+def test_approval_expiration_within_ttl_passes_with_fixed_now(tmp_path):
+    now = datetime(2026, 6, 30, tzinfo=timezone.utc)
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"expires_at": "2026-07-07"}), now=now)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize("expires_at", ["2026-07-31", "2099-01-01", "2100-01-01"])
+def test_approval_expiration_beyond_ttl_blocks(tmp_path, expires_at):
+    now = datetime(2026, 6, 30, tzinfo=timezone.utc)
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"expires_at": expires_at}), now=now)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("30 days" in reason for reason in report["blocked_reasons"])
+
+
 @pytest.mark.parametrize("status", ["unknown", "likely", "hypothesis"])
 def test_non_confirmed_approval_evidence_blocks(tmp_path, status):
     report = _report_for(tmp_path, lambda metadata: metadata.update({"approval_evidence_status": status}))
@@ -260,6 +289,23 @@ def test_task005_apk_path_family_and_extension_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".qa_local/apks/task-005/secret-app.apk",
+        ".qa_local/apks/task-005/home-app.apk",
+    ],
+)
+def test_task005_apk_path_must_use_exact_owner_input_path(tmp_path, path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["approved_build_apk"].update({"expected_local_path_pattern": path}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("app-under-test.apk" in reason for reason in report["blocked_reasons"])
 
 
 @pytest.mark.parametrize("value", [None, "", "bad alias", "build"])
@@ -744,6 +790,7 @@ def test_synthetic_user_repo_allowed_file_cannot_be_local_secret(tmp_path):
         ".qa_local/apks/task-005/app.apk",
         ".qa_local/devices/raw_adb_devices.json",
         ".qa_local/secrets/qa_user.txt",
+        ".qa_local/secrets/home.env",
         ".qa_local/secrets/apks/qa_user.env",
         ".qa_local/secrets/devices/qa_user.env",
     ],
@@ -755,7 +802,7 @@ def test_synthetic_secret_path_must_use_secret_env_family(tmp_path, path):
     report = _report_for(tmp_path, mutate)
 
     assert report["approval_decision"] == "blocked"
-    assert any(".qa_local/secrets/" in reason for reason in report["blocked_reasons"])
+    assert any(".qa_local/secrets/qa_user.env" in reason for reason in report["blocked_reasons"])
 
 
 def test_synthetic_secret_env_path_passes(tmp_path):
@@ -778,6 +825,45 @@ def test_synthetic_user_safe_repo_allowed_file_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+def test_no_auth_metadata_with_absent_optional_auth_policy_fields_passes(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+        metadata["runtime_execution"]["auth_mode"] = "no_auth_required"
+        metadata["synthetic_qa_user"]["approved"] = False
+        del metadata["synthetic_qa_user"]["allowed_auth_scope"]
+        del metadata["synthetic_qa_user"]["forbidden_account_actions"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+def test_no_auth_metadata_with_malformed_allowed_auth_scope_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+        metadata["runtime_execution"]["auth_mode"] = "no_auth_required"
+        metadata["synthetic_qa_user"]["approved"] = False
+        metadata["synthetic_qa_user"]["allowed_auth_scope"] = ["payment"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("allowed_auth_scope" in reason and "payment" in reason for reason in report["blocked_reasons"])
+
+
+def test_no_auth_metadata_with_malformed_forbidden_account_action_blocks(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+        metadata["runtime_execution"]["auth_mode"] = "no_auth_required"
+        metadata["synthetic_qa_user"]["approved"] = False
+        metadata["synthetic_qa_user"]["forbidden_account_actions"] = ["purchaze"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_account_actions" in reason and "purchaze" in reason for reason in report["blocked_reasons"])
 
 
 @pytest.mark.parametrize("path", ["qa_user.env.example", "docs/secrets/qa_user.env.example"])
@@ -1167,6 +1253,7 @@ def test_raw_evidence_public_report_policy_blocks(tmp_path):
         ".qa_local/secrets/",
         ".qa_local/devices/",
         ".qa_local/evidence/task-005/secrets/",
+        ".qa_local/evidence/task-005/private/",
     ],
 )
 def test_evidence_path_must_use_task005_evidence_family(tmp_path, path):
@@ -1257,6 +1344,23 @@ def test_duplicate_apk_forbidden_action_blocks(tmp_path):
     assert any("forbidden_actions must not contain duplicates" in reason for reason in report["blocked_reasons"])
 
 
+@pytest.mark.parametrize("extra_action", ["foo", "launch"])
+def test_apk_forbidden_actions_unsupported_extra_blocks(tmp_path, extra_action):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["forbidden_actions"].append(extra_action)
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_actions contains unsupported actions" in reason for reason in report["blocked_reasons"])
+
+
+def test_apk_forbidden_actions_exact_required_set_passes(tmp_path):
+    report = _report_for(tmp_path)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
 @pytest.mark.parametrize("missing_action", ["install", "launch", "observe"])
 def test_apk_allowed_actions_missing_required_action_blocks(tmp_path, missing_action):
     def mutate(metadata):
@@ -1287,6 +1391,39 @@ def test_phone_only_allowed_categories_with_tv_device_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("category is not allowed" in reason for reason in report["blocked_reasons"])
+
+
+def test_approved_targets_missing_forbidden_identifiers_blocks(tmp_path):
+    def mutate(metadata):
+        del metadata["approved_targets"]["forbidden_identifiers"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_identifiers" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "mutator",
+    [
+        lambda metadata: metadata["approved_targets"]["forbidden_identifiers"].remove("android_id"),
+        lambda metadata: metadata["approved_targets"]["forbidden_identifiers"].append("androidid"),
+        lambda metadata: metadata["approved_targets"]["forbidden_identifiers"].append("mac_address"),
+        lambda metadata: metadata["approved_targets"]["forbidden_identifiers"].append("serial"),
+        lambda metadata: metadata["approved_targets"].update({"forbidden_identifiers": []}),
+    ],
+)
+def test_approved_targets_forbidden_identifiers_strict_policy_blocks(tmp_path, mutator):
+    report = _report_for(tmp_path, mutator)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("forbidden_identifiers" in reason for reason in report["blocked_reasons"])
+
+
+def test_approved_targets_forbidden_identifiers_exact_policy_passes(tmp_path):
+    report = _report_for(tmp_path)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
 
 
 def test_duplicate_allowed_category_blocks(tmp_path):

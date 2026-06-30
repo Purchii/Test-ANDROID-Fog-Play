@@ -20,6 +20,8 @@ WebView / WebRTC testing of MTC Fog Play.
   blocked until Phase A approval hardening passes.
 - TASK-015F/017A hardens strict schema, hygiene and owner-review validation
   only; it does not approve or run TASK-005.
+- TASK-015G/017B hardens residual approval strictness and adds owner approval
+  input templates only; it does not approve or run TASK-005.
 - TASK-016 inventory preflight does not install, launch, capture logcat,
   screenshots or videos, and always reports runtime/app statuses as `not_run`.
 

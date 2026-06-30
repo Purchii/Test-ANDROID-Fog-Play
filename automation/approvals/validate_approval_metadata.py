@@ -11,7 +11,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -151,6 +151,10 @@ BUILD_REQUIRED_FORBIDDEN_ACTIONS = {
     "extract_private_endpoints",
     "extract_secrets",
 }
+MAX_RUNTIME_APPROVAL_TTL_DAYS = 30
+TASK005_EXACT_APK_PATH = ".qa_local/apks/task-005/app-under-test.apk"
+TASK005_EXACT_SYNTHETIC_SECRET_PATH = ".qa_local/secrets/qa_user.env"
+TASK005_EXACT_EVIDENCE_PATH = ".qa_local/evidence/task-005/"
 FORBIDDEN_SCOPE_TERMS = {
     "stream",
     "webrtc",
@@ -273,6 +277,14 @@ TARGET_ALLOWED_CATEGORIES = {
     "android_stb",
     "aosp_stb",
     "android_phone_secondary",
+}
+TARGET_REQUIRED_FORBIDDEN_IDENTIFIERS = {
+    "serial",
+    "imei",
+    "mac",
+    "android_id",
+    "google_account",
+    "personal_device_identifier",
 }
 TARGET_CATEGORY_TO_STRUCTURED = {
     "physical_android_tv": "android_tv",
@@ -477,6 +489,13 @@ def _is_expired(value: Any, now: datetime) -> bool:
     return parsed < now
 
 
+def _exceeds_runtime_approval_ttl(value: Any, now: datetime) -> bool:
+    parsed = _parse_expiration(value)
+    if parsed is None:
+        return True
+    return parsed > now + timedelta(days=MAX_RUNTIME_APPROVAL_TTL_DAYS)
+
+
 def _stringify_scope(raw_scope: Any) -> list[str]:
     if isinstance(raw_scope, list):
         return [str(item).strip() for item in raw_scope if str(item).strip()]
@@ -533,41 +552,24 @@ def _path_contains_forbidden_public_value(path_value: Any) -> bool:
 
 
 def _path_is_task005_apk(path_value: Any) -> bool:
-    parts = _path_parts(path_value)
-    filename = parts[-1] if parts else ""
-    lowered_filename = filename.lower()
-    return (
-        parts[:3] == [".qa_local", "apks", "task-005"]
-        and len(parts) == 4
-        and "*" not in filename
-        and lowered_filename.endswith(".apk")
-        and lowered_filename.count(".apk") == 1
-        and not _path_contains_forbidden_public_value(path_value)
-    )
+    if not isinstance(path_value, str):
+        return False
+    normalized = path_value.replace("\\", "/").strip()
+    return normalized == TASK005_EXACT_APK_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_synthetic_secret(path_value: Any) -> bool:
-    parts = _path_parts(path_value)
-    filename = parts[-1] if parts else ""
-    return (
-        parts[:2] == [".qa_local", "secrets"]
-        and len(parts) == 3
-        and "*" not in filename
-        and filename.endswith(".env")
-        and filename.count(".env") == 1
-        and not _path_contains_forbidden_public_value(path_value)
-    )
+    if not isinstance(path_value, str):
+        return False
+    normalized = path_value.replace("\\", "/").strip()
+    return normalized == TASK005_EXACT_SYNTHETIC_SECRET_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_task005_evidence(path_value: Any) -> bool:
-    parts = _path_parts(path_value)
-    if parts[:3] != [".qa_local", "evidence", "task-005"]:
+    if not isinstance(path_value, str):
         return False
-    if len(parts) > 4:
-        return False
-    if len(parts) == 4 and parts[3] in FORBIDDEN_PATH_LABELS:
-        return False
-    return not _path_contains_forbidden_public_value(path_value)
+    normalized = path_value.replace("\\", "/").strip()
+    return normalized == TASK005_EXACT_EVIDENCE_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_repo_template(path_value: Any) -> bool:
@@ -718,7 +720,7 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
         reasons.append("approved_build_apk.storage_policy must be local_ignored_path_only.")
     if not _path_is_task005_apk(build.get("expected_local_path_pattern")):
         reasons.append(
-            "approved_build_apk.expected_local_path_pattern must stay under .qa_local/apks/task-005/ and end with .apk."
+            f"approved_build_apk.expected_local_path_pattern must be exactly {TASK005_EXACT_APK_PATH}."
         )
     if build.get("sha256_required") is not True:
         reasons.append("approved_build_apk.sha256_required must be true.")
@@ -747,7 +749,11 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
         duplicates = _duplicate_items(forbidden_actions)
         if duplicates:
             reasons.append(f"approved_build_apk.forbidden_actions must not contain duplicates: {duplicates}.")
-        missing_forbidden = sorted(BUILD_REQUIRED_FORBIDDEN_ACTIONS - {str(action) for action in forbidden_actions})
+        normalized_forbidden_actions = {str(action) for action in forbidden_actions}
+        unsupported_forbidden = sorted(normalized_forbidden_actions - BUILD_REQUIRED_FORBIDDEN_ACTIONS)
+        missing_forbidden = sorted(BUILD_REQUIRED_FORBIDDEN_ACTIONS - normalized_forbidden_actions)
+        if unsupported_forbidden:
+            reasons.append(f"approved_build_apk.forbidden_actions contains unsupported actions: {unsupported_forbidden}.")
         if missing_forbidden:
             reasons.append(f"approved_build_apk.forbidden_actions is missing required actions: {missing_forbidden}.")
     return reasons
@@ -896,6 +902,20 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
         reasons.append("approved_targets.approved must be true.")
     if targets.get("device_aliases_required") is not True:
         reasons.append("approved_targets.device_aliases_required must be true.")
+    forbidden_identifiers = targets.get("forbidden_identifiers")
+    if not isinstance(forbidden_identifiers, list) or not forbidden_identifiers:
+        reasons.append("approved_targets.forbidden_identifiers must be a non-empty list.")
+    else:
+        duplicates = _duplicate_items(forbidden_identifiers)
+        if duplicates:
+            reasons.append(f"approved_targets.forbidden_identifiers must not contain duplicates: {duplicates}.")
+        normalized_forbidden_identifiers = {str(identifier) for identifier in forbidden_identifiers}
+        unsupported_identifiers = sorted(normalized_forbidden_identifiers - TARGET_REQUIRED_FORBIDDEN_IDENTIFIERS)
+        missing_identifiers = sorted(TARGET_REQUIRED_FORBIDDEN_IDENTIFIERS - normalized_forbidden_identifiers)
+        if unsupported_identifiers:
+            reasons.append(f"approved_targets.forbidden_identifiers contains unsupported values: {unsupported_identifiers}.")
+        if missing_identifiers:
+            reasons.append(f"approved_targets.forbidden_identifiers is missing required values: {missing_identifiers}.")
     categories = targets.get("allowed_categories")
     normalized_allowed_categories: set[str] = set()
     if not isinstance(categories, list) or not categories:
@@ -1142,7 +1162,7 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
     if user.get("approved") is True and local_secret_file is None:
         reasons.append("synthetic_qa_user.approved requires local_secret_file_pattern under .qa_local/secrets/.")
     if local_secret_file is not None and not _path_is_synthetic_secret(local_secret_file):
-        reasons.append("synthetic_qa_user.local_secret_file_pattern must stay under .qa_local/secrets/ and end with .env.")
+        reasons.append(f"synthetic_qa_user.local_secret_file_pattern must be exactly {TASK005_EXACT_SYNTHETIC_SECRET_PATH}.")
     repo_allowed_file = user.get("repo_allowed_file")
     if user.get("approved") is True and repo_allowed_file is None:
         reasons.append("synthetic_qa_user.approved requires repo_allowed_file template path.")
@@ -1150,8 +1170,9 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
         reasons.append("synthetic_qa_user.repo_allowed_file must be a repository placeholder/template path outside .qa_local/.")
 
     auth_scope = user.get("allowed_auth_scope")
-    if user.get("approved") is True or synthetic_login_in_scope:
-        if not isinstance(auth_scope, list) or not auth_scope:
+    auth_policy_required = user.get("approved") is True or synthetic_login_in_scope
+    if auth_scope is not None or auth_policy_required:
+        if not isinstance(auth_scope, list) or (auth_policy_required and not auth_scope):
             reasons.append("synthetic_qa_user.allowed_auth_scope must be a non-empty list.")
         else:
             normalized_auth_scope = {str(item) for item in auth_scope}
@@ -1165,8 +1186,9 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
             if synthetic_login_in_scope and missing:
                 reasons.append(f"synthetic_qa_user.allowed_auth_scope is missing required values: {missing}.")
 
-        forbidden_actions = user.get("forbidden_account_actions")
-        if not isinstance(forbidden_actions, list) or not forbidden_actions:
+    forbidden_actions = user.get("forbidden_account_actions")
+    if forbidden_actions is not None or auth_policy_required:
+        if not isinstance(forbidden_actions, list) or (auth_policy_required and not forbidden_actions):
             reasons.append("synthetic_qa_user.forbidden_account_actions must be a non-empty list.")
         else:
             normalized_forbidden_actions = {str(item) for item in forbidden_actions}
@@ -1177,7 +1199,7 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
             missing = sorted(SYNTHETIC_REQUIRED_FORBIDDEN_ACCOUNT_ACTIONS - normalized_forbidden_actions)
             if unsupported:
                 reasons.append(f"synthetic_qa_user.forbidden_account_actions contains unsupported values: {unsupported}.")
-            if missing:
+            if auth_policy_required and missing:
                 reasons.append(f"synthetic_qa_user.forbidden_account_actions is missing required values: {missing}.")
     return reasons
 
@@ -1212,7 +1234,7 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
     if evidence.get("raw_storage_policy") != "local_ignored_path_only":
         reasons.append("evidence_capture.raw_storage_policy must be local_ignored_path_only.")
     if not _path_is_task005_evidence(evidence.get("raw_storage_path_pattern")):
-        reasons.append("evidence_capture.raw_storage_path_pattern must stay under .qa_local/evidence/task-005/.")
+        reasons.append(f"evidence_capture.raw_storage_path_pattern must be exactly {TASK005_EXACT_EVIDENCE_PATH}.")
     if evidence.get("public_report_policy") != "redacted_summaries_only":
         reasons.append("evidence_capture.public_report_policy must be redacted_summaries_only.")
     for field in ("screenshots", "logs_logcat"):
@@ -1374,6 +1396,10 @@ def build_report(metadata_path: Path | None = None, now: datetime | None = None)
 
         if _is_expired(metadata.get("expires_at"), now):
             blocked_reasons.append("expires_at must be valid and not expired.")
+        elif _exceeds_runtime_approval_ttl(metadata.get("expires_at"), now):
+            blocked_reasons.append(
+                f"expires_at must be no more than {MAX_RUNTIME_APPROVAL_TTL_DAYS} days after validation time."
+            )
 
         blocked_reasons.extend(_validate_approved_by_role(metadata))
         blocked_reasons.extend(_validate_build(metadata))

@@ -3,30 +3,47 @@
 ## Run metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
-Thread status: `inactive_completed_default_push_authorized`
+Thread title: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
+Thread status: `completed_user_authorized_default_push`
 Fresh thread verified: `current_thread_renamed_for_task`
-Task ID: `TASK-015F/017A`
-Task branch: `qa/task-015f-017a-final-strict-schema-owner-target-handoff`
+Task ID: `TASK-015G/017B`
+Task branch: `qa/task-015g-017b-approval-strictness-owner-input-pack`
 Default branch: `main`
-Base commit: `e4eae81`
-Task branch pushed: `yes`
-Default branch merge/push: `user_authorized_push_to_master_interpreted_as_main`
+Base commit: `d308ef0`
+Merge/push authority: `user explicitly authorized push to master/default; interpreted as detected default branch main`
 Production safety classification: `PROD_SAFE` for docs, validators, schemas,
-synthetic unit tests, full-tree hygiene scan, public-safe review export
-validation and owner handoff.
-Multi-agent status: `complete_passed_after_remediation`
+synthetic unit tests, full-tree hygiene checks, default no-ADB dry-runs and
+public-safe owner approval input templates.
+
+Allowed files:
+
+```text
+.gitignore
+README.md
+automation/approvals/validate_approval_metadata.py
+automation/device_inventory/generate_adb_device_inventory.py
+docs/approvals/*.md
+docs/approvals/task005_owner_approval_inputs.template.json
+docs/context/current-state.md
+docs/context/engineering/quality-gates.md
+docs/context/engineering/verification-memory.md
+docs/context/governance/decisions-log.md
+docs/context/governance/risk-register.md
+docs/context/handoff/active-run.md
+docs/tasks/backlog.md
+tasks/TASK_015G_017B_residual_approval_strictness_owner_input_pack.md
+tests/test_approval_metadata_validator.py
+tests/test_adb_device_inventory.py
+```
 
 ## Goal
 
-Complete TASK-015F/017A final strict-schema polish and owner target review
-handoff:
+Complete TASK-015G/017B residual approval strictness polish and TASK-005 owner
+approval input pack:
 
-- close remaining approval metadata validator false-pass cases;
-- make full-tree hygiene scanner portable for both git checkouts and extracted
-  public-safe archive trees;
-- harden public-safe device inventory review export validation;
-- add owner-facing TASK-005 P0 TV/STB target review handoff;
+- close residual approval validator false-pass cases from the post-TASK-015F/017A audit;
+- harden public-safe owner-review inventory export validation;
+- create owner-facing public-safe TASK-005 approval input materials;
 - keep TASK-005 runtime smoke `blocked` / `not_run`.
 
 ## Allowed scope
@@ -37,7 +54,7 @@ handoff:
 - synthetic unit tests;
 - full-tree hygiene scans;
 - default no-ADB dry-runs;
-- public-safe owner-review inventory validation.
+- public-safe owner approval templates and checklist.
 
 ## Forbidden actions
 
@@ -48,24 +65,20 @@ handoff:
 - `logcat`;
 - screenshots, screenrecord or videos;
 - APK install, app launch or runtime smoke;
-- WebView, WebRTC, stream/media playback, payment, subscription or purchase
-  flows;
+- WebView, WebRTC, stream/media playback, payment, subscription or purchase flows;
 - decompile, patch, resign or security bypass;
 - production mutation;
 - secrets, private endpoints, raw evidence or raw device identifiers.
 
 ## Acceptance criteria
 
-- approval validator blocks strict schema/key drift, broad path variants,
-  stable aliases with Android-version tokens, Android major/API mismatch,
-  duplicate auxiliary approval lists and invalid `runtime_execution.forbidden_scope`;
-- hygiene scanner supports `--mode auto`, `--mode tracked` and
-  `--mode public-safe-tree`;
-- owner-review export blocks malformed aliases, alias/form-factor/API drift,
-  duplicate aliases, count mismatch, unknown public fields and auto-promotion;
-- `docs/approvals/task005_owner_device_review.md` lists the 6 P0 TV/STB
-  candidates and states that owner/QA manual confirmation is required;
-- example and draft approval metadata remain `blocked` / `not_run`;
+- `approved_build_apk.forbidden_actions` rejects unsupported extras and accepts only the exact required policy set;
+- `approved_targets.forbidden_identifiers` is required and rejects missing, unsupported or duplicate values;
+- `expires_at` is valid, non-expired and no more than 30 days after validation time;
+- TASK-005 APK, synthetic QA user secret and evidence paths use exact approved local path patterns;
+- optional synthetic auth policy fields are validated even when auth is out of scope;
+- owner-review inventory export rejects malformed redaction guarantees and malformed public enum values;
+- owner input template and checklist remain public-safe and do not approve runtime;
 - TASK-005 remains `blocked` / `not_run`.
 
 ## Verification plan
@@ -90,22 +103,28 @@ python automation/device_inventory/generate_adb_device_inventory.py
 ## Current evidence status
 
 - TASK-005 runtime execution: `blocked`
-- APK install/app launch/logcat/screenshots/videos/WebView/WebRTC/payment:
-  `not_run`
-- Manual owner/QA review of generated inventory: `not_run`
-- Owner-review P0 candidates: `6`, from
-  `docs/approvals/device_inventory.public_safe.review.json`
-- Verification: `passed_after_qa_a_remediation`
+- APK install/app launch/logcat/screenshots/videos/WebView/WebRTC/payment: `not_run`
+- Manual owner/QA target approval: `not_run`
+- Owner-review inventory devices: `heuristic` / `manual_review_required`
+- Verification: `passed_after_phase_b_docs_remediation`
+- Targeted validator/inventory/hygiene tests: `267 passed`
+- Full pytest: `367 passed` through both `pytest -q` and `python -m pytest -q`
+- Compileall: `passed`
+- Approval example/draft CLI: `blocked` / `runtime_execution_status=not_run`
+- Default TASK-016 inventory CLI: `blocked` / `runtime_execution_status=not_run`, no `--allow-adb`
+- Untracked local archive risk: `mitigated_by_safe_archives_gitignore`; `safe_archives/` remains unstaged and ignored
 
-## Multi-agent result
+## Multi-agent status
 
-- Orchestrator: `PASS`
 - Planner: `PASS_READ_ONLY_PLAN`
-- Builder: `PASS_HYGIENE_SCANNER_SCOPE`
-- QA Reviewer A: `PASS_AFTER_TOP_LEVEL_OWNER_REVIEW_FIELD_ALLOWLIST_REMEDIATION`
-- QA Reviewer B: `PASS_READ_ONLY_FINAL_REVIEW`
-- Security/Prod-safety Reviewer: `PASS_FINAL_REVIEW`
-- Docs/Scribe: `PASS_AFTER_STATE_RECONCILIATION`
+- Security/Prod-safety Reviewer: `PASS_READ_ONLY_REVIEW`
+- Builder: `PASS_IMPLEMENTED_SCOPE`
+- Builder implementation auditor: `PASS_FINAL_REVIEW`
+- QA Reviewer A: `PASS_FINAL_REVIEW`
+- QA Reviewer B: `PASS_FINAL_REVIEW`
+- Security/Prod-safety final review: `PASS_FINAL_REVIEW`
+- Docs/Scribe: `PASS_FINAL_REVIEW`
+- Subagent closure audit: `complete`; Planner, Security, Builder auditor, QA Reviewer A, QA Reviewer B and Docs/Scribe agents closed after outputs were recorded.
 
 ## Stop conditions
 

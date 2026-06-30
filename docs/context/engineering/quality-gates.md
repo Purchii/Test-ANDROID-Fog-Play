@@ -70,6 +70,17 @@ A task is done only when:
   drift, alias/form-factor mismatch, Android major/API mismatch, duplicate
   aliases, `public_device_count` mismatch, unknown public fields and any device
   that is not heuristic/manual-review-required/not-run.
+- TASK-015G/017B residual strictness must block unsupported
+  `approved_build_apk.forbidden_actions`, missing/unsupported/duplicate
+  `approved_targets.forbidden_identifiers`, approval expiration more than 30
+  days after validation time, non-exact TASK-005 APK/secret/evidence local
+  paths, malformed optional no-auth synthetic policy fields, incomplete
+  owner-review redaction guarantees and malformed owner-review public enum
+  values.
+- TASK-015G/017B owner approval input pack must remain public-safe template
+  material only: no APK hash values, secrets, raw device identifiers, raw
+  evidence, private endpoints or runtime approval; TASK-005 remains
+  `blocked`/`not_run`.
 - Full-tree hygiene must scan tracked text files for trailing whitespace, blank
   line at EOF and missing final newline; a clean `git diff --check` alone is
   not enough for this gate.

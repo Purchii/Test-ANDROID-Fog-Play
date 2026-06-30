@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015B/016A - Final approval validator hardening and ADB inventory rerun/preflight`
+Task: `TASK-015C/016B - Approval/device-inventory consistency polish and local ADB inventory readiness`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -62,8 +62,10 @@ review status: approved/confirmed/pending/blocked/rejected
 - TASK-005 has no approved build alias and local ignored APK storage policy.
 - APK path pattern is outside `.qa_local/` or uses a user-specific absolute path.
 - TASK-005 APK metadata omits `sha256_required: true`, allows the public SHA-256
-  value, permits actions outside `install`, `launch` and `observe`, or omits
-  critical forbidden actions such as `decompile` or `extract_secrets`.
+  value, uses a build alias containing reserved identifier/security tokens or
+  identifier-like values, permits actions outside `install`, `launch` and
+  `observe`, or omits critical forbidden actions such as `decompile` or
+  `extract_secrets`.
 - `approved_by_role` is empty or not one of `project_owner`, `qa_lead` or
   `security_prod_safety_reviewer`.
 - Approved targets are not approved or do not include structured public-safe
@@ -79,6 +81,11 @@ review status: approved/confirmed/pending/blocked/rejected
 - TASK-005 approval metadata has no actionable P0 Android TV/STB D-pad target
   with `adb_available: yes`, `classification_confidence: manual_confirmed`,
   `manual_review_required: false` and `forbidden_identifiers_excluded: true`.
+- Runtime target aliases are inconsistent: `runtime_profile_alias` must preserve
+  the `device_alias` prefix and index and its `a<android_major>` segment must
+  match `android_major`.
+- Manual-confirmed TV/STB approval targets use an alias first segment that does
+  not match the structured `form_factor`.
 - Structured target categories are inconsistent with
   `approved_targets.allowed_categories`.
 - Device metadata includes serials, IMEI, MAC, Android ID, Google account or personal identifiers.
@@ -105,9 +112,20 @@ review status: approved/confirmed/pending/blocked/rejected
   `out_of_scope`.
 - `synthetic_login_if_required` is in scope but `synthetic_qa_user.approved`
   is not true.
+- `runtime_execution.auth_mode` is missing, outside
+  `synthetic_login_if_required`, `auth_out_of_scope` or `no_auth_required`, or
+  inconsistent with the presence/absence of `synthetic_login_if_required` in
+  `runtime_execution.allowed_scope`.
+- `synthetic_qa_user.approved` is false without explicit
+  `auth_out_of_scope` or `no_auth_required` auth mode.
 - Synthetic QA user metadata includes raw phone or OTP values.
 - Evidence capture values are missing, pending, blocked or outside the exact
   allowed enum values.
+- `crash_anr_logcat_observation` is in runtime scope while
+  `evidence_capture.logs_logcat` is not `yes_local_only_redacted_summary`.
+- Visual runtime scope such as `first_visible_state`, `initial_focus` or
+  `minimal_dpad_navigation` is present while both screenshots and videos are
+  disabled for local redacted summaries.
 - Public report policy is anything other than `redacted_summaries_only`.
 - Raw evidence storage is not local ignored storage.
 - Cleanup levels are missing, outside C1-C4, or include C5 without separate
@@ -183,7 +201,7 @@ Allowed:
 
 - Build alias such as `task-005-local-apk-001`.
 - Device aliases such as `tv-tcl-001`, `stb-xiaomi-001` or
-  `unknown-samsung-001`.
+  `phone-samsung-001`.
 - Runtime profile aliases such as `tv-tcl-a11-001`.
 - Synthetic user alias `qa-user-phone-001`.
 - Local ignored path patterns under `.qa_local/`.

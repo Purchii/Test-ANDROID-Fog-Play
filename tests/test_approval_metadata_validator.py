@@ -60,6 +60,7 @@ def _happy_metadata():
         },
         "runtime_execution": {
             "allowed": True,
+            "auth_mode": "synthetic_login_if_required",
             "allowed_scope": [
                 "install",
                 "launch",
@@ -213,6 +214,38 @@ def test_missing_or_invalid_build_alias_blocks(tmp_path, value):
 
     assert report["approval_decision"] == "blocked"
     assert any("approved_build_apk.build_alias" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "build_alias",
+    [
+        "task-005-secret-apk-001",
+        "task-005-token-apk-001",
+        "task-005-password-apk-001",
+        "task-005-cookie-apk-001",
+        "task-005-session-apk-001",
+        "task-005-serial-apk-001",
+        "task-005-imei-apk-001",
+        "task-005-mac-apk-001",
+        "task-005-androidid-apk-001",
+        "task-005-phone-apk-001",
+        "brand/product/device:14/build",
+    ],
+)
+def test_semantically_unsafe_build_alias_blocks(tmp_path, build_alias):
+    def mutate(metadata):
+        metadata["approved_build_apk"]["build_alias"] = build_alias
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_build_apk.build_alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_task_005_local_apk_build_alias_remains_valid(tmp_path):
+    report = _report_for(tmp_path)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
 
 
 def test_nested_path_traversal_inside_qa_local_blocks(tmp_path):
@@ -492,6 +525,48 @@ def test_synthetic_login_requires_approved_synthetic_user(tmp_path):
     assert any("synthetic_login_if_required" in reason for reason in report["blocked_reasons"])
 
 
+def test_synthetic_login_scope_requires_matching_auth_mode(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["auth_mode"] = "auth_out_of_scope"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("auth_mode must be synthetic_login_if_required" in reason for reason in report["blocked_reasons"])
+
+
+def test_synthetic_auth_mode_requires_matching_scope(tmp_path):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("auth_mode synthetic_login_if_required requires matching runtime scope" in reason for reason in report["blocked_reasons"])
+
+
+def test_missing_auth_mode_blocks(tmp_path):
+    def mutate(metadata):
+        del metadata["runtime_execution"]["auth_mode"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_execution.auth_mode" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("auth_mode", ["auth_out_of_scope", "no_auth_required"])
+def test_unapproved_synthetic_user_requires_explicit_auth_out_of_scope_and_no_login_scope(tmp_path, auth_mode):
+    def mutate(metadata):
+        metadata["runtime_execution"]["auth_mode"] = auth_mode
+        metadata["runtime_execution"]["allowed_scope"].remove("synthetic_login_if_required")
+        metadata["synthetic_qa_user"]["approved"] = False
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
 def test_phone_only_target_blocks_task_005(tmp_path):
     def mutate(metadata):
         metadata["approved_targets"]["device_aliases"] = ["unknown-samsung-001"]
@@ -576,6 +651,98 @@ def test_reserved_alias_tokens_block_device_aliases_and_runtime_profiles(tmp_pat
     assert any("alias" in reason for reason in report["blocked_reasons"])
 
 
+def test_phone_device_alias_allowed_only_as_phone_form_factor_prefix(tmp_path):
+    def mutate(metadata):
+        phone_device = deepcopy(metadata["approved_targets"]["devices"][0])
+        phone_device.update(
+            {
+                "device_alias": "phone-samsung-001",
+                "runtime_profile_alias": "phone-samsung-a14-001",
+                "category": "android_phone_secondary",
+                "priority": "P2",
+                "form_factor": "phone",
+                "input_method": "touch",
+                "android_major": 14,
+                "api_level": 34,
+            }
+        )
+        metadata["approved_targets"]["device_aliases"].append("phone-samsung-001")
+        metadata["approved_targets"]["allowed_categories"].append("android_phone_secondary")
+        metadata["approved_targets"]["devices"].append(phone_device)
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "device_alias,runtime_profile_alias,form_factor",
+    [
+        ("tv-phone-001", "tv-phone-a11-001", "tv"),
+        ("phone-my-phone-001", "phone-my-phone-a14-001", "phone"),
+        ("stb-phone-a12-001", "stb-phone-a12-001", "stb"),
+        ("unknown-samsung-001", "unknown-samsung-a11-001", "tv"),
+        ("stb-xiaomi-001", "stb-xiaomi-a11-001", "tv"),
+    ],
+)
+def test_device_alias_form_factor_mismatch_or_embedded_phone_blocks(tmp_path, device_alias, runtime_profile_alias, form_factor):
+    def mutate(metadata):
+        metadata["approved_targets"]["device_aliases"] = [device_alias]
+        metadata["approved_targets"]["devices"][0]["device_alias"] = device_alias
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = runtime_profile_alias
+        metadata["approved_targets"]["devices"][0]["form_factor"] = form_factor
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("alias" in reason or "form-factor prefix" in reason for reason in report["blocked_reasons"])
+
+
+def test_extra_manual_confirmed_tv_category_with_phone_form_factor_blocks(tmp_path):
+    def mutate(metadata):
+        extra_device = deepcopy(metadata["approved_targets"]["devices"][0])
+        extra_device.update(
+            {
+                "device_alias": "tv-sony-002",
+                "runtime_profile_alias": "tv-sony-a11-002",
+                "category": "android_tv",
+                "priority": "P1",
+                "form_factor": "phone",
+                "input_method": "touch",
+            }
+        )
+        metadata["approved_targets"]["device_aliases"].append("tv-sony-002")
+        metadata["approved_targets"]["devices"].append(extra_device)
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("form_factor must be tv or stb" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "runtime_profile_alias,android_major",
+    [
+        ("tv-tcl-a12-001", 11),
+        ("tv-sony-a11-001", 11),
+        ("tv-tcl-a11-002", 11),
+    ],
+)
+def test_runtime_profile_alias_must_match_device_alias_prefix_index_and_android_major(
+    tmp_path,
+    runtime_profile_alias,
+    android_major,
+):
+    def mutate(metadata):
+        metadata["approved_targets"]["devices"][0]["runtime_profile_alias"] = runtime_profile_alias
+        metadata["approved_targets"]["devices"][0]["android_major"] = android_major
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("runtime_profile_alias must preserve" in reason for reason in report["blocked_reasons"])
+
+
 def test_empty_runtime_scope_blocks(tmp_path):
     def mutate(metadata):
         metadata["runtime_execution"]["allowed_scope"] = []
@@ -594,6 +761,44 @@ def test_missing_core_runtime_scope_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("missing required TASK-005 core items" in reason for reason in report["blocked_reasons"])
+
+
+def test_crash_anr_scope_requires_logcat_redacted_summary(tmp_path):
+    def mutate(metadata):
+        metadata["evidence_capture"]["logs_logcat"] = "no"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("crash_anr_logcat_observation requires" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("scope_item", ["first_visible_state", "initial_focus", "minimal_dpad_navigation"])
+def test_visual_runtime_scope_requires_screenshot_or_video_redacted_summary(tmp_path, scope_item):
+    def mutate(metadata):
+        metadata["runtime_execution"]["allowed_scope"] = [
+            item for item in metadata["runtime_execution"]["allowed_scope"] if item != "synthetic_login_if_required"
+        ]
+        metadata["runtime_execution"]["auth_mode"] = "auth_out_of_scope"
+        metadata["synthetic_qa_user"]["approved"] = False
+        metadata["evidence_capture"]["screenshots"] = "no"
+        metadata["evidence_capture"]["videos"] = "no_by_default"
+        assert scope_item in metadata["runtime_execution"]["allowed_scope"]
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("require screenshots or videos" in reason for reason in report["blocked_reasons"])
+
+
+def test_visual_runtime_scope_accepts_video_redacted_summary_without_screenshots(tmp_path):
+    def mutate(metadata):
+        metadata["evidence_capture"]["screenshots"] = "no"
+        metadata["evidence_capture"]["videos"] = "yes_local_only_redacted_summary"
+
+    report = _report_for(tmp_path, mutate)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
 
 
 def test_raw_evidence_public_report_policy_blocks(tmp_path):

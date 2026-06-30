@@ -327,15 +327,46 @@ def _alias_tokens(alias: str) -> set[str]:
     return tokens
 
 
-def _alias_has_forbidden_content(alias: Any) -> bool:
+def _alias_form_factor(alias: str) -> str:
+    return alias.strip().lower().split("-", maxsplit=1)[0]
+
+
+def _alias_index(alias: str) -> str:
+    return alias.strip().lower().rsplit("-", maxsplit=1)[-1]
+
+
+def _device_alias_prefix(alias: str) -> str:
+    return alias.strip().lower().rsplit("-", maxsplit=1)[0]
+
+
+def _runtime_alias_parts(alias: str) -> tuple[str, int | None, str] | None:
+    normalized = alias.strip().lower()
+    match = re.fullmatch(r"(.+)-a([0-9]{1,2})-([0-9]{3})", normalized)
+    if match is None:
+        return None
+    return match.group(1), int(match.group(2)), match.group(3)
+
+
+def _tokens_without_allowed_phone(alias: str, form_factor: Any = None) -> set[str]:
+    tokens = _alias_tokens(alias)
+    parts = [part for part in re.split(r"[-_\s]+", alias.strip().lower()) if part]
+    if form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]:
+        tokens.discard("phone")
+    return tokens
+
+
+def _alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
     if not isinstance(alias, str):
         return True
     normalized = alias.strip().lower()
     if not normalized:
         return True
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    if "phone" in parts and not (form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]):
+        return True
     if BLOCKED_PUBLIC_LABEL_RE.search(normalized):
         return True
-    if _alias_tokens(normalized) & RESERVED_ALIAS_TOKENS:
+    if _tokens_without_allowed_phone(normalized, form_factor) & RESERVED_ALIAS_TOKENS:
         return True
     return bool(
         IP_RE.search(normalized)
@@ -358,8 +389,6 @@ def _alias_map_entry(serial: str, raw: dict[str, Any], existing_map: dict[str, A
 
     manufacturer = _safe_slug(raw.get("manufacturer", "aosp"))
     form_factor = raw.get("form_factor", "unknown")
-    if form_factor == "phone":
-        form_factor = "unknown"
     index = f"{len(existing_map) + 1:03d}"
     return {"device_alias": f"{form_factor}-{manufacturer}-{index}", "index": index}
 
@@ -368,6 +397,18 @@ def _runtime_profile_alias(device_alias: str, android_major: int, index: str) ->
     prefix = device_alias.rsplit("-", 1)[0]
     major = android_major if android_major > 0 else 0
     return f"{prefix}-a{major}-{index}"
+
+
+def _runtime_alias_matches_device(device_alias: str, runtime_profile_alias: str, android_major: int) -> bool:
+    parts = _runtime_alias_parts(runtime_profile_alias)
+    if parts is None:
+        return False
+    runtime_prefix, runtime_major, runtime_index = parts
+    return (
+        runtime_prefix == _device_alias_prefix(device_alias)
+        and runtime_index == _alias_index(device_alias)
+        and runtime_major == android_major
+    )
 
 
 def _collect_device(serial: str, runner: Runner) -> dict[str, Any]:
@@ -609,9 +650,20 @@ def _aliases_are_valid(public_payload: dict[str, Any]) -> bool:
     for device in public_payload.get("devices", []):
         device_alias = device.get("device_alias", "")
         runtime_profile_alias = device.get("runtime_profile_alias", "")
-        if DEVICE_ALIAS_RE.fullmatch(device_alias) is None or _alias_has_forbidden_content(device_alias):
+        form_factor = device.get("form_factor")
+        android_major = device.get("android_major")
+        if DEVICE_ALIAS_RE.fullmatch(device_alias) is None or _alias_has_forbidden_content(device_alias, form_factor):
             return False
-        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None or _alias_has_forbidden_content(runtime_profile_alias):
+        if RUNTIME_PROFILE_ALIAS_RE.fullmatch(runtime_profile_alias) is None or _alias_has_forbidden_content(
+            runtime_profile_alias,
+            form_factor,
+        ):
+            return False
+        if isinstance(android_major, int) and android_major > 0 and not _runtime_alias_matches_device(
+            device_alias,
+            runtime_profile_alias,
+            android_major,
+        ):
             return False
     return True
 

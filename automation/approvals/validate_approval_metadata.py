@@ -155,6 +155,11 @@ EVIDENCE_CAPTURE_VIDEO_VALUES = {
     "pending",
     "blocked",
 }
+AUTH_MODES = {
+    "synthetic_login_if_required",
+    "auth_out_of_scope",
+    "no_auth_required",
+}
 CLEANUP_ALLOWED_LEVELS = {
     "C1_background_foreground",
     "C2_force_stop_relaunch",
@@ -229,6 +234,26 @@ RESERVED_ALIAS_TOKENS = {
     "cookie",
     "session",
     *BLOCKED_ALIAS_LABELS,
+}
+BUILD_RESERVED_ALIAS_TOKENS = {
+    "secret",
+    "token",
+    "password",
+    "cookie",
+    "session",
+    "serial",
+    "serialnumber",
+    "serial-number",
+    "serial_number",
+    "imei",
+    "mac",
+    "macaddress",
+    "mac-address",
+    "mac_address",
+    "androidid",
+    "android-id",
+    "android_id",
+    "phone",
 }
 BLOCKED_ALIAS_PATTERN = re.compile(
     r"\b(?:oleg|living\s*[-_ ]?\s*room|home|bedroom|office|kitchen|personal|private)\b"
@@ -427,7 +452,11 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     if build.get("approved") is not True:
         reasons.append("approved_build_apk.approved must be true for TASK-005 runtime approval.")
     build_alias = build.get("build_alias")
-    if not isinstance(build_alias, str) or BUILD_ALIAS_RE.fullmatch(build_alias.strip()) is None:
+    if (
+        not isinstance(build_alias, str)
+        or BUILD_ALIAS_RE.fullmatch(build_alias.strip()) is None
+        or _build_alias_has_forbidden_content(build_alias)
+    ):
         reasons.append("approved_build_apk.build_alias must be a non-empty public-safe build alias.")
     if build.get("storage_policy") != "local_ignored_path_only":
         reasons.append("approved_build_apk.storage_policy must be local_ignored_path_only.")
@@ -473,15 +502,46 @@ def _alias_tokens(alias: str) -> set[str]:
     return tokens
 
 
-def _alias_has_forbidden_content(alias: Any) -> bool:
+def _alias_form_factor(alias: str) -> str:
+    return alias.strip().lower().split("-", maxsplit=1)[0]
+
+
+def _alias_index(alias: str) -> str:
+    return alias.strip().lower().rsplit("-", maxsplit=1)[-1]
+
+
+def _device_alias_prefix(alias: str) -> str:
+    return alias.strip().lower().rsplit("-", maxsplit=1)[0]
+
+
+def _runtime_alias_parts(alias: str) -> tuple[str, int | None, str] | None:
+    normalized = alias.strip().lower()
+    match = re.fullmatch(r"(.+)-a([0-9]{1,2})-([0-9]{3})", normalized)
+    if match is None:
+        return None
+    return match.group(1), int(match.group(2)), match.group(3)
+
+
+def _tokens_without_allowed_phone(alias: str, form_factor: Any = None) -> set[str]:
+    tokens = _alias_tokens(alias)
+    parts = [part for part in re.split(r"[-_\s]+", alias.strip().lower()) if part]
+    if form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]:
+        tokens.discard("phone")
+    return tokens
+
+
+def _alias_has_forbidden_content(alias: Any, form_factor: Any = None) -> bool:
     if not isinstance(alias, str):
         return True
     normalized = alias.strip().lower()
     if not normalized:
         return True
+    parts = [part for part in re.split(r"[-_\s]+", normalized) if part]
+    if "phone" in parts and not (form_factor == "phone" and parts[:1] == ["phone"] and "phone" not in parts[1:]):
+        return True
     if BLOCKED_ALIAS_PATTERN.search(normalized):
         return True
-    if _alias_tokens(normalized) & RESERVED_ALIAS_TOKENS:
+    if _tokens_without_allowed_phone(normalized, form_factor) & RESERVED_ALIAS_TOKENS:
         return True
     return bool(
         IP_RE.search(normalized)
@@ -492,15 +552,53 @@ def _alias_has_forbidden_content(alias: Any) -> bool:
     )
 
 
-def _valid_device_alias(alias: Any) -> bool:
-    return isinstance(alias, str) and DEVICE_ALIAS_RE.fullmatch(alias.strip()) is not None and not _alias_has_forbidden_content(alias)
+def _build_alias_has_forbidden_content(alias: Any) -> bool:
+    if not isinstance(alias, str):
+        return True
+    normalized = alias.strip().lower()
+    if not normalized:
+        return True
+    if _alias_tokens(normalized) & BUILD_RESERVED_ALIAS_TOKENS:
+        return True
+    return bool(
+        IP_RE.search(normalized)
+        or PHONE_RE.search(normalized)
+        or MAC_RE.search(normalized)
+        or IMEI_RE.search(normalized)
+        or ANDROID_ID_RE.search(normalized)
+        or FINGERPRINT_LIKE_RE.search(normalized)
+    )
 
 
-def _valid_runtime_profile_alias(alias: Any) -> bool:
+def _valid_device_alias(alias: Any, form_factor: Any = None) -> bool:
+    return (
+        isinstance(alias, str)
+        and DEVICE_ALIAS_RE.fullmatch(alias.strip()) is not None
+        and not _alias_has_forbidden_content(alias, form_factor)
+    )
+
+
+def _valid_runtime_profile_alias(alias: Any, form_factor: Any = None) -> bool:
     return (
         isinstance(alias, str)
         and RUNTIME_PROFILE_ALIAS_RE.fullmatch(alias.strip()) is not None
-        and not _alias_has_forbidden_content(alias)
+        and not _alias_has_forbidden_content(alias, form_factor)
+    )
+
+
+def _device_alias_matches_form_factor(alias: str, form_factor: str) -> bool:
+    return _alias_form_factor(alias) == form_factor
+
+
+def _runtime_alias_matches_device(device_alias: str, runtime_profile_alias: str, android_major: int) -> bool:
+    parts = _runtime_alias_parts(runtime_profile_alias)
+    if parts is None:
+        return False
+    runtime_prefix, runtime_major, runtime_index = parts
+    return (
+        runtime_prefix == _device_alias_prefix(device_alias)
+        and runtime_index == _alias_index(device_alias)
+        and runtime_major == android_major
     )
 
 
@@ -536,7 +634,7 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             reasons.append("approved_targets.device_aliases must be a non-empty list when present.")
         else:
             for alias in aliases:
-                if not _valid_device_alias(alias):
+                if not _valid_device_alias(alias, form_factor="phone"):
                     reasons.append(f"approved_targets.device_aliases contains unsafe alias: {alias}.")
                 if isinstance(alias, str):
                     listed_aliases.add(alias.strip())
@@ -574,20 +672,30 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             continue
         for field in sorted(required_device_fields - set(device)):
             reasons.append(f"approved_targets.devices[{index}].{field} is missing.")
-        if not _valid_device_alias(device.get("device_alias")):
+        form_factor = device.get("form_factor")
+        device_alias = device.get("device_alias")
+        runtime_profile_alias = device.get("runtime_profile_alias")
+        android_major = device.get("android_major")
+
+        if not _valid_device_alias(device_alias, form_factor=form_factor):
             reasons.append(f"approved_targets.devices[{index}].device_alias is unsafe or invalid.")
-        elif isinstance(device.get("device_alias"), str):
-            structured_aliases.append(device["device_alias"].strip())
-        if not _valid_runtime_profile_alias(device.get("runtime_profile_alias")):
+        elif isinstance(device_alias, str):
+            structured_aliases.append(device_alias.strip())
+        if not _valid_runtime_profile_alias(runtime_profile_alias, form_factor=form_factor):
             reasons.append(f"approved_targets.devices[{index}].runtime_profile_alias is unsafe or invalid.")
-        elif isinstance(device.get("runtime_profile_alias"), str):
-            runtime_aliases.append(device["runtime_profile_alias"].strip())
+        elif isinstance(runtime_profile_alias, str):
+            runtime_aliases.append(runtime_profile_alias.strip())
         if device.get("category") not in STRUCTURED_TARGET_CATEGORIES:
             reasons.append(f"approved_targets.devices[{index}].category is unsupported.")
         elif normalized_allowed_categories and device.get("category") not in normalized_allowed_categories:
             reasons.append(
                 f"approved_targets.devices[{index}].category is not allowed by approved_targets.allowed_categories."
             )
+        if device.get("classification_confidence") == "manual_confirmed" and device.get("category") in TV_STB_TARGET_CATEGORIES:
+            if form_factor not in TV_STB_FORM_FACTORS:
+                reasons.append(
+                    f"approved_targets.devices[{index}].form_factor must be tv or stb for manual-confirmed TV/STB targets."
+                )
         if device.get("priority") not in TARGET_PRIORITIES:
             reasons.append(f"approved_targets.devices[{index}].priority is unsupported.")
         if device.get("form_factor") not in {"tv", "stb", "phone", "tablet", "emulator", "unknown"}:
@@ -608,6 +716,28 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
             reasons.append(f"approved_targets.devices[{index}].manual_review_required must be boolean.")
         if device.get("forbidden_identifiers_excluded") is not True:
             reasons.append(f"approved_targets.devices[{index}].forbidden_identifiers_excluded must be true.")
+
+        if (
+            isinstance(device_alias, str)
+            and isinstance(runtime_profile_alias, str)
+            and isinstance(android_major, int)
+            and android_major > 0
+            and not _runtime_alias_matches_device(device_alias, runtime_profile_alias, android_major)
+        ):
+            reasons.append(
+                f"approved_targets.devices[{index}].runtime_profile_alias must preserve device_alias prefix/index and match android_major."
+            )
+
+        if (
+            device.get("category") in TV_STB_TARGET_CATEGORIES
+            and form_factor in TV_STB_FORM_FACTORS
+            and device.get("classification_confidence") == "manual_confirmed"
+            and isinstance(device_alias, str)
+            and not _device_alias_matches_form_factor(device_alias, form_factor)
+        ):
+            reasons.append(
+                f"approved_targets.devices[{index}].device_alias form-factor prefix must match structured form_factor."
+            )
 
         if (
             device.get("priority") == "P0"
@@ -656,6 +786,9 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
         reasons.append("runtime_execution.allowed must be true for TASK-005 approval metadata.")
 
     allowed_scope = _stringify_scope(runtime.get("allowed_scope"))
+    auth_mode = _as_lower(runtime.get("auth_mode"))
+    if auth_mode not in AUTH_MODES:
+        reasons.append("runtime_execution.auth_mode must be one of synthetic_login_if_required, auth_out_of_scope, no_auth_required.")
     if metadata.get("task_id") == DEFAULT_TASK_ID and not allowed_scope:
         reasons.append("runtime_execution.allowed_scope must be a non-empty list for TASK-005 approval metadata.")
     missing_core_scope = sorted(TASK_005_REQUIRED_RUNTIME_SCOPE - set(allowed_scope))
@@ -668,6 +801,12 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
         for term in FORBIDDEN_SCOPE_TERMS:
             if _contains_scope_term(item, term):
                 reasons.append(f"runtime_execution.allowed_scope contains forbidden area: {item}.")
+
+    synthetic_login_in_scope = "synthetic_login_if_required" in allowed_scope
+    if synthetic_login_in_scope and auth_mode != "synthetic_login_if_required":
+        reasons.append("runtime_execution.auth_mode must be synthetic_login_if_required when synthetic login is in scope.")
+    if auth_mode == "synthetic_login_if_required" and not synthetic_login_in_scope:
+        reasons.append("runtime_execution.auth_mode synthetic_login_if_required requires matching runtime scope.")
 
     fixtures = metadata.get("fixtures")
     if isinstance(fixtures, dict):
@@ -687,9 +826,14 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
         return ["synthetic_qa_user must be an object."]
     runtime = metadata.get("runtime_execution")
     allowed_scope = _stringify_scope(runtime.get("allowed_scope")) if isinstance(runtime, dict) else []
+    auth_mode = _as_lower(runtime.get("auth_mode")) if isinstance(runtime, dict) else ""
     synthetic_login_in_scope = "synthetic_login_if_required" in allowed_scope
     if synthetic_login_in_scope and user.get("approved") is not True:
         reasons.append("synthetic_login_if_required requires synthetic_qa_user.approved=true.")
+    if user.get("approved") is not True and synthetic_login_in_scope:
+        reasons.append("synthetic_qa_user.approved=false requires runtime scope to omit synthetic_login_if_required.")
+    if user.get("approved") is not True and auth_mode not in {"auth_out_of_scope", "no_auth_required"}:
+        reasons.append("synthetic_qa_user.approved=false requires explicit auth_out_of_scope or no_auth_required auth_mode.")
     if user.get("approved") is True and user.get("alias") != "qa-user-phone-001":
         reasons.append("synthetic_qa_user.approved requires public alias qa-user-phone-001.")
     if user.get("approved") is True and user.get("raw_phone_allowed_in_public_docs") is not False:
@@ -722,6 +866,8 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
     evidence = metadata.get("evidence_capture")
     if not isinstance(evidence, dict):
         return ["evidence_capture must be an object."]
+    runtime = metadata.get("runtime_execution")
+    allowed_scope = _stringify_scope(runtime.get("allowed_scope")) if isinstance(runtime, dict) else []
     status = _as_lower(evidence.get("status"))
     if status not in EVIDENCE_CAPTURE_STATUSES:
         reasons.append("evidence_capture.status must use an approved exact value.")
@@ -744,6 +890,22 @@ def _validate_evidence_capture(metadata: dict[str, Any]) -> list[str]:
         reasons.append("evidence_capture.videos must use an approved exact value.")
     elif video_value in {"pending", "blocked"}:
         reasons.append("evidence_capture.videos must be explicit and non-pending.")
+
+    if (
+        "crash_anr_logcat_observation" in allowed_scope
+        and _as_lower(evidence.get("logs_logcat")) != "yes_local_only_redacted_summary"
+    ):
+        reasons.append(
+            "crash_anr_logcat_observation requires evidence_capture.logs_logcat=yes_local_only_redacted_summary."
+        )
+    visual_scope = {"first_visible_state", "initial_focus", "minimal_dpad_navigation"}
+    if visual_scope & set(allowed_scope) and not (
+        _as_lower(evidence.get("screenshots")) == "yes_local_only_redacted_summary"
+        or _as_lower(evidence.get("videos")) == "yes_local_only_redacted_summary"
+    ):
+        reasons.append(
+            "first_visible_state/initial_focus/minimal_dpad_navigation require screenshots or videos as local redacted summaries."
+        )
     return reasons
 
 

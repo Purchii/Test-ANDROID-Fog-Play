@@ -149,6 +149,8 @@ def test_touchscreen_only_classifies_phone_secondary():
 
     device = public_payload["devices"][0]
     assert device["category"] == "android_phone_secondary"
+    assert device["device_alias"] == "phone-samsung-001"
+    assert device["runtime_profile_alias"] == "phone-samsung-a14-001"
     assert device["priority"] == "P2"
     assert device["input_method"] == "touch"
 
@@ -201,6 +203,46 @@ def test_existing_alias_map_reserved_tokens_block_public_inventory(tmp_path, uns
     report, _raw, alias_map_payload, public_payload = build_report(allow_adb=True, alias_map_path=alias_map, runner=fake)
 
     assert alias_map_payload["ABC123"]["device_alias"] == unsafe_alias
+    assert report["overall_status"] == "blocked"
+    assert any("unsafe alias-map values" in reason for reason in report["blocked_reasons"])
+    assert public_payload["devices"] == []
+
+
+def test_existing_alias_map_phone_prefix_passes_for_phone_form_factor(tmp_path):
+    alias_map = tmp_path / "serial_alias_map.json"
+    alias_map.write_text(
+        json.dumps({"ABC123": {"device_alias": "phone-samsung-001", "index": "001"}}),
+        encoding="utf-8",
+    )
+    fake = FakeAdb(
+        _responses(
+            serial="ABC123",
+            manufacturer="Samsung",
+            model="Galaxy",
+            release="14",
+            sdk="34",
+            features=["feature:android.hardware.touchscreen"],
+        )
+    )
+
+    report, _raw, alias_map_payload, public_payload = build_report(allow_adb=True, alias_map_path=alias_map, runner=fake)
+
+    assert report["overall_status"] == "not_run"
+    assert alias_map_payload["ABC123"]["device_alias"] == "phone-samsung-001"
+    assert public_payload["devices"][0]["device_alias"] == "phone-samsung-001"
+    assert public_payload["devices"][0]["runtime_profile_alias"] == "phone-samsung-a14-001"
+
+
+def test_existing_alias_map_runtime_profile_must_match_alias_index(tmp_path):
+    alias_map = tmp_path / "serial_alias_map.json"
+    alias_map.write_text(
+        json.dumps({"ABC123": {"device_alias": "tv-tcl-002", "index": "001"}}),
+        encoding="utf-8",
+    )
+    fake = FakeAdb(_responses(serial="ABC123", manufacturer="TCL", model="TV", release="11", sdk="30"))
+
+    report, _raw, _alias_map_payload, public_payload = build_report(allow_adb=True, alias_map_path=alias_map, runner=fake)
+
     assert report["overall_status"] == "blocked"
     assert any("unsafe alias-map values" in reason for reason in report["blocked_reasons"])
     assert public_payload["devices"] == []

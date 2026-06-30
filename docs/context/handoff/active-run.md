@@ -4,17 +4,17 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-015C/016B - Approval/device-inventory consistency polish and local ADB inventory readiness`
-Thread status: `inactive_completed_default_push_authorized`
+Thread status: `inactive_completed_default_pushed`
 Fresh thread verified: `yes`
 Task ID: `TASK-015C/016B`
 Task branch: `qa/task-015c-016b-approval-inventory-consistency`
 Default branch: `main`
 Base commit: `0832867`
 Task branch pushed: `yes_after_final_integration`
-Default branch merge/push: `authorized_by_user_command_push_to_master_interpreted_as_main`
+Default branch merge/push: `completed_by_user_command_push_to_master_interpreted_as_main`
 Production safety classification: `PROD_SAFE` for validator/docs/tests/default dry-runs; `PROD_CONDITIONAL` for owner-approved TASK-016B local ADB inventory allowlist only
 Multi-agent status: `complete_passed_after_remediation`
-Merge/push authority: `NON_AUTONOMOUS`; explicit user command `пушь в мастерэ` authorized interpreting `master` as detected default branch `main`
+Merge/push authority: `NON_AUTONOMOUS`; explicit user command `пушь в мастерэ` authorized and completed interpreting `master` as detected default branch `main`
 
 ## Goal
 

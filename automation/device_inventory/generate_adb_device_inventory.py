@@ -18,10 +18,12 @@ from typing import Any, Callable
 
 SCHEMA_VERSION = "task-016-adb-device-inventory-preflight-v1"
 PUBLIC_SCHEMA_VERSION = "task-016-device-inventory-public-safe-v1"
+REVIEW_SCHEMA_VERSION = "task-016-device-inventory-owner-review-v1"
 PRODUCTION_SAFETY_CLASSIFICATION = "PROD_CONDITIONAL"
 RUNTIME_EXECUTION_STATUS = "not_run"
 APK_INSTALL_STATUS = "not_run"
 APP_LAUNCH_STATUS = "not_run"
+OWNER_REVIEW_BOUNDARY = "not approved for TASK-005 until owner/QA manual review"
 
 SAFE_GETPROP_FIELDS = (
     "ro.product.manufacturer",
@@ -119,6 +121,13 @@ def _write_json(path: Path | None, payload: dict[str, Any]) -> None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _load_required_json(path: Path) -> dict[str, Any]:
+    loaded = json.loads(path.read_text(encoding="utf-8-sig"))
+    if not isinstance(loaded, dict):
+        raise ValueError("Public-safe inventory input must be a JSON object.")
+    return loaded
 
 
 def _path_is_under_qa_local_devices(path: Path | None) -> bool:
@@ -555,6 +564,92 @@ def _public_inventory(devices: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[str, Any]:
+    errors: list[str] = []
+    if public_payload.get("schema_version") != PUBLIC_SCHEMA_VERSION:
+        errors.append(f"schema_version must be {PUBLIC_SCHEMA_VERSION}.")
+    for field in ("runtime_execution_status", "apk_install_status", "app_launch_status"):
+        if public_payload.get(field) != "not_run":
+            errors.append(f"{field} must remain not_run.")
+    if public_payload.get("public_safety_findings") != []:
+        errors.append("public_safety_findings must be empty before owner-review export.")
+    redaction_guarantees = public_payload.get("redaction_guarantees")
+    if not isinstance(redaction_guarantees, dict) or any(value is not True for value in redaction_guarantees.values()):
+        errors.append("all redaction_guarantees must be true before owner-review export.")
+    if _public_safety_findings(public_payload):
+        errors.append("public-safe inventory contains forbidden identifier-like values.")
+
+    devices = public_payload.get("devices")
+    if not isinstance(devices, list):
+        errors.append("devices must be a list.")
+        devices = []
+
+    review_devices: list[dict[str, Any]] = []
+    allowed_device_fields = {
+        "device_alias",
+        "runtime_profile_alias",
+        "category",
+        "priority",
+        "form_factor",
+        "input_method",
+        "android_major",
+        "api_level",
+        "screen_class",
+        "google_play_services",
+        "adb_available",
+        "classification_confidence",
+        "manual_review_required",
+        "forbidden_identifiers_excluded",
+        "runtime_execution_status",
+        "apk_install_status",
+        "app_launch_status",
+    }
+    for index, device in enumerate(devices):
+        if not isinstance(device, dict):
+            errors.append(f"devices[{index}] must be an object.")
+            continue
+        exported = {field: device.get(field) for field in sorted(allowed_device_fields) if field in device}
+        if exported.get("classification_confidence") != "heuristic":
+            errors.append(f"devices[{index}].classification_confidence must remain heuristic.")
+        if exported.get("manual_review_required") is not True:
+            errors.append(f"devices[{index}].manual_review_required must remain true.")
+        for field in ("runtime_execution_status", "apk_install_status", "app_launch_status"):
+            if exported.get(field) != "not_run":
+                errors.append(f"devices[{index}].{field} must remain not_run.")
+        if exported.get("forbidden_identifiers_excluded") is not True:
+            errors.append(f"devices[{index}].forbidden_identifiers_excluded must be true.")
+        review_devices.append(exported)
+
+    if errors:
+        raise ValueError("; ".join(sorted(set(errors))))
+
+    return {
+        "schema_version": REVIEW_SCHEMA_VERSION,
+        "generated_at_utc": _utc_now(),
+        "source": "task016_public_safe_generated_inventory",
+        "owner_review_boundary": OWNER_REVIEW_BOUNDARY,
+        "runtime_execution_status": RUNTIME_EXECUTION_STATUS,
+        "apk_install_status": APK_INSTALL_STATUS,
+        "app_launch_status": APP_LAUNCH_STATUS,
+        "public_device_count": len(review_devices),
+        "devices": review_devices,
+        "redaction_guarantees": redaction_guarantees,
+        "public_safety_findings": [],
+        "review_instructions": [
+            "Owner/QA must manually review aliases, form factor, input method and priority before TASK-005.",
+            "Do not copy generated targets into approval metadata as manual_confirmed without separate review.",
+            "This review package does not approve APK install, app launch or runtime smoke.",
+        ],
+    }
+
+
+def export_public_safe_review_inventory(public_input: Path, review_output: Path) -> dict[str, Any]:
+    public_payload = _load_required_json(public_input)
+    review_payload = build_public_safe_review_inventory(public_payload)
+    _write_json(review_output, review_payload)
+    return review_payload
+
+
 def build_inventory(
     *,
     allow_adb: bool = False,
@@ -677,7 +772,28 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--alias-map", type=Path, default=None, help="Local-only serial to alias map JSON.")
     parser.add_argument("--public-output", type=Path, default=None, help="Public-safe generated inventory JSON output.")
     parser.add_argument("--report", type=Path, default=None, help="Local preflight report JSON output.")
+    parser.add_argument(
+        "--export-review-input",
+        type=Path,
+        default=None,
+        help="Existing public-safe generated inventory JSON to export for owner review without ADB.",
+    )
+    parser.add_argument(
+        "--export-review-output",
+        type=Path,
+        default=None,
+        help="Repository-safe owner-review inventory JSON output.",
+    )
     args = parser.parse_args(argv)
+
+    if args.export_review_input is not None or args.export_review_output is not None:
+        if args.allow_adb:
+            raise SystemExit("--export-review-* cannot be combined with --allow-adb.")
+        if args.export_review_input is None or args.export_review_output is None:
+            raise SystemExit("--export-review-input and --export-review-output are required together.")
+        review_payload = export_public_safe_review_inventory(args.export_review_input, args.export_review_output)
+        sys.stdout.write(json.dumps(review_payload, indent=2, sort_keys=True) + "\n")
+        return 0
 
     report = build_inventory(
         allow_adb=args.allow_adb,

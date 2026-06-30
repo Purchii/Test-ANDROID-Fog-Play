@@ -38,4 +38,3 @@ tests so TASK-005 cannot start from ambiguous approval statements.
 - TASK-002 guard report blocks when any required prerequisite has
   `evidence_status != confirmed`.
 - `pytest -q`, `python -m pytest -q`, `git diff --check` and compileall pass.
-

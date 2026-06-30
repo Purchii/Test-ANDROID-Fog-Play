@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
+Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -61,6 +61,8 @@ review status: approved/confirmed/pending/blocked/rejected
 - Expiration is missing, invalid or expired.
 - TASK-005 has no approved build alias and local ignored APK storage policy.
 - APK path pattern is outside `.qa_local/` or uses a user-specific absolute path.
+- APK path pattern is not under `.qa_local/apks/task-005/` or does not end
+  with `.apk`.
 - TASK-005 APK metadata omits `sha256_required: true`, allows the public SHA-256
   value, uses a build alias containing reserved identifier/security tokens or
   identifier-like values, permits actions outside `install`, `launch` and
@@ -122,9 +124,15 @@ review status: approved/confirmed/pending/blocked/rejected
   is not true.
 - `synthetic_qa_user.approved` is true but the public alias is not
   `qa-user-phone-001`, `local_secret_file_pattern` is missing or outside
-  `.qa_local/`, or `repo_allowed_file` is missing, under `.qa_local/` or not a
-  repository placeholder/template path such as
+  `.qa_local/secrets/`, does not end with `.env`, or `repo_allowed_file` is
+  missing, under `.qa_local/` or not a repository placeholder/template path such as
   `docs/approvals/qa_user.env.example`.
+- Synthetic auth scope contains anything except `login`, `logout` or
+  `session_persistence`, or TASK-005 synthetic login omits `login` or
+  `session_persistence`.
+- Synthetic forbidden account actions are missing `payment`, `purchase`,
+  `profile_mutation` or `destructive_account_action`, or contain unsupported
+  typo values.
 - `runtime_execution.auth_mode` is missing, outside
   `synthetic_login_if_required`, `auth_out_of_scope` or `no_auth_required`, or
   inconsistent with the presence/absence of `synthetic_login_if_required` in
@@ -132,6 +140,8 @@ review status: approved/confirmed/pending/blocked/rejected
 - `synthetic_qa_user.approved` is false without explicit
   `auth_out_of_scope` or `no_auth_required` auth mode.
 - Synthetic QA user metadata includes raw phone or OTP values.
+- `raw_phone_allowed_in_public_docs` or `raw_otp_allowed_in_public_docs` is
+  true, even in no-auth metadata variants.
 - Evidence capture values are missing, pending, blocked or outside the exact
   allowed enum values.
 - `crash_anr_logcat_observation` is in runtime scope while
@@ -141,8 +151,18 @@ review status: approved/confirmed/pending/blocked/rejected
   disabled for local redacted summaries.
 - Public report policy is anything other than `redacted_summaries_only`.
 - Raw evidence storage is not local ignored storage.
-- Cleanup levels are missing, outside C1-C4, or include C5 without separate
-  approval.
+- Raw evidence storage path is not under `.qa_local/evidence/task-005/`.
+- Evidence capture is approved for local redacted summaries but
+  `retention_days` is missing, not an integer or outside `1..30`.
+- Cleanup levels are missing, outside C1-C4, or include C5 in allowed runtime
+  cleanup.
+- `cleanup_rollback.requires_separate_approval` is missing, empty, omits
+  `C5_uninstall_reinstall` or contains unsupported values.
+- `cleanup_rollback.authorized_zone_scopes` contains anything outside
+  `force_stop_relaunch_with_auth_state_preserved` and
+  `background_foreground_without_force_stop`.
+- `cleanup_rollback.clean_state_scope` is not
+  `clear_app_data_before_scenario_and_record_precondition`.
 - Runtime scope, cleanup levels, build actions or allowed target categories
   contain duplicate values.
 - Any required reviewer is not `approved` or `confirmed`.
@@ -205,6 +225,24 @@ manual_review_required: true
 Owner/QA review must copy selected targets into approval metadata as
 `manual_confirmed` with `manual_review_required: false` before TASK-005 can be
 approved for limited runtime.
+
+## TASK-015E/017 Owner-Review Export
+
+TASK-015E/017 may create
+`docs/approvals/device_inventory.public_safe.review.json` only from an existing
+sanitized generated inventory with:
+
+- `public_safety_findings: []`;
+- no raw local paths or raw identifiers;
+- `runtime_execution_status: not_run`;
+- `apk_install_status: not_run`;
+- `app_launch_status: not_run`;
+- every device still `classification_confidence: heuristic`;
+- every device still `manual_review_required: true`.
+
+The review export must explicitly state that it is not approved for TASK-005
+until owner/QA manual review. It must not automatically create
+`manual_confirmed` targets.
 
 ## Reviewer Gate
 

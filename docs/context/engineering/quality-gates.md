@@ -43,10 +43,27 @@ A task is done only when:
 - Approval metadata validators must fail closed: missing/malformed/non-object metadata, missing required fields, non-approved or non-confirmed approvals, expired approvals, missing approver role, unsupported approver role, missing build/target aliases, missing structured targets, unsafe device aliases, phone-only TASK-005 target sets, invalid fixture statuses, non-out-of-scope current stream/WebView/payment fixtures, pending/blocked/invalid evidence policy, non-local ignored storage, unsupported runtime scope, forbidden runtime scope, raw phone/OTP, device identifiers, unknown cleanup levels, C5 cleanup without separate approval, and missing/pending reviews keep runtime approval `blocked`. A valid approval report may return only `approved_for_limited_runtime` with `runtime_execution_status=not_run`; it must not claim runtime pass.
 - Final approval metadata validators must also block non-actionable P0 TV/STB targets, `adb_available` other than `yes`, heuristic/manual-review-required runtime targets, reserved alias tokens, `phone` outside the first form-factor segment of structured phone aliases, runtime profile alias prefix/index or Android-major mismatch, manual-confirmed TV/STB alias/form-factor mismatch, unsafe build alias tokens, empty or incomplete TASK-005 runtime scope, ambiguous auth mode, scope/evidence mismatch, raw-evidence public report policies, weak APK SHA-256 policy, incomplete APK allowed actions, forbidden build actions in `allowed_actions`, missing critical forbidden build actions and mismatched allowed/structured target categories.
 - Final approval metadata validators must block unsafe synthetic QA user path metadata, IP-like approval values, unknown structured device fields, compound reserved build alias tokens and duplicate public approval list values.
+- Final approval metadata validators must use exact local path-family checks:
+  TASK-005 APKs under `.qa_local/apks/task-005/*.apk`, synthetic secrets under
+  `.qa_local/secrets/*.env` and raw evidence under
+  `.qa_local/evidence/task-005/`.
+- Final approval metadata validators must block unsupported synthetic auth
+  scope, incomplete synthetic login scope, incomplete/typo forbidden account
+  actions, raw-public phone/OTP flags, unbounded evidence retention and
+  incomplete cleanup rollback scope fields.
 - ADB device inventory preflight must be inventory-only: default execution makes no ADB calls and returns blocked/not-run; owner-approved `--allow-adb` may run only `adb devices -l`, safe getprop fields, `wm size`, `wm density` and `pm list features`; raw serial/IP data must stay under `.qa_local/devices/`; public-safe inventory must exclude raw identifiers and always report runtime/app statuses as `not_run`.
 - ADB device inventory output paths must be validated before any ADB invocation and must remain under `.qa_local/devices/`.
 - ADB device inventory must validate existing alias-map entries before using them in public-safe output. Unsafe persisted aliases block public inventory rather than being trusted. Secondary phone inventory aliases may use `phone-*` only when the structured form factor is `phone`; phone-only inventory never satisfies TASK-005 P0 TV/STB runtime readiness.
 - TASK-015D/016C has a hard two-phase gate: Phase B inventory-only ADB is blocked until Phase A approval hardening passes. Generated inventory remains heuristic/manual-review-required and cannot satisfy TASK-005 runtime approval without separate owner/QA manual confirmation.
+- TASK-015E/017 owner-review inventory export may be committed only when derived
+  from public-safe generated inventory with empty findings, true redaction
+  guarantees, not-run runtime/APK/app statuses and heuristic/manual-review
+  devices. The export must not contain raw `.qa_local` paths or raw identifiers,
+  and it must explicitly say it is not approved for TASK-005 until owner/QA
+  manual review.
+- Full-tree hygiene must scan tracked text files for trailing whitespace, blank
+  line at EOF and missing final newline; a clean `git diff --check` alone is
+  not enough for this gate.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 

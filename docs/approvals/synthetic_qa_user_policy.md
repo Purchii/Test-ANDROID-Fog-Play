@@ -1,6 +1,6 @@
 # Synthetic QA User Policy
 
-Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
+Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
 
 The project may use a synthetic QA user only through a public-safe alias.
 TASK-015D/016C does not approve login or runtime use of that alias. Any future
@@ -70,3 +70,34 @@ profile_mutation
 destructive_account_action
 real_user_data_changes
 ```
+
+## Validator Requirements
+
+When synthetic login is in TASK-005 scope, `allowed_auth_scope` must include at
+least:
+
+```text
+login
+session_persistence
+```
+
+The only allowed auth-scope values are:
+
+```text
+login
+logout
+session_persistence
+```
+
+`forbidden_account_actions` must include at least:
+
+```text
+payment
+purchase
+profile_mutation
+destructive_account_action
+```
+
+Unsupported typo values block approval. The raw-public flags
+`raw_phone_allowed_in_public_docs` and `raw_otp_allowed_in_public_docs` must
+always be `false`, including no-auth metadata variants.

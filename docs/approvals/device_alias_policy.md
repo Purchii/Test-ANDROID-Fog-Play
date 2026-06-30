@@ -1,6 +1,6 @@
 # Device Alias Policy
 
-Task: `TASK-015D/016C - Approval hardening and gated ADB inventory`
+Task: `TASK-015E/017 - Final metadata hardening and inventory review package`
 
 Production safety classification: `PROD_SAFE` for docs, schemas, validators and
 unit tests. This policy does not approve Android runtime execution.
@@ -94,6 +94,11 @@ TASK-016C generated inventory aliases are heuristic output. They remain
 manual-review-required and must not be copied into TASK-005 approval metadata
 until separate owner/QA review confirms the alias, form factor, input method
 and target priority.
+
+TASK-015E/017 owner-review exports preserve generated aliases as
+`classification_confidence: heuristic` and `manual_review_required: true`.
+Public-safe export is review input only; it does not convert any target to
+`manual_confirmed`.
 
 ## Runtime Approval Boundary
 

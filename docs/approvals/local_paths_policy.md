@@ -1,6 +1,6 @@
 # Local Paths Policy
 
-Task: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
+Task: `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization`
 
 Local QA artifacts are ignored by default. Public source control may document
 path patterns, but must not commit raw APKs, raw evidence, secrets, private

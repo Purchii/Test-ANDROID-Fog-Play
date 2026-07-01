@@ -1,6 +1,6 @@
 # TASK-005 Owner Device Review
 
-Task: `TASK-015F/017A - Final strict-schema polish + owner target review handoff`
+Task: `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization`
 
 Status: `owner_review_required`
 
@@ -8,6 +8,11 @@ This guide is a public-safe handoff for manual owner/QA review only. It does
 not approve TASK-005 runtime execution, APK install, app launch, logcat,
 screenshots, videos, WebView, WebRTC, stream/media playback, payment,
 subscription, purchase or production mutation.
+
+After TASK-015H/017C, broad pre-runtime infrastructure hardening should stop
+unless a new concrete false-pass is found. Owner/QA should move to selecting one
+P0 TV/STB target, preparing local APK/hash and evidence approvals, filling real
+approval metadata and opening a separate TASK-005 limited runtime smoke task.
 
 Source inventory:
 

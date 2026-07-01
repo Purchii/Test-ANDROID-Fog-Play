@@ -428,8 +428,9 @@ def test_cli_writes_local_outputs_and_not_run_statuses(tmp_path, monkeypatch):
 def _public_safe_inventory_payload():
     fake = FakeAdb(_responses(serial="ABC123", manufacturer="TCL", model="TV", release="11", sdk="30"))
     _report, _raw, _alias_map, public_payload = build_report(allow_adb=True, runner=fake)
-    public_payload["redaction_status"] = "not_applicable"
+    public_payload["redaction_status"] = "redacted"
     public_payload["public_safety_findings"] = []
+    public_payload["public_device_count"] = len(public_payload["devices"])
     return public_payload
 
 
@@ -456,6 +457,49 @@ def test_owner_review_export_blocks_public_safety_findings():
     payload["public_safety_findings"] = ["Forbidden public identifier-like value at $.devices[0].device_alias."]
 
     with pytest.raises(ValueError, match="public_safety_findings"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_raw_source_metadata():
+    payload = _public_safe_inventory_payload()
+    payload["source"] = "raw_adb_inventory"
+
+    with pytest.raises(ValueError, match="source"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_not_redacted_devices():
+    payload = _public_safe_inventory_payload()
+    payload["redaction_status"] = "not_redacted"
+
+    with pytest.raises(ValueError, match="redaction_status"):
+        build_public_safe_review_inventory(payload)
+
+
+@pytest.mark.parametrize("generated_at", ["2099", "not-a-timestamp"])
+def test_owner_review_export_blocks_invalid_generated_at_utc(generated_at):
+    payload = _public_safe_inventory_payload()
+    payload["generated_at_utc"] = generated_at
+
+    with pytest.raises(ValueError, match="generated_at_utc"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_missing_public_device_count():
+    payload = _public_safe_inventory_payload()
+    del payload["public_device_count"]
+
+    with pytest.raises(ValueError, match="public_device_count"):
+        build_public_safe_review_inventory(payload)
+
+
+def test_owner_review_export_blocks_empty_devices():
+    payload = _public_safe_inventory_payload()
+    payload["devices"] = []
+    payload["public_device_count"] = 0
+    payload["redaction_status"] = "not_applicable"
+
+    with pytest.raises(ValueError, match="non-empty"):
         build_public_safe_review_inventory(payload)
 
 

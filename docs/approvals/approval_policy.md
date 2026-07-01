@@ -1,6 +1,6 @@
 # Approval Metadata Policy
 
-Task: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
+Task: `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization`
 
 Production safety classification: `PROD_SAFE` for schema, docs, local unit tests
 and fail-closed validation only. This policy does not approve Android runtime,
@@ -58,18 +58,21 @@ review status: approved/confirmed/pending/blocked/rejected
 
 - Approval status is not `approved`.
 - Approval evidence status is not `confirmed`.
+- `scope_version` is not exactly `task-005-limited-runtime-smoke-v1`.
 - Expiration is missing, invalid, expired or more than 30 days after validation
   time.
 - TASK-005 has no approved build alias and local ignored APK storage policy.
 - APK path pattern is outside `.qa_local/` or uses a user-specific absolute path.
 - APK path pattern is not exactly `.qa_local/apks/task-005/app-under-test.apk`.
 - TASK-005 APK metadata omits `sha256_required: true`, allows the public SHA-256
-  value, uses a build alias containing reserved identifier/security tokens or
-  identifier-like values, permits actions outside `install`, `launch` and
-  `observe`, or has any `forbidden_actions` value outside the exact TASK-005
-  required set: `commit`, `upload`, `archive`, `decompile`, `patch`, `resign`,
+  value, uses a build alias outside the exact `task-005-local-apk-NNN` pattern,
+  permits actions outside `install`, `launch` and `observe`, or has any
+  `forbidden_actions` value outside the exact TASK-005 required set: `commit`,
+  `upload`, `archive`, `decompile`, `patch`, `resign`,
   `extract_private_endpoints` and `extract_secrets`.
-- APK action lists contain duplicate values.
+- Approval list fields contain leading/trailing whitespace or duplicate values
+  after trimming. This includes runtime scope, APK action lists, approved target
+  lists, synthetic QA user policy lists and cleanup/rollback lists.
 - Approved runtime metadata contains fields outside the documented strict
   top-level and section-level allowlists.
 - Build aliases contain compound reserved token forms such as `api-key`,

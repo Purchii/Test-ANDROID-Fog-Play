@@ -18,6 +18,7 @@ from typing import Any
 SCHEMA_VERSION = "task-015-approval-validator-v1"
 APPROVAL_METADATA_SCHEMA_VERSION = "task-015-approval-metadata-v1"
 DEFAULT_TASK_ID = "TASK-005"
+TASK005_SCOPE_VERSION = "task-005-limited-runtime-smoke-v1"
 PRODUCTION_SAFETY_CLASSIFICATION = "PROD_SAFE"
 RUNTIME_EXECUTION_STATUS = "not_run"
 
@@ -309,7 +310,7 @@ DEVICE_ALIAS_RE = re.compile(r"^(tv|stb|phone|tablet|emulator|unknown)-[a-z0-9]+
 RUNTIME_PROFILE_ALIAS_RE = re.compile(
     r"^(tv|stb|phone|tablet|emulator|unknown)-[a-z0-9]+(?:-[a-z0-9]+)*-a[0-9]{1,2}-[0-9]{3}$"
 )
-BUILD_ALIAS_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*-[0-9]{3}$")
+BUILD_ALIAS_RE = re.compile(r"^task-005-local-apk-[0-9]{3}$")
 BLOCKED_ALIAS_LABELS = {
     "oleg",
     "home",
@@ -592,6 +593,37 @@ def _duplicate_items(values: Any) -> list[str]:
     return sorted(duplicates)
 
 
+def _trimmed_duplicate_items(values: list[Any]) -> list[str]:
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for value in values:
+        normalized = str(value).strip()
+        if normalized in seen:
+            duplicates.add(normalized)
+        seen.add(normalized)
+    return sorted(duplicates)
+
+
+def _canonical_string_list_reasons(values: Any, path: str) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    reasons: list[str] = []
+    whitespace_items = [
+        str(value)
+        for value in values
+        if not isinstance(value, str) or value != value.strip() or not value
+    ]
+    if whitespace_items:
+        reasons.append(
+            f"{path} values must be exact non-empty canonical strings without leading/trailing whitespace: "
+            f"{whitespace_items}."
+        )
+    duplicates = _trimmed_duplicate_items(values)
+    if duplicates:
+        reasons.append(f"{path} must not contain duplicates after trimming: {duplicates}.")
+    return reasons
+
+
 def _iter_json(value: Any, path: str = "$") -> list[tuple[str, Any]]:
     items = [(path, value)]
     if isinstance(value, dict):
@@ -692,6 +724,8 @@ def _validate_identity(metadata: dict[str, Any]) -> list[str]:
         reasons.append(f"schema_version must be {APPROVAL_METADATA_SCHEMA_VERSION}.")
     if metadata.get("task_id") != DEFAULT_TASK_ID:
         reasons.append(f"task_id must be {DEFAULT_TASK_ID}.")
+    if metadata.get("scope_version") != TASK005_SCOPE_VERSION:
+        reasons.append(f"scope_version must be {TASK005_SCOPE_VERSION}.")
     return reasons
 
 
@@ -712,10 +746,10 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     build_alias = build.get("build_alias")
     if (
         not isinstance(build_alias, str)
-        or BUILD_ALIAS_RE.fullmatch(build_alias.strip()) is None
+        or BUILD_ALIAS_RE.fullmatch(build_alias) is None
         or _build_alias_has_forbidden_content(build_alias)
     ):
-        reasons.append("approved_build_apk.build_alias must be a non-empty public-safe build alias.")
+        reasons.append("approved_build_apk.build_alias must match task-005-local-apk-NNN.")
     if build.get("storage_policy") != "local_ignored_path_only":
         reasons.append("approved_build_apk.storage_policy must be local_ignored_path_only.")
     if not _path_is_task005_apk(build.get("expected_local_path_pattern")):
@@ -731,6 +765,7 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(allowed_actions, list) or not allowed_actions:
         reasons.append("approved_build_apk.allowed_actions must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(allowed_actions, "approved_build_apk.allowed_actions"))
         duplicates = _duplicate_items(allowed_actions)
         if duplicates:
             reasons.append(f"approved_build_apk.allowed_actions must not contain duplicates: {duplicates}.")
@@ -746,6 +781,7 @@ def _validate_build(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(forbidden_actions, list) or not forbidden_actions:
         reasons.append("approved_build_apk.forbidden_actions must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(forbidden_actions, "approved_build_apk.forbidden_actions"))
         duplicates = _duplicate_items(forbidden_actions)
         if duplicates:
             reasons.append(f"approved_build_apk.forbidden_actions must not contain duplicates: {duplicates}.")
@@ -906,6 +942,7 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(forbidden_identifiers, list) or not forbidden_identifiers:
         reasons.append("approved_targets.forbidden_identifiers must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(forbidden_identifiers, "approved_targets.forbidden_identifiers"))
         duplicates = _duplicate_items(forbidden_identifiers)
         if duplicates:
             reasons.append(f"approved_targets.forbidden_identifiers must not contain duplicates: {duplicates}.")
@@ -921,6 +958,7 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(categories, list) or not categories:
         reasons.append("approved_targets.allowed_categories must list approved target categories.")
     else:
+        reasons.extend(_canonical_string_list_reasons(categories, "approved_targets.allowed_categories"))
         duplicates = _duplicate_items(categories)
         if duplicates:
             reasons.append(f"approved_targets.allowed_categories must not contain duplicates: {duplicates}.")
@@ -941,6 +979,7 @@ def _validate_targets(metadata: dict[str, Any]) -> list[str]:
         if not isinstance(aliases, list) or not aliases:
             reasons.append("approved_targets.device_aliases must be a non-empty list when present.")
         else:
+            reasons.extend(_canonical_string_list_reasons(aliases, "approved_targets.device_aliases"))
             for alias in aliases:
                 if not _valid_device_alias(alias, form_factor="phone"):
                     reasons.append(f"approved_targets.device_aliases contains unsafe alias: {alias}.")
@@ -1086,6 +1125,7 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
         reasons.append("runtime_execution.allowed must be true for TASK-005 approval metadata.")
 
     allowed_scope = _stringify_scope(runtime.get("allowed_scope"))
+    reasons.extend(_canonical_string_list_reasons(runtime.get("allowed_scope"), "runtime_execution.allowed_scope"))
     duplicates = _duplicate_items(runtime.get("allowed_scope"))
     if duplicates:
         reasons.append(f"runtime_execution.allowed_scope must not contain duplicates: {duplicates}.")
@@ -1109,6 +1149,7 @@ def _validate_runtime_scope(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(forbidden_scope, list) or not forbidden_scope:
         reasons.append("runtime_execution.forbidden_scope must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(forbidden_scope, "runtime_execution.forbidden_scope"))
         duplicates = _duplicate_items(forbidden_scope)
         if duplicates:
             reasons.append(f"runtime_execution.forbidden_scope must not contain duplicates: {duplicates}.")
@@ -1175,6 +1216,7 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
         if not isinstance(auth_scope, list) or (auth_policy_required and not auth_scope):
             reasons.append("synthetic_qa_user.allowed_auth_scope must be a non-empty list.")
         else:
+            reasons.extend(_canonical_string_list_reasons(auth_scope, "synthetic_qa_user.allowed_auth_scope"))
             normalized_auth_scope = {str(item) for item in auth_scope}
             duplicates = _duplicate_items(auth_scope)
             if duplicates:
@@ -1191,6 +1233,12 @@ def _validate_synthetic_user(metadata: dict[str, Any]) -> list[str]:
         if not isinstance(forbidden_actions, list) or (auth_policy_required and not forbidden_actions):
             reasons.append("synthetic_qa_user.forbidden_account_actions must be a non-empty list.")
         else:
+            reasons.extend(
+                _canonical_string_list_reasons(
+                    forbidden_actions,
+                    "synthetic_qa_user.forbidden_account_actions",
+                )
+            )
             normalized_forbidden_actions = {str(item) for item in forbidden_actions}
             duplicates = _duplicate_items(forbidden_actions)
             if duplicates:
@@ -1287,6 +1335,7 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(levels, list) or not levels:
         reasons.append("cleanup_rollback.allowed_levels must not be empty.")
         return reasons
+    reasons.extend(_canonical_string_list_reasons(levels, "cleanup_rollback.allowed_levels"))
     duplicates = _duplicate_items(levels)
     if duplicates:
         reasons.append(f"cleanup_rollback.allowed_levels must not contain duplicates: {duplicates}.")
@@ -1299,6 +1348,7 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(separate, list) or not separate:
         reasons.append("cleanup_rollback.requires_separate_approval must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(separate, "cleanup_rollback.requires_separate_approval"))
         duplicates = _duplicate_items(separate)
         if duplicates:
             reasons.append(f"cleanup_rollback.requires_separate_approval must not contain duplicates: {duplicates}.")
@@ -1312,6 +1362,7 @@ def _validate_cleanup(metadata: dict[str, Any]) -> list[str]:
     if not isinstance(authorized_zone_scopes, list) or not authorized_zone_scopes:
         reasons.append("cleanup_rollback.authorized_zone_scopes must be a non-empty list.")
     else:
+        reasons.extend(_canonical_string_list_reasons(authorized_zone_scopes, "cleanup_rollback.authorized_zone_scopes"))
         duplicates = _duplicate_items(authorized_zone_scopes)
         if duplicates:
             reasons.append(f"cleanup_rollback.authorized_zone_scopes must not contain duplicates: {duplicates}.")

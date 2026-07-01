@@ -81,6 +81,15 @@ A task is done only when:
   material only: no APK hash values, secrets, raw device identifiers, raw
   evidence, private endpoints or runtime approval; TASK-005 remains
   `blocked`/`not_run`.
+- TASK-015H/017C final polish must block non-exact TASK-005 `scope_version`,
+  approval-list values with leading/trailing whitespace, duplicates after
+  trimming, TASK-005 build aliases outside `task-005-local-apk-NNN`, and
+  malformed generated-inventory metadata before owner-review export including
+  raw source, non-redacted device payloads, invalid timestamps, missing or
+  mismatched `public_device_count`, and empty device lists.
+- After TASK-015H/017C, broad pre-runtime hardening should stop unless a new
+  concrete false-pass is found; the next step is owner/QA approval input and a
+  separate TASK-005 limited runtime smoke task.
 - Full-tree hygiene must scan tracked text files for trailing whitespace, blank
   line at EOF and missing final newline; a clean `git diff --check` alone is
   not enough for this gate.

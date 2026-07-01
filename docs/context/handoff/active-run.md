@@ -3,48 +3,29 @@
 ## Run metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
+Thread title: `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization`
 Thread status: `completed_user_authorized_default_push`
 Fresh thread verified: `current_thread_renamed_for_task`
-Task ID: `TASK-015G/017B`
-Task branch: `qa/task-015g-017b-approval-strictness-owner-input-pack`
+Task ID: `TASK-015H/017C`
+Task branch: `qa/task-015h-017c-scope-normalization-owner-handoff`
 Default branch: `main`
-Base commit: `d308ef0`
+Base commit: `c3bd70f`
 Merge/push authority: `user explicitly authorized push to master/default; interpreted as detected default branch main`
 Production safety classification: `PROD_SAFE` for docs, validators, schemas,
-synthetic unit tests, full-tree hygiene checks, default no-ADB dry-runs and
-public-safe owner approval input templates.
-
-Allowed files:
-
-```text
-.gitignore
-README.md
-automation/approvals/validate_approval_metadata.py
-automation/device_inventory/generate_adb_device_inventory.py
-docs/approvals/*.md
-docs/approvals/task005_owner_approval_inputs.template.json
-docs/context/current-state.md
-docs/context/engineering/quality-gates.md
-docs/context/engineering/verification-memory.md
-docs/context/governance/decisions-log.md
-docs/context/governance/risk-register.md
-docs/context/handoff/active-run.md
-docs/tasks/backlog.md
-tasks/TASK_015G_017B_residual_approval_strictness_owner_input_pack.md
-tests/test_approval_metadata_validator.py
-tests/test_adb_device_inventory.py
-```
+synthetic unit tests, hygiene checks, default no-ADB dry-runs and public-safe
+owner handoff material.
 
 ## Goal
 
-Complete TASK-015G/017B residual approval strictness polish and TASK-005 owner
-approval input pack:
+Complete final pre-runtime approval strictness polish and owner handoff
+finalization:
 
-- close residual approval validator false-pass cases from the post-TASK-015F/017A audit;
-- harden public-safe owner-review inventory export validation;
-- create owner-facing public-safe TASK-005 approval input materials;
-- keep TASK-005 runtime smoke `blocked` / `not_run`.
+- require exact TASK-005 `scope_version`;
+- block approval-list whitespace variants and duplicates after trimming;
+- restrict TASK-005 build aliases to `task-005-local-apk-NNN`;
+- block malformed public-safe generated inventory metadata before owner-review
+  export;
+- keep TASK-005 runtime `blocked` / `not_run`.
 
 ## Allowed scope
 
@@ -54,32 +35,41 @@ approval input pack:
 - synthetic unit tests;
 - full-tree hygiene scans;
 - default no-ADB dry-runs;
-- public-safe owner approval templates and checklist.
+- public-safe owner approval handoff docs.
 
 ## Forbidden actions
 
 - APK/AAB/APKS/XAPK handling;
+- ADB inventory refresh or any `--allow-adb` run;
 - `adb install`;
 - `am start`;
 - `monkey`;
 - `logcat`;
 - screenshots, screenrecord or videos;
 - APK install, app launch or runtime smoke;
-- WebView, WebRTC, stream/media playback, payment, subscription or purchase flows;
-- decompile, patch, resign or security bypass;
+- WebView, WebRTC, stream/media playback, payment, subscription or purchase
+  flows;
+- network/offline runtime flows;
+- decompile, patch or resign APK;
+- security bypass, proxy/packet capture or TLS bypass;
 - production mutation;
 - secrets, private endpoints, raw evidence or raw device identifiers.
 
 ## Acceptance criteria
 
-- `approved_build_apk.forbidden_actions` rejects unsupported extras and accepts only the exact required policy set;
-- `approved_targets.forbidden_identifiers` is required and rejects missing, unsupported or duplicate values;
-- `expires_at` is valid, non-expired and no more than 30 days after validation time;
-- TASK-005 APK, synthetic QA user secret and evidence paths use exact approved local path patterns;
-- optional synthetic auth policy fields are validated even when auth is out of scope;
-- owner-review inventory export rejects malformed redaction guarantees and malformed public enum values;
-- owner input template and checklist remain public-safe and do not approve runtime;
-- TASK-005 remains `blocked` / `not_run`.
+- `scope_version=task-999-all-runtime` blocks.
+- `runtime_execution.allowed_scope` containing both `install` and ` install `
+  blocks.
+- `runtime_execution.forbidden_scope`, APK actions and cleanup levels also
+  block whitespace duplicates.
+- Unsafe/generic `approved_build_apk.build_alias` values such as
+  `task-qa-user-001` block.
+- Owner-review export rejects raw source metadata, non-redacted device payloads,
+  invalid `generated_at_utc`, missing or mismatched `public_device_count`, and
+  empty device lists.
+- Owner handoff docs say this is final pre-runtime polish and the next step is
+  owner/QA input plus a separate TASK-005 limited runtime task.
+- TASK-005 runtime remains `blocked` / `not_run`.
 
 ## Verification plan
 
@@ -103,34 +93,38 @@ python automation/device_inventory/generate_adb_device_inventory.py
 ## Current evidence status
 
 - TASK-005 runtime execution: `blocked`
-- APK install/app launch/logcat/screenshots/videos/WebView/WebRTC/payment: `not_run`
+- APK install/app launch/logcat/screenshots/videos/WebView/WebRTC/payment:
+  `not_run`
 - Manual owner/QA target approval: `not_run`
 - Owner-review inventory devices: `heuristic` / `manual_review_required`
-- Verification: `passed_after_phase_b_docs_remediation`
-- Targeted validator/inventory/hygiene tests: `267 passed`
-- Full pytest: `367 passed` through both `pytest -q` and `python -m pytest -q`
+- Diff checks: `passed`
+- Full-tree hygiene auto/public-safe-tree: `passed`
+- Targeted validator/inventory/hygiene tests: `285 passed`
+- Full pytest: `385 passed` through both `pytest -q` and `python -m pytest -q`
 - Compileall: `passed`
 - Approval example/draft CLI: `blocked` / `runtime_execution_status=not_run`
 - Default TASK-016 inventory CLI: `blocked` / `runtime_execution_status=not_run`, no `--allow-adb`
-- Untracked local archive risk: `mitigated_by_safe_archives_gitignore`; `safe_archives/` remains unstaged and ignored
+- Tracked APK/.qa_local scan: `no tracked files`
 
 ## Multi-agent status
 
 - Planner: `PASS_READ_ONLY_PLAN`
 - Security/Prod-safety Reviewer: `PASS_READ_ONLY_REVIEW`
 - Builder: `PASS_IMPLEMENTED_SCOPE`
-- Builder implementation auditor: `PASS_FINAL_REVIEW`
 - QA Reviewer A: `PASS_FINAL_REVIEW`
 - QA Reviewer B: `PASS_FINAL_REVIEW`
 - Security/Prod-safety final review: `PASS_FINAL_REVIEW`
-- Docs/Scribe: `PASS_FINAL_REVIEW`
-- Subagent closure audit: `complete`; Planner, Security, Builder auditor, QA Reviewer A, QA Reviewer B and Docs/Scribe agents closed after outputs were recorded.
+- Docs/Scribe: `PASS_FINAL_REVIEW_AFTER_REMEDIATION`
+- Subagent closure audit: `complete`; Planner, Security pre-check,
+  QA Reviewer A, QA Reviewer B, Security final and Docs/Scribe agents closed
+  after outputs were recorded.
 
 ## Stop conditions
 
 Stop and ask for user guidance if any requested change would require APK
-install/launch, app runtime smoke, `am start`, `monkey`, `logcat`,
-screenshots, videos, WebView, WebRTC, stream/media playback, payment,
-subscription, purchase, account/profile mutation, secrets, private endpoints,
-raw evidence publication, production mutation, decompilation, patching,
-resigning, security bypass or default branch merge/push.
+install/launch, app runtime smoke, ADB inventory refresh, `--allow-adb`,
+`am start`, `monkey`, `logcat`, screenshots, videos, WebView, WebRTC,
+stream/media playback, payment, subscription, purchase, account/profile
+mutation, secrets, private endpoints, raw evidence publication, production
+mutation, decompilation, patching, resigning, security bypass or default branch
+merge/push.

@@ -47,6 +47,7 @@
 | TASK-015E/017 | Final metadata hardening and public-safe inventory review package | BOUNDED_AUTONOMOUS; Phase A docs/validator/hygiene hardening is PROD_SAFE; Phase B reads existing sanitized inventory or inventory-only ADB refresh after Phase A only | qa/task-015e-017-final-metadata-inventory-review | completed; merged/pushed to detected `main` |
 | TASK-015F/017A | Final strict-schema polish and owner target review handoff | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe review export only; no runtime or ADB | qa/task-015f-017a-final-strict-schema-owner-target-handoff | completed; default push authorized by explicit user command |
 | TASK-015G/017B | Residual approval strictness polish and TASK-005 owner approval input pack | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe owner input templates only; no runtime or ADB | qa/task-015g-017b-approval-strictness-owner-input-pack | completed; default push authorized by explicit user command |
+| TASK-015H/017C | Final scope-version/normalization polish + TASK-005 owner approval handoff finalization | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe owner handoff only; no runtime, no ADB refresh | qa/task-015h-017c-scope-normalization-owner-handoff | completed; default push authorized by explicit user command |
 | TASK-016 | Device/build inventory and runtime preflight draft | BOUNDED_AUTONOMOUS for public-safe docs/local validation only; runtime execution blocked | qa/task-016-device-build-runtime-preflight | superseded by completed TASK-015A/016 |
 | TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | partially covered by TASK-015E/017 synthetic metadata hardening; broader corpus remains proposed |
 | TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | proposed |
@@ -66,6 +67,12 @@ Planner selects the next task based on:
 Until approved runtime prerequisites are recorded with `evidence_status=confirmed`, autonomous continuation should prioritize public-safe planning, templates, local fail-closed generators, redaction tests, release-gate wiring and documentation tasks that do not require user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction.
 
 Tasks that require user answers, approvals or external fixtures must stay blocked or proposed until those answers are recorded. This includes runtime smoke, real transition observation, WebView/payment execution, network/offline execution, compatibility execution, live CI scheduling and any task needing approved build/device/config/fixture metadata.
+
+After TASK-015H/017C, broad pre-runtime infrastructure hardening should stop
+unless a new concrete false-pass is found. The recommended next path is owner/QA
+approval input for TASK-005: select one P0 TV/STB target, manually confirm it,
+prepare local APK/hash and evidence approvals, fill real approval metadata, and
+open a separate TASK-005 limited runtime smoke task.
 
 ## Current selection note
 

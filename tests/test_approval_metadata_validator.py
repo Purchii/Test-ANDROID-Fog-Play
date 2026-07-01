@@ -179,6 +179,16 @@ def test_happy_path_approves_limited_runtime_but_runtime_remains_not_run(tmp_pat
     assert report["runtime_execution_status"] == "not_run"
     assert report["runtime_evidence_status"] == "unknown"
     assert report["blocked_reasons"] == []
+
+
+def test_bad_task005_scope_version_blocks(tmp_path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata.update({"scope_version": "task-999-all-runtime"}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("scope_version" in reason for reason in report["blocked_reasons"])
     assert report["production_safety_classification"] == "PROD_SAFE"
 
 
@@ -350,6 +360,36 @@ def test_semantically_unsafe_build_alias_blocks(tmp_path, build_alias):
 
 def test_task_005_local_apk_build_alias_remains_valid(tmp_path):
     report = _report_for(tmp_path)
+
+    assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "build_alias",
+    [
+        "task-qa-user-001",
+        "task-secret-001",
+        "task-api-key-001",
+        "approved-build-001",
+        "task-005-local-apk-01",
+        " task-005-local-apk-001 ",
+    ],
+)
+def test_task005_build_alias_must_use_exact_local_apk_pattern(tmp_path, build_alias):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["approved_build_apk"].update({"build_alias": build_alias}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("approved_build_apk.build_alias" in reason for reason in report["blocked_reasons"])
+
+
+def test_task005_second_local_apk_build_alias_passes(tmp_path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["approved_build_apk"].update({"build_alias": "task-005-local-apk-002"}),
+    )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
 
@@ -1156,6 +1196,34 @@ def test_duplicate_runtime_scope_item_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("runtime_execution.allowed_scope must not contain duplicates" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "mutator,match",
+    [
+        (
+            lambda metadata: metadata["runtime_execution"]["allowed_scope"].append(" install "),
+            "runtime_execution.allowed_scope",
+        ),
+        (
+            lambda metadata: metadata["runtime_execution"]["forbidden_scope"].append(" payment "),
+            "runtime_execution.forbidden_scope",
+        ),
+        (
+            lambda metadata: metadata["approved_build_apk"]["allowed_actions"].append(" install "),
+            "approved_build_apk.allowed_actions",
+        ),
+        (
+            lambda metadata: metadata["cleanup_rollback"]["allowed_levels"].append(" C1_background_foreground "),
+            "cleanup_rollback.allowed_levels",
+        ),
+    ],
+)
+def test_whitespace_normalized_approval_list_duplicates_block(tmp_path, mutator, match):
+    report = _report_for(tmp_path, mutator)
+
+    assert report["approval_decision"] == "blocked"
+    assert any(match in reason and "after trimming" in reason for reason in report["blocked_reasons"])
 
 
 def test_empty_runtime_forbidden_scope_blocks(tmp_path):

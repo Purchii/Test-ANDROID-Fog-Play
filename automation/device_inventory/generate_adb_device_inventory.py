@@ -12,13 +12,14 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable
 
 SCHEMA_VERSION = "task-016-adb-device-inventory-preflight-v1"
 PUBLIC_SCHEMA_VERSION = "task-016-device-inventory-public-safe-v1"
 REVIEW_SCHEMA_VERSION = "task-016-device-inventory-owner-review-v1"
+PUBLIC_GENERATED_SOURCE = "adb_inventory_sanitized_local_output"
 PRODUCTION_SAFETY_CLASSIFICATION = "PROD_CONDITIONAL"
 RUNTIME_EXECUTION_STATUS = "not_run"
 APK_INSTALL_STATUS = "not_run"
@@ -138,6 +139,19 @@ Runner = Callable[..., subprocess.CompletedProcess[str]]
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _parse_utc_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    raw = value.strip()
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00") if raw.endswith("Z") else raw)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
 
 
 def _run_adb(argv: list[str], runner: Runner) -> tuple[str, int]:
@@ -614,11 +628,12 @@ def _public_inventory(devices: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "schema_version": PUBLIC_SCHEMA_VERSION,
         "generated_at_utc": _utc_now(),
-        "source": "adb_inventory_sanitized_local_output",
+        "source": PUBLIC_GENERATED_SOURCE,
         "runtime_execution_status": RUNTIME_EXECUTION_STATUS,
         "apk_install_status": APK_INSTALL_STATUS,
         "app_launch_status": APP_LAUNCH_STATUS,
         "devices": devices,
+        "public_device_count": len(devices),
         "redaction_guarantees": {
             "adb_serial_excluded": True,
             "ip_excluded": True,
@@ -652,6 +667,13 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
         errors.append(f"public inventory contains unsupported top-level fields: {extra_top_level_fields}.")
     if public_payload.get("schema_version") != PUBLIC_SCHEMA_VERSION:
         errors.append(f"schema_version must be {PUBLIC_SCHEMA_VERSION}.")
+    if public_payload.get("source") != PUBLIC_GENERATED_SOURCE:
+        errors.append(f"source must be {PUBLIC_GENERATED_SOURCE} before owner-review export.")
+    generated_at = _parse_utc_timestamp(public_payload.get("generated_at_utc"))
+    if generated_at is None:
+        errors.append("generated_at_utc must be a parseable ISO/Z timestamp before owner-review export.")
+    elif generated_at > datetime.now(timezone.utc) + timedelta(minutes=5):
+        errors.append("generated_at_utc must not be future-dated before owner-review export.")
     for field in ("runtime_execution_status", "apk_install_status", "app_launch_status"):
         if public_payload.get(field) != "not_run":
             errors.append(f"{field} must remain not_run.")
@@ -677,8 +699,14 @@ def build_public_safe_review_inventory(public_payload: dict[str, Any]) -> dict[s
     if not isinstance(devices, list):
         errors.append("devices must be a list.")
         devices = []
+    elif not devices:
+        errors.append("devices must be a non-empty list before owner-review export.")
+    if devices and public_payload.get("redaction_status") != "redacted":
+        errors.append("redaction_status must be redacted when devices are present before owner-review export.")
     public_device_count = public_payload.get("public_device_count")
-    if public_device_count is not None and public_device_count != len(devices):
+    if not isinstance(public_device_count, int) or isinstance(public_device_count, bool):
+        errors.append("public_device_count must be present as an integer before owner-review export.")
+    elif public_device_count != len(devices):
         errors.append("public_device_count must match devices length before owner-review export.")
 
     review_devices: list[dict[str, Any]] = []
@@ -835,7 +863,7 @@ def build_inventory(
     known_raw_values = {str(device.get("serial")) for device in raw_payload.get("devices", []) if device.get("serial")}
     public_payload, redacted = _sanitize_public_json(public_payload, known_raw_values)
     findings = _public_safety_findings(public_payload, known_raw_values)
-    public_payload["redaction_status"] = "redacted" if redacted else "not_applicable"
+    public_payload["redaction_status"] = "redacted" if redacted or public_payload["devices"] else "not_applicable"
     public_payload["public_safety_findings"] = findings
     if findings:
         report["overall_status"] = "blocked"
@@ -845,6 +873,7 @@ def build_inventory(
         report["blocked_reasons"] = sorted(
             set(report["blocked_reasons"] + ["Generated aliases failed public-safe grammar validation."])
         )
+    public_payload["public_device_count"] = len(public_payload["devices"])
 
     if write_files:
         _write_json(raw_output, raw_payload)

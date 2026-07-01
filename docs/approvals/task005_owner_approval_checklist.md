@@ -1,6 +1,6 @@
 # TASK-005 Owner Approval Checklist
 
-Task: `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack`
+Task: `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization`
 
 Status: `owner_input_required`
 
@@ -8,6 +8,11 @@ This checklist is public-safe owner/QA input material only. It does not approve
 TASK-005 runtime execution, APK install, app launch, logcat, screenshots,
 videos, WebView, WebRTC, stream/media playback, payment, subscription,
 purchase or production mutation.
+
+TASK-015H/017C is the final planned pre-runtime polish for the approval
+infrastructure. After this task, broad hardening should stop unless a new
+concrete false-pass is found. The next step is owner/QA approval input and a
+separate TASK-005 limited runtime smoke task.
 
 ## Required Owner/QA Inputs
 

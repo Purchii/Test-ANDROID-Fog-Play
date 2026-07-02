@@ -241,6 +241,15 @@ def test_approval_expiration_within_ttl_passes_with_fixed_now(tmp_path):
     assert report["approval_decision"] == "approved_for_limited_runtime"
 
 
+@pytest.mark.parametrize("expires_at", [" 2026-07-07", "2026-07-07 ", " 2026-07-07 "])
+def test_approval_expiration_with_surrounding_whitespace_blocks(tmp_path, expires_at):
+    now = datetime(2026, 6, 30, tzinfo=timezone.utc)
+    report = _report_for(tmp_path, lambda metadata: metadata.update({"expires_at": expires_at}), now=now)
+
+    assert report["approval_decision"] == "blocked"
+    assert any("expires_at" in reason for reason in report["blocked_reasons"])
+
+
 @pytest.mark.parametrize("expires_at", ["2026-07-31", "2099-01-01", "2100-01-01"])
 def test_approval_expiration_beyond_ttl_blocks(tmp_path, expires_at):
     now = datetime(2026, 6, 30, tzinfo=timezone.utc)
@@ -256,6 +265,22 @@ def test_non_confirmed_approval_evidence_blocks(tmp_path, status):
 
     assert report["approval_decision"] == "blocked"
     assert any("approval_evidence_status" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize(
+    "field,value,match",
+    [
+        ("approval_status", "Approved", "approval_status"),
+        ("approval_status", " approved ", "approval_status"),
+        ("approval_evidence_status", "Confirmed", "approval_evidence_status"),
+        ("approval_evidence_status", " confirmed ", "approval_evidence_status"),
+    ],
+)
+def test_top_level_enums_require_exact_canonical_values(tmp_path, field, value, match):
+    report = _report_for(tmp_path, lambda metadata: metadata.update({field: value}))
+
+    assert report["approval_decision"] == "blocked"
+    assert any(match in reason for reason in report["blocked_reasons"])
 
 
 def test_apk_path_outside_qa_local_blocks(tmp_path):
@@ -299,6 +324,24 @@ def test_task005_apk_path_family_and_extension_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        " .qa_local/apks/task-005/app-under-test.apk",
+        ".qa_local/apks/task-005/app-under-test.apk ",
+        " .qa_local/apks/task-005/app-under-test.apk ",
+    ],
+)
+def test_task005_apk_path_surrounding_whitespace_blocks(tmp_path, path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["approved_build_apk"].update({"expected_local_path_pattern": path}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("expected_local_path_pattern" in reason for reason in report["blocked_reasons"])
 
 
 @pytest.mark.parametrize(
@@ -535,6 +578,17 @@ def test_stream_out_of_scope_but_runtime_scope_includes_stream_blocks(tmp_path):
 
     assert report["approval_decision"] == "blocked"
     assert any("stream_fixture is out_of_scope" in reason for reason in report["blocked_reasons"])
+
+
+@pytest.mark.parametrize("fixture_status", ["Out_Of_Scope", " out_of_scope ", "Approved"])
+def test_fixture_status_enums_require_exact_canonical_values(tmp_path, fixture_status):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["fixtures"].update({"stream_fixture": fixture_status}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("fixtures.stream_fixture" in reason for reason in report["blocked_reasons"])
 
 
 def test_webview_out_of_scope_but_runtime_scope_includes_webview_blocks(tmp_path):
@@ -854,6 +908,24 @@ def test_synthetic_secret_env_path_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        " .qa_local/secrets/qa_user.env",
+        ".qa_local/secrets/qa_user.env ",
+        " .qa_local/secrets/qa_user.env ",
+    ],
+)
+def test_synthetic_secret_path_surrounding_whitespace_blocks(tmp_path, path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["synthetic_qa_user"].update({"local_secret_file_pattern": path}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("local_secret_file_pattern" in reason for reason in report["blocked_reasons"])
 
 
 def test_synthetic_user_safe_repo_allowed_file_passes(tmp_path):
@@ -1343,6 +1415,24 @@ def test_task005_evidence_path_passes(tmp_path):
     )
 
     assert report["approval_decision"] == "approved_for_limited_runtime"
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        " .qa_local/evidence/task-005/",
+        ".qa_local/evidence/task-005/ ",
+        " .qa_local/evidence/task-005/ ",
+    ],
+)
+def test_task005_evidence_path_surrounding_whitespace_blocks(tmp_path, path):
+    report = _report_for(
+        tmp_path,
+        lambda metadata: metadata["evidence_capture"].update({"raw_storage_path_pattern": path}),
+    )
+
+    assert report["approval_decision"] == "blocked"
+    assert any("raw_storage_path_pattern" in reason for reason in report["blocked_reasons"])
 
 
 @pytest.mark.parametrize("retention_days", [None, 0, -1, 3650, "7", 7.5])

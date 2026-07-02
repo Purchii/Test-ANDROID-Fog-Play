@@ -414,6 +414,50 @@ or activity names, raw screenshots, raw logs, raw UI text, phone/OTP/account
 values, device serials, IPs, MAC/IMEI/Android IDs, private endpoints,
 executable command transcripts or absolute local machine paths.
 
+## TASK-019 Auth/Session Smoke Summary
+
+TASK-019 auth/session summaries may include only public-safe aliases, status
+values and category-level observations:
+
+```json
+{
+  "task_id": "TASK-019",
+  "mode": "NON_AUTONOMOUS",
+  "production_safety_classification": "PROD_CONDITIONAL",
+  "public_device_alias": "tv-tpv-013",
+  "public_runtime_profile_alias": "tv-tpv-a12-013",
+  "build_alias": "task-005-local-apk-001",
+  "phase_b_status": "pass",
+  "auth_result": "pass",
+  "post_auth_screen_alias": "post_auth_home_unknown",
+  "home_foreground_session_status": "pass",
+  "force_stop_relaunch_session_status": "pass",
+  "crash_anr_status": "not_observed",
+  "logout_status": "not_run",
+  "forbidden_scope_not_run": [
+    "webview",
+    "redirect",
+    "webrtc",
+    "stream",
+    "media_playback",
+    "payment",
+    "network_offline"
+  ]
+}
+```
+
+Allowed fields include public-safe target aliases, build aliases, auth/session
+status values, screen aliases, focus/session summaries, crash/ANR status,
+redacted artifact IDs and ignored evidence storage family.
+
+Public TASK-019 summaries must not include raw phone/OTP values, tokens,
+cookies, sessions, package or activity names, raw UI text, raw screenshots, raw
+logs, APK hashes, device serials, IPs, MAC/IMEI/Android IDs, private endpoints,
+executable command transcripts or absolute local machine paths. A successful
+TASK-019 summary confirms only bounded auth/session shell behavior; it does not
+confirm broad post-auth navigation, logout, WebView, WebRTC, stream/media
+playback, payment, network/offline or compatibility coverage.
+
 ## Redaction Rules
 
 Reports may reference only:

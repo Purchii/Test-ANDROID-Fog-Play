@@ -89,6 +89,20 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   in the captured summary. Raw evidence remains ignored under
   `.qa_local/evidence/task-005/`; APK files, raw hashes, raw screenshots, raw
   logs, raw device identifiers and private values are not committed.
+- TASK-019 auth/session smoke executed in thread
+  `TASK-019 - Android TV auth/session smoke on tv-tpv-013` on branch
+  `qa/task-019-android-tv-auth-session-smoke` from `main` commit
+  `92d05a2275e612c89228a35ca329875c6ed83b37`. The task is
+  `NON_AUTONOMOUS` and `PROD_CONDITIONAL` for the owner-approved selected
+  target/APK/auth lane only. Phase A repository checks and local secret
+  preflight passed without printing raw values. Phase B used local-only phone
+  and OTP values from `.qa_local/secrets/qa_user.env`, reached the first
+  post-auth shell alias `post_auth_home_unknown`, observed minimal post-auth
+  focus movement, Home/foreground session persistence, force-stop/relaunch
+  session persistence and no crash/ANR signal in the captured summary. Raw
+  evidence remains ignored under `.qa_local/evidence/task-019/`; phone/OTP
+  values, APK files, raw logs, raw screenshots, raw device identifiers and
+  private values are not committed.
 
 ## Runtime readiness
 
@@ -131,6 +145,13 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   entry, profile/account mutation, WebView, WebRTC, stream/media playback,
   payment, network/offline, compatibility matrix coverage and broader device
   coverage remain `not_run` / `unknown`.
+- TASK-019 now has one bounded auth/session smoke data point for
+  `tv-tpv-013`. This confirms only login to the first post-auth shell alias,
+  minimal post-auth focus movement, Home/foreground session persistence,
+  force-stop/relaunch session persistence and crash/ANR observation for the
+  same selected target/build lane. Logout, broad post-auth navigation, WebView,
+  WebRTC, stream/media playback, payment, network/offline, compatibility matrix
+  coverage and broader device coverage remain `not_run` / `unknown`.
 
 ## Evidence status policy
 

@@ -14,7 +14,7 @@
 | TASK-002 | Exported component guard checks skeleton | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-002-exported-component-guards | completed |
 | TASK-003 | Reporting, evidence schema and release gate generator | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-003-evidence-release-gates | completed |
 | TASK-004 | Manual runtime screen and TV focus map templates | BOUNDED_AUTONOMOUS | qa/task-004-runtime-screen-focus-map | completed |
-| TASK-005 | Android TV install/launch/focus smoke implementation | NON_AUTONOMOUS runtime task after owner approval | qa/task-005-android-tv-smoke-runtime | limited `tv-tpv-013` smoke executed locally; default integration pending |
+| TASK-005 | Android TV install/launch/focus smoke implementation | NON_AUTONOMOUS runtime task after owner approval | qa/task-005-android-tv-smoke-runtime | limited `tv-tpv-013` smoke executed locally; merged/pushed to `main` by explicit user command |
 
 ## P2 - fixtures-dependent QA
 
@@ -26,6 +26,7 @@
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | completed |
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 | TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
+| TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; default integration pending |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
@@ -77,6 +78,13 @@ first focus, minimal D-pad, Back/Home, foreground relaunch,
 force-stop/relaunch and crash/ANR observation for that one target/build. Future
 work should not treat this as broad compatibility, auth, WebView, WebRTC,
 stream/media playback, payment, network/offline or production-flow coverage.
+
+On 2026-07-02, TASK-019 then executed one bounded auth/session smoke on the same
+selected lane. It confirms only login to the first post-auth shell, minimal
+post-auth focus movement, Home/foreground session persistence,
+force-stop/relaunch session persistence and crash/ANR summary. It does not
+confirm broad post-auth navigation, stream/WebRTC/media playback, WebView,
+payment, network/offline or compatibility coverage.
 
 ## Current selection note
 

@@ -69,10 +69,19 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-015F/017A completed implementation in fresh thread `TASK-015F/017A - Final strict-schema polish + owner target review handoff` on branch `qa/task-015f-017a-final-strict-schema-owner-target-handoff` from detected default branch `main` commit `e4eae81`. The task is `NON_AUTONOMOUS` and PROD_SAFE-only: strict schema/path/alias/API validation, portable full-tree hygiene scanning, owner-review export hardening and manual owner target handoff. Verification passed after QA A remediation. The user explicitly authorized `push to master`; per project policy this is interpreted as detected default branch `main`.
 - TASK-015G/017B completed in thread `TASK-015G/017B - Residual approval strictness polish + TASK-005 owner approval input pack` on branch `qa/task-015g-017b-approval-strictness-owner-input-pack` from `main` commit `d308ef0`. The task is `NON_AUTONOMOUS` and PROD_SAFE-only: residual validator/export strictness, regression tests, hygiene fixes and public-safe owner approval input templates. Verification and multi-agent reviews passed. The user explicitly authorized `push to master`, interpreted as detected default branch `main`; the task branch was prepared for default-branch integration. TASK-005 runtime remains blocked/not_run.
 - TASK-015H/017C completed in thread `TASK-015H/017C - Final scope-version/normalization polish + TASK-005 owner approval handoff finalization` on branch `qa/task-015h-017c-scope-normalization-owner-handoff` from `main` commit `c3bd70f`. The task is `NON_AUTONOMOUS` and PROD_SAFE-only: exact TASK-005 scope-version validation, approval-list whitespace/duplicate normalization blocking, exact TASK-005 local APK build aliases, strict owner-review export generated-inventory metadata validation and final owner handoff wording. The user explicitly authorized `push to master`, interpreted as detected default branch `main`. APK install, app launch, ADB inventory refresh and TASK-005 runtime smoke remain `not_run`.
+- On 2026-07-01, the owner confirmed the expected TASK-005 APK bundle input
+  shape: every test run will receive multiple target-specific APK files under
+  `.qa_local/apks/task-005/`, with the device mapping documented in
+  `docs/approvals/task005_apk_bundle_contract.md`. APK file arrival, hash
+  evidence and runtime approval remain pending; no APK was read, installed,
+  launched or committed.
 
 ## Runtime readiness
 
 - Approved APK/build for runtime automation: `unknown`.
+- APK bundle directory and target-specific filename mapping for future test
+  runs: `confirmed` from owner message on 2026-07-01, with APK arrival still
+  `pending`.
 - Approved Android TV device/emulator/config: `unknown`.
 - Approved QA accounts, stream fixtures and staging payment fixtures: `unknown`.
 - TASK-001 created blocked-report tooling and public-safe discovery templates; TASK-002 created exported component guard skeleton tooling. Runtime/device execution remains blocked until a future task satisfies safety gates.

@@ -15,6 +15,34 @@
     "expected_local_path_pattern": ".qa_local/apks/task-005/app-under-test.apk",
     "sha256_recorded_locally": true
   },
+  "apk_bundle": {
+    "bundle_directory": ".qa_local/apks/task-005/",
+    "arrival_status": "pending",
+    "same_package_shape_expected_each_test_run": true,
+    "device_mapping": [
+      {
+        "apk_file": "fogplay-tv-television-steam-production-release.apk",
+        "intended_targets": ["YandexTV"]
+      },
+      {
+        "apk_file": "fogplay-tv-television-sber-production-release.apk",
+        "intended_targets": ["SberBox 1", "SberBox 2", "SberTV"]
+      },
+      {
+        "apk_file": "fogplay-tv-phone-full-production-release.apk",
+        "intended_targets": ["phones"]
+      },
+      {
+        "apk_file": "fogplay-tv-aosp-full-production-release.apk",
+        "intended_targets": ["FogPlay Stick"],
+        "out_of_current_audit": ["future Fog Play Box"]
+      },
+      {
+        "apk_file": "fogplay-tv-television-full-production-release.apk",
+        "intended_targets": ["Philips old", "Philips new"]
+      }
+    ]
+  },
   "synthetic_qa_user": {
     "alias": "qa-user-phone-001",
     "local_secret_file_pattern": ".qa_local/secrets/qa_user.env",

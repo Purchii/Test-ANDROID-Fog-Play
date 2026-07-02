@@ -12,7 +12,11 @@ device identifiers or machine-specific absolute paths.
 .qa_local/
   apks/
     task-005/
-      app-under-test.apk
+      fogplay-tv-television-steam-production-release.apk
+      fogplay-tv-television-sber-production-release.apk
+      fogplay-tv-phone-full-production-release.apk
+      fogplay-tv-aosp-full-production-release.apk
+      fogplay-tv-television-full-production-release.apk
       SHA256.txt
   devices/
     raw_adb_devices.json
@@ -31,6 +35,7 @@ Allowed in public docs:
 
 ```text
 .qa_local/apks/task-005/app-under-test.apk
+.qa_local/apks/task-005/
 .qa_local/evidence/task-005/
 .qa_local/secrets/qa_user.env
 .qa_local/devices/raw_adb_devices.json
@@ -60,6 +65,13 @@ APK files can be placed only in ignored local storage by the owner or a local
 developer. The repository may reference a build alias. Public reports do not
 need to publish the APK hash; if a hash is used, keep the raw file and local
 hash record in ignored storage.
+
+The owner-confirmed APK bundle directory for every test run is
+`.qa_local/apks/task-005/`. For now, the expected local-only package contains
+multiple target-specific APK files documented in
+`docs/approvals/task005_apk_bundle_contract.md`. This bundle contract is an
+input shape only; it does not approve APK install, app launch or TASK-005
+runtime execution.
 
 Approval metadata for TASK-005 must use exact local path patterns:
 

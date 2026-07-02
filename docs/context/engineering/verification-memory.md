@@ -71,6 +71,10 @@ This file records what was actually verified. Do not claim runtime checks passed
   `scope_version`, approval-list whitespace and duplicates after trimming, and
   TASK-005 build aliases outside `task-005-local-apk-NNN`. Owner-review export
   validation blocks malformed generated-inventory metadata before owner handoff.
+- TASK-005 APK bundle input shape is owner-confirmed as of 2026-07-01: future
+  test runs are expected to place target-specific APK files under
+  `.qa_local/apks/task-005/`. This confirms only the local bundle contract, not
+  APK arrival, hash evidence, install, launch or runtime smoke.
 
 ## Unverified zones
 

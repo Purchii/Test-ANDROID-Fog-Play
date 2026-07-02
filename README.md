@@ -5,7 +5,9 @@ WebView / WebRTC testing of MTC Fog Play.
 
 ## Current Safety Status
 
-- APK install/launch/runtime smoke execution is blocked until explicit confirmed
+- TASK-005 has one limited `tv-tpv-013` startup/focus smoke data point, and
+  TASK-019 has one bounded `tv-tpv-013` auth/session smoke data point.
+- Broader runtime lanes remain blocked or `not_run` until explicit confirmed
   approvals.
 - TASK-016 allows inventory-only local ADB preflight after owner approval; raw
   ADB output and serial alias maps remain under ignored `.qa_local/devices/`.
@@ -24,6 +26,10 @@ WebView / WebRTC testing of MTC Fog Play.
   input templates only; it does not approve or run TASK-005.
 - TASK-016 inventory preflight does not install, launch, capture logcat,
   screenshots or videos, and always reports runtime/app statuses as `not_run`.
+- TASK-019 confirms only bounded auth/session shell behavior on the selected
+  target/build lane. WebView, WebRTC, stream/media playback, payment,
+  network/offline, compatibility and broad post-auth navigation remain
+  `not_run`.
 
 ## Source Of Truth
 

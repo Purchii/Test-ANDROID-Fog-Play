@@ -460,7 +460,7 @@ def _load_metadata(path: Path | None) -> tuple[dict[str, Any], list[str]]:
 
 
 def _as_lower(value: Any) -> str:
-    return value.strip().lower() if isinstance(value, str) else ""
+    return value if isinstance(value, str) else ""
 
 
 def _normalize_enum(value: Any, allowed: set[str], default: str = "unknown") -> str:
@@ -469,9 +469,9 @@ def _normalize_enum(value: Any, allowed: set[str], default: str = "unknown") -> 
 
 
 def _parse_expiration(value: Any) -> datetime | None:
-    if not isinstance(value, str) or not value.strip():
+    if not isinstance(value, str) or not value.strip() or value != value.strip():
         return None
-    raw = value.strip()
+    raw = value
     try:
         if raw.endswith("Z"):
             return datetime.fromisoformat(raw.replace("Z", "+00:00"))
@@ -514,7 +514,9 @@ def _contains_scope_term(scope_item: str, term: str) -> bool:
 def _path_is_local_ignored(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return False
+    normalized = path_value.replace("\\", "/")
     if not normalized.startswith(".qa_local/"):
         return False
     parts = [part for part in normalized.split("/") if part not in {"", "."}]
@@ -524,7 +526,9 @@ def _path_is_local_ignored(path_value: Any) -> bool:
 def _path_parts(path_value: Any) -> list[str]:
     if not isinstance(path_value, str):
         return []
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return []
+    normalized = path_value.replace("\\", "/")
     if normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized):
         return []
     parts = [part for part in normalized.split("/") if part not in {"", "."}]
@@ -540,7 +544,7 @@ def _path_is_under_family(path_value: Any, family: str) -> bool:
 def _path_contains_forbidden_public_value(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return True
-    normalized = path_value.replace("\\", "/").strip()
+    normalized = path_value.replace("\\", "/")
     return bool(
         IP_RE.search(normalized)
         or PHONE_RE.search(normalized)
@@ -555,28 +559,36 @@ def _path_contains_forbidden_public_value(path_value: Any) -> bool:
 def _path_is_task005_apk(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return False
+    normalized = path_value.replace("\\", "/")
     return normalized == TASK005_EXACT_APK_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_synthetic_secret(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return False
+    normalized = path_value.replace("\\", "/")
     return normalized == TASK005_EXACT_SYNTHETIC_SECRET_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_task005_evidence(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return False
+    normalized = path_value.replace("\\", "/")
     return normalized == TASK005_EXACT_EVIDENCE_PATH and not _path_contains_forbidden_public_value(path_value)
 
 
 def _path_is_repo_template(path_value: Any) -> bool:
     if not isinstance(path_value, str):
         return False
-    normalized = path_value.replace("\\", "/").strip()
+    if path_value != path_value.strip():
+        return False
+    normalized = path_value.replace("\\", "/")
     return normalized in APPROVED_REPO_TEMPLATE_PATHS
 
 

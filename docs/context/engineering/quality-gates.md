@@ -124,6 +124,16 @@ profile/account mutation, WebView, WebRTC, stream/media playback, payment,
 network/offline, compatibility matrix and broader device coverage remain
 `not_run` / `unknown` unless separately approved and executed.
 
+TASK-019 auth/session smoke may mark only the executed bounded checks as
+`pass`: local secret preflight without printing values, selected target/build
+preflight, launch to auth/profile guard, bounded synthetic phone/OTP login,
+first post-auth shell alias, minimal post-auth focus movement,
+Home/foreground session persistence, force-stop/relaunch session persistence
+and crash/ANR observation. Logout, broad post-auth navigation, profile/account
+mutation, WebView, WebRTC, stream/media playback, payment, network/offline,
+compatibility matrix and broader device coverage remain `not_run` / `unknown`
+unless separately approved and executed.
+
 ## Fixture gates
 
 Future runtime, auth/session, stream, WebView, payment, network and offline tasks may use fixtures only when:

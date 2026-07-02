@@ -103,6 +103,16 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   evidence remains ignored under `.qa_local/evidence/task-019/`; phone/OTP
   values, APK files, raw logs, raw screenshots, raw device identifiers and
   private values are not committed.
+- TASK-020 started from `main` commit
+  `ac2e11a2643c7cd4b4834e056b70c3a18fc0f7ad` on branch
+  `qa/task-020-xl-post-auth-navigation-transitions`. The task is
+  `NON_AUTONOMOUS`. Phase A added fail-closed post-auth navigation docs,
+  validators and mocked tests. Phase B/C then executed bounded partial runtime
+  coverage on the selected TASK-005/TASK-019 lane: 8 screen aliases, 4 D-pad
+  focus transitions, root Home/foreground session persistence and root
+  force-stop/relaunch session persistence passed; no crash/ANR signal was
+  observed. Select transitions were not entered because controls were not
+  semantically safe enough for unattended selection.
 
 ## Runtime readiness
 
@@ -152,6 +162,13 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   same selected target/build lane. Logout, broad post-auth navigation, WebView,
   WebRTC, stream/media playback, payment, network/offline, compatibility matrix
   coverage and broader device coverage remain `not_run` / `unknown`.
+- TASK-020 now has one partial bounded post-auth navigation data point for
+  `tv-tpv-013`. This confirms only sampled D-pad focus transitions, root
+  Home/foreground session persistence, root force-stop/relaunch session
+  persistence and crash/ANR summary on the selected lane. It does not cover all
+  screens or all transitions. Safe Select transitions, broad native screen
+  inventory, payment/WebView/stream/profile boundaries, network/offline
+  behavior, compatibility and full Experience QA remain `not_run` / `unknown`.
 
 ## Evidence status policy
 

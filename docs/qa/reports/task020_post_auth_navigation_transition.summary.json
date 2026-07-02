@@ -1,0 +1,219 @@
+﻿{
+    "schema_version":  "task-020-post-auth-navigation-v1",
+    "generated_at_utc":  "2026-07-02T10:01:21Z",
+    "task_id":  "TASK-020",
+    "mode":  "NON_AUTONOMOUS",
+    "coverage_status":  "partial_budget_limited_coverage",
+    "exhaustive_navigation_proof":  false,
+    "runtime_execution_status":  "partial",
+    "evidence_status":  "confirmed",
+    "production_safety_classification":  "PROD_CONDITIONAL",
+    "target":  {
+                   "device_alias":  "tv-tpv-013",
+                   "runtime_profile_alias":  "tv-tpv-a12-013",
+                   "build_alias":  "task-005-local-apk-001",
+                   "synthetic_user_alias":  "qa-user-phone-001"
+               },
+    "resource_budget":  {
+                            "max_runtime_duration_minutes":  90,
+                            "max_screens":  40,
+                            "max_transition_edges":  160,
+                            "max_actions_total":  500,
+                            "max_depth_from_post_auth_root":  6,
+                            "max_focus_moves_per_screen":  24,
+                            "max_selects_per_screen":  8,
+                            "max_back_recovery_attempts_per_screen":  4,
+                            "max_session_checkpoint_screens":  6,
+                            "max_revisits_per_screen_alias":  3,
+                            "actual_select_actions":  0,
+                            "stop_reason":  "safe_phase_c_partial_no_select_on_uncertain_controls"
+                        },
+    "screens_observed":  [
+                             {
+                                 "screen_alias":  "post_auth_home_unknown",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_post_auth_home_unknown_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_focus_sample_001",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_focus_sample_001_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_focus_sample_002",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_focus_sample_002_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_focus_sample_003",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_focus_sample_003_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_focus_sample_004",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_focus_sample_004_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_after_back_001",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_after_back_001_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_after_home_foreground_001",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_after_home_foreground_001_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             },
+                             {
+                                 "screen_alias":  "native_after_force_stop_relaunch_001",
+                                 "state_category":  "post_auth_shell",
+                                 "focusable_count":  36,
+                                 "focused_element_alias":  "focus_native_after_force_stop_relaunch_001_001",
+                                 "focus_status":  "pass",
+                                 "safe_actions_count":  24,
+                                 "boundary_actions_count":  3,
+                                 "natural_state_flags":  [
+                                                             "post_auth_shell"
+                                                         ]
+                             }
+                         ],
+    "transitions_observed":  [
+                                 {
+                                     "transition_alias":  "transition_focus_001",
+                                     "from_screen_alias":  "post_auth_home_unknown",
+                                     "to_screen_alias":  "native_focus_sample_001",
+                                     "trigger_category":  "dpad_dpad_down",
+                                     "result":  "pass",
+                                     "evidence_status":  "confirmed",
+                                     "back_result":  "not_run",
+                                     "notes":  "Focus sampling transition only; no Select action used."
+                                 },
+                                 {
+                                     "transition_alias":  "transition_focus_002",
+                                     "from_screen_alias":  "post_auth_home_unknown",
+                                     "to_screen_alias":  "native_focus_sample_002",
+                                     "trigger_category":  "dpad_dpad_right",
+                                     "result":  "pass",
+                                     "evidence_status":  "confirmed",
+                                     "back_result":  "not_run",
+                                     "notes":  "Focus sampling transition only; no Select action used."
+                                 },
+                                 {
+                                     "transition_alias":  "transition_focus_003",
+                                     "from_screen_alias":  "post_auth_home_unknown",
+                                     "to_screen_alias":  "native_focus_sample_003",
+                                     "trigger_category":  "dpad_dpad_up",
+                                     "result":  "pass",
+                                     "evidence_status":  "confirmed",
+                                     "back_result":  "not_run",
+                                     "notes":  "Focus sampling transition only; no Select action used."
+                                 },
+                                 {
+                                     "transition_alias":  "transition_focus_004",
+                                     "from_screen_alias":  "post_auth_home_unknown",
+                                     "to_screen_alias":  "native_focus_sample_004",
+                                     "trigger_category":  "dpad_dpad_left",
+                                     "result":  "pass",
+                                     "evidence_status":  "confirmed",
+                                     "back_result":  "not_run",
+                                     "notes":  "Focus sampling transition only; no Select action used."
+                                 }
+                             ],
+    "states_observed":  [
+                            "post_auth_shell"
+                        ],
+    "boundaries_observed":  [
+
+                            ],
+    "session_persistence_results":  {
+                                        "root_home_foreground":  {
+                                                                     "result":  "pass",
+                                                                     "evidence_status":  "confirmed"
+                                                                 },
+                                        "root_force_stop_relaunch":  {
+                                                                         "result":  "pass",
+                                                                         "evidence_status":  "confirmed"
+                                                                     }
+                                    },
+    "crash_anr_summary":  {
+                              "status":  "not_observed",
+                              "evidence_status":  "confirmed"
+                          },
+    "unknowns_frontier":  [
+                              "All screens and all transitions were not covered.",
+                              "Select transitions across native screens were not entered because controls were not semantically safe enough for unattended selection.",
+                              "Payment/WebView/stream/profile/network boundaries remain not_run unless naturally identified without entry.",
+                              "Coverage is sampled and partial, not exhaustive navigation proof."
+                          ],
+    "public_safety":  {
+                          "raw_phone_otp_committed":  false,
+                          "raw_device_identifiers_committed":  false,
+                          "raw_evidence_committed":  false,
+                          "payment_webview_stream_profile_mutation_entered":  false
+                      },
+    "forbidden_scope_not_run":  [
+                                    "payment",
+                                    "webview_redirect",
+                                    "stream_webrtc_media_playback",
+                                    "profile_account_mutation",
+                                    "network_offline_manipulation",
+                                    "compatibility_matrix",
+                                    "experience_qa_craft_audit"
+                                ],
+    "artifact_refs":  [
+                          {
+                              "id":  "artifact_task020_runtime_summary_001",
+                              "type":  "redacted_summary_alias",
+                              "storage":  "local_ignored_task020_evidence"
+                          }
+                      ]
+}

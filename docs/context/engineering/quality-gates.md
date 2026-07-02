@@ -15,6 +15,12 @@ A task is done only when:
 - final Russian report produced;
 - next task handoff recorded.
 
+If a task adds or changes tests, the same task must debug those tests before
+completion. The relevant targeted test set must pass in that task, or the task
+must record an explicit blocked verification note with the exact failing
+command, failure reason and scope reason it cannot be fixed immediately. Newly
+introduced failing tests must not be deferred to a later independent task.
+
 ## Docs-only gates
 
 - Markdown files are readable and linked from source-of-truth docs.
@@ -133,6 +139,38 @@ and crash/ANR observation. Logout, broad post-auth navigation, profile/account
 mutation, WebView, WebRTC, stream/media playback, payment, network/offline,
 compatibility matrix and broader device coverage remain `not_run` / `unknown`
 unless separately approved and executed.
+
+TASK-020 post-auth navigation may mark only the executed bounded native
+navigation checks as `pass` or `partial`: screen aliases observed, safe native
+transition edges, focus path samples, Back/Home behavior, selected session
+checkpoints, natural states and boundary detection that was actually observed
+on the selected `tv-tpv-013` lane. Default Phase A tooling must make no ADB or
+runtime call and return `blocked`/`not_run`. Boundary transitions for payment,
+WebView/redirect, stream/WebRTC/media playback, profile/account mutation or
+network/offline manipulation must be `blocked_by_boundary`, not `pass`.
+TASK-020 must never claim exhaustive navigation proof.
+
+## TASK-020 post-auth navigation gates
+
+Phase A may pass only when:
+
+- default runner returns `overall_status=blocked` and
+  `runtime_execution_status=not_run` without ADB/device/APK calls;
+- runtime requires explicit `--allow-runtime`;
+- raw output paths are constrained to `.qa_local/evidence/task-020/`;
+- public summaries are constrained to `docs/qa/reports/*.json`;
+- public report validation rejects raw phone/OTP, raw account identifiers, raw
+  device identifiers, raw UI dumps, raw screenshots/logs/videos, raw APK
+  paths/hashes, private URLs/deeplinks/endpoints/routes/headers/payloads and
+  raw `.qa_local` paths;
+- mocked tests cover boundary detection, alias safety, session checkpoints and
+  budget/frontier semantics.
+
+Phase B/C runtime may start only after Phase A passes and selected-lane
+prerequisites for `tv-tpv-013`, `tv-tpv-a12-013`, `task-005-local-apk-001` and
+`qa-user-phone-001` remain confirmed and safe. Runtime must stop before
+payment, WebView/redirect, stream/media, profile/account mutation or
+network/offline surfaces.
 
 ## Fixture gates
 

@@ -147,6 +147,42 @@ Every conclusion, risk, test and release gate must use:
 
 Do not promote facts to `confirmed` without runtime evidence, explicit sanitized artifact or team confirmation.
 
+## Runtime screen inventory
+
+When a runtime screen inventory or user-path audit catches any screen/state,
+pause before continuing navigation. Record the local-only evidence, public-safe
+screen alias, state category, evidence status, focus/action categories, and a
+short risk/hypothesis note.
+
+If the screen/state has already been observed earlier in the same or a previous
+run, record it as a recurrence too: link or name the prior public-safe alias or
+evidence id, state what matched, state what changed if anything, and record the
+trigger/path that returned to it. Repeated loader, error, captcha, legal WebView,
+auth, retry, empty/entitlement and boundary-like screens are first-class
+inventory events, not incidental noise.
+
+Long lists and expandable/collapsible navigation are explicit inventory
+surfaces. If a screen contains a scrollable or paged list, sample and record the
+initial visible list segment, scroll/focus movement where safe, whether item
+sets are truncated or lazy-loaded, and any stable category boundaries. If a menu
+can collapse or expand, capture both states when safely reachable and record
+which menu state each checkpoint represents.
+
+Do not rely on UIAutomator XML alone for runtime screen inventory. Transient
+visual overlays such as snackbars, toast-like popups, loading overlays and
+bottom error banners may be visible in screenshots while absent from the
+accessibility tree. Every checkpoint must include screenshot/visual inspection,
+and any XML-vs-screenshot mismatch must be recorded as a tooling gap plus a
+first-class screen/state event.
+
+Record anomalies immediately when observed. An anomaly is any unexpected screen
+state, navigation mismatch, transient visual state, classifier/accessibility
+gap, repeated screen loop, delayed WebView load, focus trap, failed back/exit,
+or action whose result differs from the intended path. Each anomaly record must
+include trigger/action, expected result, observed result, evidence status,
+public-safe alias, likely/hypothesis cause, and test-design implication. Do not
+wait until the end of a run to reconstruct anomalies from memory.
+
 ## Verification
 
 A task is not complete until verification is run or explicitly blocked with reason.
@@ -160,6 +196,12 @@ Minimum checks:
 - diff review;
 - multi-agent QA and Security review;
 - documentation updates.
+
+When a task adds or changes tests, those tests must be debugged inside the same
+task before completion. Do not leave newly introduced failing tests as follow-up
+work for a later task. Either make the relevant targeted test set pass in the
+same task, or record an explicit blocker with the failing command, failure
+reason, and why it cannot be resolved within the current bounded scope.
 
 If a physical Android TV device, APK or QA fixture is unavailable, create a blocked evidence note. Do not claim runtime validation passed.
 

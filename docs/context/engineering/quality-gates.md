@@ -116,6 +116,14 @@ Runtime check can be marked passed only if:
 
 If device/APK/config missing, status is `blocked`, not `pass`.
 
+TASK-005 limited runtime smoke may mark only the executed narrow checks as
+`pass`: selected APK install/update, launch/foreground, first visible state,
+initial focus, minimal D-pad movement, Back/Home, foreground relaunch,
+force-stop/relaunch and crash/ANR observation. Auth/login, phone/OTP entry,
+profile/account mutation, WebView, WebRTC, stream/media playback, payment,
+network/offline, compatibility matrix and broader device coverage remain
+`not_run` / `unknown` unless separately approved and executed.
+
 ## Fixture gates
 
 Future runtime, auth/session, stream, WebView, payment, network and offline tasks may use fixtures only when:

@@ -75,14 +75,32 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   `docs/approvals/task005_apk_bundle_contract.md`. APK file arrival, hash
   evidence and runtime approval remain pending; no APK was read, installed,
   launched or committed.
+- TASK-005 limited runtime smoke executed in thread
+  `TASK-005 - Android TV limited runtime smoke on tv-tpv-013` on branch
+  `qa/task-005-android-tv-smoke-runtime` from `main` commit `a7d983d`. The task
+  is `NON_AUTONOMOUS` and `PROD_CONDITIONAL` for the owner-approved selected
+  target/APK only. The selected local APK was present, local-only SHA-256 was
+  recorded without publishing the value, ignored local approval metadata
+  validated as `approved_for_limited_runtime`, target identity matched public-safe
+  aliases `tv-tpv-013` / `tv-tpv-a12-013`, ordinary install/update succeeded,
+  launch reached an auth/profile guard first visible state, initial focus and
+  minimal D-pad movement were observed, Back/Home, foreground relaunch and
+  force-stop/relaunch stayed within scope, and no crash/ANR signal was observed
+  in the captured summary. Raw evidence remains ignored under
+  `.qa_local/evidence/task-005/`; APK files, raw hashes, raw screenshots, raw
+  logs, raw device identifiers and private values are not committed.
 
 ## Runtime readiness
 
-- Approved APK/build for runtime automation: `unknown`.
+- Approved APK/build for the TASK-005 `tv-tpv-013` limited smoke:
+  `confirmed` for local-only selected APK presence and local-only hash record
+  in the 2026-07-02 run. Broader runtime automation builds remain `unknown`.
 - APK bundle directory and target-specific filename mapping for future test
   runs: `confirmed` from owner message on 2026-07-01, with APK arrival still
-  `pending`.
-- Approved Android TV device/emulator/config: `unknown`.
+  `pending` for future independent runs.
+- Approved Android TV device/emulator/config: `confirmed` for the single
+  selected TASK-005 target represented by `tv-tpv-013` /
+  `tv-tpv-a12-013`; other targets remain `unknown` or manual-review-only.
 - Approved QA accounts, stream fixtures and staging payment fixtures: `unknown`.
 - TASK-001 created blocked-report tooling and public-safe discovery templates; TASK-002 created exported component guard skeleton tooling. Runtime/device execution remains blocked until a future task satisfies safety gates.
 - TASK-003 created shared evidence schema, release gate template and local fail-closed release gate generator. Release gate generation remains local/public-safe and does not perform runtime/device execution; runtime-dependent gates remain blocked/not_run until approved evidence exists.
@@ -105,6 +123,14 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-015F/017A adds no runtime capability. It closes final validator false-pass cases for strict schema allowlists, exact path families, stable alias Android-version tokens, Android major/API sanity, duplicate approval lists and `runtime_execution.forbidden_scope`. It also hardens public-safe owner-review inventory validation and adds a manual owner review guide listing 6 P0 TV/STB candidates. APK install, app launch, logcat, screenshots, videos, WebView, WebRTC, payment and TASK-005 runtime smoke remain `not_run`/blocked.
 - TASK-015G/017B adds no runtime capability. It bounds approval expiration to 30 days, requires exact TASK-005 local paths, exact APK forbidden-action policy, required forbidden target identifier policy, optional no-auth synthetic policy validation, exact owner-review redaction guarantees and public enum validation. It also adds public-safe TASK-005 owner approval input templates. APK install, app launch, logcat, screenshots, videos, WebView, WebRTC, payment and TASK-005 runtime smoke remain `not_run`/blocked.
 - TASK-015H/017C adds no runtime capability. It closes final concrete post-audit false-pass cases for exact `scope_version`, whitespace-normalized approval-list duplicates, TASK-005 build alias pattern and malformed owner-review export generated-inventory metadata. After this final pre-runtime polish, broad infrastructure hardening should stop unless a new concrete false-pass is found; the next step is owner/QA approval input and a separate TASK-005 limited runtime smoke preparation/run. APK install, app launch, ADB inventory refresh, logcat, screenshots, videos, WebView, WebRTC, payment and TASK-005 runtime smoke remain `not_run`/blocked.
+- TASK-005 now has one limited runtime smoke data point for `tv-tpv-013`. This
+  confirms only install/update, launch to auth/profile guard, first focus,
+  minimal directional D-pad movement, Back/Home, foreground relaunch,
+  force-stop/relaunch and crash/ANR observation on `tv-tpv-013` /
+  `tv-tpv-a12-013` with the selected local APK. Synthetic login, phone/OTP
+  entry, profile/account mutation, WebView, WebRTC, stream/media playback,
+  payment, network/offline, compatibility matrix coverage and broader device
+  coverage remain `not_run` / `unknown`.
 
 ## Evidence status policy
 

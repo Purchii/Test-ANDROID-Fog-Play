@@ -14,7 +14,7 @@
 | TASK-002 | Exported component guard checks skeleton | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-002-exported-component-guards | completed |
 | TASK-003 | Reporting, evidence schema and release gate generator | BOUNDED_AUTONOMOUS if TASK-001 done | qa/task-003-evidence-release-gates | completed |
 | TASK-004 | Manual runtime screen and TV focus map templates | BOUNDED_AUTONOMOUS | qa/task-004-runtime-screen-focus-map | completed |
-| TASK-005 | Android TV install/launch/focus smoke implementation | BOUNDED_AUTONOMOUS with device/APK caveat | qa/task-005-android-tv-smoke | blocked until approved build/device/config/fixtures |
+| TASK-005 | Android TV install/launch/focus smoke implementation | NON_AUTONOMOUS runtime task after owner approval | qa/task-005-android-tv-smoke-runtime | limited `tv-tpv-013` smoke executed locally; default integration pending |
 
 ## P2 - fixtures-dependent QA
 
@@ -69,13 +69,17 @@ Until approved runtime prerequisites are recorded with `evidence_status=confirme
 Tasks that require user answers, approvals or external fixtures must stay blocked or proposed until those answers are recorded. This includes runtime smoke, real transition observation, WebView/payment execution, network/offline execution, compatibility execution, live CI scheduling and any task needing approved build/device/config/fixture metadata.
 
 After TASK-015H/017C, broad pre-runtime infrastructure hardening should stop
-unless a new concrete false-pass is found. The recommended next path is owner/QA
-approval input for TASK-005: select one P0 TV/STB target, manually confirm it,
-prepare local APK/hash and evidence approvals, fill real approval metadata, and
-open a separate TASK-005 limited runtime smoke task.
+unless a new concrete false-pass is found. On 2026-07-02, a separate
+NON_AUTONOMOUS TASK-005 run executed a limited `tv-tpv-013` smoke on the selected
+public-safe target alias `tv-tpv-013` / `tv-tpv-a12-013` with the selected
+local APK. This confirms only install/update, launch to auth/profile guard,
+first focus, minimal D-pad, Back/Home, foreground relaunch,
+force-stop/relaunch and crash/ANR observation for that one target/build. Future
+work should not treat this as broad compatibility, auth, WebView, WebRTC,
+stream/media playback, payment, network/offline or production-flow coverage.
 
 ## Current selection note
 
-After TASK-012 integration, a next-task selection checkpoint confirmed that no eligible unfinished public-safe task remained in the backlog. TASK-005 remains blocked because approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage, cleanup/rollback, QA review and Security/Prod-safety review are still `unknown` or not confirmed.
+After TASK-012 integration, a next-task selection checkpoint confirmed that no eligible unfinished public-safe task remained in the backlog. TASK-005 was later unblocked for one owner-approved 2026-07-02 limited smoke on `tv-tpv-013`. Remaining runtime-dependent work beyond that narrow smoke remains blocked until its own approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage, cleanup/rollback, QA review and Security/Prod-safety review are confirmed.
 
 Planner may continue autonomously with proposed P4 tasks only when the selected task is public-safe, bounded, verifiable locally and does not require user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction. Runtime/device/APK/WebView/WebRTC/payment/network/live CI execution remains blocked until approved prerequisites are recorded with `evidence_status=confirmed`.

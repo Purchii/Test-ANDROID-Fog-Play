@@ -364,6 +364,56 @@ recipes.
 
 Approval validation is not runtime evidence. It must not produce runtime `pass`.
 
+## TASK-005 Limited Runtime Smoke Summary
+
+TASK-005 runtime summaries may include only public-safe aliases, status values
+and category-level observations:
+
+```json
+{
+  "task_id": "TASK-005",
+  "mode": "NON_AUTONOMOUS",
+  "production_safety_classification": "PROD_CONDITIONAL",
+  "public_device_alias": "tv-tpv-013",
+  "public_runtime_profile_alias": "tv-tpv-a12-013",
+  "build_alias": "task-005-local-apk-001",
+  "runtime_execution_status": "pass",
+  "evidence_status": "confirmed",
+  "checks": [
+    {
+      "id": "SF-001",
+      "name": "first_visible_state",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "public_screen_alias": "screen-auth-guard-001"
+    }
+  ],
+  "forbidden_scope_not_run": [
+    "payment",
+    "stream",
+    "webrtc",
+    "media_playback",
+    "webview"
+  ],
+  "artifact_refs": [
+    {
+      "id": "artifact-task005-runtime-summary-001",
+      "type": "redacted_summary",
+      "storage": ".qa_local/evidence/task-005/"
+    }
+  ]
+}
+```
+
+Allowed fields include public-safe target aliases, build aliases, check names,
+status, evidence status, redacted artifact IDs, local ignored storage family
+and category-level first-state/focus observations.
+
+Public TASK-005 summaries must not include raw APK files, APK hashes, package
+or activity names, raw screenshots, raw logs, raw UI text, phone/OTP/account
+values, device serials, IPs, MAC/IMEI/Android IDs, private endpoints,
+executable command transcripts or absolute local machine paths.
+
 ## Redaction Rules
 
 Reports may reference only:

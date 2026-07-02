@@ -39,6 +39,7 @@ This file records what was actually verified. Do not claim runtime checks passed
 | 2026-07-01 | TASK-015H/017C final scope-version/normalization polish and TASK-005 owner approval handoff finalization | qa/task-015h-017c-scope-normalization-owner-handoff | `git status --short --branch`, `git diff --check`, `git diff --cached --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, `python -m pytest -q tests/test_approval_metadata_validator.py tests/test_adb_device_inventory.py tests/test_full_tree_hygiene_scan.py`, `pytest -q`, `python -m pytest -q`, `python -m compileall -q automation tests`, approval validator CLI dry-runs for example and draft metadata, TASK-016 default no-ADB CLI dry-run, tracked APK/.qa_local scan | passed with APK/runtime smoke not_run; owner handoff finalized for approval input | Diff checks passed. Full-tree hygiene passed in default auto mode and explicit public-safe-tree mode. Targeted validator/inventory/hygiene tests: 285 passed. Full pytest: 385 passed through both pytest entrypoints. Compileall passed. Approval example and TASK-005 draft remained `blocked` with `runtime_execution_status=not_run`. Default TASK-016 CLI made no ADB call and returned `blocked`/`not_run` because `--allow-adb` was not provided. Tracked APK/AAB/APKS/XAPK and `.qa_local` scan returned no tracked files. TASK-015H/017C regression tests block bad `scope_version`, whitespace-normalized approval-list duplicates, unsafe/generic build aliases such as `task-qa-user-001`, malformed owner-review export source/redaction/timestamp/count metadata and empty generated device lists. APK install, app launch, ADB inventory refresh, logcat, screenshots, videos, WebView, WebRTC, payment and TASK-005 runtime smoke were not run. |
 | 2026-07-02 | TASK-005 Android TV limited runtime smoke on `tv-tpv-013` | qa/task-005-android-tv-smoke-runtime | `git status --short --branch`, local APK presence check, local-only SHA-256 record, local approval metadata validation, ADB tooling check, ADB connect/get-state, target identity getprop/features, selected APK install/update, app launch, leanback foreground retry, uiautomator dumps, local-only screenshot capture, minimal D-pad input, Back/Home, foreground relaunch, force-stop/relaunch, crash/app logcat observation | passed for limited TASK-005 scope on one target/build | Selected local APK was present under ignored `.qa_local/apks/task-005/`; local-only hash evidence was recorded without publishing the value. Ignored local approval metadata validated as `approved_for_limited_runtime`, while the validator correctly kept `runtime_execution_status=not_run` because validation is not runtime evidence. Target identity matched public-safe aliases `tv-tpv-013` / `tv-tpv-a12-013`. Ordinary install/update succeeded; conflict uninstall cleanup was not used. App foreground/window and local screenshot confirmed an auth/profile guard first visible state; no synthetic login, phone number or OTP was entered. Initial focus had one focused element and focusable UI; down/right/up D-pad movement changed focus without a startup-blocking trap. Back/Home, foreground relaunch and force-stop/relaunch remained in scope. Crash/ANR signal was not observed in the captured summary. WebView, WebRTC, stream/media playback, payment, production mutation, APK modification, endpoint extraction and security bypass were not run. Raw evidence remains ignored under `.qa_local/evidence/task-005/`. |
 | 2026-07-02 | TASK-019 Android TV auth/session smoke on `tv-tpv-013` | qa/task-019-android-tv-auth-session-smoke | `git status --short --branch`, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, targeted pytest, full pytest, `python -m compileall -q automation tests`, approval validator dry-runs for public example/draft, local secret preflight without printing values, target/build/app launch preflight, on-screen keyboard phone/OTP input, post-auth shell/focus observation, Home/foreground, force-stop/relaunch, crash/app logcat summary | passed for bounded TASK-019 auth/session scope on one target/build | Phase A repository checks passed and public approval examples remained `blocked` with `runtime_execution_status=not_run`. Secret preflight confirmed required keys and alias without printing phone/OTP values. Early local-only attempts exposed unreliable ADB text/keyevent input for the phone field; the passing run used the visible on-screen numeric keyboard, respected the field prefix and selected the clickable continue control. Auth reached first post-auth shell alias `post_auth_home_unknown`; minimal post-auth focus movement, Home/foreground session persistence and force-stop/relaunch session persistence passed; no crash/ANR signal was observed. Logout, broad post-auth navigation, WebView, WebRTC, stream/media playback, payment, network/offline, compatibility, profile mutation, endpoint extraction, proxy/packet capture and security bypass were not run. Raw evidence remains ignored under `.qa_local/evidence/task-019/`. |
+| 2026-07-02 | TASK-020 post-auth native navigation transitions | qa/task-020-xl-post-auth-navigation-transitions | `git status --short --branch`, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, `python -m pytest -q tests/test_post_auth_navigation_probe.py tests/test_post_auth_navigation_report_validator.py`, `python -m pytest -q`, `python -m compileall -q automation tests`, approval validator dry-runs for public example/draft, default TASK-020 runner, selected-lane ADB preflight, bounded D-pad focus sampling, Back/Home, foreground relaunch, force-stop/relaunch, crash/ANR summary, public report validation | passed for Phase A; partial bounded runtime coverage on one target/build | `git status --short --branch` confirmed branch `qa/task-020-xl-post-auth-navigation-transitions` with intended TASK-020 changes. Targeted TASK-020 tests: 23 passed, 1 skipped, including QA A false-pass regressions and direct validator script invocation. Full pytest after QA A hardening: 427 passed, 1 skipped. Compileall and hygiene passed. Default TASK-020 runner returned `blocked`/`not_run` without runtime. Public approval examples remained `blocked` with `runtime_execution_status=not_run`. Runtime run `task-020-20260702T100044Z` recorded 8 screen aliases, 4 D-pad focus transitions, one `post_auth_shell` state, root Home/foreground session persistence pass, root force-stop/relaunch session persistence pass and crash/ANR `not_observed`. Public summary `docs/qa/reports/task020_post_auth_navigation_transition.summary.json` validated with no errors and explicitly sets exhaustive navigation proof to false. Select transitions were not entered because controls were not semantically safe enough for unattended selection. All screens and all transitions were not covered. Payment, WebView/redirect, stream/WebRTC/media playback, profile/account mutation, network/offline, compatibility and full Experience QA were not run. Raw evidence remains ignored under `.qa_local/evidence/task-020/`. |
 
 ## Known verification rules
 
@@ -90,6 +91,65 @@ This file records what was actually verified. Do not claim runtime checks passed
   confirm logout, broad post-auth navigation, WebView, WebRTC, stream/media
   playback, payment, network/offline, compatibility matrix or broader device
   coverage.
+- TASK-019 also establishes a mandatory guarded phone-input gate for this app:
+  use the visible on-screen numeric keyboard, preserve the UI `+7` prefix, enter
+  only the remaining local-only synthetic phone digits, and tap the visible
+  `OK` keypad control. This is a solved problem, not an open exploration item.
+  Raw `adb input text` / generic keyevent entry was observed as unreliable for
+  this phone field and must not be used for auth/captcha/OTP verdicts unless a
+  future task explicitly revalidates it. Future zero-state/auth/captcha audits
+  must execute the TASK-019 helper-backed path before making claims about the
+  next captcha or OTP state; otherwise record `blocked_input_path_not_executed`
+  or `unknown`. Claims such as confirmed `not_reached`, product auth `fail`, or
+  captcha absence after bypassing this gate are invalid and must be corrected.
+- Runtime screen inventory must use a mandatory screen checkpoint gate. Every
+  newly encountered screen or state requires a pause, local-only evidence,
+  public-safe alias, state category, evidence status, focus/action summary and
+  risk/hypothesis note before continuing. Loader, error, captcha, legal WebView,
+  auth, retry, empty/entitlement and boundary-like screens are first-class
+  inventory items, not incidental noise; skipping them can hide user-path
+  mismatches.
+- Repeated screens/states are also mandatory checkpoints. When a screen was
+  seen earlier in the same run or prior evidence, record the recurrence with
+  the prior public-safe alias/evidence id, what matched, what changed if
+  anything, and the trigger/path that returned to it. Do not merge recurrence
+  evidence into the first observation.
+- Long lists, paged/lazy-loaded grids and collapsible or expandable menus are
+  not fully inventoried by a single static screenshot. Record the visible
+  segment, safe scroll/focus samples, truncation or lazy-load signals,
+  boundary categories and current menu state; capture both collapsed and
+  expanded menu states when safely reachable.
+- On Android TV screens, visual focus/active selection in screenshots is
+  authoritative evidence even when UIAutomator reports `focused=false` for all
+  nodes. Record both separately. For the TASK-020 catalog checkpoint, `Игры` was
+  visually focused/active while XML reported `focused_count=0`.
+- Owner-confirmed captcha trigger model for the first-run/auth path: product
+  logic normally gives three OTP entry attempts and then moves to captcha, but
+  the external authorization service may escalate suspicious behavior to captcha
+  earlier. Treat OTP/code entry as the pre-captcha frontier, but do not reject a
+  confirmed captcha screen merely because fewer than three visible wrong OTP
+  attempts were observed. Record observed attempt count, trigger ambiguity and
+  evidence status. Do not claim captcha `not_reached` unless the relevant
+  OTP/captcha trigger path was intentionally executed with synthetic-user
+  controls and checkpoints after each wrong attempt. Stop at captcha and never
+  solve or bypass it.
+- OTP wrong-code feedback can appear as a transient bottom snackbar/popup that
+  is visible in screenshots but absent from UIAutomator XML labels. Checkpoint
+  analysis must inspect screenshots and record XML-vs-visual mismatches as a
+  tooling gap; XML-only inventory is insufficient for transient overlays.
+- Runtime anomaly notes must be captured immediately as evidence checkpoints.
+  This includes unexpected navigation results, delayed WebView accessibility,
+  repeated-screen loops, failed Back/exit, focus traps, transient overlays and
+  classifier/screenshot mismatches. Each anomaly needs trigger/action, expected
+  result, observed result, evidence status, likely/hypothesis cause and
+  test-design implication.
+- TASK-020 post-auth navigation has one partial 2026-07-02 data point for
+  `tv-tpv-013` / `tv-tpv-a12-013` and the selected local APK/auth lane. This
+  confirms only sampled D-pad focus transitions, root Home/foreground session
+  persistence, root force-stop/relaunch session persistence and crash/ANR
+  summary. It does not confirm safe Select navigation, exhaustive native screen
+  inventory, WebView, WebRTC, stream/media playback, payment, network/offline,
+  compatibility matrix or full Experience QA coverage.
 
 ## Unverified zones
 

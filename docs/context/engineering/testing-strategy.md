@@ -4,6 +4,14 @@
 
 Use risk-based, evidence-first, black-box Android TV testing. Do not rely on source code, decompiled code, private endpoints or secrets.
 
+## Test authoring rule
+
+When Codex adds or changes tests, Codex must debug those tests in the same task.
+The task cannot be considered complete while its newly introduced targeted tests
+are failing. If a same-task fix is impossible inside the bounded scope, record a
+blocked verification note with the exact command, failure and reason instead of
+deferring the broken tests to a later task.
+
 ## Test groups
 
 - smoke;

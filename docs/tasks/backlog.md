@@ -27,6 +27,7 @@
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 | TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
 | TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; default integration pending |
+| TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | partial bounded runtime coverage executed locally; final review pending |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
@@ -85,6 +86,21 @@ post-auth focus movement, Home/foreground session persistence,
 force-stop/relaunch session persistence and crash/ANR summary. It does not
 confirm broad post-auth navigation, stream/WebRTC/media playback, WebView,
 payment, network/offline or compatibility coverage.
+
+TASK-020 is the next selected NON_AUTONOMOUS task. It must keep automation
+focused on functional post-auth native navigation transitions, states, focus,
+Back/Home and session persistence on the same selected lane. TASK-020 must not
+enter payment, WebView/redirect, stream/WebRTC/media playback, profile/account
+mutation or network/offline manipulation. Phase A fail-closed tooling and docs
+are public-safe; any runtime Phase B/C remains `PROD_CONDITIONAL` and must run
+only after Phase A gates pass.
+
+The 2026-07-02 TASK-020 run produced partial bounded coverage only: 8 screen
+aliases, 4 D-pad focus transitions, `post_auth_shell` state, root
+Home/foreground and force-stop/relaunch session persistence passed, and no
+crash/ANR signal was observed. Select transitions were not entered because
+controls were not semantically safe enough for unattended selection. This is
+not exhaustive navigation proof.
 
 ## Current selection note
 

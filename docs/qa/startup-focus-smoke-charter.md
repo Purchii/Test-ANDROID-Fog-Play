@@ -81,3 +81,29 @@ The smoke report must include:
 ## TASK-001 Execution Rule
 
 For TASK-001, the only runnable behavior is local report generation. If approved build, target or configuration are absent, the generator must produce a `blocked` report. It must not attempt runtime interaction or claim a pass.
+
+## TASK-005 Limited Runtime Data Point
+
+On 2026-07-02, a separate `NON_AUTONOMOUS` TASK-005 run executed the limited
+startup/focus scope on the owner-selected target represented by `tv-tpv-013` /
+`tv-tpv-a12-013`.
+
+Confirmed for that one target/build:
+
+- selected local APK presence and local-only hash record;
+- ADB target identity match;
+- ordinary install/update;
+- launch to an auth/profile guard first visible state;
+- initial focus with focusable UI;
+- minimal directional D-pad movement;
+- Back/Home and foreground relaunch;
+- force-stop/relaunch;
+- no observed crash/ANR signal in the captured summary.
+
+Still not run:
+
+- synthetic login, phone/OTP entry and profile/account mutation;
+- WebView, redirect, WebRTC, stream/media playback and payment flows;
+- network/offline execution;
+- compatibility/device matrix coverage;
+- broader device/build coverage.

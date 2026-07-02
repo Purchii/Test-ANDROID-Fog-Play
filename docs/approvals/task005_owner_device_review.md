@@ -59,7 +59,8 @@ owner/QA review, and only in a future approval metadata update.
 
 TASK-005 remains blocked until owner/QA also provides:
 
-- local APK under `.qa_local/apks/task-005/app-under-test.apk`;
+- local APK bundle under `.qa_local/apks/task-005/`, with the selected
+  target-specific APK mapped from `docs/approvals/task005_apk_bundle_contract.md`;
 - local SHA-256 evidence record;
 - explicit screenshots/logcat/video/retention approval;
 - confirmed synthetic QA user local secret file;

@@ -73,6 +73,13 @@ review status: approved/confirmed/pending/blocked/rejected
 - Approval list fields contain leading/trailing whitespace or duplicate values
   after trimming. This includes runtime scope, APK action lists, approved target
   lists, synthetic QA user policy lists and cleanup/rollback lists.
+
+Owner-confirmed APK bundle input for future TASK-005 preparation lives under
+`.qa_local/apks/task-005/` and contains multiple target-specific APK files.
+The current mapping is documented in
+`docs/approvals/task005_apk_bundle_contract.md`. This bundle contract is an
+input shape only; it does not approve runtime execution and does not publish APK
+files or raw hashes.
 - Approved runtime metadata contains fields outside the documented strict
   top-level and section-level allowlists.
 - Build aliases contain compound reserved token forms such as `api-key`,

@@ -19,7 +19,9 @@ separate TASK-005 limited runtime smoke task.
 - Choose exactly one P0 TV/STB target from `docs/approvals/task005_owner_device_review.md`.
 - Manually confirm the actual device, form factor, D-pad/remote input and ADB stability.
 - Confirm the selected target can be represented only by public-safe aliases.
-- Place the APK locally at `.qa_local/apks/task-005/app-under-test.apk`.
+- Place the owner-provided APK bundle locally under `.qa_local/apks/task-005/`.
+- Select the target-specific APK from
+  `docs/approvals/task005_apk_bundle_contract.md` for the chosen device class.
 - Record SHA-256 evidence locally only; do not publish the hash value in the repository.
 - Create `.qa_local/secrets/qa_user.env` only if synthetic login is in scope.
 - Approve evidence capture policy for screenshots, logcat, videos and retention.
@@ -34,6 +36,7 @@ Use these exact public-safe references:
 
 ```text
 APK path pattern: .qa_local/apks/task-005/app-under-test.apk
+APK bundle directory: .qa_local/apks/task-005/
 Synthetic QA user secret path: .qa_local/secrets/qa_user.env
 Evidence raw storage path: .qa_local/evidence/task-005/
 Build alias: task-005-local-apk-001
@@ -55,7 +58,8 @@ Evidence retention: 7 days
 ## TASK-005 Remains Blocked Until
 
 - one P0 TV/STB target is manually confirmed;
-- local APK presence and local hash record are confirmed;
+- local APK bundle presence, selected target-specific APK and local hash record
+  are confirmed;
 - evidence capture and retention are explicitly approved;
 - local synthetic QA user secret file exists if login is in scope;
 - real approval metadata validates as `approved_for_limited_runtime`;

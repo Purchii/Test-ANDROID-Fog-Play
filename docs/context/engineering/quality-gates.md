@@ -81,6 +81,9 @@ A task is done only when:
   material only: no APK hash values, secrets, raw device identifiers, raw
   evidence, private endpoints or runtime approval; TASK-005 remains
   `blocked`/`not_run`.
+- TASK-005 APK bundle documentation may record only repo-relative ignored paths
+  and public-safe APK filenames/device-class mappings. It must not commit APK
+  files, raw hashes, absolute user-profile paths or imply runtime approval.
 - TASK-015H/017C final polish must block non-exact TASK-005 `scope_version`,
   approval-list values with leading/trailing whitespace, duplicates after
   trimming, TASK-005 build aliases outside `task-005-local-apk-NNN`, and

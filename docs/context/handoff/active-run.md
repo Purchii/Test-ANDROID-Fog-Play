@@ -117,7 +117,7 @@ worktree and ADB tooling is available.
 - QA Reviewer A: `PASS_AFTER_REMEDIATION`
 - QA Reviewer B: `PASS_FINAL_REVIEW`
 - Docs/Scribe: `PASS_AFTER_REMEDIATION`
-- Subagent closure audit: `ready_for_closure`; all required outputs have been recorded in this handoff and final report.
+- Subagent closure audit: `complete`; Planner, Security/Prod-safety Reviewer, Builder, QA Reviewer A, QA Reviewer B and Docs/Scribe agents were closed after required outputs were recorded.
 
 ## Stop conditions
 

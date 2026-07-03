@@ -27,9 +27,11 @@
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 | TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
 | TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; default integration pending |
-| TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | full screen-inventory ledger executed locally on approved lane; final branch integration pending |
+| TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | full screen-inventory ledger executed locally on approved lane; integrated to `main` before TASK-024 |
+| TASK-021 | Network/offline runtime probe | NON_AUTONOMOUS runtime task after TASK-020 selected-lane context | qa/task-021-network-offline-runtime-check | reversible DNS offline-like probe confirmed; true Wi-Fi-off verdict remains unknown; integrated to `main` before TASK-024 |
 | TASK-022 | Xbox-like gamepad full screen inventory | NON_AUTONOMOUS runtime task after TASK-020/TASK-021 selected-lane context | qa/task-022-xbox-gamepad-screen-inventory | Completed with boundaries; final review/verification passed; default push completed by explicit owner command |
-| TASK-023 | Full data screen inventory | NON_AUTONOMOUS runtime/data-inventory task after TASK-022 selected-lane context | qa/task-023-full-data-screen-inventory | full public-safe data inventory completed with dynamic game/server list limits; default integration authorized by owner |
+| TASK-023 | Full data screen inventory | NON_AUTONOMOUS runtime/data-inventory task after TASK-022 selected-lane context | qa/task-023-full-data-screen-inventory | full public-safe data inventory completed with dynamic game/server list limits; integrated to `main` before TASK-024 |
+| TASK-024 | Native post-auth regression pack + selected-lane runtime regression | BOUNDED_AUTONOMOUS after owner authorization in TASK-024 thread | qa/task-024-native-post-auth-regression-pack | in progress; Phase A/B tooling and docs under verification |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

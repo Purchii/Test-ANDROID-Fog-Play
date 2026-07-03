@@ -1,4 +1,4 @@
-﻿# Testing strategy summary
+# Testing strategy summary
 
 ## Principle
 

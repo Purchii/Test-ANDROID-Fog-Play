@@ -228,6 +228,19 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   enumeration. Payment completion, paid session start, external QR/WebView
   traversal, account/purchase actions and controller reset/remap/pairing remain
   blocked or not-run out of scope.
+- TASK-021 source-of-truth has been restored in
+  `tasks/TASK_021_network_offline_runtime_probe.md`. Its confirmed finding is
+  the reversible DNS offline-like app error and refresh recovery behavior; true
+  Wi-Fi-off product verdict remains `unknown` because the Wi-Fi-off probe hit an
+  external TV screensaver-like interruption with ADB disconnect limitations.
+- TASK-024 is active on branch
+  `qa/task-024-native-post-auth-regression-pack` from `main` commit `5482bfb`.
+  It adds the native post-auth regression model, suite, fail-closed runner and
+  validator. The initial public TASK-024 report is fail-closed
+  `blocked`/`not_run` until an approved Phase C runtime collector/input report
+  exists. TASK-024 does not claim exhaustive app navigation, payment/WebView,
+  stream/session, broad compatibility or complete dynamic game/server value
+  inventory.
 
 ## Evidence status policy
 

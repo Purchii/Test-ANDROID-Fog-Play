@@ -1,4 +1,4 @@
-﻿# ТЗ для Codex — Android QA automation project for MTC Fog Play
+# ТЗ для Codex — Android QA automation project for MTC Fog Play
 
 Версия: `v1.0`
 Назначение: старт и дальнейшая дисциплинированная работа Codex над проектом black-box QA / Android TV / hybrid / WebRTC тестирования приложения `MTC Fog Play`.

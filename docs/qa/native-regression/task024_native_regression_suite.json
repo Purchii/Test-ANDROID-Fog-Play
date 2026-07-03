@@ -1,0 +1,90 @@
+{
+  "schema_version": "task024-native-regression-suite-v1",
+  "task_id": "TASK-024",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_server_rows": false,
+    "assert_fixed_prices": false,
+    "assert_raw_qr_targets": false
+  },
+  "cases": [
+    {
+      "case_id": "NR-001",
+      "title": "selected-lane auth/session restore preflight",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-019", "TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-002",
+      "title": "catalog root focus/actionability and session checkpoint",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-003",
+      "title": "catalog rail/grid focus acquisition and dynamic-grid scroll sample",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-004",
+      "title": "Search visible-keyboard input, no-results state and recovery behavior",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-005",
+      "title": "game card focus-then-open detail path and Back/recovery behavior",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-006",
+      "title": "Settings root and promo-codes safe recovery/focus behavior",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-007",
+      "title": "Settings Gamepad screen entry/close behavior without reset/remap/pairing mutation",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-008",
+      "title": "game detail server-list schema sampling without payment/session start",
+      "boundary_sensitive": true,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-009",
+      "title": "QR/boundary surfaces classified but not opened",
+      "boundary_sensitive": true,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-010",
+      "title": "Home/foreground and force-stop/relaunch session persistence across sampled states",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-019", "TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-011",
+      "title": "network/offline-like baseline linked from TASK-021 without TASK-024 network manipulation",
+      "boundary_sensitive": true,
+      "baseline_refs": ["TASK-021"]
+    },
+    {
+      "case_id": "NR-012",
+      "title": "controller/gamepad hint baseline linked from TASK-022 without broad compatibility claim",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-022"]
+    }
+  ]
+}

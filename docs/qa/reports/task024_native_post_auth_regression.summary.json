@@ -1,0 +1,110 @@
+{
+  "blocked_reasons": [
+    "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided"
+  ],
+  "boundary_ledger": [],
+  "coverage_claims": {
+    "complete_dynamic_value_inventory": false,
+    "exhaustive_app_navigation": false,
+    "payment_or_stream_covered": false,
+    "selected_lane_native_regression_only": true
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_prices": false,
+    "assert_fixed_server_rows": false,
+    "assert_raw_qr_targets": false
+  },
+  "generated_at_utc": "2026-07-03T16:45:59Z",
+  "known_anomalies_rechecked": [],
+  "mode": "BOUNDED_AUTONOMOUS",
+  "new_anomalies": [],
+  "overall_status": "blocked",
+  "phase_gates": {
+    "phase_a_repository_hygiene": "required_before_runtime",
+    "phase_b_model_validator": "required_before_runtime",
+    "phase_c_runtime": "not_run"
+  },
+  "public_safety": {
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "raw_device_identifiers_public": false,
+    "raw_logs_public": false,
+    "raw_phone_otp_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false
+  },
+  "regression_cases": [
+    {
+      "case_id": "NR-001",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-002",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-003",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-004",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-005",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-006",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-007",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-008",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-009",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-010",
+      "evidence_status": "unknown",
+      "reason": "--allow-runtime was provided, but no approved TASK-024 runtime collector/input report was provided",
+      "status": "not_run"
+    }
+  ],
+  "run_status": "blocked",
+  "runtime_execution_status": "blocked",
+  "runtime_lane": {
+    "build_alias": "task-005-local-apk-001",
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "schema_version": "task024-native-regression-summary-v1",
+  "session_persistence_checkpoints": [],
+  "task_id": "TASK-024"
+}

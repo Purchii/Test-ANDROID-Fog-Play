@@ -150,6 +150,24 @@ WebView/redirect, stream/WebRTC/media playback, profile/account mutation or
 network/offline manipulation must be `blocked_by_boundary`, not `pass`.
 TASK-020 must never claim exhaustive navigation proof.
 
+TASK-021 network/offline runtime reports may mark only the recorded reversible
+DNS offline-like checks as `pass`/`covered`: offline error screen, focused
+Refresh activation by `DPAD_CENTER`, loader evidence and documented recovery
+routes. True Wi-Fi-off product verdict remains `unknown` unless a future
+approved task captures it without external/ambient interruption. Public reports
+must omit raw network/auth/device values, packet captures, proxy details,
+private endpoints and raw screenshots/videos/XML.
+
+TASK-024 native regression pack must derive public-safe oracles only from
+TASK-020/TASK-021/TASK-022/TASK-023 summaries and explicit runtime evidence.
+It must not assert fixed game titles, game counts, server rows, server aliases,
+ping values, GPU/CPU strings, prices, QR targets or account-like labels. Public
+validators must fail closed on raw paths/values, boundary entries marked as
+pass, exhaustive coverage claims, payment/stream coverage claims and missing
+case result/reason fields. Default TASK-024 runner execution must return
+`overall_status=blocked` and `runtime_execution_status=not_run` without ADB or
+runtime calls.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

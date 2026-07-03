@@ -5,8 +5,13 @@ WebView / WebRTC testing of MTC Fog Play.
 
 ## Current Safety Status
 
-- TASK-005 has one limited `tv-tpv-013` startup/focus smoke data point, and
-  TASK-019 has one bounded `tv-tpv-013` auth/session smoke data point.
+- Current selected-lane evidence includes TASK-005 startup/focus smoke,
+  TASK-019 auth/session smoke, TASK-020 post-auth navigation and full screen
+  inventory, TASK-021 reversible DNS offline-like network data point, TASK-022
+  Xbox-like/gamepad inventory and TASK-023 full data inventory on
+  `tv-tpv-013` / `tv-tpv-a12-013`.
+- TASK-024 adds a native post-auth regression model, suite, fail-closed runner
+  and public-safe validator derived from TASK-020/021/022/023 evidence.
 - Broader runtime lanes remain blocked or `not_run` until explicit confirmed
   approvals.
 - TASK-016 allows inventory-only local ADB preflight after owner approval; raw
@@ -26,10 +31,10 @@ WebView / WebRTC testing of MTC Fog Play.
   input templates only; it does not approve or run TASK-005.
 - TASK-016 inventory preflight does not install, launch, capture logcat,
   screenshots or videos, and always reports runtime/app statuses as `not_run`.
-- TASK-019 confirms only bounded auth/session shell behavior on the selected
-  target/build lane. WebView, WebRTC, stream/media playback, payment,
-  network/offline, compatibility and broad post-auth navigation remain
-  `not_run`.
+- Current runtime evidence is selected-lane evidence only. It is not exhaustive
+  app navigation proof, not payment/WebView/stream/session-start proof, not
+  broad compatibility proof and not complete dynamic game/server data
+  enumeration.
 
 ## Source Of Truth
 

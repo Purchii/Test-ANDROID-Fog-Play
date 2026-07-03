@@ -178,6 +178,18 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   enumeration, real payment/checkout/payment-QR traversal, stream/session
   start, external QR opening, network/offline behavior, profile mutation beyond
   logout or compatibility coverage.
+- TASK-021 has a 2026-07-03 network/offline runtime data point for the approved
+  Philips-new lane:
+  `docs/qa/reports/task021_network_offline_probe.summary.json`. It confirms the
+  offline error screen under a reversible DNS offline-like condition and
+  focused `DPAD_CENTER` refresh recovery after network restoration for
+  unauthenticated, authenticated/onboarding-incomplete and
+  authenticated/onboarding-complete states. Refresh shows the
+  `Проверка интернет-соединения` loader, then routes respectively to phone
+  input, first onboarding about PC rental, or `Игры`. True Wi-Fi-off product
+  verdict remains unknown because the Wi-Fi-ADB probe hit an external TV
+  screensaver-like interruption; reversible DNS offline-like probing supplied
+  the confirmed app evidence.
 
 ## Evidence status policy
 

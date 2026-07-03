@@ -1,0 +1,37 @@
+{
+  "schema_version": "task020_invalid_phone_negative_summary_v1",
+  "task_id": "TASK-020",
+  "mode": "NON_AUTONOMOUS",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001"
+  },
+  "local_evidence_root": "task-020-invalid-phone-20260703T130000Z",
+  "raw_values_policy": {
+    "raw_phone_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_screenshots_public": false
+  },
+  "negative_check": {
+    "screen_family": "auth_phone_incomplete_error",
+    "status": "covered",
+    "evidence_status": "confirmed",
+    "evidence_ids": [
+      "1_external_screensaver_interruption",
+      "2_launcher_recovery_intermediate",
+      "3_auth_screen_after_force_stop_relaunch",
+      "4_invalid_phone_short_filled_before_ok",
+      "5_after_invalid_phone_ok_200ms",
+      "6_after_invalid_phone_ok_1200ms",
+      "7_after_invalid_phone_ok_3500ms"
+    ],
+    "action": "Entered a deliberately incomplete synthetic phone suffix through the on-screen keypad and confirmed with OK.",
+    "observed_result": "Auth phone screen remained visible and displayed the inline validation error.",
+    "public_error_text": "Номер введён не полностью",
+    "advanced_to_otp": false,
+    "advanced_to_captcha": false,
+    "external_action_or_payment": false,
+    "notes": "The first capture after reset hit an external TV screensaver/system overlay, then Android TV launcher. Force-stop plus the approved explicit app relaunch helper recovered the auth phone screen before the negative check."
+  }
+}

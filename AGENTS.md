@@ -154,6 +154,24 @@ pause before continuing navigation. Record the local-only evidence, public-safe
 screen alias, state category, evidence status, focus/action categories, and a
 short risk/hypothesis note.
 
+Hard continuation rule for full screen inventory: do not stop or produce a
+final/summary response just because one screen family looks covered, a long
+list bottom was reached, a QR/payment/settings recurrence was analyzed, or the
+current branch of navigation feels complete. Those are checkpoints, not task
+completion. Full inventory may be closed only when the run has an explicit
+coverage ledger showing every currently reachable approved screen family and
+safe navigation branch is either `covered`, `blocked_by_boundary`,
+`blocked_by_tooling`, `blocked_by_external_state`, or `not_run_out_of_scope`,
+with evidence ids for each. If the user asked to continue autonomously, keep
+working from the latest checkpoint until that closure ledger exists or a real
+stop condition is met.
+
+If an agent incorrectly stops after a partial milestone, document that as a
+process anomaly immediately and continue from the latest confirmed checkpoint.
+Do not call a bottom-of-list condition, a recurring QR boundary, a Settings
+recurrence, or a screensaver recovery a full screen-inventory completion by
+itself.
+
 If the screen/state has already been observed earlier in the same or a previous
 run, record it as a recurrence too: link or name the prior public-safe alias or
 evidence id, state what matched, state what changed if anything, and record the
@@ -167,6 +185,31 @@ initial visible list segment, scroll/focus movement where safe, whether item
 sets are truncated or lazy-loaded, and any stable category boundaries. If a menu
 can collapse or expand, capture both states when safely reachable and record
 which menu state each checkpoint represents.
+
+Visible QR codes are explicit inventory surfaces too. Decode QR targets only as
+local evidence and do not follow the link, open a browser, start payment,
+authenticate, or perform any external action unless a later task explicitly
+approves that boundary. Public/redacted reports must omit raw QR URLs, tokens,
+paths or query values and may record only category-level target metadata,
+hash/local reference, evidence status and whether navigation was followed.
+Hard correction: QR decoding is not an unsolved tooling problem in this
+workspace. Before claiming a visible QR is `not_decoded` or blocked by missing
+Python libraries, check prior local-only decode artifacts for the same recurring
+QR and use the already-proven local `jsqr`-based path under
+`.qa_local/tools/qrdecode/`. Missing `cv2`, `pyzbar`, `zxingcpp`, or a broken
+ad hoc decoder setup is a process/tooling error, not product evidence. For a
+recurring QR, reference the earlier local-only decode artifact instead of
+re-solving it; for a new QR, fix/use the established local decode path and keep
+the raw target local-only.
+
+Payment screens, including payment QR screens, do not by themselves end full
+screen inventory. When a payment screen appears, capture and analyze it as a
+first-class boundary screen, decode visible payment QR targets into local-only
+evidence, and record that no payment/navigation/external action was performed.
+Then attempt safe recovery to the previous screen via navigation. If navigation
+cannot recover, use force-stop/relaunch recovery rather than abandoning the
+inventory. Never complete a real payment or start a real paid session without
+an explicit approved fixture.
 
 Do not rely on UIAutomator XML alone for runtime screen inventory. Transient
 visual overlays such as snackbars, toast-like popups, loading overlays and
@@ -182,6 +225,16 @@ or action whose result differs from the intended path. Each anomaly record must
 include trigger/action, expected result, observed result, evidence status,
 public-safe alias, likely/hypothesis cause, and test-design implication. Do not
 wait until the end of a run to reconstruct anomalies from memory.
+
+Android TV ambient/screensaver caveat: if runtime inventory suddenly shows a
+full-screen scenic/photo/weather-like image, launcher-like overlay, or other
+system surface with no app navigation/content after device idle or user wake,
+classify it first as a possible TV screensaver/ambient interruption, not as an
+app screen, app crash, blank screen, or completed navigation result. Capture it
+as external/system evidence, note the wake/idle trigger if known, then recover
+the app foreground and continue inventory. If the owner identifies a captured
+surface as the TV screensaver, treat that as the preferred classification for
+similar future idle/wake surfaces unless later app evidence contradicts it.
 
 ## Verification
 

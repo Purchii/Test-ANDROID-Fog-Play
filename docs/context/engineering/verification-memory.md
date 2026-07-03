@@ -40,6 +40,8 @@ This file records what was actually verified. Do not claim runtime checks passed
 | 2026-07-02 | TASK-005 Android TV limited runtime smoke on `tv-tpv-013` | qa/task-005-android-tv-smoke-runtime | `git status --short --branch`, local APK presence check, local-only SHA-256 record, local approval metadata validation, ADB tooling check, ADB connect/get-state, target identity getprop/features, selected APK install/update, app launch, leanback foreground retry, uiautomator dumps, local-only screenshot capture, minimal D-pad input, Back/Home, foreground relaunch, force-stop/relaunch, crash/app logcat observation | passed for limited TASK-005 scope on one target/build | Selected local APK was present under ignored `.qa_local/apks/task-005/`; local-only hash evidence was recorded without publishing the value. Ignored local approval metadata validated as `approved_for_limited_runtime`, while the validator correctly kept `runtime_execution_status=not_run` because validation is not runtime evidence. Target identity matched public-safe aliases `tv-tpv-013` / `tv-tpv-a12-013`. Ordinary install/update succeeded; conflict uninstall cleanup was not used. App foreground/window and local screenshot confirmed an auth/profile guard first visible state; no synthetic login, phone number or OTP was entered. Initial focus had one focused element and focusable UI; down/right/up D-pad movement changed focus without a startup-blocking trap. Back/Home, foreground relaunch and force-stop/relaunch remained in scope. Crash/ANR signal was not observed in the captured summary. WebView, WebRTC, stream/media playback, payment, production mutation, APK modification, endpoint extraction and security bypass were not run. Raw evidence remains ignored under `.qa_local/evidence/task-005/`. |
 | 2026-07-02 | TASK-019 Android TV auth/session smoke on `tv-tpv-013` | qa/task-019-android-tv-auth-session-smoke | `git status --short --branch`, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, targeted pytest, full pytest, `python -m compileall -q automation tests`, approval validator dry-runs for public example/draft, local secret preflight without printing values, target/build/app launch preflight, on-screen keyboard phone/OTP input, post-auth shell/focus observation, Home/foreground, force-stop/relaunch, crash/app logcat summary | passed for bounded TASK-019 auth/session scope on one target/build | Phase A repository checks passed and public approval examples remained `blocked` with `runtime_execution_status=not_run`. Secret preflight confirmed required keys and alias without printing phone/OTP values. Early local-only attempts exposed unreliable ADB text/keyevent input for the phone field; the passing run used the visible on-screen numeric keyboard, respected the field prefix and selected the clickable continue control. Auth reached first post-auth shell alias `post_auth_home_unknown`; minimal post-auth focus movement, Home/foreground session persistence and force-stop/relaunch session persistence passed; no crash/ANR signal was observed. Logout, broad post-auth navigation, WebView, WebRTC, stream/media playback, payment, network/offline, compatibility, profile mutation, endpoint extraction, proxy/packet capture and security bypass were not run. Raw evidence remains ignored under `.qa_local/evidence/task-019/`. |
 | 2026-07-02 | TASK-020 post-auth native navigation transitions | qa/task-020-xl-post-auth-navigation-transitions | `git status --short --branch`, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, `python -m pytest -q tests/test_post_auth_navigation_probe.py tests/test_post_auth_navigation_report_validator.py`, `python -m pytest -q`, `python -m compileall -q automation tests`, approval validator dry-runs for public example/draft, default TASK-020 runner, selected-lane ADB preflight, bounded D-pad focus sampling, Back/Home, foreground relaunch, force-stop/relaunch, crash/ANR summary, public report validation | passed for Phase A; partial bounded runtime coverage on one target/build | `git status --short --branch` confirmed branch `qa/task-020-xl-post-auth-navigation-transitions` with intended TASK-020 changes. Targeted TASK-020 tests: 23 passed, 1 skipped, including QA A false-pass regressions and direct validator script invocation. Full pytest after QA A hardening: 427 passed, 1 skipped. Compileall and hygiene passed. Default TASK-020 runner returned `blocked`/`not_run` without runtime. Public approval examples remained `blocked` with `runtime_execution_status=not_run`. Runtime run `task-020-20260702T100044Z` recorded 8 screen aliases, 4 D-pad focus transitions, one `post_auth_shell` state, root Home/foreground session persistence pass, root force-stop/relaunch session persistence pass and crash/ANR `not_observed`. Public summary `docs/qa/reports/task020_post_auth_navigation_transition.summary.json` validated with no errors and explicitly sets exhaustive navigation proof to false. Select transitions were not entered because controls were not semantically safe enough for unattended selection. All screens and all transitions were not covered. Payment, WebView/redirect, stream/WebRTC/media playback, profile/account mutation, network/offline, compatibility and full Experience QA were not run. Raw evidence remains ignored under `.qa_local/evidence/task-020/`. |
+| 2026-07-03 | TASK-020 full screen inventory closure ledger | qa/task-020-xl-post-auth-navigation-transitions | Android runtime screen checkpoints through `365`, `python -m json.tool docs/qa/reports/task020_full_screen_inventory.summary.json`, `git status --short --branch`, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py`, `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`, `python -m pytest -q tests/test_post_auth_navigation_probe.py tests/test_post_auth_navigation_report_validator.py`, `python -m pytest -q`, `python -m compileall -q automation tests`, `python automation/post_auth_navigation/validate_post_auth_navigation_report.py --report docs/qa/reports/task020_post_auth_navigation_transition.summary.json`, public changed-file redaction scan, independent QA/Security reviews | passed after reviewer remediation | Full screen inventory was closed by `docs/qa/reports/task020_full_screen_inventory.summary.json`, which links the zero-audit and zero-reset evidence roots and classifies every safe reachable approved screen family/branch as `covered`, `blocked_by_boundary`, `blocked_by_external_state` or `not_run_out_of_scope`. QA A blocker for the gamepad reset/detection branch was remediated with an explicit `settings_gamepad_reset_or_detection` row. QA B status/anomaly wording findings were remediated by updating backlog/status docs and marking public anomaly rows as highlights. Security blocker for logout classification was remediated by documenting a narrow owner-approved 2026-07-03 `PROD_CONDITIONAL` logout/relogin continuity exception. Payment/checkout, paid stream/session start, external QR traversal, profile mutation beyond logout, complete game-title data enumeration, network/offline and compatibility remain not executed. |
+| 2026-07-03 | TASK-020 auth phone negative validation checks | qa/task-020-xl-post-auth-navigation-transitions | Local app reset, auth screen recovery after TV screensaver/launcher interruption, on-screen keypad incomplete phone check, on-screen keypad full invalid repeated-ones phone check, delayed screenshots/XML checkpoints, public-safe JSON summaries, `git diff --check`, `python automation/quality/full_tree_hygiene_scan.py` | passed for two negative auth-phone cases | Incomplete synthetic phone suffix plus `OK` stayed on auth and displayed `Номер введён не полностью`. Full-length synthetic invalid repeated-ones suffix plus `OK` stayed on auth and displayed `Введен неверный номер телефона.` through 7 seconds. OTP and captcha were not reached. Raw phone values and screenshots remain local-only under ignored `.qa_local/evidence/task-020/`; public summaries are `docs/qa/reports/task020_invalid_phone_negative.summary.json` and `docs/qa/reports/task020_full_invalid_phone_negative.summary.json`. |
 
 ## Known verification rules
 
@@ -109,6 +111,14 @@ This file records what was actually verified. Do not claim runtime checks passed
   auth, retry, empty/entitlement and boundary-like screens are first-class
   inventory items, not incidental noise; skipping them can hide user-path
   mismatches.
+- Full screen inventory must not be closed at a convenient partial milestone.
+  Catalog bottom, QR recurrence, Settings recurrence, blank session journal,
+  screensaver recovery, or one covered branch is only a checkpoint. Closure
+  requires a ledger for every currently reachable approved screen family/branch
+  marked `covered`, `blocked_by_boundary`, `blocked_by_tooling`,
+  `blocked_by_external_state`, or `not_run_out_of_scope`, with evidence ids.
+  If an agent stops early, record it as a QA process anomaly and continue from
+  the latest checkpoint.
 - Repeated screens/states are also mandatory checkpoints. When a screen was
   seen earlier in the same run or prior evidence, record the recurrence with
   the prior public-safe alias/evidence id, what matched, what changed if
@@ -119,10 +129,110 @@ This file records what was actually verified. Do not claim runtime checks passed
   segment, safe scroll/focus samples, truncation or lazy-load signals,
   boundary categories and current menu state; capture both collapsed and
   expanded menu states when safely reachable.
+- Visible QR codes are part of runtime screen inventory. Decode them only into
+  local-only evidence when needed for QA mapping, do not follow/open the target,
+  and redact raw URL/path/query/token/payload values from public artifacts.
+  Record target category, safe scheme metadata, hash/local reference, evidence
+  status and whether navigation was followed.
+- QR decoding for TASK-020 is a solved local workflow, not an open dependency
+  question. Before claiming `not_decoded`, use prior local-only decode artifacts
+  for recurring QR surfaces and the established `jsqr` path under
+  `.qa_local/tools/qrdecode/` for new QR surfaces. Missing `cv2`, `pyzbar`,
+  `zxingcpp` or a broken one-off decoder script is a tooling/process anomaly
+  that must be fixed or recorded separately; it is not evidence that the product
+  QR could not be decoded.
+- Payment and payment-QR screens are not terminal stops for full inventory.
+  Capture/analyze them, decode QR targets into local-only artifacts, record no
+  payment/link traversal/session start, then try safe navigation recovery. If
+  navigation recovery fails, force-stop/relaunch and continue. Real payment
+  completion or paid session start remains forbidden without approved fixtures.
 - On Android TV screens, visual focus/active selection in screenshots is
   authoritative evidence even when UIAutomator reports `focused=false` for all
   nodes. Record both separately. For the TASK-020 catalog checkpoint, `Игры` was
   visually focused/active while XML reported `focused_count=0`.
+- TASK-020 catalog navigation on Philips-new exposed a focus-acquisition
+  blocker: `DPAD_UP`, `DPAD_LEFT`, `DPAD_DOWN`, `TAB`, `Back`, a UI-tree tap on
+  `Поиск`, touch swipe in the game grid and `PageDown` all kept the same
+  catalog top segment visible. Treat this as unresolved automation focus, not
+  full route coverage. Avoid `Select` until a helper proves the exact selected
+  target; game cards, banner and Steam top-up remain session/payment-adjacent
+  boundaries.
+- Android TV ambient/screensaver interruptions are external/system evidence,
+  not app screens. If a full-screen scenic/photo/weather-like or idle/wake
+  surface appears with no app navigation/content, record possible
+  TV/Android screensaver, recover app foreground and continue inventory. Do not
+  classify it as app crash, blank app screen, product screen or inventory
+  completion.
+- TASK-020 Philips-new continuation on 2026-07-03 recorded a recurrence where
+  the owner clarified a full-screen scenic/weather/photo-like surface was the
+  TV screensaver; after wake, the app catalog returned. A later catalog D-pad
+  attempt `DPAD_RIGHT -> DPAD_DOWN -> CENTER` did not open the first game.
+  Treat this as a confirmed navigation anomaly/focus-target ambiguity, not game
+  detail coverage or product failure. Continue to avoid `CENTER`/`Select` route
+  claims until a helper proves the exact selected target.
+- TASK-020 Philips-new boundary continuation on 2026-07-03 confirmed the safe
+  first-game path: UI-tree-derived card tap focuses the card, then `CENTER`
+  opens the game detail. Selecting the best-price tariff or a concrete server
+  card reached a recurring connect-device gate, not payment or stream. Back did
+  not recover from this gate; force-stop plus the approved explicit app
+  relaunch helper recovered after a loader/TV-system overlay and returned to
+  the catalog with a new `Continue Game` row. Generic package launch recovery
+  landed on Android TV launcher and should not be used as the primary app
+  relaunch method for this target.
+- TASK-020 virtual-gamepad QR on the connect-device screen decoded successfully
+  into local-only raw evidence via the established `jsqr` path. Redacted
+  metadata confirms a decoded `https` target with path and query; no external
+  navigation was followed. The buy-gamepad card was probed as a purchase
+  boundary but did not open a new screen after tap or `CENTER` in this run.
+- TASK-020 sessions journal after boundary probes remained blank even though
+  the recovered catalog showed a `Continue Game` row. Direct tap/D-pad attempts
+  from a touch/lost-focus catalog state did not switch routes; after clean
+  explicit relaunch restored `nav_games focused=true`, `DPAD_DOWN -> CENTER`
+  reached the journal and delayed capture stayed blank. Do not treat catalog
+  `Continue Game` as evidence of a session-journal entry.
+- TASK-020 games catalog long-list continuation on 2026-07-03 captured deep
+  sampled checkpoints through `300` on the same scrollable catalog grid. The
+  selected first-column card continued changing after each `DPAD_DOWN`, so the
+  bottom of the game list was not reached and this must not be reported as a
+  complete game-title inventory. The confirmed screen-level behavior is stable
+  D-pad scrolling, recurring long-title wrapping/truncation, partially clipped
+  right-edge cards and repeated placeholder-like poster tiles with text/price
+  metadata still present.
+- From the deep catalog grid, `DPAD_LEFT` switched directly to the recurring
+  blank `Журнал сессий` screen rather than returning to `Игры` focus. The blank
+  journal persisted after a delay. On the blank journal, `DPAD_RIGHT` collapses
+  the rail and focuses an empty right-side content container; `DPAD_LEFT`
+  recovers the expanded rail and `nav_sessions` focus. Treat this as a
+  confirmed empty-state/collapsible-rail focus path for future regression
+  tests.
+- `Back` from the blank session journal is a confirmed no-op in the 2026-07-03
+  continuation. Subsequent rail navigation reached recurring Steam top-up and
+  Feedback QR boundary screens; the run referenced prior local-only decode
+  artifacts and did not follow/open either QR target. Settings root recurred
+  with promo codes, gamepad setup, app version and logout boundary visible;
+  logout was not selected.
+- The owner-reported TV screensaver recurred on 2026-07-03 and was captured as
+  external ambient/system evidence. Checkpoint `310` was already an external
+  ambient surface and UIAutomator could not obtain an idle XML tree; checkpoint
+  `311` confirmed the recurrence after owner notice. Wake returned to Settings,
+  but touch tap on `Игры` and repeated `DPAD_UP` did not move focus and XML
+  reported no focused node. The approved explicit app relaunch helper restored
+  focus on the logout boundary; `DPAD_LEFT` recovered to `nav_settings` without
+  selecting logout. Treat this as confirmed post-screensaver focus-loss/recovery
+  behavior.
+- A later bottom-seeking catalog pass reached the bottom/no-change condition:
+  after batched `DPAD_DOWN`, checkpoints `331`, `332` and `333` repeated the
+  same selected item and visible bottom segment. The bottom row was incomplete
+  and still showed placeholder-like poster fallback. `DPAD_LEFT` from that
+  bottom catalog segment landed on the recurring Steam top-up QR boundary, not
+  on `Игры` or `Журнал сессий`; the QR target was not opened and prior
+  local-only decode evidence was referenced.
+- TASK-020 Steam top-up QR evidence decoded successfully into local-only raw
+  artifact. Redacted metadata confirms a decoded `https` URL with path and no
+  query, with no navigation followed and no payment action performed.
+- TASK-020 Feedback and catalog-banner QR evidence also decoded successfully
+  into local-only raw artifacts. Recurrent QR checks should reference these
+  artifacts unless the screenshot shows a materially different QR.
 - Owner-confirmed captcha trigger model for the first-run/auth path: product
   logic normally gives three OTP entry attempts and then moves to captcha, but
   the external authorization service may escalate suspicious behavior to captcha
@@ -150,6 +260,20 @@ This file records what was actually verified. Do not claim runtime checks passed
   summary. It does not confirm safe Select navigation, exhaustive native screen
   inventory, WebView, WebRTC, stream/media playback, payment, network/offline,
   compatibility matrix or full Experience QA coverage.
+- TASK-020 full screen inventory on the approved Philips-new lane was closed on
+  2026-07-03 by an explicit screen-family closure ledger, not by a single
+  bottom-of-list or QR/settings checkpoint. The public-safe ledger is
+  `docs/qa/reports/task020_full_screen_inventory.summary.json`; raw evidence
+  remains ignored under `.qa_local/evidence/task-020/`. Covered families include
+  first-run auth, legal WebViews, OTP, wrong-OTP snackbar, captcha, onboarding,
+  catalog top/long-scroll/bottom, Search empty/no-results/results, blank
+  session journal, Steam/Feedback/banner/how-to-Steam/virtual-gamepad QR
+  boundaries, Settings root/promo/gamepad/logout, game detail,
+  own-Steam/help, connect-device gate and screensaver recovery. Payment,
+  checkout/payment QR, stream/session start, external QR traversal and
+  profile/account mutation beyond logout remain `blocked_by_boundary` or
+  `not_run_out_of_scope`; no raw QR targets, phone/OTP values, device
+  identifiers, server/tariff values or payment data were published.
 
 ## Unverified zones
 

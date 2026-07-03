@@ -265,14 +265,16 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   ADB/runtime/WebView/WebRTC/payment/network flows, use real secrets/endpoints,
   real phone/OTP/device identifiers, real QR targets, account data or payment
   values.
-- TASK-018 is active in thread
+- TASK-018 completed in thread
   `TASK-018 - Docs consistency and link sanity checks` on branch
   `qa/task-018-docs-consistency-link-sanity` from detected default branch
-  `main` commit `29b299c`. The task is `BOUNDED_AUTONOMOUS` and `PROD_SAFE`
-  only: tracked Markdown link and public repo-relative reference sanity checks,
-  local tests and source-of-truth docs. It must not read ignored `.qa_local`
-  evidence, inspect APKs, run ADB/runtime/WebView/WebRTC/payment/network flows,
-  crawl external links or claim runtime/product behavior.
+  `main` commit `29b299c`. It was merged/pushed to `main` at
+  `e9f8c2dc41fdaf4182a40654a14ef3d57ac87aaf`. The task is
+  `BOUNDED_AUTONOMOUS` and `PROD_SAFE` only: tracked Markdown link and public
+  repo-relative reference sanity checks, local tests and source-of-truth docs.
+  It did not read ignored `.qa_local` evidence, inspect APKs, run
+  ADB/runtime/WebView/WebRTC/payment/network flows, crawl external links or
+  claim runtime/product behavior.
 
 ## Evidence status policy
 

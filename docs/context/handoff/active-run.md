@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-018 - Docs consistency and link sanity checks`
-Thread status: `active_final_review_passed`
+Thread status: `inactive_completed`
 Fresh thread verified: `yes; continuation thread 019f2915-4152-7ee2-b37c-21b892dcc845 accepted and renamed`
 Task ID: `TASK-018`
 Task branch: `qa/task-018-docs-consistency-link-sanity`
@@ -171,13 +171,23 @@ python automation/quality/public_repo_safety_scan.py
 - Docs/Scribe: approved after confirming source-of-truth consistency, process
   anomaly recording, final counts and no stale TASK-017 active-run state.
 
+## Integration Results
+
+- Task branch commit: `7a5c45850b9e5be16aa60f11f1fb583b66096a8d`.
+- Task branch pushed: `yes`.
+- Default branch merge commit: `e9f8c2dc41fdaf4182a40654a14ef3d57ac87aaf`.
+- Default branch pushed: `yes`; local `main` and `origin/main` aligned at
+  `e9f8c2dc41fdaf4182a40654a14ef3d57ac87aaf` after push.
+- Post-merge verification on `main`: diff check, targeted quality/redaction
+  tests, docs checker, compileall, full-tree hygiene in both modes, public repo
+  safety scan and full pytest passed.
+
 ## Thread Handoff
 
-- Current thread status: `active`.
-- Next thread created: `no; TASK-018 still in progress`.
-- Next task selection must happen only after TASK-018 is verified,
-  reviewed, merged/pushed to detected default branch and this thread is marked
-  inactive.
+- Current thread status: `inactive_completed`.
+- Next thread created: `pending after terminal source-of-truth sync push`.
+- Next task selection must happen only in a fresh continuation thread from the
+  final pushed `main`.
 
 ## Stop Conditions
 

@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-024 - Native post-auth regression pack + selected-lane runtime regression`
-Thread status: `phase_c_blocked_before_runtime; final verification in progress`
+Thread status: `inactive_completed`
 Fresh thread verified: `yes; thread title set and goal created for TASK-024`
 Task ID: `TASK-024`
 Task branch: `qa/task-024-native-post-auth-regression-pack`
@@ -39,17 +39,19 @@ Raw evidence, if produced, must remain under ignored
 - Phase C: blocked before runtime. The explicit `--allow-runtime` command was
   run, but no approved TASK-024 runtime collector/input report was available,
   so no ADB/device/APK navigation executed.
-- Phase D: public-safe report/docs/handoff in progress.
+- Phase D: complete. Public-safe report/docs/handoff were updated, QA A/QA B
+  and Security reviews passed, Docs/Scribe status-memory findings were
+  remediated, and a fresh continuation thread was created.
 
 ## Multi-Agent Status
 
-- Orchestrator: `active`.
+- Orchestrator: `complete`.
 - Planner: `complete`.
 - Builder scout: `complete`.
-- QA Reviewer A: `complete_with_findings_to_address`.
-- QA Reviewer B: `complete_with_validator_edge_cases`.
+- QA Reviewer A: `approved_after_validator_remediation`.
+- QA Reviewer B: `approved_after_dynamic_data_boundary_remediation`.
 - Security/Prod-safety Reviewer: `complete_with_fail_closed_checklist`.
-- Docs/Scribe: `complete_with_docs_update_map`.
+- Docs/Scribe: `initial_status_memory_findings_remediated`.
 
 ## Deliverables
 
@@ -62,6 +64,14 @@ Raw evidence, if produced, must remain under ignored
 - `docs/qa/native-regression/task024_native_regression_report_template.md`
 - `docs/qa/reports/task024_native_post_auth_regression.summary.json`
 - `docs/qa/reports/task024_native_post_auth_regression.md`
+
+## Thread Handoff
+
+- Current thread status: `inactive_completed`.
+- Next thread created: `019f28e6-d36c-70a3-969b-54bed4edfaf4`.
+- Next thread title/prompt seed: `NEXT_TASK_SELECTION_FROM_main@5754ea2`.
+- Next task selection must happen in the fresh continuation thread after it
+  verifies the current default branch state.
 
 ## Stop Conditions
 

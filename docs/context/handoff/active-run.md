@@ -3,47 +3,67 @@
 ## Run metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-020 XL+ - Post-auth native navigation transitions`
-Thread status: `runtime_partial_navigation_coverage_executed_task_branch`
-Fresh thread verified: `current_thread_has_task020_prompt_from_owner_archive; current thread id recorded by goal tool`
-Task ID: `TASK-020`
-Task branch: `qa/task-020-xl-post-auth-navigation-transitions`
+Thread title: `TASK-021 - Network/offline runtime check`
+Thread status: `runtime_network_offline_check_executed_task_branch`
+Fresh thread verified: `not_fresh_thread; owner continued the existing inventory thread and a new task branch was created from current main`
+Task ID: `TASK-021`
+Task branch: `qa/task-021-network-offline-runtime-check`
 Default branch: `main`
-Base commit: `ac2e11a2643c7cd4b4834e056b70c3a18fc0f7ad`
+Base commit: `97395170fc04db7fd7e10d69158ae001e46f3fb9`
 Merge/push authority: `NON_AUTONOMOUS; do not merge or push default branch without explicit user command`
-Production safety classification: `PROD_SAFE` for Phase A docs, validators,
-mocked tests and default fail-closed runner; `PROD_CONDITIONAL` for any later
-approved local runtime navigation collection on the selected TASK-005/TASK-019
-lane.
+Production safety classification: `PROD_CONDITIONAL` for bounded local
+network/offline runtime probes on the selected TASK-005/TASK-019 lane;
+redaction-by-default and no raw network/device identifiers in public docs.
 
 ## Goal
 
-Implement TASK-020 as a bounded post-auth native navigation coverage layer for
-the already validated lane:
+TASK-021 checks the owner-requested network/offline behavior on the already
+validated lane:
 
 - `device_alias`: `tv-tpv-013`;
 - `runtime_profile_alias`: `tv-tpv-a12-013`;
 - `build_alias`: `task-005-local-apk-001`;
 - `synthetic_user_alias`: `qa-user-phone-001`.
 
-The task covers fail-closed Phase A tooling/docs first. Runtime Phase B/C may
-run only after Phase A passes and selected-lane prerequisites are still safe and
-available. Payment, WebView/redirect, stream/WebRTC/media playback,
-profile/account mutation, network/offline manipulation, private endpoint
-extraction, proxy/packet capture, APK modification/decompilation and raw
-evidence publication remain out of scope.
+The task covers bounded local offline-screen discovery, refresh recovery, and
+the minimal onboarding-state actions needed to validate owner-specified routing
+after network restoration. Payment, WebView/redirect,
+stream/WebRTC/media playback, private endpoint extraction, proxy/packet
+capture, APK modification/decompilation and raw evidence publication remain
+out of scope. Profile/account mutation is out of scope except the already
+executed synthetic helper-backed auth restore and three onboarding `Далее`
+actions needed for this check.
 
-Owner goal correction added 2026-07-03: the active runtime goal is full screen
-inventory on the approved Philips-new lane, not a partial TASK-020 milestone.
-Do not stop after catalog bottom, recurring QR/settings/session screens,
-screensaver recovery or any other convenient branch checkpoint. Continue from
-the latest checkpoint until a closure ledger exists for every safe reachable
-approved screen family/branch, with status `covered`, `blocked_by_boundary`,
-`blocked_by_tooling`, `blocked_by_external_state`, or `not_run_out_of_scope`.
-Stopping early must be recorded as a QA process anomaly and corrected by
-continuing the inventory.
+## TASK-021 runtime result
 
-## Phase A result
+Run ID: `task-021-network-offline-20260703T131500Z`
+Public-safe summary:
+`docs/qa/reports/task021_network_offline_probe.summary.json`
+Local raw evidence roots are listed in the public-safe summary; raw
+screenshots/XML/video and raw network/auth values remain ignored under
+`.qa_local/evidence/task-021/` and `.qa_local/evidence/task-019/`.
+
+| Check | Status | Evidence status | Notes |
+|---|---:|---:|---|
+| True Wi-Fi-off probe | `blocked_by_external_state` | `confirmed` | Because ADB transport was Wi-Fi, the bounded self-recovery probe disconnected controller access and captured an external Android TV ambient/screensaver-like surface, not a product offline verdict. |
+| DNS offline-like launch | `covered` | `confirmed` | Reversible invalid private-DNS probe preserved ADB reachability and confirmed the app offline error screen. |
+| Offline error screen | `covered` | `confirmed` | UI text: `ОШИБКА`, `Нет подключения к интернету`, `Проверь соединение`, button `Обновить`. |
+| Unauthenticated refresh after network restore | `covered` | `confirmed` | Focused `DPAD_CENTER` on `Обновить` showed loader `Проверка интернет-соединения`, then returned to phone input. |
+| Authenticated, onboarding incomplete | `covered` | `confirmed` | After synthetic helper-backed login, offline launch showed the offline screen; after network restore + `Обновить`, loader appeared and delayed checkpoint returned to the first onboarding screen about PC rental. |
+| Onboarding completion | `covered` | `confirmed` | Three onboarding screens were captured: PC rental, cloud saves, per-minute payment; the third `Далее` reached `Игры`. |
+| Authenticated, onboarding complete | `covered` | `confirmed` | After offline launch from completed-onboarding state, network restore + `Обновить` showed loader and delayed checkpoint returned to `Игры`. |
+
+Tooling note: earlier touch-tap probes against the refresh area were ambiguous
+and mostly produced Android system connectivity notifications. Final verdicts
+use the Android TV path where the refresh button is focused and activated by
+`DPAD_CENTER`. Short video/contact-sheet evidence is required for the loader,
+because delayed UIAutomator captures can miss it.
+
+Prior TASK-020 inventory context: the full screen-inventory continuation rule
+remains historical context for TASK-020, but the active TASK-021 goal is the
+network/offline refresh-routing check documented above.
+
+## Prior TASK-020 Phase A result
 
 Initial implementation added:
 
@@ -74,7 +94,7 @@ Full Phase A verification passed:
 | TASK-005 draft validator | `pass` | Public draft remained `blocked`, `runtime_execution_status=not_run`. |
 | Default TASK-020 runner | `pass` | `overall_status=blocked`, `runtime_execution_status=not_run`; no ADB/runtime call. |
 
-## Runtime result
+## Prior TASK-020 runtime result
 
 Runtime Phase B/C executed as bounded partial coverage.
 
@@ -497,27 +517,28 @@ payment, external traversal or account mutation occurred. Public-safe summary:
 
 ## Multi-agent status
 
-- Orchestrator: `PASS_FULL_SCREEN_INVENTORY_LEDGER_REMEDIATED`
-- Planner: `PASS_PHASE_A_PLAN`; confirmed base `main`/`origin/main` at
-  `ac2e11a` after TASK-019 and recommended Phase A file set/verification.
-- Builder: `PASS_MAIN_AGENT_PHASE_A_AND_FULL_SCREEN_INVENTORY_LEDGER`
-- QA Reviewer A: `PASS_AFTER_LEDGER_REMEDIATION`; the gamepad reset/detection
-  branch, wrong-OTP transient error state and left-rail expanded/collapsed
-  states are explicitly classified in the closure ledger.
-- QA Reviewer B: `PASS_AFTER_STATUS_REMEDIATION`; confirmed the full
-  screen-family inventory treats focus traps, Back no-ops, screensaver
-  recovery, QR/payment boundaries, long-list coverage and Settings recurrences
-  as checkpoints/anomalies/boundaries, without overclaiming payment, stream,
-  external QR traversal, game-title enumeration or compatibility coverage.
-- Security/Prod-safety Reviewer: `PASS_AFTER_LOGOUT_EXCEPTION_REMEDIATION`; no
-  committed APK/secrets/raw device identifiers/raw evidence/private endpoints
-  found in TASK-020 files, and logout/relogin is documented as a narrow
-  owner-approved `PROD_CONDITIONAL` continuity exception.
-- Docs/Scribe: `BLOCK_REMEDIATED`; required `git status` verification record,
-  DEC-022 and final multi-agent status updates were applied.
+- Orchestrator: `PASS_WITH_OWNER_DIRECTED_THREAD_DEVIATION`; TASK-021 executed
+  on `qa/task-021-network-offline-runtime-check` after the owner continued the
+  existing inventory thread instead of opening a fresh task thread.
+- Planner: `BLOCK_REMEDIATED`; confirmed the clarified product expectation is
+  now represented as expected-vs-observed transitions in the TASK-021 summary,
+  and stale TASK-020 active-goal wording was removed.
+- Builder: `PASS`; executed bounded DNS offline-like runtime checks,
+  helper-backed synthetic auth restoration, onboarding-state setup and public
+  summary/docs updates.
+- QA Reviewer A: `BLOCK_REMEDIATED`; stale TASK-020 multi-agent/scope wording,
+  verification overclaiming and missing expected-result source were corrected.
+- QA Reviewer B: `BLOCK_REMEDIATED`; D-pad activation and loader evidence ids
+  were added, true Wi-Fi-off remains explicitly blocked/unknown, and DNS
+  offline-like scope is called out.
+- Security/Prod-safety Reviewer: `BLOCK_REMEDIATED`; public artifacts exclude
+  raw network/device/auth values, and no payment, stream, private endpoint,
+  proxy, packet capture, APK modification or external navigation was performed.
+- Docs/Scribe: `BLOCK_REMEDIATED`; stale TASK-020 active run, forbidden-action
+  and stop-condition wording was replaced with TASK-021-specific handoff.
 - Subagent closure audit: `complete`; Planner, QA Reviewer A, QA Reviewer B,
-  Security/Prod-safety and Docs/Scribe outputs were recorded in this handoff;
-  no subagent output is needed for further TASK-020 work after final report.
+  Security/Prod-safety and Docs/Scribe findings were integrated, and all
+  TASK-021 subagents were closed after final verification.
 
 ## Forbidden actions
 
@@ -529,13 +550,18 @@ payment, external traversal or account mutation occurred. Public-safe summary:
 - APK patching, resigning or modification;
 - TLS/pinning/security bypass, proxy or packet capture;
 - payment, purchase, subscription, billing, WebView/redirect/browser,
-  stream/WebRTC/media playback, network/offline manipulation or profile/account
-  mutation. Logout remains forbidden except for the already executed narrow
-  owner-approved 2026-07-03 same-lane logout/relogin continuity exception.
+  stream/WebRTC/media playback, raw private endpoint extraction or external
+  navigation;
+- profile/account mutation beyond the already executed synthetic helper-backed
+  auth restore and owner-requested onboarding `Далее` actions;
+- any network/offline action outside the bounded reversible TASK-021 probe with
+  cleanup, redaction and local-only raw evidence.
 
 ## Stop conditions
 
-Stop if Phase A verification fails; if runtime prerequisites are unavailable;
-if a boundary surface would be entered; if raw evidence or private values would
-enter public output; if repeated crash/ANR or unrecoverable focus loss occurs;
-or if default branch merge/push is requested without explicit user command.
+Stop if the reversible network cleanup cannot be confirmed; if runtime
+prerequisites are unavailable; if captcha/payment/WebView/stream/private
+endpoint/proxy/packet-capture boundaries would be entered; if raw evidence or
+private values would enter public output; if repeated crash/ANR or
+unrecoverable focus loss occurs; if TASK-021 JSON/docs checks fail; or if
+default branch merge/push is requested without explicit user command.

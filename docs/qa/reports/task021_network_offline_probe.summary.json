@@ -1,0 +1,225 @@
+{
+  "schema_version": "task021_network_offline_probe_summary_v2",
+  "task_id": "TASK-021",
+  "mode": "NON_AUTONOMOUS",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001"
+  },
+  "local_evidence_roots": [
+    "task-021-network-offline-20260703T131500Z",
+    "task-021-refresh-video-20260703T102557Z",
+    "task-019-20260703T102652Z",
+    "task-021-auth-onboarding-state-20260703T103102Z",
+    "task-021-auth-onboarding-incomplete-refresh-20260703T103135Z",
+    "task-021-onboarding-complete-20260703T103303Z",
+    "task-021-auth-onboarding-complete-refresh-20260703T103437Z"
+  ],
+  "raw_values_policy": {
+    "raw_network_values_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_video_public": false,
+    "private_dns_raw_values_public": false,
+    "raw_auth_values_public": false
+  },
+  "production_safety": {
+    "wifi_off_probe": {
+      "classification": "PROD_CONDITIONAL",
+      "cleanup_attempted": true,
+      "notes": "Device transport used Wi-Fi ADB, so the true Wi-Fi-off probe risked disconnecting the controller and used a bounded self-recovery attempt."
+    },
+    "dns_offline_like_probe": {
+      "classification": "PROD_CONDITIONAL",
+      "cleanup_attempted": true,
+      "cleanup_status": "confirmed_restored_to_previous_public_safe_state",
+      "notes": "Temporary invalid private-DNS setting was used as a reversible offline-like condition that preserved ADB reachability."
+    },
+    "auth_session_restore": {
+      "classification": "PROD_CONDITIONAL",
+      "status": "confirmed",
+      "notes": "Authenticated checks used the established TASK-019 helper-backed synthetic auth path; no captcha bypass, payment, stream start or external navigation was performed."
+    }
+  },
+  "observations": [
+    {
+      "id": "wifi_off_probe_external_screensaver_interruption",
+      "status": "blocked_by_external_state",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-network-offline-20260703T131500Z",
+      "evidence_ids": [
+        "001_offline_launch_10s",
+        "002_offline_launch_15s"
+      ],
+      "observed_result": "The capture showed an external Android TV ambient/screensaver-like surface instead of an app offline state; UIAutomator XML was unavailable due idle-state timeout.",
+      "product_offline_verdict": "unknown"
+    },
+    {
+      "id": "dns_offline_like_app_error_screen",
+      "status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-network-offline-20260703T131500Z",
+      "evidence_ids": [
+        "3_dns_offline_like_launch_6s",
+        "4_dns_offline_like_launch_12s"
+      ],
+      "screen_family": "network_offline_error",
+      "public_texts": [
+        "\u041e\u0428\u0418\u0411\u041a\u0410",
+        "\u041d\u0435\u0442 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u043a \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442\u0443",
+        "\u041f\u0440\u043e\u0432\u0435\u0440\u044c \u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u0435",
+        "\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c"
+      ],
+      "external_navigation_followed": false,
+      "payment_or_purchase_action": false
+    },
+    {
+      "id": "unauth_refresh_after_network_restore",
+      "status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-refresh-video-20260703T102557Z",
+      "evidence_ids": [
+        "refresh_online_center_screenrecord.local-only.mp4",
+        "refresh_online_center_video_contact_sheet.preview-redacted.png",
+        "final_after_video_center.xml"
+      ],
+      "expected_behavior_source": "owner clarification in the current Codex thread on 2026-07-03",
+      "expected_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "auth_phone_input"
+      ],
+      "activation_method": "dpad_center_on_focused_refresh_button",
+      "observed_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "auth_phone_input"
+      ],
+      "public_loader_text": "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f",
+      "final_screen_family": "auth_phone_input",
+      "result_matches_expected": true
+    },
+    {
+      "id": "auth_onboarding_incomplete_refresh_after_network_restore",
+      "status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-auth-onboarding-incomplete-refresh-20260703T103135Z",
+      "evidence_ids": [
+        "1_offline_screen_auth_onboarding_incomplete",
+        "2_internet_restored_before_refresh",
+        "refresh_transition.local-only.mp4",
+        "refresh_transition_contact_sheet.preview-redacted.png",
+        "3_after_refresh_final",
+        "4_after_refresh_delayed_16s",
+        "5_after_refresh_delayed_26s"
+      ],
+      "expected_behavior_source": "owner clarification in the current Codex thread on 2026-07-03",
+      "expected_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "onboarding_pc_rental_screen"
+      ],
+      "precondition": "authenticated_session_with_onboarding_not_completed",
+      "activation_method": "dpad_center_on_focused_refresh_button",
+      "observed_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "onboarding_pc_rental_screen"
+      ],
+      "public_loader_text": "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f",
+      "final_public_texts": [
+        "\u041d\u0430 Fog Play \u0442\u044b \u0430\u0440\u0435\u043d\u0434\u0443\u0435\u0448\u044c \u043c\u043e\u0449\u043d\u044b\u0435 \u041f\u041a \u0434\u0440\u0443\u0433\u0438\u0445 \u0438\u0433\u0440\u043e\u043a\u043e\u0432",
+        "\u0413\u0435\u0439\u043c\u0435\u0440\u044b \u0441\u0434\u0430\u044e\u0442 \u0441\u0432\u043e\u0438 \u041f\u041a \u043d\u0430 \u043d\u0430\u0448\u0435\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435, \u0430 \u0442\u044b \u0438\u0433\u0440\u0430\u0435\u0448\u044c \u043d\u0430 \u043d\u0438\u0445 \u043e\u0442 24 \u20bd/\u0447\u0430\u0441",
+        "\u0414\u0430\u043b\u0435\u0435"
+      ],
+      "result_matches_expected": true
+    },
+    {
+      "id": "onboarding_three_screen_completion",
+      "status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-onboarding-complete-20260703T103303Z",
+      "evidence_ids": [
+        "1_onboarding_screen_1_before_next",
+        "2_after_onboarding_center_1",
+        "3_after_onboarding_center_2",
+        "4_after_onboarding_center_3"
+      ],
+      "expected_behavior_source": "owner clarification in the current Codex thread on 2026-07-03",
+      "expected_sequence": [
+        "onboarding_pc_rental_screen",
+        "onboarding_cloud_saves_screen",
+        "onboarding_per_minute_payment_screen",
+        "games_screen"
+      ],
+      "observed_sequence": [
+        "onboarding_pc_rental_screen",
+        "onboarding_cloud_saves_screen",
+        "onboarding_per_minute_payment_screen",
+        "games_screen"
+      ],
+      "final_screen_family": "games",
+      "result_matches_expected": true
+    },
+    {
+      "id": "auth_onboarding_complete_refresh_after_network_restore",
+      "status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_root": "task-021-auth-onboarding-complete-refresh-20260703T103437Z",
+      "evidence_ids": [
+        "1_offline_screen_auth_onboarding_complete",
+        "2_internet_restored_before_refresh",
+        "refresh_transition.local-only.mp4",
+        "refresh_transition_contact_sheet.preview-redacted.png",
+        "3_after_refresh_final",
+        "4_after_refresh_delayed_16s",
+        "5_after_refresh_delayed_26s"
+      ],
+      "expected_behavior_source": "owner clarification in the current Codex thread on 2026-07-03",
+      "expected_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "games_screen"
+      ],
+      "precondition": "authenticated_session_with_three_onboarding_screens_completed",
+      "activation_method": "dpad_center_on_focused_refresh_button",
+      "observed_transition": [
+        "network_offline_error",
+        "internet_check_loader",
+        "games_screen"
+      ],
+      "public_loader_text": "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u0441\u043e\u0435\u0434\u0438\u043d\u0435\u043d\u0438\u044f",
+      "final_screen_family": "games",
+      "final_public_texts": [
+        "\u0418\u0433\u0440\u044b",
+        "\u0412\u042b\u0411\u0415\u0420\u0418 \u0418\u0413\u0420\u0423"
+      ],
+      "result_matches_expected": true
+    }
+  ],
+  "known_tooling_notes": [
+    {
+      "id": "touch_tap_refresh_ambiguous",
+      "status": "confirmed",
+      "note": "Earlier touch-tap probes around the Refresh button produced system connectivity notifications and did not reliably prove activation. D-pad center on the focused Refresh button is the confirmed Android TV activation path for these verdicts."
+    },
+    {
+      "id": "loader_requires_visual_or_video_evidence",
+      "status": "confirmed",
+      "note": "The internet-check loader may be missed by delayed UIAutomator screenshots; short screenrecord/contact-sheet evidence confirmed it."
+    }
+  ],
+  "overall_result": {
+    "new_offline_screen_confirmed": true,
+    "new_offline_screen_family": "network_offline_error",
+    "true_wifi_off_product_result": "unknown_due_external_screensaver_interruption",
+    "offline_like_result": "confirmed",
+    "unauth_refresh_to_auth_phone_confirmed": true,
+    "auth_onboarding_incomplete_refresh_to_first_onboarding_confirmed": true,
+    "auth_onboarding_complete_refresh_to_games_confirmed": true,
+    "refresh_loader_confirmed": true,
+    "result_matches_clarified_expected_behavior": true
+  }
+}

@@ -12,6 +12,9 @@ WebView / WebRTC testing of MTC Fog Play.
   `tv-tpv-013` / `tv-tpv-a12-013`.
 - TASK-024 adds a native post-auth regression model, suite, fail-closed runner
   and public-safe validator derived from TASK-020/021/022/023 evidence.
+- TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
+  tests; it does not inspect real evidence, APKs, endpoints, QR targets or
+  device data.
 - Broader runtime lanes remain blocked or `not_run` until explicit confirmed
   approvals.
 - TASK-016 allows inventory-only local ADB preflight after owner approval; raw
@@ -53,6 +56,7 @@ docs/context/engineering/verification-memory.md
 docs/tasks/backlog.md
 docs/qa/approval-dependency-map.md
 docs/qa/evidence-schema.md
+docs/qa/synthetic-redaction-policy-test-corpus.md
 docs/approvals/*.md
 ```
 
@@ -66,6 +70,7 @@ python automation/approvals/validate_approval_metadata.py --metadata docs/approv
 python automation/device_inventory/generate_adb_device_inventory.py
 python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/public_repo_safety_scan.py
+python automation/quality/synthetic_redaction_corpus.py --json
 ```
 
 These commands are local and public-safe. They must not connect to devices, run

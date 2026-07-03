@@ -3,66 +3,115 @@
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-014 - Public repository safety scan checklist and local guard plan`
+Thread title: `TASK-017 - Synthetic redaction policy test corpus`
 Thread status: `inactive_completed`
-Fresh thread verified: `yes; continuation thread 019f28e6-d36c-70a3-969b-54bed4edfaf4 accepted and renamed`
-Task ID: `TASK-014`
-Task branch: `qa/task-014-public-repo-safety-scan`
+Fresh thread verified: `yes; continuation thread 019f28f3-79f6-7870-abd8-4a4c1de89004 accepted and renamed`
+Task ID: `TASK-017`
+Task branch: `qa/task-017-redaction-policy-test-corpus`
 Default branch: `main`
-Base commit: `10565a50681c3c9de51f6cd2c61898e8aded4894`
+Base commit: `bb49791c32dd400a9d2b43ee463571220b95d03b`
 Merge/push authority: `BOUNDED_AUTONOMOUS after all gates pass; no force-push`
-Production safety classification: `PROD_SAFE` for docs, tracked-file path scanning, unit tests, compile checks, hygiene scans and diff review.
+Production safety classification: `PROD_SAFE` for synthetic corpus files, local tests, static validation, docs, hygiene scans and diff review.
 
 ## Goal
 
-TASK-014 creates a public repository safety scan checklist and local fail-closed
-guard plan so tracked public files cannot silently include raw APKs, local-only
-evidence, signing/config material, raw media/log artifacts or packaged
-reverse-analysis archives.
+TASK-017 creates a public-safe synthetic redaction policy test corpus and local
+checks so report validators/redactors can be exercised against fabricated
+sensitive-looking values without using real secrets, private endpoints, raw
+evidence, APKs, device data or runtime captures.
 
 ## Source State
 
-- TASK-024 final correction verified: `main` and `origin/main` are aligned at
-  `10565a50681c3c9de51f6cd2c61898e8aded4894`.
-- TASK-024 Phase A/B passed and Phase C was blocked before runtime because no
-  approved TASK-024 runtime collector/input report existed.
-- TASK-014 was selected from `docs/tasks/backlog.md` by Planner and
-  Security/Prod-safety because it is public-safe and reduces RISK-007/RISK-009
-  style leak risks after runtime/report work.
+- TASK-014 completed and was merged/pushed to detected default branch `main` at
+  `67bd47995551b2ba17e04c522647f1ac2e6dd279`.
+- Before TASK-017 selection, `main` and `origin/main` were verified aligned at
+  `bb49791c32dd400a9d2b43ee463571220b95d03b`, newer than the TASK-014 handoff
+  baseline.
+- Planner selected TASK-017 from `docs/tasks/backlog.md`; Security/Prod-safety
+  approved the selection only for a tightly scoped synthetic-only corpus.
 
 ## Scope
 
-- Add TASK-014 source-of-truth task spec.
-- Add public repository safety checklist.
-- Add local static tracked-path guard under `automation/quality/`.
-- Add focused unit tests for guard behavior.
+- Add TASK-017 source-of-truth task spec.
+- Add a public-safe synthetic redaction corpus using fabricated values only.
+- Cover credential-like, token-like, URL/endpoint-like, route/deeplink-like,
+  local/APK path-like, hash-like, device identifier-like, phone/OTP-like,
+  payment/account-like, QR payload-like and raw evidence reference-like classes.
+- Add local tests proving relevant validators/redactors reject, flag or redact
+  the synthetic cases without printing raw specimens in command output.
+- Harden the TASK-008 WebView/payment redactor for synthetic account-id style
+  values found by QA A review.
 - Update source-of-truth docs, quality gates, risk register and verification
   memory.
 
+## Allowed files
+
+- `automation/quality/synthetic_redaction_corpus.py`
+- `automation/webview_payment_safe_runner/generate_webview_payment_safe_report.py`
+- `tests/test_synthetic_redaction_corpus.py`
+- `tasks/TASK_017_synthetic_redaction_policy_test_corpus.md`
+- `docs/qa/synthetic-redaction-policy-test-corpus.md`
+- `automation/README.md`
+- `README.md`
+- `docs/context/current-state.md`
+- `docs/context/handoff/active-run.md`
+- `docs/context/governance/risk-register.md`
+- `docs/context/engineering/quality-gates.md`
+- `docs/context/engineering/verification-memory.md`
+- `docs/tasks/backlog.md`
+
 ## Out Of Scope
 
-- ADB, APK install/app launch, APK inspection or APK modification.
-- WebView/browser/payment/stream/WebRTC/network/offline/runtime execution.
-- Reading ignored `.qa_local/` raw evidence.
-- Secret extraction, endpoint extraction, raw QR target publication or raw
-  evidence publication.
+- ADB, Android runtime, APK read/install/launch or APK inspection.
+- WebView/browser/payment/stream/WebRTC/network/offline execution.
+- Reading or traversing ignored `.qa_local/` raw evidence.
+- Real secrets, credentials, device identifiers, phone/OTP values, QR targets,
+  private endpoints, routes, account data or payment data.
+- Publishing raw specimen values in scanner/validator command output.
+
+## Forbidden files/actions
+
+- Reading, listing, copying or deriving corpus values from ignored `.qa_local/`
+  raw evidence, APKs, screenshots, logs, XML, videos or QR decode artifacts.
+- ADB/device interaction, APK read/install/launch, runtime navigation,
+  WebView/WebRTC/payment/network/offline execution or production interaction.
+- Real secrets, endpoints, QR targets, phone/OTP values, device identifiers,
+  account data or payment data in code, tests, docs or command output.
+- Scanner, validator or CLI output that prints raw matched specimen values
+  instead of case ids/categories.
+
+## Acceptance criteria
+
+- Every corpus entry is explicitly synthetic and public-safe.
+- The corpus covers credential-like, token-like, URL/endpoint-like,
+  route/deeplink-like, local/APK path-like, hash-like, device identifier-like,
+  phone/OTP-like, payment/account-like, QR payload-like and raw evidence
+  reference-like classes.
+- Tests prove TASK-020/TASK-024 public report validators reject covered
+  synthetic values without echoing raw specimens.
+- Tests prove release gate and WebView/payment generated reports redact covered
+  synthetic values without preserving raw specimens.
+- TASK-014 public repository safety scan and full-tree hygiene checks pass.
+- Docs state that TASK-017 does not approve or execute runtime, APK, WebView,
+  WebRTC, payment, network or local raw evidence work.
+
 
 ## Multi-Agent Status
 
 - Orchestrator: `complete`.
-- Planner: `complete; selected TASK-014`.
-- Builder: `complete`.
-- QA Reviewer A: `approved_after_false_negative_remediation`.
-- QA Reviewer B: `approved_after_tree_mode_boundary_remediation`.
-- Security/Prod-safety Reviewer: `approved_after_tree_mode_boundary_remediation`.
-- Docs/Scribe: `complete_after_deliverables_staged_and_committed`.
+- Planner: `complete; selected TASK-017`.
+- Builder: `complete; added synthetic corpus and tests within assigned ownership`.
+- QA Reviewer A: `approved_after_webview_payment_redaction_remediation`.
+- QA Reviewer B: `approved_after_final_recheck`.
+- Security/Prod-safety Reviewer: `approved_after_final_recheck`.
+- Docs/Scribe: `approved_after_final_recheck`.
 
 ## Deliverables
 
-- `tasks/TASK_014_public_repository_safety_scan_checklist.md`
-- `docs/qa/public-repository-safety-scan.md`
-- `automation/quality/public_repo_safety_scan.py`
-- `tests/test_public_repo_safety_scan.py`
+- `tasks/TASK_017_synthetic_redaction_policy_test_corpus.md`
+- `docs/qa/synthetic-redaction-policy-test-corpus.md`
+- `automation/quality/synthetic_redaction_corpus.py`
+- `tests/test_synthetic_redaction_corpus.py`
 - source-of-truth doc updates
 
 ## Verification Plan
@@ -70,7 +119,7 @@ reverse-analysis archives.
 ```bash
 git status --short --branch
 git diff --check
-python -m pytest -q tests/test_public_repo_safety_scan.py tests/test_full_tree_hygiene_scan.py
+python -m pytest -q tests/test_synthetic_redaction_corpus.py tests/test_post_auth_navigation_report_validator.py tests/test_native_regression_report_validator.py tests/test_release_gate_report.py tests/test_webview_payment_safe_runner.py
 python -m pytest -q
 python -m compileall -q automation tests
 python automation/quality/full_tree_hygiene_scan.py
@@ -80,37 +129,42 @@ python automation/quality/public_repo_safety_scan.py
 
 ## Verification Results
 
+- `python -m pytest -q tests/test_synthetic_redaction_corpus.py`: `46 passed` before QA A remediation; `55 passed` after QA A remediation.
+- `python -m pytest -q tests/test_synthetic_redaction_corpus.py tests/test_post_auth_navigation_report_validator.py tests/test_native_regression_report_validator.py tests/test_release_gate_report.py tests/test_webview_payment_safe_runner.py`: `92 passed` before QA A remediation; `101 passed` after QA A remediation and after account-id redaction remediation.
 - `git diff --check`: `pass`.
-- `python -m pytest -q tests/test_public_repo_safety_scan.py tests/test_full_tree_hygiene_scan.py`: `14 passed`.
-- `python -m pytest -q`: `459 passed, 1 skipped`.
 - `python -m compileall -q automation tests`: `pass`.
 - `python automation/quality/full_tree_hygiene_scan.py`: `pass`.
 - `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`: `pass`.
-- `python automation/quality/public_repo_safety_scan.py`: `pass`, `scanned_files=158`, `findings=0`.
-- `python automation/quality/public_repo_safety_scan.py --mode tree`: `pass`, `scanned_files=162`, `findings=0`.
+- `python automation/quality/public_repo_safety_scan.py`: `pass`, `scanned_files=162`, `findings=0`.
+- `python -m pytest -q`: `505 passed, 1 skipped` before QA A remediation; `514 passed, 1 skipped` after QA A remediation.
+- Staged `git diff --cached --check`: `pass`.
+- Staged-candidate `python automation/quality/public_repo_safety_scan.py`: `pass`, `scanned_files=166`, `findings=0`.
+- Staged-candidate `python automation/quality/full_tree_hygiene_scan.py`: `pass`.
 
 ## Review Results
 
-- QA Reviewer A initially found a `.qa_local`/`.env` path normalization
-  false-negative. Remediated with literal `./` stripping and per-case tests;
-  re-review approved.
-- QA Reviewer B and Security/Prod-safety initially found that tree mode could
-  enumerate ignored local raw evidence roots. Remediated by excluding local-only
-  roots from tree traversal and adding regression tests; re-reviews approved.
-- Docs/Scribe found untracked deliverables before finalization. Deliverables
-  were staged, committed, pushed and integrated.
+- Planner: selected TASK-017 because it reduces redaction/leak risks more
+  directly than TASK-018 while remaining public-safe.
+- Security/Prod-safety: approved only with synthetic-only safeguards and no
+  `.qa_local`, APK, runtime, QR target, endpoint or raw evidence use.
+- QA Reviewer A: `blocked_pending_recheck`; initial review required WebView/payment corpus coverage, explicit per-entry synthetic/public-safe markers and static validator coverage matrix. Remediation added all three. Re-review found WebView/payment account-id fragment leakage for `SRC-009`; remediation added account-id redaction and sensitive-fragment assertions. Verification was rerun.
+- QA Reviewer B: `approved`.
+- QA Reviewer A final re-review: `approved`.
+- QA Reviewer B final re-review: `approved`.
+- Security/Prod-safety final re-review: `approved`.
+- Docs/Scribe final re-review: `approved`.
 
 ## Thread Handoff
 
-- Current thread status: `inactive_completed`.
-- Next thread created: `019f28f3-79f6-7870-abd8-4a4c1de89004`.
-- Next thread title/prompt seed: `NEXT_TASK_SELECTION_FROM_main@67bd479`.
-- Next task selection must happen in the fresh continuation thread after it
-  verifies current default branch state.
+- Current thread status: `inactive_completed` after task branch integration.
+- Next thread created: `no`; create fresh continuation only after default
+  branch push is verified.
+- Next task selection should start from the verified detected default branch
+  head after TASK-017 integration.
 
 ## Stop Conditions
 
-Stop if the task requires raw local evidence inspection, APK handling, ADB,
-device/app runtime execution, private endpoints, real accounts, real payments,
-secret values in output, or scanner behavior that would print matched raw
-content into public logs.
+Stop if the task requires real/local raw evidence inspection, APK handling,
+ADB/device/app runtime execution, private endpoints, real accounts, real
+payments, real phone/OTP/device/QR values, production interaction, or scanner
+behavior that would print matched raw specimen values into public logs.

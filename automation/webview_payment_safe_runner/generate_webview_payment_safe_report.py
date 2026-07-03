@@ -125,6 +125,10 @@ REDACTION_PATTERNS = (
         r"\1=[REDACTED_PAYMENT]",
     ),
     (
+        re.compile(r"\baccount[_-]?id\s*[:=]\s*[^\s,;]+", re.IGNORECASE),
+        "account_id=[REDACTED_ACCOUNT]",
+    ),
+    (
         re.compile(r"(?<!\d)(?:\d[ -]?){13,19}(?!\d)"),
         "[REDACTED_PAYMENT_NUMBER]",
     ),

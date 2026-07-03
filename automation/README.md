@@ -160,6 +160,9 @@ WebRTC, payment flows, network services or production systems.
   forbidden raw artifact families such as APKs, raw evidence, signing material,
   local config and local-only artifact directories. It reports only rule ids,
   paths and category-level reasons, never matched file contents.
+- `synthetic_redaction_corpus.py` defines fabricated public-safe redaction test
+  specimens for TASK-017. It is local/static only and must not be populated
+  from real evidence, APKs, endpoints, QR targets, credentials or device data.
 
 ## Safety Rules
 

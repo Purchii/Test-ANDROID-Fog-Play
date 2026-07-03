@@ -55,7 +55,7 @@
 | TASK-015G/017B | Residual approval strictness polish and TASK-005 owner approval input pack | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe owner input templates only; no runtime or ADB | qa/task-015g-017b-approval-strictness-owner-input-pack | completed; default push authorized by explicit user command |
 | TASK-015H/017C | Final scope-version/normalization polish + TASK-005 owner approval handoff finalization | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe owner handoff only; no runtime, no ADB refresh | qa/task-015h-017c-scope-normalization-owner-handoff | completed; default push authorized by explicit user command |
 | TASK-016 | Device/build inventory and runtime preflight draft | BOUNDED_AUTONOMOUS for public-safe docs/local validation only; runtime execution blocked | qa/task-016-device-build-runtime-preflight | superseded by completed TASK-015A/016 |
-| TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | partially covered by TASK-015E/017 synthetic metadata hardening; broader corpus remains proposed |
+| TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | completed; synthetic-only corpus, redaction tests and WebView/payment account-id redaction passed review |
 | TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | proposed |
 
 ## Selection rule
@@ -111,3 +111,9 @@ not exhaustive navigation proof.
 After TASK-012 integration, a next-task selection checkpoint confirmed that no eligible unfinished public-safe task remained in the backlog. TASK-005 was later unblocked for one owner-approved 2026-07-02 limited smoke on `tv-tpv-013`. Remaining runtime-dependent work beyond that narrow smoke remains blocked until its own approved build/APK, Android TV target, runtime configuration, fixture approvals, redaction policy, evidence storage, cleanup/rollback, QA review and Security/Prod-safety review are confirmed.
 
 Planner may continue autonomously with proposed P4 tasks only when the selected task is public-safe, bounded, verifiable locally and does not require user secrets, private endpoints, APK handling, device execution, real accounts, real payments or production interaction. Runtime/device/APK/WebView/WebRTC/payment/network/live CI execution remains blocked until approved prerequisites are recorded with `evidence_status=confirmed`.
+
+TASK-017 completed after TASK-014. It is limited to a public-safe synthetic
+redaction corpus, static validators/redactors and local tests. It did not
+inspect `.qa_local`, APKs, runtime evidence, real secrets, private endpoints,
+real QR targets, real phone/OTP values, device identifiers, account data or
+payment data.

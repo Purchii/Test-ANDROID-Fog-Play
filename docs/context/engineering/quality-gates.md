@@ -114,6 +114,15 @@ introduced failing tests must not be deferred to a later independent task.
 - TASK-014 is static/public-safe only. Passing repository path scans does not
   confirm runtime behavior, APK safety, WebView/payment/stream behavior,
   network/offline behavior or compatibility coverage.
+- TASK-017 synthetic redaction corpus must use fabricated values only, mark
+  every entry as synthetic/public-safe and cover credential-like, token-like,
+  URL/endpoint-like, route/deeplink-like, local/APK path-like, hash-like,
+  device identifier-like, phone/OTP-like, payment/account-like, QR
+  payload-like and raw evidence reference-like classes. Tests and command
+  output must report case ids/categories rather than raw specimen values.
+- TASK-017 is static/public-safe only. Passing synthetic corpus tests does not
+  confirm real evidence redaction, runtime behavior, APK safety, WebView,
+  WebRTC, payment, network/offline behavior or compatibility coverage.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 

@@ -251,6 +251,16 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   and multi-agent reviews passed; the task was merged/pushed to detected
   `main`. A scanner pass confirms only tracked-path repository hygiene at
   command time.
+- TASK-017 completed in thread
+  `TASK-017 - Synthetic redaction policy test corpus` on branch
+  `qa/task-017-redaction-policy-test-corpus` from detected default branch
+  `main` commit `bb49791c`. The task is `BOUNDED_AUTONOMOUS` and `PROD_SAFE`
+  only: public-safe fabricated corpus values, local tests, static validation,
+  WebView/payment account-id redaction hardening and docs. It did not read
+  ignored `.qa_local` evidence, inspect APKs, run
+  ADB/runtime/WebView/WebRTC/payment/network flows, use real secrets/endpoints,
+  real phone/OTP/device identifiers, real QR targets, account data or payment
+  values.
 
 ## Evidence status policy
 

@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-025A - No-device selected-lane native regression harness and report hardening`
-Thread status: `active_in_progress`
+Thread status: `inactive_completed`
 Fresh thread verified: `yes; current task thread 019f2a52-4be4-7010-a692-dd290aa93e29 accepted and renamed`
 Task ID: `TASK-025A`
 Task branch: `qa/task-025a-no-device-native-regression-harness`
@@ -99,7 +99,7 @@ available and owner approvals are refreshed.
 
 ## Multi-Agent Status
 
-- Orchestrator: `in_progress`.
+- Orchestrator: `complete`.
 - Planner: `complete; approved TASK-025A no-device plan`.
 - Security/Prod-safety pre-implementation review:
   `complete; approved_with_guardrails`.
@@ -173,14 +173,24 @@ python automation/native_regression/run_task025_selected_lane_regression.py
 
 ## Integration Results
 
-Pending.
+- First task commit: `909e476335598591b87adc30e7d561fc019e7a7c`.
+- Task branch pushed: `yes`.
+- Default branch integration: `yes; remote main fast-forwarded from task
+  branch because local main is checked out in a separate worktree`.
+- Local default worktree fast-forwarded: `yes`; local `main` and `origin/main`
+  aligned at `909e476335598591b87adc30e7d561fc019e7a7c` before terminal
+  source-of-truth sync.
+- Terminal source-of-truth sync commit: final task branch HEAD after this
+  record; exact hash is reported in the final task report.
+- Final default branch push/alignment after terminal sync: verified in the
+  final task report after push.
 
 ## Thread Handoff
 
-- Current thread status: `active_in_progress`.
-- Next thread created: `no; create exactly one continuation thread only after
-  TASK-025A is verified, merged/pushed to detected default branch and remote
-  alignment is confirmed`.
+- Current thread status: `inactive_completed after terminal source-of-truth
+  sync and final push`.
+- Next thread created: `reported in final task report after default-branch
+  push/alignment is confirmed`.
 - Next task selection must happen only in that fresh continuation thread from
   the final pushed default branch.
 

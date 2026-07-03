@@ -32,7 +32,7 @@
 | TASK-022 | Xbox-like gamepad full screen inventory | NON_AUTONOMOUS runtime task after TASK-020/TASK-021 selected-lane context | qa/task-022-xbox-gamepad-screen-inventory | Completed with boundaries; final review/verification passed; default push completed by explicit owner command |
 | TASK-023 | Full data screen inventory | NON_AUTONOMOUS runtime/data-inventory task after TASK-022 selected-lane context | qa/task-023-full-data-screen-inventory | full public-safe data inventory completed with dynamic game/server list limits; integrated to `main` before TASK-024 |
 | TASK-024 | Native post-auth regression pack + selected-lane runtime regression | BOUNDED_AUTONOMOUS after owner authorization in TASK-024 thread | qa/task-024-native-post-auth-regression-pack | completed; Phase A/B passed, Phase C blocked before runtime pending approved collector/input, default integration completed |
-| TASK-025A | No-device selected-lane native regression harness and report hardening | BOUNDED_AUTONOMOUS; PROD_SAFE no-device docs/schemas/validators/synthetic tests only | qa/task-025a-no-device-native-regression-harness | in progress; physical runtime deferred because no device is available |
+| TASK-025A | No-device selected-lane native regression harness and report hardening | BOUNDED_AUTONOMOUS; PROD_SAFE no-device docs/schemas/validators/synthetic tests only | qa/task-025a-no-device-native-regression-harness | completed; physical runtime deferred because no device is available |
 | TASK-025B | Selected-lane physical native regression runtime | future runtime task after device returns and approvals refresh | qa/task-025b-selected-lane-physical-native-regression | deferred; must start in fresh thread after TASK-025A integration |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
@@ -125,10 +125,10 @@ public repo-relative reference sanity checks only. It did not read ignored
 `.qa_local` evidence, inspect APKs, run ADB/runtime/WebView/WebRTC/payment/
 network checks, crawl external links or claim runtime/product behavior.
 
-TASK-025A is the current no-device audit task. TASK-025 physical-device runtime
-execution is deferred because no physical Android TV/STB device is currently
-available. TASK-025A is limited to no-device automation readiness,
-schema/report hardening and fake/synthetic tests. TASK-025B will execute
+TASK-025A completed as a no-device audit task. TASK-025 physical-device runtime
+execution remains deferred because no physical Android TV/STB device is
+currently available. TASK-025A is limited to no-device automation readiness,
+schema/report hardening and fake/synthetic tests. TASK-025B may execute
 selected-lane physical runtime only after a device is available and owner
 approvals are refreshed.
 

@@ -242,13 +242,15 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   report existed. TASK-024 does not claim exhaustive app navigation,
   payment/WebView, stream/session, broad compatibility or complete dynamic
   game/server value inventory.
-- TASK-014 completed local implementation on branch
+- TASK-014 completed on branch
   `qa/task-014-public-repo-safety-scan` from `main` commit `10565a5`. It is
   `BOUNDED_AUTONOMOUS` and `PROD_SAFE` only: public repository safety checklist,
   local tracked-path guard and static tests. It does not read ignored
   `.qa_local` raw evidence, inspect APKs, run ADB, launch the app, execute
-  WebView/WebRTC/payment/network flows or confirm runtime behavior. A scanner
-  pass confirms only tracked-path repository hygiene at command time.
+  WebView/WebRTC/payment/network flows or confirm runtime behavior. Verification
+  and multi-agent reviews passed; the task was merged/pushed to detected
+  `main`. A scanner pass confirms only tracked-path repository hygiene at
+  command time.
 
 ## Evidence status policy
 

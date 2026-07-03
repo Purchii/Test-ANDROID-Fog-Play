@@ -148,6 +148,19 @@ The generator is designed to fail closed:
 - complete metadata produces a `not_run` navigation transition plan only and never claims runtime transition behavior passed in TASK-011;
 - notes, transition aliases and artifact references are redacted before output.
 
+## Quality Guards
+
+`automation/quality/` contains local static repository hygiene and public-safety
+guards. These tools do not interact with Android devices, APKs, WebView,
+WebRTC, payment flows, network services or production systems.
+
+- `full_tree_hygiene_scan.py` scans tracked/public-safe text trees for
+  whitespace, EOF and JSON BOM hygiene.
+- `public_repo_safety_scan.py` scans tracked/public-repository paths for
+  forbidden raw artifact families such as APKs, raw evidence, signing material,
+  local config and local-only artifact directories. It reports only rule ids,
+  paths and category-level reasons, never matched file contents.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

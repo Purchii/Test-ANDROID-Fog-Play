@@ -31,7 +31,7 @@
 | TASK-021 | Network/offline runtime probe | NON_AUTONOMOUS runtime task after TASK-020 selected-lane context | qa/task-021-network-offline-runtime-check | reversible DNS offline-like probe confirmed; true Wi-Fi-off verdict remains unknown; integrated to `main` before TASK-024 |
 | TASK-022 | Xbox-like gamepad full screen inventory | NON_AUTONOMOUS runtime task after TASK-020/TASK-021 selected-lane context | qa/task-022-xbox-gamepad-screen-inventory | Completed with boundaries; final review/verification passed; default push completed by explicit owner command |
 | TASK-023 | Full data screen inventory | NON_AUTONOMOUS runtime/data-inventory task after TASK-022 selected-lane context | qa/task-023-full-data-screen-inventory | full public-safe data inventory completed with dynamic game/server list limits; integrated to `main` before TASK-024 |
-| TASK-024 | Native post-auth regression pack + selected-lane runtime regression | BOUNDED_AUTONOMOUS after owner authorization in TASK-024 thread | qa/task-024-native-post-auth-regression-pack | in progress; Phase A/B tooling and docs under verification |
+| TASK-024 | Native post-auth regression pack + selected-lane runtime regression | BOUNDED_AUTONOMOUS after owner authorization in TASK-024 thread | qa/task-024-native-post-auth-regression-pack | completed; Phase A/B passed, Phase C blocked before runtime pending approved collector/input, default integration completed |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

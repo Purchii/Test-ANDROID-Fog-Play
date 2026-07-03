@@ -106,6 +106,14 @@ introduced failing tests must not be deferred to a later independent task.
   default `--mode auto` uses git tracked files in a checkout and falls back to
   `--mode public-safe-tree` outside git while excluding `.git/`, `.qa_local/`,
   caches, build artifacts and binary extensions.
+- TASK-014 public repository safety scan must fail closed when tracked paths
+  include local-only directories, APK/package artifacts, raw evidence media/logs,
+  signing/config/secret filenames or screenshot-like raw evidence names. The
+  scanner must report only rule ids, paths and category-level reasons, not file
+  contents or matched secret-like values.
+- TASK-014 is static/public-safe only. Passing repository path scans does not
+  confirm runtime behavior, APK safety, WebView/payment/stream behavior,
+  network/offline behavior or compatibility coverage.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 

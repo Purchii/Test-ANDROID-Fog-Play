@@ -59,7 +59,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-012 completed in fresh thread `TASK-012 - Safe task prioritization and approval-dependency map` on branch `qa/task-012-safe-task-prioritization` from `main` commit `f90c32d`. Planner and Security/Prod-safety selected TASK-012 because runtime/device-dependent work remains blocked and the next safe autonomous step is to map approval dependencies before selecting user-answer-dependent runtime tasks.
 - Post-TASK-012 next-task selection confirmed `main` and `origin/main` aligned at `3cee73e441f0fa945ed4632b47d2880cfae9951f`, with completed task branches merged into the detected default branch. No eligible unfinished public-safe backlog task remained; TASK-005 stayed blocked by missing confirmed runtime prerequisites.
 - TASK-013 completed in thread `TASK-013 - Next-task selection blocker and safe backlog refresh` on branch `qa/task-013-next-task-selection-safe-backlog-refresh` from `main` commit `3cee73e`. It records the next-task selection blocker and adds proposed public-safe follow-up tasks that do not require user answers, private data, APK handling, device execution or production interaction.
-- TASK-015 completed in thread `TASK-015 - Approval Metadata Schema Validator` on branch `qa/task-015-approval-metadata-validator` from `main` commit `a44dba8`. The user explicitly selected TASK-015 after the approval audit context. TASK-014 remains proposed/not integrated in this repository state, and TASK-015 was kept isolated on its own branch. TASK-015 adds public-safe approval metadata docs, a local fail-closed validator, unit tests, README/pytest onboarding and safety regressions for release reviewer approvals and TASK-002 evidence gating.
+- TASK-015 completed in thread `TASK-015 - Approval Metadata Schema Validator` on branch `qa/task-015-approval-metadata-validator` from `main` commit `a44dba8`. The user explicitly selected TASK-015 after the approval audit context. TASK-015 was kept isolated on its own branch. TASK-015 adds public-safe approval metadata docs, a local fail-closed validator, unit tests, README/pytest onboarding and safety regressions for release reviewer approvals and TASK-002 evidence gating.
 - TASK-015A/016 completed in thread `TASK-015A/016 - Approval validator hardening and ADB device/build inventory preflight` on branch `qa/task-015a-016-approval-validator-adb-inventory-preflight`. The user explicitly authorized default/trunk push with `пушь в мастер`, interpreted as detected default branch `main`. The task hardens TASK-015 approval validation against audit false-pass cases and adds TASK-016 inventory-only ADB preflight. Owner-approved local ADB inventory ran with raw outputs under ignored `.qa_local/devices/`; the final run saw no authorized ADB devices, so device collection is blocked while APK install, app launch and runtime smoke remain `not_run`.
 
 - TASK-015B/016A completed in thread `TASK-015B/016A - Final approval validator hardening and ADB inventory rerun/preflight` on branch `qa/task-015b-016a-final-validator-adb-preflight` from detected default branch `main`. The task closes the remaining post TASK-015A/016 approval false-pass cases, adds device alias and ADB inventory policies, and hardens TASK-016A alias-map reuse. Verification passed locally with 104 targeted validator/inventory tests and 204 full pytest tests through both pytest entrypoints, plus compileall. Owner-approved local ADB inventory ran but collected zero public devices because `adb devices -l` failed; APK install, app launch and runtime smoke remain `not_run`. Follow-up audit confirmed merge commit `0832867` is present on `main` and `origin/main`.
@@ -233,14 +233,22 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   the reversible DNS offline-like app error and refresh recovery behavior; true
   Wi-Fi-off product verdict remains `unknown` because the Wi-Fi-off probe hit an
   external TV screensaver-like interruption with ADB disconnect limitations.
-- TASK-024 is active on branch
-  `qa/task-024-native-post-auth-regression-pack` from `main` commit `5482bfb`.
-  It adds the native post-auth regression model, suite, fail-closed runner and
-  validator. The initial public TASK-024 report is fail-closed
-  `blocked`/`not_run` until an approved Phase C runtime collector/input report
-  exists. TASK-024 does not claim exhaustive app navigation, payment/WebView,
-  stream/session, broad compatibility or complete dynamic game/server value
-  inventory.
+- TASK-024 completed on branch
+  `qa/task-024-native-post-auth-regression-pack` and was merged/pushed to
+  `main` at `10565a50681c3c9de51f6cd2c61898e8aded4894` after a final
+  status-memory remediation commit. It adds the native post-auth regression
+  model, suite, fail-closed runner and validator. Phase A/B passed; Phase C
+  blocked before runtime because no approved TASK-024 runtime collector/input
+  report existed. TASK-024 does not claim exhaustive app navigation,
+  payment/WebView, stream/session, broad compatibility or complete dynamic
+  game/server value inventory.
+- TASK-014 completed local implementation on branch
+  `qa/task-014-public-repo-safety-scan` from `main` commit `10565a5`. It is
+  `BOUNDED_AUTONOMOUS` and `PROD_SAFE` only: public repository safety checklist,
+  local tracked-path guard and static tests. It does not read ignored
+  `.qa_local` raw evidence, inspect APKs, run ADB, launch the app, execute
+  WebView/WebRTC/payment/network flows or confirm runtime behavior. A scanner
+  pass confirms only tracked-path repository hygiene at command time.
 
 ## Evidence status policy
 

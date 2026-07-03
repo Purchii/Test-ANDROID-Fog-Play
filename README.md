@@ -64,6 +64,8 @@ python -m pytest -q
 python -m compileall automation tests
 python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.example.json
 python automation/device_inventory/generate_adb_device_inventory.py
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/public_repo_safety_scan.py
 ```
 
 These commands are local and public-safe. They must not connect to devices, run

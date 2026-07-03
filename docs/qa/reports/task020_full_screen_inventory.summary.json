@@ -1,0 +1,283 @@
+{
+  "schema_version": "task020_full_screen_inventory_summary_v1",
+  "task_id": "TASK-020",
+  "mode": "NON_AUTONOMOUS",
+  "run_status": "full_screen_inventory_closed_by_screen_family_ledger",
+  "coverage_type": "approved_lane_screen_family_inventory",
+  "evidence_status": "confirmed",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "local_evidence_roots": [
+    "task-020-zero-audit-20260702T101453Z",
+    "task-020-zero-reset-inventory-20260702T110146Z"
+  ],
+  "raw_values_policy": {
+    "raw_phone_or_otp_public": false,
+    "raw_qr_targets_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_server_or_tariff_values_public": false,
+    "payment_or_external_link_followed": false,
+    "captcha_solved_or_bypassed_by_automation": false
+  },
+  "closure_ledger": [
+    {
+      "screen_family": "app_launch_splash_loader",
+      "status": "covered",
+      "evidence_ids": ["000-003", "088", "112-114", "178-179", "193", "317", "356-357"],
+      "notes": "Launch, relaunch and post-auth loaders were captured as first-class transient screens."
+    },
+    {
+      "screen_family": "auth_phone_entry_with_legal_links",
+      "status": "covered",
+      "evidence_ids": ["zero-audit:000-001", "zero-reset:070-077", "zero-reset:176-177"],
+      "notes": "Canonical TASK-019 on-screen keypad path was used; raw phone value remains local-only."
+    },
+    {
+      "screen_family": "license_agreement_webview",
+      "status": "covered",
+      "evidence_ids": ["010-012", "030"],
+      "notes": "Legal WebView was captured with Back/recovery attempts."
+    },
+    {
+      "screen_family": "personal_data_policy_webview",
+      "status": "covered",
+      "evidence_ids": ["040-041", "050", "060-063"],
+      "notes": "Policy WebView was captured with repeated navigation recovery attempts."
+    },
+    {
+      "screen_family": "otp_code_entry",
+      "status": "covered",
+      "evidence_ids": ["080-082", "zero-audit:078-086", "177-178"],
+      "notes": "OTP entry and wrong-code path were captured. Wrong-code feedback includes a visual bottom popup absent from XML."
+    },
+    {
+      "screen_family": "auth_wrong_otp_error_retry_transient",
+      "status": "covered",
+      "evidence_ids": ["zero-audit:079-086"],
+      "notes": "Wrong-OTP attempts produced transient visual feedback and retry/frontier states; screenshot evidence is required because the popup is not fully exposed by XML."
+    },
+    {
+      "screen_family": "captcha_image_code_entry",
+      "status": "covered",
+      "evidence_ids": ["zero-audit:089", "zero-audit:094-096"],
+      "notes": "Captcha screen was confirmed and not solved or bypassed by automation."
+    },
+    {
+      "screen_family": "onboarding_slides",
+      "status": "covered",
+      "evidence_ids": ["089-099"],
+      "notes": "First-run onboarding slides and final transition to post-auth catalog were captured."
+    },
+    {
+      "screen_family": "post_auth_games_catalog_top",
+      "status": "covered",
+      "evidence_ids": ["100", "114", "138-140", "180", "324", "340", "357"],
+      "notes": "Top catalog, left rail, banner area, Continue Game row and first grid focus were captured."
+    },
+    {
+      "screen_family": "games_catalog_long_scroll_and_bottom",
+      "status": "covered",
+      "evidence_ids": ["208-300", "325-333"],
+      "notes": "Deep scroll and repeated bottom/no-change segment were captured; complete game-title enumeration is not claimed."
+    },
+    {
+      "screen_family": "catalog_banner_qr",
+      "status": "covered",
+      "evidence_ids": ["114", "139", "qr_decode_114", "qr_decode_139"],
+      "notes": "QR decoded into local-only evidence and not opened."
+    },
+    {
+      "screen_family": "search_empty_keyboard",
+      "status": "covered",
+      "evidence_ids": ["163-164", "341"],
+      "notes": "Search screen with on-screen keyboard and popular/empty state captured."
+    },
+    {
+      "screen_family": "search_no_results",
+      "status": "covered",
+      "evidence_ids": ["165", "342"],
+      "notes": "No-results state captured after safe synthetic query."
+    },
+    {
+      "screen_family": "search_results_and_result_to_detail",
+      "status": "covered",
+      "evidence_ids": ["166-170", "343-344"],
+      "notes": "Search results and first result opening into game detail were captured."
+    },
+    {
+      "screen_family": "session_journal_empty",
+      "status": "covered",
+      "evidence_ids": ["117-118", "203-207", "301-307", "339", "358"],
+      "notes": "Blank journal persisted after delays; Back no-op and collapsed/expanded rail behavior were captured."
+    },
+    {
+      "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
+      "status": "covered",
+      "evidence_ids": ["303-305", "319-323", "358-361", "364-365"],
+      "notes": "Expanded rail traversal, collapsed empty-content focus, recovery to expanded rail, and later focus-loss/no-op states were captured."
+    },
+    {
+      "screen_family": "steam_topup_qr",
+      "status": "covered",
+      "evidence_ids": ["119-120", "307", "334-335", "338", "348", "359", "qr_decode_120"],
+      "notes": "Steam top-up QR was decoded locally, treated as a boundary and not opened."
+    },
+    {
+      "screen_family": "feedback_qr",
+      "status": "covered",
+      "evidence_ids": ["121-122", "308", "349", "360", "qr_decode_122"],
+      "notes": "Support/feedback QR was decoded locally, treated as a boundary and not opened."
+    },
+    {
+      "screen_family": "settings_root",
+      "status": "covered",
+      "evidence_ids": ["123-126", "309", "319-323", "350", "361", "363-365"],
+      "notes": "Settings cards, app version, logout boundary and focus-loss recurrence were captured."
+    },
+    {
+      "screen_family": "settings_promo_codes",
+      "status": "covered",
+      "evidence_ids": ["127-133", "351-355"],
+      "notes": "Promo screen, empty promo list, Back no-op, tap-route no-op and D-pad recovery failure were captured."
+    },
+    {
+      "screen_family": "settings_gamepad_setup",
+      "status": "covered",
+      "evidence_ids": ["134-136", "362-363"],
+      "notes": "Gamepad setup/wait state captured; Close returns to Settings. Reset and device detection were not executed."
+    },
+    {
+      "screen_family": "settings_gamepad_reset_or_detection",
+      "status": "not_run_out_of_scope",
+      "evidence_ids": ["134-136", "362-363"],
+      "notes": "Reset and physical gamepad detection were visible branches but were intentionally not executed because they can change device/control state and require a separate approved fixture."
+    },
+    {
+      "screen_family": "logout_confirmation_and_relogin",
+      "status": "covered",
+      "evidence_ids": ["174-179"],
+      "notes": "Logout confirmation and subsequent canonical relogin were captured with raw auth values local-only."
+    },
+    {
+      "screen_family": "game_detail_pricing_server_boundary",
+      "status": "covered",
+      "evidence_ids": ["141-155", "182-186", "196-197", "344-347"],
+      "notes": "Game detail family, Back no-op and detail recovery were captured. Raw server/tariff values remain local-only."
+    },
+    {
+      "screen_family": "how_to_steam_instruction_qr",
+      "status": "covered",
+      "evidence_ids": ["156-159", "qr_decode_158"],
+      "notes": "Instruction QR was decoded through the established local QR path and not opened."
+    },
+    {
+      "screen_family": "own_steam_toggle_warning",
+      "status": "covered",
+      "evidence_ids": ["160-162"],
+      "notes": "Own-Steam toggle/warning flow was captured without external navigation."
+    },
+    {
+      "screen_family": "connect_device_gate",
+      "status": "covered",
+      "evidence_ids": ["186-193", "197-199"],
+      "notes": "Tariff/server selection reached a device-connection gate, not payment or streaming. Back recovery failed and explicit relaunch recovered."
+    },
+    {
+      "screen_family": "virtual_gamepad_qr",
+      "status": "covered",
+      "evidence_ids": ["187-188", "qr_decode_188"],
+      "notes": "Virtual gamepad QR decoded locally; raw target not published and not opened."
+    },
+    {
+      "screen_family": "buy_gamepad_purchase_boundary",
+      "status": "blocked_by_boundary",
+      "evidence_ids": ["200-202"],
+      "notes": "Buy-gamepad card was probed safely and did not open a new screen in this run. Real purchase/payment remains forbidden."
+    },
+    {
+      "screen_family": "payment_checkout_or_payment_qr",
+      "status": "blocked_by_boundary",
+      "evidence_ids": ["186-193", "197-199", "200-202"],
+      "notes": "No payment screen was reached through approved safe probes; upstream device gate or no-op was observed instead. Real payment remains out of scope."
+    },
+    {
+      "screen_family": "stream_or_paid_game_session",
+      "status": "blocked_by_boundary",
+      "evidence_ids": ["186-193", "197-199"],
+      "notes": "Stream/session launch was not started. Device gate prevented session start under safe inventory rules."
+    },
+    {
+      "screen_family": "external_tv_screensaver",
+      "status": "blocked_by_external_state",
+      "evidence_ids": ["310-312"],
+      "notes": "Owner-confirmed TV screensaver interruption was captured and app foreground was recovered."
+    },
+    {
+      "screen_family": "complete_game_title_data_inventory",
+      "status": "not_run_out_of_scope",
+      "evidence_ids": ["208-300", "325-333"],
+      "notes": "Screen family and list behavior are covered, but enumerating every title/card is a data inventory task, not this screen-family inventory."
+    },
+    {
+      "screen_family": "profile_or_account_mutation_beyond_logout",
+      "status": "not_run_out_of_scope",
+      "evidence_ids": ["settings_root", "logout_confirmation"],
+      "notes": "No profile edit/delete/account mutation surface was entered; such actions remain forbidden without separate approval."
+    },
+    {
+      "screen_family": "network_offline_webview_payment_external_traversal",
+      "status": "not_run_out_of_scope",
+      "evidence_ids": ["legal_webviews", "qr_boundary_screens"],
+      "notes": "Legal WebViews were covered. External QR/WebView/payment traversal was intentionally not followed."
+    }
+  ],
+  "anomaly_scope": "highlights_only; additional local-only redacted anomaly records exist under ignored evidence roots",
+  "anomalies": [
+    {
+      "alias": "otp_wrong_code_visual_snackbar_missing_from_xml",
+      "evidence_ids": ["zero-audit:079-086"],
+      "status": "confirmed",
+      "test_design_implication": "Runtime checkpoints must inspect screenshots, not XML alone."
+    },
+    {
+      "alias": "catalog_visual_focus_xml_focus_mismatch",
+      "evidence_ids": ["100", "114", "340"],
+      "status": "confirmed",
+      "test_design_implication": "TV visual focus and accessibility focus must be recorded separately."
+    },
+    {
+      "alias": "game_detail_back_noop",
+      "evidence_ids": ["144", "345"],
+      "status": "confirmed",
+      "test_design_implication": "Back recovery from detail needs regression coverage."
+    },
+    {
+      "alias": "promo_codes_focus_trap",
+      "evidence_ids": ["129-133", "352-357"],
+      "status": "confirmed",
+      "test_design_implication": "Promo codes needs Back/route-switch/focus recovery tests."
+    },
+    {
+      "alias": "connect_device_back_trap",
+      "evidence_ids": ["189-193"],
+      "status": "confirmed",
+      "test_design_implication": "Device gate recovery should prefer the approved explicit app relaunch helper on this target."
+    },
+    {
+      "alias": "post_screensaver_focus_loss",
+      "evidence_ids": ["310-319"],
+      "status": "confirmed",
+      "test_design_implication": "Idle/wake recovery should verify foreground plus actionable focus."
+    }
+  ],
+  "final_state": {
+    "last_runtime_checkpoint": "365_settings_dpad_left_recover_after_gamepad_close_menu_state",
+    "last_screen_family": "settings_root",
+    "last_focus_state": "xml_focus_absent_after_gamepad_close",
+    "closure_basis": "Every currently safe reachable approved screen family is marked covered, blocked by boundary/tooling/external state, or not-run out of scope."
+  }
+}

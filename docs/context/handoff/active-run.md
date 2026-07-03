@@ -33,6 +33,16 @@ profile/account mutation, network/offline manipulation, private endpoint
 extraction, proxy/packet capture, APK modification/decompilation and raw
 evidence publication remain out of scope.
 
+Owner goal correction added 2026-07-03: the active runtime goal is full screen
+inventory on the approved Philips-new lane, not a partial TASK-020 milestone.
+Do not stop after catalog bottom, recurring QR/settings/session screens,
+screensaver recovery or any other convenient branch checkpoint. Continue from
+the latest checkpoint until a closure ledger exists for every safe reachable
+approved screen family/branch, with status `covered`, `blocked_by_boundary`,
+`blocked_by_tooling`, `blocked_by_external_state`, or `not_run_out_of_scope`.
+Stopping early must be recorded as a QA process anomaly and corrected by
+continuing the inventory.
+
 ## Phase A result
 
 Initial implementation added:
@@ -166,6 +176,38 @@ safe scroll/focus samples, truncation/lazy-load evidence and category boundary
 where applicable. If a side/menu surface can collapse or expand, capture both
 states when safely reachable and state the menu state in each checkpoint.
 
+QR inventory rule: visible QR codes are first-class inventory evidence. Decode
+QR targets only into local-only raw artifacts; do not follow/open the target,
+trigger payment, authenticate or traverse external surfaces during inventory.
+Redacted/public artifacts must omit raw URL/path/query/token/payload values and
+record only target category, scheme if safe, hash/local reference, evidence
+status and whether navigation was followed.
+
+Hard QR decode correction: this run has already proven QR recognition locally.
+Do not restart QR tooling discovery from `cv2`/`pyzbar`/`zxingcpp` checks and do
+not mark a visible QR `not_decoded` merely because those libraries are absent.
+Use or repair the established local `jsqr`-based path under
+`.qa_local/tools/qrdecode/`, and first check recurring-QR evidence artifacts
+from this run:
+
+- `raw/qr_decode_120_steam_topup.local-only.json`;
+- `raw/qr_decode_122_feedback.local-only.json`;
+- `raw/qr_decode_139_catalog_banner.local-only.json`.
+
+For recurring QR surfaces, reference the earlier local-only artifact and create
+only redacted recurrence metadata if the visual target has not changed. For a
+new QR surface, decode locally with the established path, store the raw target
+only under ignored `.qa_local`, and publish only category/scheme/hash-prefix
+metadata. A failed ad hoc decoder setup is a QA process/tooling anomaly, not
+product evidence.
+
+Payment-screen continuation rule: payment and payment-QR screens are inventory
+screens, not automatic final stops. Capture/analyze them, decode QR targets
+local-only, explicitly record no payment and no link traversal, then attempt
+navigation recovery. If navigation recovery fails, use force-stop/relaunch to
+continue full screen inventory. Real payment completion or real paid session
+start remains forbidden without approved fixtures.
+
 2026-07-02 continuation note: after the checkpoint rule was added, the current
 Philips-new zero-state inventory captured `screen_checkpoint_071` as a
 recurrence of the auth-phone screen. The canonical on-screen digit path then
@@ -243,19 +285,234 @@ inventory must distinguish screenshot-confirmed TV focus/active state from the
 accessibility `focused=true` flag; do not state that there is no focus when the
 visual focus is clear.
 
+2026-07-02 catalog navigation blocker: from the confirmed games catalog top
+segment, `DPAD_UP`, `DPAD_LEFT`, `DPAD_DOWN`, `TAB`, `Back`, a UI-tree-derived
+tap on `Поиск`, touch swipe in the game grid and `PageDown` all left the same
+screen visible. The catalog remains confirmed, and `Игры` remains visually
+active, but the current D-pad focus anchor is unresolved. Do not press `Select`
+from this state in automation unless a verified focus-acquisition helper first
+proves the selected target, because Select may hit a game card, banner or
+session/payment-adjacent boundary.
+
+2026-07-02 QR decode update: the Steam top-up boundary QR was decoded from the
+local screenshot into local-only raw evidence without opening it. Redacted
+metadata confirms a decoded `https` URL with path and no query. The raw target
+must remain local-only; no browser/external/payment action was taken.
+
+2026-07-02 full screen-inventory continuation on Philips-new: post-auth left
+navigation was sampled through Search, Games, Session Journal, Steam top-up,
+Feedback and Settings. Steam top-up and Feedback are QR boundary screens; both
+QR targets were decoded into local-only raw artifacts and not opened. The
+catalog banner QR was initially not decodable when clipped, then decoded after
+focusing the banner made it fully visible. Settings root shows promo codes,
+gamepad setup, app version `1.0.140 (155)` and a logout boundary. `DPAD_RIGHT`
+from Settings unexpectedly collapsed the rail and focused logout; `DPAD_UP`
+recovered to promo codes. Promo codes screen showed input keyboard plus
+`ПРОМОКОДОВ НЕТ`; Back did not exit, but route-switching via Feedback and back
+restored Settings root. Gamepad setup asks for any gamepad key and shows
+`Закрыть`/`Сбросить`; Reset and gamepad detection were not performed, and
+Close safely restored Settings. A first game detail screen for Cyberpunk 2077
+was captured as a pricing/server/session boundary; Steam toggle, Steam help,
+server selection, payment and session start were not used. Back from game
+detail did not return to catalog and must be treated as unresolved escape path.
+
+Owner clarification added 2026-07-02: if a payment screen appears later in this
+inventory, do not stop the whole process there. Analyze the screen, decode any
+payment QR local-only, attempt several safe navigation returns, and if needed
+force-stop/relaunch to keep the inventory moving.
+
+2026-07-02 process anomaly correction: while analyzing the new
+`post_auth_how_to_steam_instruction_qr_screen`, the agent incorrectly restarted
+generic QR decoder discovery and treated missing `cv2`/`pyzbar`/`zxingcpp` plus
+an ad hoc Node setup issue as if QR decoding might be blocked. This is a QA
+process error. QR recognition had already been proven in this run via local-only
+artifacts and the `.qa_local/tools/qrdecode/` `jsqr` path. Continue the screen
+inventory by using the established local QR decode path or prior recurring QR
+artifacts; keep any raw target local-only and record only redacted
+category/scheme/hash-prefix metadata.
+
+Owner operational note added 2026-07-02: if the current thread hits a token
+limit before full screen inventory is complete, do not mark the inventory as
+complete or blocked. The owner stated that the token limit refresh is expected
+today at 18:09 Europe/Moscow; retry/continue the full screen inventory at or
+after 18:10 Europe/Moscow from the latest confirmed checkpoint.
+
+Android TV ambient/screensaver note added 2026-07-03: during autonomous
+continuation after relogin, the device showed a full-screen scenic/weather-like
+surface. The owner clarified this is a TV screensaver and woke the device. In
+future similar situations, classify the state first as possible external
+TV/Android ambient screensaver interruption, not an app screen, app crash, blank
+screen, or inventory completion. Capture it as external/system evidence, recover
+the app foreground, and continue inventory.
+
+2026-07-03 logout/relogin continuation: owner explicitly approved logout and
+stated login data is available for subsequent login. Logout from Settings opened
+`post_auth_logout_confirmation_screen` with `No` focused and `Yes` available;
+selecting `Yes` returned to the auth phone screen. The canonical TASK-019
+on-screen keypad path was used for phone input and OTP input. The flow reached
+OTP, then a post-OTP loader, then returned directly to the games catalog. No
+captcha, auth error, repeated onboarding, payment action, server selection or
+session start was observed. Public artifacts must keep phone/OTP redacted;
+raw screenshots/XML remain local-only.
+
+2026-07-03 boundary continuation after relogin: the owner clarified that a
+full-screen scenic/weather-like surface seen after idle/wake was the TV
+screensaver. Treat future similar states as external Android TV / TV ambient
+interruptions until app foreground is recovered; do not classify them as app
+screens, blank screens, crashes or inventory completion.
+
+After wake, the app returned to the games catalog. A D-pad sequence
+`DPAD_RIGHT -> DPAD_DOWN -> CENTER` from the expanded catalog did not open the
+first game and must be recorded as a navigation anomaly / focus ambiguity. A
+UI-tree-derived tap on the first game card only focused the card; pressing
+`CENTER` after that opened the Cyberpunk detail screen. This confirms the safe
+path for this segment: prove card focus first, then press `CENTER`.
+
+Selecting either the best-price tariff card or a concrete server card did not
+reach payment or stream. Both paths opened a recurring `connect_device_gate`
+screen asking for a gamepad or virtual gamepad. The virtual gamepad option
+displayed a QR code; it was decoded with the established local `jsqr` path into
+local-only raw evidence and redacted metadata, with no external navigation.
+The buy-gamepad card expanded/focused but did not open a new payment/browser
+screen after tap or `CENTER`; record it as a purchase boundary no-op on this
+run, not as completed payment coverage.
+
+Back recovery from the connect-device screen failed twice. Generic package
+launch recovery after force-stop landed on the Android TV launcher, so future
+recovery for this app should use the approved explicit app relaunch helper
+recorded in local-only runtime notes. Explicit relaunch showed an app
+splash/loader plus a TV system overlay about game signal/image mode, then
+returned to the catalog after an extended wait. The recovered catalog showed a
+new `Continue Game` row for the last game; selecting that card returned to the
+game detail and did not directly start a session.
+
+After boundary probes, direct tap and D-pad navigation to `Session Journal`
+from a touch/lost-focus catalog state did not switch routes. A clean explicit
+relaunch restored `nav_games focused=true`; then `DPAD_DOWN -> CENTER` reached
+the session journal. The journal remained blank after an additional delayed
+capture. Therefore the catalog `Continue Game` row is not equivalent to a
+visible session-journal entry in this run. A real paired-gamepad/stream start
+journal effect remains `not_run`.
+
+2026-07-03 catalog long-list continuation: from the games catalog, repeated
+`DPAD_DOWN` on a focused first-column game card produced stable deep scrolling
+through the same `post_auth_games_catalog_scrollable_grid_segment` screen. The
+run captured checkpoints `208-300`, including local redacted batches through
+`screen_checkpoints_271_300_catalog_long_list_deeper5.redacted.json`. The
+catalog bottom was not reached by checkpoint `300` because the selected card
+continued changing after each `DPAD_DOWN`; this is deep sampled long-list
+coverage, not a complete game-title inventory. The list repeatedly showed long
+title wrapping/truncation, partially clipped right-edge cards and recurring
+placeholder-like poster tiles while text/price/save-support metadata remained
+visible. Future tests should treat this as a lazy-loaded grid/visual-fallback
+case, not as proof that every game entry was enumerated.
+
+From the deep catalog grid, `DPAD_LEFT` did not return focus to `Игры`; it
+switched to the recurring blank `Журнал сессий` surface with `nav_sessions`
+focused. A delayed checkpoint stayed blank, so this is a confirmed recurrence
+of the sessions empty state rather than a transient loader. On that screen,
+`DPAD_LEFT` from the expanded rail was a no-op; `DPAD_RIGHT` collapsed the rail
+and moved focus to an empty right-side content container; `DPAD_LEFT` recovered
+the expanded rail and `nav_sessions` focus. Record this as a focus-regression
+test candidate for empty-state screens and collapsible navigation.
+
+From the blank session journal, `Back` was a confirmed no-op: the app stayed on
+the same empty journal with `nav_sessions` focused. Subsequent rail navigation
+reached recurring Steam top-up and Feedback QR boundary screens; both were
+treated as recurrences of prior local-only QR decode artifacts and no QR target
+was opened. Continuing down reached the recurring Settings root with promo
+codes, gamepad setup, app version and logout boundary visible; logout was not
+selected in this continuation.
+
+2026-07-03 screensaver recurrence and recovery update: while attempting to
+leave Settings, checkpoint `310` was already an external ambient/screensaver
+surface and UIAutomator could not get an idle XML tree. The owner then warned
+that a TV screensaver was visible again, and checkpoint `311` confirmed the
+external ambient recurrence. Wake returned to the app Settings root, but touch
+tap on `Игры` and three `DPAD_UP` attempts were no-ops with no XML focus.
+The approved explicit app relaunch helper restored focus, but initially on the
+logout boundary; `DPAD_LEFT` recovered focus to `nav_settings` without
+selecting logout. This is a confirmed post-screensaver focus-loss/recovery
+anomaly and a future regression case.
+
+After recovery, rail navigation returned to the Games catalog. A bottom-seeking
+pass from the catalog used batches of 30 `DPAD_DOWN` events and reached a
+confirmed bottom/no-change state: checkpoints `331`, `332` and `333` repeated
+the same selected item and visible bottom segment. The bottom segment is an
+incomplete final row, with only a subset of right-side cards visible and
+continued placeholder-like poster fallback. `DPAD_LEFT` from this bottom segment
+landed on the recurring Steam top-up QR boundary, not on `Игры` or `Журнал
+сессий`; the QR was treated as a recurrence of the prior local-only decode
+artifact and not opened.
+
+2026-07-03 full screen-inventory closure update: after the owner corrected the
+run goal again, the inventory continued instead of stopping at a partial
+checkpoint. The run resumed from the recurring Steam/Settings area, recaptured
+Search empty/no-results/results, opened a search result to a recurring game
+detail screen, confirmed Back and direct Settings tap no-op from detail,
+recovered via `DPAD_LEFT` to the blank session journal, and returned through
+Steam top-up QR, Feedback QR and Settings.
+
+Settings sub-screen coverage was completed with recurring promo codes and
+gamepad setup checkpoints. Promo codes stayed a focus trap: Back, tap on the
+Feedback rail item and `DPAD_LEFT` all left the same promo screen with
+`focused_count=0`. The safe recovery was force-stop plus the approved explicit
+app relaunch helper, which captured a loader and returned to the Games catalog with
+`nav_games focused=true`. Gamepad setup showed the wait-for-gamepad state plus
+`Close` and `Reset`; `Close` safely returned to Settings, while Reset/device
+detection were not executed. After closing gamepad setup, Settings root stayed
+visible but XML focus remained absent and `DPAD_RIGHT`/`DPAD_LEFT` did not
+change the state, so this is a confirmed focus-loss recurrence.
+
+The public-safe closure ledger is now recorded in
+`docs/qa/reports/task020_full_screen_inventory.summary.json`. It links the
+zero-audit and zero-reset inventory evidence roots and marks every currently
+safe reachable approved screen family/branch as `covered`,
+`blocked_by_boundary`, `blocked_by_external_state`, or
+`not_run_out_of_scope`. Payment/checkout, paid stream/session start, external QR
+traversal and profile/account mutation beyond logout remain intentionally not
+executed; no raw QR targets, phone/OTP values, device identifiers, server/tariff
+values or payment data are published.
+
+2026-07-03 invalid-phone negative check: at the owner's request, local app data
+was cleared again and the auth phone path was exercised with a deliberately
+incomplete synthetic phone suffix through the on-screen keypad, followed by
+`OK`. The first post-reset capture hit the external TV screensaver/system
+overlay and then Android TV launcher; force-stop plus the approved explicit app
+relaunch helper recovered the auth phone screen. After confirming the invalid
+number, the app stayed on the auth phone screen and displayed the inline error
+`Номер введён не полностью`; the error was still present at delayed checkpoints
+through 3.5 seconds. No OTP, captcha, payment, external traversal or account
+mutation occurred. Public-safe summary:
+`docs/qa/reports/task020_invalid_phone_negative.summary.json`.
+
+2026-07-03 full invalid-phone negative check: the previous incomplete suffix
+was cleared with the on-screen backspace, then a full-length synthetic invalid
+phone suffix made of repeated ones was entered through the same on-screen
+keypad and confirmed with `OK`. The app stayed on the auth phone screen and
+displayed the inline error `Введен неверный номер телефона.` The error was
+still present at delayed checkpoints through 7 seconds. No OTP, captcha,
+payment, external traversal or account mutation occurred. Public-safe summary:
+`docs/qa/reports/task020_full_invalid_phone_negative.summary.json`.
+
 ## Multi-agent status
 
-- Orchestrator: `PASS_RUNTIME_PARTIAL_AND_DOCS_REMEDIATED`
+- Orchestrator: `PASS_FULL_SCREEN_INVENTORY_LEDGER_REMEDIATED`
 - Planner: `PASS_PHASE_A_PLAN`; confirmed base `main`/`origin/main` at
   `ac2e11a` after TASK-019 and recommended Phase A file set/verification.
-- Builder: `PASS_MAIN_AGENT_PHASE_A_AND_PARTIAL_RUNTIME`
-- QA Reviewer A: `PASS_AFTER_REMEDIATION`; false-pass cases for raw
-  `.qa_local` Windows paths, standalone OTP, account IDs, raw hash values,
-  schema version and symlink escape were hardened with same-task regressions.
-- QA Reviewer B: `PASS_RUNTIME_PARTIAL_WITH_UNVERIFIED_ZONES`; confirmed this
-  is partial bounded coverage only, not all screens/all transitions.
-- Security/Prod-safety Reviewer: `PASS_FINAL`; no committed APK/secrets/raw
-  device identifiers/raw evidence/private endpoints found in TASK-020 files.
+- Builder: `PASS_MAIN_AGENT_PHASE_A_AND_FULL_SCREEN_INVENTORY_LEDGER`
+- QA Reviewer A: `PASS_AFTER_LEDGER_REMEDIATION`; the gamepad reset/detection
+  branch, wrong-OTP transient error state and left-rail expanded/collapsed
+  states are explicitly classified in the closure ledger.
+- QA Reviewer B: `PASS_AFTER_STATUS_REMEDIATION`; confirmed the full
+  screen-family inventory treats focus traps, Back no-ops, screensaver
+  recovery, QR/payment boundaries, long-list coverage and Settings recurrences
+  as checkpoints/anomalies/boundaries, without overclaiming payment, stream,
+  external QR traversal, game-title enumeration or compatibility coverage.
+- Security/Prod-safety Reviewer: `PASS_AFTER_LOGOUT_EXCEPTION_REMEDIATION`; no
+  committed APK/secrets/raw device identifiers/raw evidence/private endpoints
+  found in TASK-020 files, and logout/relogin is documented as a narrow
+  owner-approved `PROD_CONDITIONAL` continuity exception.
 - Docs/Scribe: `BLOCK_REMEDIATED`; required `git status` verification record,
   DEC-022 and final multi-agent status updates were applied.
 - Subagent closure audit: `complete`; Planner, QA Reviewer A, QA Reviewer B,
@@ -272,8 +529,9 @@ visual focus is clear.
 - APK patching, resigning or modification;
 - TLS/pinning/security bypass, proxy or packet capture;
 - payment, purchase, subscription, billing, WebView/redirect/browser,
-  stream/WebRTC/media playback, logout, network/offline manipulation or
-  profile/account mutation.
+  stream/WebRTC/media playback, network/offline manipulation or profile/account
+  mutation. Logout remains forbidden except for the already executed narrow
+  owner-approved 2026-07-03 same-lane logout/relogin continuity exception.
 
 ## Stop conditions
 

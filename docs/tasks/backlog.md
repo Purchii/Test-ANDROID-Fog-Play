@@ -27,7 +27,7 @@
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 | TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
 | TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; default integration pending |
-| TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | partial bounded runtime coverage executed locally; final review pending |
+| TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | full screen-inventory ledger executed locally on approved lane; final branch integration pending |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

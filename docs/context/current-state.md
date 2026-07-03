@@ -169,6 +169,15 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   screens or all transitions. Safe Select transitions, broad native screen
   inventory, payment/WebView/stream/profile boundaries, network/offline
   behavior, compatibility and full Experience QA remain `not_run` / `unknown`.
+- TASK-020 also has a 2026-07-03 full screen-inventory closure ledger for the
+  approved Philips-new lane:
+  `docs/qa/reports/task020_full_screen_inventory.summary.json`. This confirms
+  screen-family coverage for first-run auth/legal/OTP/captcha/onboarding,
+  post-auth catalog/search/session/QR/settings/detail/device-gate families and
+  external screensaver recovery. It does not claim complete game-title data
+  enumeration, real payment/checkout/payment-QR traversal, stream/session
+  start, external QR opening, network/offline behavior, profile mutation beyond
+  logout or compatibility coverage.
 
 ## Evidence status policy
 

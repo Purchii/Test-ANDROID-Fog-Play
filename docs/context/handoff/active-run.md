@@ -219,9 +219,10 @@ Final review and verification status:
 - Security/Prod-safety final review passed for public artifacts with no
   blockers.
 - Final docs review and verification gates passed. After the final TASK-022
-  report, the owner explicitly requested `пушь в мастер`; this authorizes
-  task-branch commit/push and default-branch integration/push to the detected
-  default branch, `main`.
+  report, the owner explicitly requested `пушь в мастер`; the task branch was
+  committed/pushed and the detected default branch, `main`, was fast-forwarded
+  from the task branch because local `main` was checked out in a separate
+  worktree.
 
 ## Multi-agent status
 

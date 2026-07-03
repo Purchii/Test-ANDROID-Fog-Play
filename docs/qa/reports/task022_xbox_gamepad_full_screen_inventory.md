@@ -6,8 +6,10 @@
 
 Режим: `NON_AUTONOMOUS`. Ветка задачи:
 `qa/task-022-xbox-gamepad-screen-inventory`; detected default branch: `main`.
-Default branch integration/push authorized after final TASK-022 report by the
-explicit owner command `пушь в мастер`; detected default branch is `main`.
+Default branch integration/push completed after final TASK-022 report by the
+explicit owner command `пушь в мастер`; detected default branch `main` was
+fast-forwarded from the task branch because local `main` was checked out in a
+separate worktree.
 
 Инвентаризация выполнена на утвержденной Android TV lane с физически
 подключенным owner Xbox-like gamepad после первоначальной ADB/gamepad preflight

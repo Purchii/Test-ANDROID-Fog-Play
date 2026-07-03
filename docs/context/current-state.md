@@ -275,6 +275,25 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   It did not read ignored `.qa_local` evidence, inspect APKs, run
   ADB/runtime/WebView/WebRTC/payment/network flows, crawl external links or
   claim runtime/product behavior.
+- TASK-025A is running in thread
+  `TASK-025A - No-device selected-lane native regression harness and report
+  hardening` on branch `qa/task-025a-no-device-native-regression-harness` from
+  `main` commit `c421dda`. TASK-025 physical-device runtime execution is
+  deferred because no physical Android TV/STB device is currently available.
+  TASK-025A is limited to no-device automation readiness, schema/report
+  hardening and fake/synthetic tests. TASK-025B will execute selected-lane
+  physical runtime only after a device is available and owner approvals are
+  refreshed. For TASK-025A, runtime execution, APK install, app launch, ADB,
+  physical debugging and raw runtime evidence capture are forbidden/not-run.
+
+## Audit-chain continuation
+
+Owner standing instruction for this audit chain: work autonomously on audit
+tasks, use one fresh Codex thread per independent audit task, push completed
+verified task branches and merge/push the detected default/trunk branch
+(`master` wording means current detected default, `main`), then create exactly
+one fresh continuation thread for the next audit task or next-task selection.
+Completed task threads must not implement the next independent task.
 
 ## Evidence status policy
 

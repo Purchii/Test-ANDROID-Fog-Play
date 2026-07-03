@@ -1,0 +1,87 @@
+{
+  "schema_version": "task025-native-regression-suite-v1",
+  "task_id": "TASK-025",
+  "runtime_execution_status": "not_run",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_server_rows": false,
+    "assert_fixed_prices": false,
+    "assert_raw_qr_targets": false
+  },
+  "boundary_guard_categories": [
+    "payment/subscription/purchase",
+    "WebView/browser/external QR traversal",
+    "stream/WebRTC/media playback/game session start",
+    "Steam/account connection",
+    "profile/account mutation",
+    "network/offline manipulation"
+  ],
+  "cases": [
+    {
+      "case_id": "NR-001",
+      "title": "auth/session restore preflight",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-019", "TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-002",
+      "title": "post-auth home/catalog root focus and actionability",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-003",
+      "title": "catalog rail/grid focus and scroll sample",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-004",
+      "title": "Search keyboard/no-results/recovery",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-005",
+      "title": "game card detail plus Back/recovery",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-006",
+      "title": "Settings root and promo codes recovery",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-023"]
+    },
+    {
+      "case_id": "NR-007",
+      "title": "Settings Gamepad safe entry and close",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-008",
+      "title": "game detail server-list schema sample without payment/session start",
+      "boundary_sensitive": true,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-009",
+      "title": "QR/boundary surfaces classified but not opened",
+      "boundary_sensitive": true,
+      "baseline_refs": ["TASK-020", "TASK-022", "TASK-023"]
+    },
+    {
+      "case_id": "NR-010",
+      "title": "Home/foreground and force-stop/relaunch session persistence",
+      "boundary_sensitive": false,
+      "baseline_refs": ["TASK-019", "TASK-020", "TASK-023"]
+    }
+  ]
+}

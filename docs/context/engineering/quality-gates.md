@@ -195,6 +195,21 @@ case result/reason fields. Default TASK-024 runner execution must return
 `overall_status=blocked` and `runtime_execution_status=not_run` without ADB or
 runtime calls.
 
+TASK-025A no-device native regression readiness must keep physical runtime
+deferred. Default runner execution must return `run_status=blocked`,
+`runtime_execution_status=not_run`, `physical_device_status=unavailable`,
+`apk_install_status=not_run`, `app_launch_status=not_run` and
+`task025b_runtime_status=deferred` without ADB, subprocess-for-ADB, APK
+install/read, app launch, UIAutomator traversal, logcat, screenshots,
+screenrecord, raw evidence capture or local secret reads. TASK-025A fake or
+synthetic contract checks must use
+`execution_mode=no_device_synthetic_contract_test`, keep runtime `not_run` and
+never count as runtime evidence. TASK-025 report validation must reject weak
+pass reports including empty session checkpoints, missing confirmed boundary
+evidence for `NR-008`/`NR-009`, duplicate evidence IDs, malformed anomaly
+entries, inconsistent Phase C/runtime status, fake pass as runtime pass, unsafe
+coverage claims and raw public values/paths/artifact references.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

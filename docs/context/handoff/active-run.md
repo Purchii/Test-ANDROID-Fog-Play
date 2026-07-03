@@ -3,196 +3,190 @@
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-018 - Docs consistency and link sanity checks`
-Thread status: `inactive_completed`
-Fresh thread verified: `yes; continuation thread 019f2915-4152-7ee2-b37c-21b892dcc845 accepted and renamed`
-Task ID: `TASK-018`
-Task branch: `qa/task-018-docs-consistency-link-sanity`
+Thread title: `TASK-025A - No-device selected-lane native regression harness and report hardening`
+Thread status: `active_in_progress`
+Fresh thread verified: `yes; current task thread 019f2a52-4be4-7010-a692-dd290aa93e29 accepted and renamed`
+Task ID: `TASK-025A`
+Task branch: `qa/task-025a-no-device-native-regression-harness`
 Default branch: `main`
-Base commit: `29b299c79f78377666d6c130c91162448e4e5b1b`
+Base commit: `c421dda25ad2726d1d8fcd556afdda79c89b74d4`
 Merge/push authority: `BOUNDED_AUTONOMOUS after all gates pass; no force-push`
-Production safety classification: `PROD_SAFE` for tracked-docs/static link checks,
-local tests, documentation updates, hygiene scans and diff review.
+Production safety classification: `PROD_SAFE` for docs, schemas, validators,
+unit tests with synthetic/fake data, no-device dry-run runner, public-safe
+report templates, hygiene/public-safety scans and TASK-025B handoff templates.
+
+## Owner Standing Instruction For Audit Chain
+
+The owner authorized the audit chain to work autonomously on audit tasks,
+create fresh threads per independent audit task and push completed verified
+tasks to the detected default/trunk branch. Owner wording `master` means the
+detected default branch, currently `main`, unless the remote default changes.
+
+After the current task completes, this thread must push the task branch,
+merge/push the detected default branch after successful verification and
+multi-agent review, verify local/default and origin/default alignment, then
+create exactly one fresh continuation thread for the next audit task or
+selection/handoff. The next independent task must not be implemented in this
+completed thread.
 
 ## Goal
 
-TASK-018 adds local public-safe documentation consistency and link sanity checks
-so tracked Markdown links, anchors and public repo-relative references fail
-closed without crawling external links, touching runtime systems or reading
-ignored local evidence.
+TASK-025A prepares the no-device selected-lane native regression harness and
+report hardening layer for future TASK-025B physical runtime. It creates
+TASK-025 suite/report contracts, a no-device runner, a stricter validator,
+synthetic/fake contract tests and TASK-025B handoff material.
+
+TASK-025 physical-device runtime execution is deferred because no physical
+Android TV/STB device is currently available. TASK-025A is limited to no-device
+automation readiness, schema/report hardening and fake/synthetic tests.
+TASK-025B will execute selected-lane physical runtime only after a device is
+available and owner approvals are refreshed.
 
 ## Source State
 
-- TASK-017 completed and was merged/pushed to detected default branch `main` at
-  `3216f2872ac5b6ad8640de4f7be027eb794c907c`.
-- Before TASK-018 branch creation, `main` and `origin/main` were verified
-  aligned at `29b299c79f78377666d6c130c91162448e4e5b1b`, newer than the
-  TASK-017 handoff baseline.
-- Planner selected TASK-018 from `docs/tasks/backlog.md`; Security/Prod-safety
-  approved the selection only for a static public-docs/link-sanity scope.
+- TASK-024 completed and was merged/pushed to `main`.
+- TASK-024 Phase A/B passed, while Phase C runtime was blocked because no
+  approved runtime collector/input report existed.
+- The owner supplied TASK-025A no-device archive input and clarified that no
+  physical device is available for this run.
+- Before branch creation, `HEAD` and `origin/main` were aligned at
+  `c421dda25ad2726d1d8fcd556afdda79c89b74d4`.
 
 ## Scope
 
-- Add TASK-018 source-of-truth task spec.
-- Add a public-safe local Markdown link and repo-relative reference checker.
-- Cover valid links, missing files, missing anchors, duplicate heading anchors,
-  unsafe absolute/traversal paths, forbidden local/raw Markdown link targets and
-  external-link non-crawling with focused tests.
-- Update README/automation docs and source-of-truth state.
-
-## Allowed files
-
-- `automation/quality/docs_consistency_link_sanity.py`
-- `tests/test_docs_consistency_link_sanity.py`
-- `tasks/TASK_018_docs_consistency_link_sanity_checks.md`
-- `docs/qa/docs-consistency-link-sanity.md`
-- `automation/README.md`
-- `README.md`
-- `docs/context/current-state.md`
-- `docs/context/handoff/active-run.md`
-- `docs/context/governance/risk-register.md`
-- `docs/context/engineering/quality-gates.md`
-- `docs/context/engineering/verification-memory.md`
-- `docs/tasks/backlog.md`
+- Update source-of-truth docs for TASK-025A no-device status and TASK-025B
+  deferred physical runtime.
+- Add TASK-025 suite/model/report contract/template artifacts with schema
+  versions `task025-native-regression-suite-v1` and
+  `task025-native-regression-summary-v1`.
+- Add TASK-025 no-device runner that defaults to blocked/not-run and does not
+  call ADB/runtime/APK/app/evidence/secrets paths.
+- Add TASK-025 report validator hardening so weak pass reports fail.
+- Add fake/synthetic driver contract tests with
+  `execution_mode=no_device_synthetic_contract_test`; these are not runtime
+  evidence.
+- Add future TASK-025B physical runtime handoff/checklist/prompt stub.
 
 ## Out Of Scope
 
-- ADB, Android runtime, APK read/install/launch or APK inspection.
-- WebView/browser/payment/stream/WebRTC/network/offline execution.
-- Reading, listing, parsing, copying or deriving from ignored `.qa_local/` raw
-  evidence, local APKs, local secrets, raw QR artifacts or private endpoint
-  inventories.
-- External link crawling, redirect following, DNS probing or HTTP requests.
-- Broad policy rewrites or runtime/product behavior claims.
+- ADB commands, subprocess-for-ADB, device debugging or physical runtime.
+- APK install/update/read/decompile/patch/resign.
+- App launch, UIAutomator real traversal, logcat, screenshots, screenrecord or
+  raw runtime evidence capture.
+- Reading or printing local secret values, phone/OTP values, device IDs,
+  private endpoints, deeplinks, raw QR targets or raw evidence.
+- Payment, WebView, stream/WebRTC/media playback, Steam/account connection,
+  profile/account mutation, network/offline manipulation and production
+  interaction.
 
-## Forbidden files/actions
+## Acceptance Criteria
 
-- Reading ignored `.qa_local/` raw evidence, APKs, screenshots, logs, XML,
-  videos, QR decode artifacts or local secret files.
-- ADB/device interaction, APK handling, runtime navigation, WebView/WebRTC,
-  payment, network/offline execution or production interaction.
-- External internet link validation.
-- Scanner output that prints raw forbidden targets or private-looking values.
-- Destructive git operations or default-branch integration before gates pass.
-
-## Acceptance criteria
-
-- TASK-018 has a source-of-truth task spec.
-- The checker scans tracked Markdown files by default and does not traverse
-  ignored `.qa_local` or raw artifact directories.
-- External links are never fetched or crawled.
-- The checker fails closed on missing public targets, missing local Markdown
-  anchors, unsafe absolute/traversal paths and Markdown links to forbidden
-  local/raw/package/secret-like targets.
-- Checker output reports rule id, source path, line and sanitized/category-level
-  target information without echoing raw forbidden targets.
-- Tests cover the behavior above.
-- Source-of-truth docs state that TASK-018 does not approve runtime, APK, ADB,
-  WebView, WebRTC, payment, network/offline or raw evidence work.
+- TASK-025A source-of-truth states no physical device is available and
+  TASK-025B is deferred.
+- TASK-025 suite uses `task025-native-regression-suite-v1`.
+- TASK-025 summary template uses `task025-native-regression-summary-v1` and is
+  blocked/not-run.
+- Default runner returns:
+  `run_status=blocked`, `runtime_execution_status=not_run`,
+  `physical_device_status=unavailable`, `apk_install_status=not_run`,
+  `app_launch_status=not_run`.
+- Validator rejects weak pass reports, raw public values/paths and fake pass as
+  runtime evidence.
+- Fake/synthetic contract tests are labeled
+  `execution_mode=no_device_synthetic_contract_test` and never validate as
+  runtime pass.
+- No ADB/runtime/APK/app/debug/raw evidence/secrets action is performed.
 
 ## Multi-Agent Status
 
 - Orchestrator: `in_progress`.
-- Planner: `complete; selected TASK-018`.
-- Security/Prod-safety pre-implementation review: `approved_with_boundaries`.
-- Builder: `complete; implementation staged for review`.
-- QA Reviewer A: `approved_after_url_query_sanitization_and_reference_style_remediation`.
-- QA Reviewer B: `approved_after_final_recheck`.
-- Security/Prod-safety final review: `approved_after_final_recheck`.
-- Docs/Scribe: `approved_after_final_recheck`.
-
-## Process Anomalies
-
-- During initial task reconnaissance, a broad filename-only PowerShell search
-  listed ignored `.qa_local` paths by name while looking for TASK-018-related
-  files. No ignored local evidence contents were read, parsed, copied or used.
-  TASK-018 implementation and verification are constrained to git-tracked files
-  or explicit test fixtures only.
-
-## Deliverables
-
-- `automation/quality/docs_consistency_link_sanity.py`
-- `tests/test_docs_consistency_link_sanity.py`
-- `tasks/TASK_018_docs_consistency_link_sanity_checks.md`
-- `docs/qa/docs-consistency-link-sanity.md`
-- source-of-truth doc updates
+- Planner: `complete; approved TASK-025A no-device plan`.
+- Security/Prod-safety pre-implementation review:
+  `complete; approved_with_guardrails`.
+- Builder: `complete; code/test slice implemented and self-verified`.
+- QA Reviewer A: `complete; approved_after_task025a_weak_pass_remediation`.
+- QA Reviewer B: `complete; approved`.
+- Security/Prod-safety final review:
+  `complete; approved_after_subprocess_test_remediation`.
+- Docs/Scribe: `complete; approved`.
 
 ## Verification Plan
 
 ```bash
 git status --short --branch
 git diff --check
-python -m pytest -q tests/test_docs_consistency_link_sanity.py
-python -m pytest -q tests/test_public_repo_safety_scan.py tests/test_full_tree_hygiene_scan.py tests/test_synthetic_redaction_corpus.py
+python -m pytest -q tests/test_native_regression_probe.py tests/test_native_regression_report_validator.py
+python -m pytest -q tests/test_task025_native_regression.py tests/test_task025_native_regression_validator.py
+pytest -q
 python -m pytest -q
 python -m compileall -q automation tests
-python automation/quality/docs_consistency_link_sanity.py
 python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
 python automation/quality/public_repo_safety_scan.py
+python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json
+python automation/native_regression/run_task025_selected_lane_regression.py
 ```
 
 ## Verification Results
 
-- `python -m pytest -q tests/test_docs_consistency_link_sanity.py`: `6 passed`
-  after inline-reference parser remediation; `8 passed` after final reviewer
-  URL/query target-output sanitization and reference-style link definition
+- `git status --short --branch`: task branch
+  `qa/task-025a-no-device-native-regression-harness` with intended changes.
+- `git diff --check`: `pass`.
+- `python -m pytest -q tests/test_native_regression_probe.py tests/test_native_regression_report_validator.py`:
+  `22 passed`.
+- `python -m pytest -q tests/test_task025_native_regression.py tests/test_task025_native_regression_validator.py`:
+  `28 passed` after QA A weak-pass remediation and Security subprocess-test
   remediation.
-- `python automation/quality/docs_consistency_link_sanity.py`: `pass`,
-  `scanned_files=166`, `findings=0` after inline-reference parser remediation.
-- Staged `git diff --check` and `git diff --cached --check`: `pass`.
-- Staged `python automation/quality/docs_consistency_link_sanity.py`: `pass`,
-  `scanned_files=170`, `findings=0`.
-- `python -m pytest -q tests/test_docs_consistency_link_sanity.py tests/test_public_repo_safety_scan.py tests/test_full_tree_hygiene_scan.py tests/test_synthetic_redaction_corpus.py`: `75 passed`; `77 passed` after final reviewer URL/query target-output sanitization and reference-style link definition remediation.
+- `pytest -q`: `550 passed, 1 skipped`.
+- `python -m pytest -q`: `550 passed, 1 skipped`.
 - `python -m compileall -q automation tests`: `pass`.
-- Final reviewer post-remediation `python -m compileall -q automation tests`:
-  `pass`.
 - `python automation/quality/full_tree_hygiene_scan.py`: `pass`.
-- `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`: `pass`.
+- `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`:
+  `pass`.
 - `python automation/quality/public_repo_safety_scan.py`: `pass`,
   `scanned_files=170`, `findings=0`.
-- Final full `python -m pytest -q`: `522 passed, 1 skipped`.
+- `python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json`:
+  `validation_status=pass`.
+- `python automation/native_regression/run_task025_selected_lane_regression.py`:
+  `run_status=blocked`, `runtime_execution_status=not_run`,
+  `physical_device_status=unavailable`, `apk_install_status=not_run`,
+  `app_launch_status=not_run`, `task025b_runtime_status=deferred`.
+- Additional safety checks: `python automation/quality/public_repo_safety_scan.py --mode tree`
+  passed with `scanned_files=183`, `findings=0`;
+  `python automation/quality/docs_consistency_link_sanity.py` passed;
+  TASK-025 suite/template JSON sanity passed; static search found no
+  subprocess/ADB/logcat/screenrecord/UIAutomator/install/launch calls in the
+  TASK-025 runner/validator scripts or TASK-025 tests after remediation.
 
 ## Review Results
 
-- Planner: selected TASK-018 because it is the only unfinished proposed P4
-  public-safe task, is locally verifiable and reduces source-of-truth drift risk.
-- Security/Prod-safety precheck: approved only with tracked/public-safe file
-  scanning, no `.qa_local` traversal, no runtime/APK/ADB/network/external-link
-  execution and sanitized findings.
-- QA Reviewer A: initially blocked on raw query/URL-like target echo and
-  reference-style link definition coverage; approved after remediation.
-- QA Reviewer B: initially blocked on staged-vs-working-tree drift and stale
-  raw-target remediation; approved after the staged state was aligned and final
-  verification counts were recorded.
-- Security/Prod-safety final review: approved the final staged state after
-  confirming no `.qa_local` traversal/read, APK/ADB/runtime, external crawling,
-  raw forbidden target echo or destructive command.
-- Docs/Scribe: approved after confirming source-of-truth consistency, process
-  anomaly recording, final counts and no stale TASK-017 active-run state.
+- QA Reviewer A: initially blocked on a weak-pass gap where `TASK-025A` could
+  be shaped as a physical runtime pass; approved after remediation forced
+  `TASK-025A` reports to remain no-device/synthetic, blocked and runtime
+  `not_run`.
+- QA Reviewer B: `approved`; no runtime/evidence overclaim blockers.
+- Security/Prod-safety final review: initially blocked on a test that used
+  direct subprocess invocation for validator script coverage; approved after
+  remediation removed that test pattern and kept TASK-025A tests in-process.
+- Docs/Scribe: `approved`; source-of-truth and audit-chain owner instruction
+  are recorded.
 
 ## Integration Results
 
-- Task branch commit: `7a5c45850b9e5be16aa60f11f1fb583b66096a8d`.
-- Task branch pushed: `yes`.
-- Default branch merge commit: `e9f8c2dc41fdaf4182a40654a14ef3d57ac87aaf`.
-- Default branch pushed: `yes`; local `main` and `origin/main` aligned at
-  `e9f8c2dc41fdaf4182a40654a14ef3d57ac87aaf` after push.
-- Post-merge verification on `main`: diff check, targeted quality/redaction
-  tests, docs checker, compileall, full-tree hygiene in both modes, public repo
-  safety scan and full pytest passed.
+Pending.
 
 ## Thread Handoff
 
-- Current thread status: `inactive_completed`.
-- Next thread created: `pending after terminal source-of-truth sync push`.
-- Next task selection must happen only in a fresh continuation thread from the
-  final pushed `main`.
+- Current thread status: `active_in_progress`.
+- Next thread created: `no; create exactly one continuation thread only after
+  TASK-025A is verified, merged/pushed to detected default branch and remote
+  alignment is confirmed`.
+- Next task selection must happen only in that fresh continuation thread from
+  the final pushed default branch.
 
 ## Stop Conditions
 
-Stop if the task requires real/local raw evidence inspection, APK handling,
-ADB/device/app runtime execution, private endpoints, real accounts, real
-payments, real phone/OTP/device/QR values, production interaction, external
-link crawling or scanner behavior that would print raw forbidden values into
-public logs.
+Stop if the task requires ADB/device/app runtime execution, APK handling,
+physical debugging, raw evidence capture, private endpoints, real accounts,
+real payments, real phone/OTP/device/QR values, production interaction or a
+scanner/test behavior that would print raw forbidden values into public logs.

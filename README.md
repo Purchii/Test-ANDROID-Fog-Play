@@ -12,6 +12,10 @@ WebView / WebRTC testing of MTC Fog Play.
   `tv-tpv-013` / `tv-tpv-a12-013`.
 - TASK-024 adds a native post-auth regression model, suite, fail-closed runner
   and public-safe validator derived from TASK-020/021/022/023 evidence.
+- TASK-025A adds no-device selected-lane native regression readiness only:
+  TASK-025 suite/report contracts, no-device runner, validator hardening,
+  synthetic/fake contract tests and TASK-025B handoff. Physical runtime is
+  deferred until a device is available and owner approvals are refreshed.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.
@@ -74,6 +78,8 @@ python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/docs_consistency_link_sanity.py
 python automation/quality/public_repo_safety_scan.py
 python automation/quality/synthetic_redaction_corpus.py --json
+python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json
+python automation/native_regression/run_task025_selected_lane_regression.py
 ```
 
 These commands are local and public-safe. They must not connect to devices, run

@@ -56,7 +56,7 @@
 | TASK-015H/017C | Final scope-version/normalization polish + TASK-005 owner approval handoff finalization | NON_AUTONOMOUS; docs/validators/tests/hygiene/public-safe owner handoff only; no runtime, no ADB refresh | qa/task-015h-017c-scope-normalization-owner-handoff | completed; default push authorized by explicit user command |
 | TASK-016 | Device/build inventory and runtime preflight draft | BOUNDED_AUTONOMOUS for public-safe docs/local validation only; runtime execution blocked | qa/task-016-device-build-runtime-preflight | superseded by completed TASK-015A/016 |
 | TASK-017 | Synthetic redaction policy test corpus | BOUNDED_AUTONOMOUS for synthetic local tests only | qa/task-017-redaction-policy-test-corpus | completed; synthetic-only corpus, redaction tests and WebView/payment account-id redaction passed review |
-| TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | proposed |
+| TASK-018 | Docs consistency and link sanity checks | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-018-docs-consistency-link-sanity | active in fresh TASK-018 thread |
 
 ## Selection rule
 
@@ -117,3 +117,8 @@ redaction corpus, static validators/redactors and local tests. It did not
 inspect `.qa_local`, APKs, runtime evidence, real secrets, private endpoints,
 real QR targets, real phone/OTP values, device identifiers, account data or
 payment data.
+
+TASK-018 is the current active public-safe P4 task. It adds tracked-docs
+Markdown link and public repo-relative reference sanity checks only. It must not
+read ignored `.qa_local` evidence, inspect APKs, run ADB/runtime/WebView/WebRTC/
+payment/network checks, crawl external links or claim runtime/product behavior.

@@ -137,6 +137,10 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - TASK-011 adds a public-safe navigation transition map, report template and local fail-closed report generator. This follows official Android TV navigation guidance at category level: efficient, predictable and intuitive navigation, 4-way D-pad traversal, Back/Home semantics, clear paths to focusable controls and axis-based hierarchy. This does not approve Android/device/APK execution, private route/deeplink capture, raw evidence, WebView/WebRTC/payment/network checks or production interaction; it does not confirm transition behavior.
 - TASK-012 adds a public-safe prioritization and approval-dependency map. This does not approve any build, target, config, fixture, runtime execution, WebView/WebRTC/payment/network/live CI action or production interaction; it only records category-level gates that must be confirmed before future conditional work can be selected.
 - TASK-013 adds no runtime capability. It refreshes backlog/source-of-truth state so future autonomous work can select only public-safe docs/static/fail-closed tasks until runtime prerequisites are confirmed.
+- TASK-018 adds no runtime capability. It validates public tracked Markdown
+  links, anchors and public repo-relative references only; external links are
+  not crawled, ignored local evidence is not inspected, and runtime/product
+  behavior remains unchanged.
 - TASK-015 adds no runtime capability. It validates approval metadata only and always reports `runtime_execution_status=not_run`; pending example metadata is `blocked`, while fully confirmed synthetic approval metadata can only become `approved_for_limited_runtime` for a future separate TASK-005 run. Runtime/device/APK/WebView/WebRTC/payment/network/live CI execution remains blocked until explicit confirmed approvals and reviews exist.
 - TASK-015A adds no runtime capability. It hardens validator allowlists for approver role, fixtures, evidence capture, runtime scope, cleanup levels, structured targets and synthetic user approval.
 - TASK-016 adds inventory-only local ADB capability after owner approval. It attempted collection into ignored `.qa_local/devices/` artifacts; the final run saw no authorized ADB devices and generated an empty public-safe inventory with no forbidden identifier regex findings. It does not approve APK install, app launch, runtime smoke, WebView, WebRTC, payment, account mutation, logcat, screenshots or videos.
@@ -261,6 +265,14 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   ADB/runtime/WebView/WebRTC/payment/network flows, use real secrets/endpoints,
   real phone/OTP/device identifiers, real QR targets, account data or payment
   values.
+- TASK-018 is active in thread
+  `TASK-018 - Docs consistency and link sanity checks` on branch
+  `qa/task-018-docs-consistency-link-sanity` from detected default branch
+  `main` commit `29b299c`. The task is `BOUNDED_AUTONOMOUS` and `PROD_SAFE`
+  only: tracked Markdown link and public repo-relative reference sanity checks,
+  local tests and source-of-truth docs. It must not read ignored `.qa_local`
+  evidence, inspect APKs, run ADB/runtime/WebView/WebRTC/payment/network flows,
+  crawl external links or claim runtime/product behavior.
 
 ## Evidence status policy
 

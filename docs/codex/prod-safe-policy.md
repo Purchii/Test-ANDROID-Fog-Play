@@ -1,4 +1,4 @@
-﻿# Production-safe policy
+# Production-safe policy
 
 ## Classification
 

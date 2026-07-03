@@ -231,26 +231,24 @@ def validate_output_path(path: str | Path, *, public_summary: bool = False) -> b
     if normalized.is_absolute() or ".." in normalized.parts:
         return False
     base = PUBLIC_REPORT_ROOT if public_summary else RAW_EVIDENCE_ROOT
+    expected_parts = ("docs", "qa", "reports") if public_summary else (".qa_local", "evidence", "task-020")
+    if normalized.parts[: len(expected_parts)] != expected_parts:
+        return False
+    if public_summary and normalized.suffix != ".json":
+        return False
+
+    # Pattern validation must work in clean public archives where .qa_local is
+    # intentionally absent, while still rejecting existing symlink escapes.
     try:
         resolved_base = base.resolve(strict=False)
-        resolved_path = normalized.resolve(strict=False)
-    except OSError:
+        candidate = base
+        for part in normalized.parts[len(expected_parts) : -1]:
+            candidate = candidate / part
+            if candidate.exists():
+                candidate.resolve(strict=True).relative_to(resolved_base)
+    except (OSError, ValueError):
         return False
-    try:
-        resolved_path.relative_to(resolved_base)
-    except ValueError:
-        return False
-    existing_parent = normalized.parent
-    while not existing_parent.exists() and existing_parent != existing_parent.parent:
-        existing_parent = existing_parent.parent
-    if existing_parent.exists():
-        try:
-            existing_parent.resolve(strict=True).relative_to(resolved_base)
-        except (OSError, ValueError):
-            return False
-    if public_summary:
-        return normalized.parts[:3] == ("docs", "qa", "reports") and normalized.suffix == ".json"
-    return normalized.parts[:3] == (".qa_local", "evidence", "task-020")
+    return True
 
 
 def default_blocked_report(reason: str = "--allow-runtime was not provided") -> dict[str, Any]:
@@ -461,9 +459,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--public-summary", type=Path, default=None, help="Public summary path under docs/qa/reports/*.json.")
     args = parser.parse_args(argv)
 
-    if args.raw_output and not validate_output_path(args.raw_output, public_summary=False):
+    raw_output_valid = args.raw_output is None or validate_output_path(args.raw_output, public_summary=False)
+    public_summary_valid = args.public_summary is None or validate_output_path(args.public_summary, public_summary=True)
+
+    if not raw_output_valid:
         report = default_blocked_report("raw output path must stay under .qa_local/evidence/task-020/")
-    elif args.public_summary and not validate_output_path(args.public_summary, public_summary=True):
+    elif not public_summary_valid:
         report = default_blocked_report("public summary path must stay under docs/qa/reports/*.json")
     elif not args.allow_runtime:
         report = default_blocked_report()
@@ -480,10 +481,11 @@ def main(argv: list[str] | None = None) -> int:
         )
         report["production_safety_classification"] = PRODUCTION_CONDITIONAL
 
-    if args.public_summary is not None:
+    output_paths_valid = raw_output_valid and public_summary_valid
+    if args.public_summary is not None and output_paths_valid:
         args.public_summary.parent.mkdir(parents=True, exist_ok=True)
         args.public_summary.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    if args.raw_output is not None:
+    if args.raw_output is not None and output_paths_valid:
         args.raw_output.parent.mkdir(parents=True, exist_ok=True)
         args.raw_output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 

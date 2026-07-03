@@ -88,10 +88,16 @@ def test_allow_runtime_without_input_still_blocks(capsys):
 
 def test_output_paths_are_constrained_to_task020_families():
     assert validate_output_path(".qa_local/evidence/task-020/run/report.json")
+    assert validate_output_path(".qa_local/evidence/task-020/run/deep/report.json")
     assert validate_output_path("docs/qa/reports/task020.json", public_summary=True)
     assert not validate_output_path(".qa_local/evidence/task-019/run/report.json")
+    assert not validate_output_path(".qa_local/devices/raw_adb_devices.json")
+    assert not validate_output_path(".qa_local/secrets/qa_user.env")
+    assert not validate_output_path(".qa_local/apks/task-005/app.apk")
+    assert not validate_output_path("C:/tmp/task020.json")
     assert not validate_output_path("docs/qa/private/task020.json", public_summary=True)
     assert not validate_output_path("../escape.json")
+    assert not validate_output_path(".qa_local/evidence/task-020/../task-019/report.json")
 
 
 def test_boundary_detection_is_conservative():
@@ -186,6 +192,49 @@ def test_public_summary_and_raw_output_are_written(tmp_path, monkeypatch, capsys
     assert report["overall_status"] == "blocked"
     assert (tmp_path / public_path).exists()
     assert (tmp_path / raw_path).exists()
+
+
+def test_invalid_output_paths_block_without_writing(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    invalid_public_path = "docs/qa/private/task020_unit_probe_output.json"
+    invalid_raw_path = ".qa_local/evidence/task-019/unit-run/probe.json"
+
+    exit_code = main(["--public-summary", invalid_public_path, "--raw-output", invalid_raw_path])
+
+    assert exit_code == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["overall_status"] == "blocked"
+    assert "raw output path must stay under .qa_local/evidence/task-020/" in report["blocked_reasons"]
+    assert not (tmp_path / invalid_public_path).exists()
+    assert not (tmp_path / invalid_raw_path).exists()
+
+
+def test_invalid_raw_output_blocks_valid_public_write(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    public_path = "docs/qa/reports/task020_unit_probe_output.json"
+    invalid_raw_path = ".qa_local/evidence/task-019/unit-run/probe.json"
+
+    exit_code = main(["--public-summary", public_path, "--raw-output", invalid_raw_path])
+
+    assert exit_code == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["overall_status"] == "blocked"
+    assert not (tmp_path / public_path).exists()
+    assert not (tmp_path / invalid_raw_path).exists()
+
+
+def test_invalid_public_output_blocks_valid_raw_write(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(tmp_path)
+    invalid_public_path = "docs/qa/private/task020_unit_probe_output.json"
+    raw_path = ".qa_local/evidence/task-020/unit-run/probe.json"
+
+    exit_code = main(["--public-summary", invalid_public_path, "--raw-output", raw_path])
+
+    assert exit_code == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["overall_status"] == "blocked"
+    assert not (tmp_path / invalid_public_path).exists()
+    assert not (tmp_path / raw_path).exists()
 
 
 def test_output_path_rejects_symlink_escape(tmp_path, monkeypatch):

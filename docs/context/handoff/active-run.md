@@ -2,125 +2,73 @@
 
 ## Run Metadata
 
-Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-023 - Full data screen inventory`
-Thread status: `runtime_data_inventory_closed_with_dynamic_list_limits; verification passed; default integration authorized by owner`
-Fresh thread verified: `yes; goal created in thread 019f2847-7c22-7830-9094-c740e8cb1796 and title set to TASK-023 - Full data screen inventory`
-Task ID: `TASK-023`
-Task branch: `qa/task-023-full-data-screen-inventory`
+Mode: `BOUNDED_AUTONOMOUS`
+Thread title: `TASK-024 - Native post-auth regression pack + selected-lane runtime regression`
+Thread status: `phase_c_blocked_before_runtime; final verification in progress`
+Fresh thread verified: `yes; thread title set and goal created for TASK-024`
+Task ID: `TASK-024`
+Task branch: `qa/task-024-native-post-auth-regression-pack`
 Default branch: `main`
-Base commit: `e0df8436e9a1907bc2149c27bc5bac33232b8c31`
-Merge/push authority: `NON_AUTONOMOUS; do not merge or push default branch without explicit owner command`
-Production safety classification: `PROD_CONDITIONAL` for bounded local Android TV data inventory on the already approved lane; `PROD_SAFE` for docs, planning, JSON validation and hygiene checks.
+Base commit: `5482bfb0cf25846aece34ed014201b174a80c049`
+Merge/push authority: `Owner explicitly authorized push/merge/push to detected default branch after all TASK-024 gates pass; no force-push`
+Production safety classification: `PROD_SAFE` for docs/tests/static tooling and default fail-closed runners; `PROD_CONDITIONAL` for Phase C selected-lane runtime only after Phase A/B pass and approved runtime prerequisites/collector input are present.
 
 ## Goal
 
-TASK-023 creates a full public-safe data inventory for all safe reachable
-approved screen families and branches using TASK-020 full screen inventory,
-TASK-021 offline evidence and TASK-022 gamepad findings as baseline evidence.
-It focuses on visible data/state/content categories rather than only screen
-navigation.
+TASK-024 repairs clean-archive hygiene blockers, restores TASK-021
+source-of-truth, and builds a native post-auth regression pack from
+TASK-020/TASK-021/TASK-022/TASK-023 selected-lane evidence.
 
-Approved lane:
+Approved lane for any Phase C runtime:
 
 - `device_alias`: `tv-tpv-013`;
 - `runtime_profile_alias`: `tv-tpv-a12-013`;
 - `build_alias`: `task-005-local-apk-001`;
 - `synthetic_user_alias`: `qa-user-phone-001`.
 
-Raw phone/OTP values, screenshots, XML, logs, videos, QR targets, device
-identifiers, server/tariff/payment values, private endpoints/routes/components
-and APK hashes remain local-only under ignored `.qa_local/evidence/task-023/`.
+Raw evidence, if produced, must remain under ignored
+`.qa_local/evidence/task-024/`.
 
-## Runtime Progress
+## Phase Status
 
-TASK-023 local-only ADB preflight found one authorized device. Raw ADB output is
-stored only under the ignored TASK-023 evidence root. The first preflight
-attempt failed before ADB/product action because the local PowerShell did not
-support `Get-Date -AsUTC`; the compatible retry succeeded.
-
-Fresh TASK-023 checkpoint groups:
-
-- `001`: external Google TV launcher / quick settings surface; external/system,
-  not an app screen.
-- `002`: auth phone entry with numeric keyboard, legal links and transient TV
-  overlay category.
-- `003`-`006`: onboarding recurrence and transition to post-auth catalog after
-  helper-backed synthetic auth/session recovery.
-- `007`-`014`: catalog rail focus no-op samples and mid-grid data categories.
-- `016`-`036`: long game catalog scroll to a run-specific bottom/no-change
-  condition. This proves list-boundary behavior, not a static title inventory.
-- `038`-`045`: Search no-results state, visible-keyboard input requirement and
-  Back/route recovery trap.
-- `047`-`048`: approved force-stop plus explicit relaunch recovery from Search
-  trap.
-- `049`-`057`: Session Journal and Steam rail route no-ops from one fresh
-  catalog focus state.
-- `060`-`061`: game-card focus-then-activate path into game detail.
-- `062-001`-`062-040`: game-detail server list sampled for 40 segments; field
-  model and dynamic variability covered, complete server row enumeration not
-  collected.
-
-Owner clarification during the run: both the games screen and server list are
-dynamic by quantity and content; server rows depend on game and can exceed 250.
-TASK-023 therefore inventories data categories, field model, focus/scroll
-behavior, redaction, boundaries and anomalies. It does not publish or require a
-static complete list of game or server values.
-
-## Public Artifacts
-
-- `tasks/TASK_023_full_data_screen_inventory.md`
-- `docs/qa/reports/task023_full_data_screen_inventory.md`
-- `docs/qa/reports/task023_full_data_screen_inventory.summary.json`
-
-## Closure Position
-
-The public JSON summary now has:
-
-- `run_status`: `runtime_data_inventory_closed_with_dynamic_list_limits`;
-- 18 public-safe inventory rows;
-- 37 closure-ledger screen-family entries;
-- 20 data families found;
-- explicit `not_run_out_of_scope` entries for complete game-title enumeration
-  and complete server-row enumeration;
-- explicit `blocked_by_boundary` entries for payment, stream/session,
-  purchase/account and external traversal branches;
-- anomalies captured for catalog rail focus, Search input/recovery, Journal and
-  Steam route no-ops, card focus-then-open behavior, dynamic server list and
-  XML-vs-visual evidence gaps.
+- Phase A: passed. Path validation no longer depends on existing `.qa_local`,
+  JSON/BOM hygiene is enforced for committed JSON, TASK-021 source-of-truth is
+  restored, and full pytest is green.
+- Phase B: passed. Native regression model, suite, fail-closed runner,
+  validator and targeted tests are implemented.
+- Phase C: blocked before runtime. The explicit `--allow-runtime` command was
+  run, but no approved TASK-024 runtime collector/input report was available,
+  so no ADB/device/APK navigation executed.
+- Phase D: public-safe report/docs/handoff in progress.
 
 ## Multi-Agent Status
 
+- Orchestrator: `active`.
 - Planner: `complete`.
-- Builder: `complete_initial_schema_review`.
-- QA Reviewer A: final recheck passed with no blockers after v2 remediated
-  canonical evidence statuses and separated `evidence_basis`.
-- QA Reviewer B: initial blockers recorded for over-broad aggregate statuses;
-  v2 remediates with per-family ledger and dynamic-list limits.
-- Security/Prod-safety Reviewer: final recheck passed with no raw-data or
-  forbidden-action findings.
-- Docs/Scribe: final consistency findings remediated before commit by aligning
-  review status, boundary terminal statuses and TASK-021 baseline traceability.
+- Builder scout: `complete`.
+- QA Reviewer A: `complete_with_findings_to_address`.
+- QA Reviewer B: `complete_with_validator_edge_cases`.
+- Security/Prod-safety Reviewer: `complete_with_fail_closed_checklist`.
+- Docs/Scribe: `complete_with_docs_update_map`.
 
-## Verification Passed
+## Deliverables
 
-Checks run before default integration:
-
-- `git status --short --branch`;
-- JSON sanity;
-- docs/schema sanity;
-- `git diff --check`;
-- hygiene/public-safe scans;
-- `python -m pytest -q` (`427 passed, 1 skipped`);
-- `python -m compileall -q automation tests`;
-- final multi-agent QA/Security/Docs review.
+- `tasks/TASK_021_network_offline_runtime_probe.md`
+- `tasks/TASK_024_native_post_auth_regression_pack.md`
+- `automation/native_regression/run_native_regression_probe.py`
+- `automation/native_regression/validate_native_regression_report.py`
+- `docs/qa/native-regression/task024_native_regression_model.md`
+- `docs/qa/native-regression/task024_native_regression_suite.json`
+- `docs/qa/native-regression/task024_native_regression_report_template.md`
+- `docs/qa/reports/task024_native_post_auth_regression.summary.json`
+- `docs/qa/reports/task024_native_post_auth_regression.md`
 
 ## Stop Conditions
 
-Stop or recover if runtime prerequisites disappear; app reaches captcha,
-payment, WebView, external QR, stream/session start or account mutation; focus
-target is unclear before confirm/select; raw value leakage risk appears;
-recovery/cleanup cannot be confirmed; Android TV screensaver/launcher state
-cannot be recovered; crash/ANR repeats; JSON/hygiene checks fail and cannot be
-fixed within scope; or any action requires private endpoints, secrets, source,
-decompiled code, APK modification or real production mutation.
+Stop before runtime if Phase A or Phase B fails. Stop before selecting or
+entering any payment, WebView/browser/external QR, stream/WebRTC/media,
+paid game/session, Steam/account connection, profile/account mutation,
+captcha-solving, network/offline manipulation, packet capture/proxy/TLS bypass,
+private endpoint/deeplink extraction or APK modification path. Stop if raw
+phone/OTP, QR targets, screenshots/XML/logs/videos, device identifiers, APK
+hashes/paths or dynamic game/server/payment values risk entering public output.

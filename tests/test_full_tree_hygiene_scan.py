@@ -37,6 +37,15 @@ def test_hygiene_scan_reports_blank_line_at_eof(tmp_path):
     assert any("blank line at EOF" in issue for issue in issues)
 
 
+def test_hygiene_scan_reports_json_utf8_bom(tmp_path):
+    path = tmp_path / "bom.json"
+    path.write_bytes(b"\xef\xbb\xbf{\"ok\": true}\n")
+
+    issues = scan_paths([path])
+
+    assert any("JSON file has UTF-8 BOM" in issue for issue in issues)
+
+
 def test_auto_mode_falls_back_to_public_safe_tree_when_git_is_unavailable(tmp_path, monkeypatch, capsys):
     def raise_no_git(*args, **kwargs):
         raise FileNotFoundError("git")

@@ -1,4 +1,4 @@
-"""Scan tracked text files for whitespace and EOF hygiene issues.
+"""Scan tracked text files for whitespace, EOF and JSON encoding hygiene issues.
 
 This tool is local-only and performs no Android, device, APK, network or
 production interaction. It intentionally scans tracked files instead of only
@@ -124,6 +124,8 @@ def _scan_file(path: Path) -> list[str]:
         return []
 
     issues: list[str] = []
+    if path.suffix.lower() == ".json" and data.startswith(b"\xef\xbb\xbf"):
+        issues.append(f"{path}: JSON file has UTF-8 BOM")
     if data and not data.endswith(b"\n"):
         issues.append(f"{path}: missing final newline")
 

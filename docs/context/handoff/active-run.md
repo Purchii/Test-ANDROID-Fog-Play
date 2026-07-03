@@ -156,11 +156,11 @@ python automation/quality/public_repo_safety_scan.py
 
 ## Thread Handoff
 
-- Current thread status: `inactive_completed` after task branch integration.
-- Next thread created: `no`; create fresh continuation only after default
-  branch push is verified.
-- Next task selection should start from the verified detected default branch
-  head after TASK-017 integration.
+- Current thread status: `inactive_completed`.
+- Next thread created: `yes; 019f2915-4152-7ee2-b37c-21b892dcc845`.
+- Next thread title/prompt seed: `NEXT_TASK_SELECTION_FROM_main@3216f28`.
+- Next task selection must happen in the fresh continuation thread after it
+  verifies current default branch state.
 
 ## Stop Conditions
 

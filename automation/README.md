@@ -156,6 +156,9 @@ WebRTC, payment flows, network services or production systems.
 
 - `full_tree_hygiene_scan.py` scans tracked/public-safe text trees for
   whitespace, EOF and JSON BOM hygiene.
+- `docs_consistency_link_sanity.py` scans tracked Markdown files for broken
+  local links, missing anchors and unsafe dereferenceable local/raw targets. It
+  does not crawl external links or read ignored `.qa_local` evidence.
 - `public_repo_safety_scan.py` scans tracked/public-repository paths for
   forbidden raw artifact families such as APKs, raw evidence, signing material,
   local config and local-only artifact directories. It reports only rule ids,

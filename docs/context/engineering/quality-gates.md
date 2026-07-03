@@ -123,6 +123,16 @@ introduced failing tests must not be deferred to a later independent task.
 - TASK-017 is static/public-safe only. Passing synthetic corpus tests does not
   confirm real evidence redaction, runtime behavior, APK safety, WebView,
   WebRTC, payment, network/offline behavior or compatibility coverage.
+- TASK-018 docs consistency/link sanity checks must scan tracked Markdown files
+  or explicit test fixtures only, must not crawl external URLs, and must fail
+  closed on missing local public targets, missing Markdown anchors, unsafe
+  absolute/traversal paths and dereferenceable Markdown links into `.qa_local`,
+  raw artifact, package or secret-like target families. Findings must report
+  rule ids, source path/line and sanitized target categories, not raw forbidden
+  values.
+- TASK-018 is static/public-safe only. Passing docs/link checks does not confirm
+  runtime behavior, APK safety, real evidence redaction, WebView, WebRTC,
+  payment, network/offline behavior or compatibility coverage.
 - Release gate reports must require `qa_reviewer_a`, `qa_reviewer_b`, `security_prod_safety_reviewer` and `docs_scribe` to be `approved` or `confirmed` before `release_decision=pass`, even when all R0/R1 gates are otherwise passing.
 - Exported component guard reports must block when any required prerequisite has `present != true` or `evidence_status != confirmed`.
 

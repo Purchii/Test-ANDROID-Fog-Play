@@ -15,6 +15,8 @@ WebView / WebRTC testing of MTC Fog Play.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.
+- TASK-018 adds tracked-docs link and public-reference sanity checks only; it
+  does not crawl external links or inspect ignored local evidence.
 - Broader runtime lanes remain blocked or `not_run` until explicit confirmed
   approvals.
 - TASK-016 allows inventory-only local ADB preflight after owner approval; raw
@@ -69,6 +71,7 @@ python -m compileall automation tests
 python automation/approvals/validate_approval_metadata.py --metadata docs/approvals/approval_metadata.example.json
 python automation/device_inventory/generate_adb_device_inventory.py
 python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/docs_consistency_link_sanity.py
 python automation/quality/public_repo_safety_scan.py
 python automation/quality/synthetic_redaction_corpus.py --json
 ```

@@ -1,0 +1,55 @@
+# Docs Consistency and Link Sanity
+
+## Purpose
+
+TASK-018 adds a local static guard for public Markdown links and public
+repo-relative documentation references. It complements the TASK-014 tracked-path
+public repository safety scan and the TASK-017 synthetic redaction corpus.
+
+This guard does not prove runtime behavior, product behavior, WebView/payment
+behavior, stream behavior, network behavior or compatibility coverage.
+
+## Local Guard
+
+Run:
+
+```bash
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The guard scans tracked Markdown files by default and checks:
+
+- local Markdown links point to tracked public files;
+- local Markdown anchors exist in the target document;
+- duplicate headings can be referenced with GitHub-style `-1`, `-2` suffixes;
+- public repo-relative references in inline code point to existing tracked
+  public files;
+- Markdown links do not point into local-only/raw evidence or package artifact
+  families.
+
+External links are treated as out of scope for TASK-018. The guard never
+fetches, crawls, follows redirects or probes remote URLs.
+
+## Output Contract
+
+Findings use:
+
+```text
+RULE_ID    source/path.md:line    sanitized-target    category-level reason
+```
+
+Forbidden or sensitive-looking local targets are reported with category labels
+such as `[forbidden-local-target]`, `[unsafe-local-target]` or
+`[query-or-url-like-target]`; the guard must not print raw private-looking
+URLs, QR targets, phone/OTP values, device identifiers, APK hashes, account
+values or payment values.
+
+## Boundaries
+
+Literal `.qa_local/...` examples in policy text are allowed when they describe
+ignored local storage contracts. Markdown links or dereferenceable public
+references into `.qa_local`, APKs, raw evidence, local secrets or packaged
+artifacts are blocked.
+
+No ADB, APK, Android runtime, WebView, WebRTC, payment, stream,
+network/offline, browser or production action is part of TASK-018.

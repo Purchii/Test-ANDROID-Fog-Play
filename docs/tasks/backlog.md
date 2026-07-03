@@ -44,7 +44,7 @@
 | ID | Title | Mode default | Branch | Status |
 |---|---|---|---|---|
 | TASK-013 | Next-task selection blocker and safe backlog refresh | BOUNDED_AUTONOMOUS for public-safe docs only | qa/task-013-next-task-selection-safe-backlog-refresh | completed |
-| TASK-014 | Public repository safety scan checklist and local guard plan | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-014-public-repo-safety-scan | completed locally; verification and multi-agent reviews passed, default integration pending |
+| TASK-014 | Public repository safety scan checklist and local guard plan | BOUNDED_AUTONOMOUS for public-safe docs/static checks only | qa/task-014-public-repo-safety-scan | completed; verification and multi-agent reviews passed, merged/pushed to detected `main` |
 | TASK-015 | Approval metadata schema validator | BOUNDED_AUTONOMOUS for local fail-closed validation only | qa/task-015-approval-metadata-validator | completed |
 | TASK-015A/016 | Approval validator hardening and ADB device/build inventory preflight | NON_AUTONOMOUS; validator/docs/tests are PROD_SAFE; local ADB inventory is owner-approved PROD_CONDITIONAL | qa/task-015a-016-approval-validator-adb-inventory-preflight | completed |
 | TASK-015B/016A | Final approval validator hardening and ADB inventory rerun/preflight | NON_AUTONOMOUS; validator/docs/tests are PROD_SAFE; local ADB inventory is owner-approved PROD_CONDITIONAL | qa/task-015b-016a-final-validator-adb-preflight | completed; merged to main/origin/main at 0832867 |

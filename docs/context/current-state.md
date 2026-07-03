@@ -211,6 +211,23 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   paid session start, external QR/WebView traversal, complete game-title
   enumeration and mutating controller setup/reset/remap/pairing remain not
   executed.
+- TASK-023 has a 2026-07-03 full public-safe data inventory for all approved
+  safe reachable screen families/branches on the same lane:
+  `docs/qa/reports/task023_full_data_screen_inventory.md` and
+  `docs/qa/reports/task023_full_data_screen_inventory.summary.json`. It maps
+  TASK-020/TASK-021/TASK-022 baseline screen-family evidence plus fresh
+  TASK-023 checkpoints into data categories, redaction classes, boundary
+  policies and automation implications. Fresh TASK-023 evidence captured auth,
+  onboarding, catalog top/grid, catalog bottom/no-change, Search no-results and
+  recovery trap, rail route no-ops, game detail entry and 40 sampled server-list
+  segments. The owner clarified that both game catalog content and server rows
+  are dynamic by quantity/content; server rows can depend on game and exceed
+  250. TASK-023 therefore covers the visible data model, dynamic/static
+  classification, focus/scroll behavior, boundaries and anomalies, but does not
+  claim or publish complete game-title or complete server-row value
+  enumeration. Payment completion, paid session start, external QR/WebView
+  traversal, account/purchase actions and controller reset/remap/pairing remain
+  blocked or not-run out of scope.
 
 ## Evidence status policy
 

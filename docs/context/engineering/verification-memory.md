@@ -6,6 +6,7 @@ This file records what was actually verified. Do not claim runtime checks passed
 
 | Date | Task | Branch | Checks run | Result | Notes |
 |---|---|---|---|---|---|
+| 2026-07-03 | TASK-023 full data screen inventory | qa/task-023-full-data-screen-inventory | Android runtime checkpoints on the approved lane under ignored `.qa_local/evidence/task-023/`, TASK-020/TASK-021/TASK-022 baseline mapping, public-safe JSON/Markdown summaries, JSON sanity, schema/status invariant script, `git diff --check`, `python automation\\quality\\full_tree_hygiene_scan.py`, `python automation\\quality\\full_tree_hygiene_scan.py --mode public-safe-tree`, manual public-safe grep, `git status --short --branch`, multi-agent QA/Security review | passed pending final default-branch integration | TASK-023 inventories public-safe data categories across approved safe reachable screen families. Fresh checkpoints covered auth/onboarding/catalog, catalog bottom/no-change, Search no-results/recovery trap, rail route no-ops, game detail entry and 40 server-list segments. Complete game-title and complete server-row value enumeration are explicitly `not_run_out_of_scope` because game/server lists are dynamic by count/content; server rows can depend on game and exceed 250. No payment, external QR target opening, paid stream/session start, captcha solving, account connection/purchase action, APK modification, endpoint extraction, proxying or packet capture was performed. Raw screenshots/XML, phone/OTP, QR targets, device identifiers, game/server/tariff/payment/account-like values remain ignored under `.qa_local/evidence/task-023/`. |
 | 2026-07-03 | TASK-022 Xbox-like gamepad screen inventory | qa/task-022-xbox-gamepad-screen-inventory | Android runtime checkpoints `000`-`083` on the approved lane, owner-connected physical Xbox-like gamepad activation, TASK-019 helper-backed auth restore, server-selection payment QR decode local-only via `jsqr`, Settings Gamepad section recheck, public-safe JSON/Markdown summaries, `python -m json.tool docs\\qa\\reports\\task022_xbox_gamepad_full_screen_inventory.summary.json`, allowed-status invariant script, public redaction scan, `git diff --check`, `python automation\\quality\\full_tree_hygiene_scan.py`, `python automation\\quality\\full_tree_hygiene_scan.py --mode public-safe-tree`, `git status --short --branch`, QA/Security reviews | passed for owner-narrowed gamepad inventory after QA A remediation recheck, QA B review and Security review | TASK-022 confirmed bottom-right A/B hints when the physical gamepad is active, and owner clarified the gamepad can sleep so hints may disappear. Selecting a server with the physical gamepad active reached payment wait/payment QR rather than the prior TASK-020 connect-device gate; QR targets were decoded local-only and not followed; no payment, external navigation or stream/session start occurred. Settings Gamepad recheck opened the active gamepad configuration screen for an Xbox Wireless Controller; no assignment/reset/remap/pairing mutation was performed. Button B and Android Back did not exit that screen; a UI-tree-derived tap on the safe Close control returned. Search and some baseline TASK-020 families were not re-run after owner narrowed scope and are explicitly classified in the TASK-022 ledger. Raw phone/OTP, screenshots/XML, device ids, QR targets, server/tariff/payment values and private component values remain ignored under `.qa_local/evidence/task-022/`. |
 | 2026-07-03 | TASK-022 default branch integration | main | Explicit owner command `пушь в мастер`, interpreted as detected default branch `main`; task branch commit/push, fast-forward safety check `origin/main` ancestor of task `HEAD`, default push, post-push remote alignment check | passed with no additional runtime actions | Integration follows completed TASK-022 final review and verification. Local `main` was checked out in a separate worktree, so remote `main` was fast-forwarded from the task branch rather than merged locally in this worktree. |
 | 2026-06-05 | TASK-000 planning | qa/task-000-bootstrap-codex-docs | `git status --short --branch`, `git remote -v`, remote HEAD/heads check | passed | Local repo had no commits; GitHub remote was empty. |
@@ -277,6 +278,27 @@ This file records what was actually verified. Do not claim runtime checks passed
   profile/account mutation beyond logout remain `blocked_by_boundary` or
   `not_run_out_of_scope`; no raw QR targets, phone/OTP values, device
   identifiers, server/tariff values or payment data were published.
+- TASK-023 full data screen inventory on 2026-07-03 uses TASK-020/TASK-021/TASK-022
+  baseline evidence plus fresh TASK-023 checkpoints. Fresh evidence captured
+  auth/onboarding/catalog, catalog bottom/no-change, Search no-results/recovery
+  trap, rail route no-ops, game detail entry and 40 sampled server-list
+  segments. The key automation rule is that both the games catalog and server
+  lists are dynamic by count/content; server rows can depend on the selected
+  game and exceed 250. Do not write future tests that depend on fixed game
+  names, fixed server aliases, fixed row counts, fixed prices/tariffs or fixed
+  hardware strings. Assert visible field categories, focus/scroll behavior,
+  boundary handling, redaction and invariant structure instead. Complete game
+  title enumeration and complete server row enumeration are
+  `not_run_out_of_scope` in TASK-023, while the screen/data families themselves
+  are covered at category level.
+- TASK-023 anomalies that should influence future automation: D-pad down from
+  catalog rail can repeat the same segment; Search may ignore raw ADB text
+  until visible keyboard keys are tapped; Search Back/route recovery can trap
+  until approved relaunch; Journal and Steam rail routes can no-op from one
+  fresh catalog focus state; a direct game-card tap may only focus the card and
+  require a second confirm; XML alone misses visual QR/banner/focus/content
+  evidence on rich TV surfaces. Record screenshots/video alongside XML for
+  every runtime checkpoint.
 
 ## Unverified zones
 

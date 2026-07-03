@@ -1,0 +1,1473 @@
+{
+  "schema_version": "task023_full_data_screen_inventory_summary_v2",
+  "task_id": "TASK-023",
+  "mode": "NON_AUTONOMOUS",
+  "run_status": "runtime_data_inventory_closed_with_dynamic_list_limits",
+  "coverage_type": "approved_lane_public_safe_data_inventory",
+  "evidence_status": "confirmed",
+  "base_commit": "e0df8436e9a1907bc2149c27bc5bac33232b8c31",
+  "task_branch": "qa/task-023-full-data-screen-inventory",
+  "default_branch": "main",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-001",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "local_evidence_root_public_ref": "ignored .qa_local/evidence/task-023/task-023-data-inventory-20260703T140517Z",
+  "raw_values_policy": {
+    "raw_title_strings_public": false,
+    "raw_phone_or_otp_public": false,
+    "raw_qr_targets_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_logs_public": false,
+    "raw_server_or_tariff_values_public": false,
+    "raw_payment_values_public": false,
+    "private_routes_or_endpoints_public": false,
+    "payment_or_external_link_followed": false,
+    "stream_or_paid_session_started": false,
+    "captcha_solved_or_bypassed_by_automation": false
+  },
+  "allowed_coverage_statuses": [
+    "covered",
+    "blocked_by_boundary",
+    "blocked_by_tooling",
+    "blocked_by_external_state",
+    "not_run_out_of_scope"
+  ],
+  "allowed_evidence_statuses": [
+    "confirmed",
+    "likely",
+    "hypothesis",
+    "unknown"
+  ],
+  "data_inventory_schema": {
+    "required_row_fields": [
+      "screen_alias",
+      "screen_family",
+      "state_category",
+      "coverage_status",
+      "evidence_status",
+      "evidence_basis",
+      "evidence_ids",
+      "prior_evidence_refs",
+      "data_categories_visible",
+      "data_dynamics",
+      "list_or_grid_sampling",
+      "focus_action_metadata",
+      "recurrence",
+      "redaction_class",
+      "public_safe_data_policy",
+      "local_only_data_classes",
+      "forbidden_data_classes",
+      "boundary_policy",
+      "risk_or_hypothesis",
+      "test_design_implication"
+    ]
+  },
+  "dynamic_list_policy": {
+    "games_catalog_complete_value_enumeration": "not_collected",
+    "server_catalog_complete_value_enumeration": "not_collected",
+    "reason": "Game and server rows are dynamic by account, game, build, availability and backend state. TASK-023 inventories data categories, visible field model, focus/scroll behavior and sampled segments; it does not publish or require a static complete row dump.",
+    "test_design_rule": "Autotests should assert stable categories, boundaries, accessibility/focus behavior, redaction and invariants. They must not depend on a fixed game list, fixed server count, fixed server aliases, fixed prices or fixed hardware rows."
+  },
+  "task023_fresh_runtime_checkpoints": [
+    {
+      "checkpoint_range": "001",
+      "screen_alias": "external_google_tv_launcher_quick_settings_surface",
+      "state_category": "external_system",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshot",
+      "summary": "Initial foreground was an external Google TV/quick-settings surface, not an app screen."
+    },
+    {
+      "checkpoint_range": "002",
+      "screen_alias": "auth_phone_entry_with_transient_tv_overlay",
+      "state_category": "auth",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshot_and_xml",
+      "summary": "Phone input, numeric keyboard, legal links and transient TV picture-mode overlay were visible; raw values stayed local-only."
+    },
+    {
+      "checkpoint_range": "003-006",
+      "screen_alias": "onboarding_to_catalog_recurrence",
+      "state_category": "onboarding_catalog_transition",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshot_and_helper_summary",
+      "summary": "Helper-backed synthetic auth/session recovery returned through onboarding into the post-auth catalog."
+    },
+    {
+      "checkpoint_range": "007-014",
+      "screen_alias": "catalog_focus_and_mid_grid_samples",
+      "state_category": "catalog_grid",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_and_xml",
+      "summary": "Rail-focused D-pad down no-op and mid-grid card category samples were captured."
+    },
+    {
+      "checkpoint_range": "016-036",
+      "screen_alias": "catalog_dynamic_long_grid_bottom_sample",
+      "state_category": "catalog_grid",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_hash_no_change_control",
+      "summary": "Long game grid reached a repeated bottom/no-change condition for this run. This proves list-boundary behavior, not a static title inventory."
+    },
+    {
+      "checkpoint_range": "038-045",
+      "screen_alias": "search_no_results_and_recovery_trap",
+      "state_category": "search",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_and_xml",
+      "summary": "Search popular/no-results state required visual keyboard taps for query entry; Back and rail tap attempts did not recover."
+    },
+    {
+      "checkpoint_range": "047-048",
+      "screen_alias": "force_stop_relaunch_recovery_from_search_trap",
+      "state_category": "recovery",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots",
+      "summary": "Approved force-stop plus explicit relaunch recovered from the Search trap back to catalog."
+    },
+    {
+      "checkpoint_range": "049-057",
+      "screen_alias": "left_rail_route_noops_from_catalog",
+      "state_category": "navigation_anomaly",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_and_xml",
+      "summary": "Session Journal, Steam top-up and rail D-pad probes repeated the catalog instead of opening those routes in this fresh state."
+    },
+    {
+      "checkpoint_range": "060-061",
+      "screen_alias": "game_card_focus_then_detail_entry",
+      "state_category": "game_detail",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_and_xml",
+      "summary": "Direct card tap first focused the grid card; confirm then opened game detail."
+    },
+    {
+      "checkpoint_range": "062-001-to-062-040",
+      "screen_alias": "game_detail_dynamic_server_list_samples",
+      "state_category": "game_detail_server_list",
+      "evidence_status": "confirmed",
+      "evidence_basis": "fresh_task023_screenshots_and_xml_samples",
+      "summary": "Forty server-list segments captured field categories and dynamic variability. Exhaustive server row enumeration was intentionally not collected."
+    }
+  ],
+  "data_families_found_count": 20,
+  "data_families_found": [
+    "app_launch_and_loaders",
+    "external_system_surfaces",
+    "auth_phone_entry",
+    "legal_documents",
+    "otp_retry_and_captcha_frontier",
+    "onboarding",
+    "navigation_rail",
+    "games_catalog_top",
+    "games_catalog_dynamic_grid",
+    "catalog_qr_banner",
+    "search",
+    "session_journal",
+    "steam_topup_and_feedback_qr_boundaries",
+    "settings_root",
+    "settings_promo_codes",
+    "settings_gamepad",
+    "logout_boundary",
+    "game_detail_metadata",
+    "server_and_tariff_dynamic_list",
+    "payment_connect_device_stream_boundaries"
+  ],
+  "inventory_rows": [
+    {
+      "screen_alias": "app_launch_and_loaders",
+      "screen_family": "app_launch_splash_loader",
+      "state_category": "loading",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020 baseline plus TASK-023 relaunch recovery",
+      "evidence_ids": [
+        "TASK-020:000-003",
+        "TASK-020:088",
+        "TASK-023:047-048"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "brand_visual_category",
+        "loading_indicator_category",
+        "transient_route_state_category"
+      ],
+      "data_dynamics": [
+        "transient",
+        "route_bound"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Loader checkpoints require wait and recapture before route verdict.",
+      "recurrence": "confirmed",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Only loader categories are public.",
+      "local_only_data_classes": [
+        "raw_screenshot",
+        "raw_xml",
+        "raw_window_state"
+      ],
+      "forbidden_data_classes": [
+        "private_activity_or_component_value"
+      ],
+      "boundary_policy": "Do not publish private launch components.",
+      "risk_or_hypothesis": "Loaders can mask delayed route transitions.",
+      "test_design_implication": "Wait for post-loader state before asserting screen identity."
+    },
+    {
+      "screen_alias": "external_system_surfaces",
+      "screen_family": "external_google_tv_launcher_quick_settings_surface external_tv_screensaver",
+      "state_category": "external_system",
+      "coverage_status": "blocked_by_external_state",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020 baseline plus TASK-023 checkpoint 001",
+      "evidence_ids": [
+        "TASK-020:310-312",
+        "TASK-023:001"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "external_launcher_category",
+        "external_ambient_category",
+        "system_status_category"
+      ],
+      "data_dynamics": [
+        "external_state"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Recover app foreground before continuing app inventory.",
+      "recurrence": "confirmed",
+      "redaction_class": "not_collected",
+      "public_safe_data_policy": "Classify as external/system evidence, not app data.",
+      "local_only_data_classes": [
+        "raw_external_screenshot"
+      ],
+      "forbidden_data_classes": [],
+      "boundary_policy": "Do not report as app crash, blank screen or app completion.",
+      "risk_or_hypothesis": "Idle/wake or launcher focus can interrupt runtime inventory.",
+      "test_design_implication": "Autotests need foreground/app-package preconditions before screen assertions."
+    },
+    {
+      "screen_alias": "auth_phone_entry",
+      "screen_family": "auth_phone_entry_with_legal_links auth_phone_entry_with_keyboard",
+      "state_category": "auth",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 checkpoint 002",
+      "evidence_ids": [
+        "TASK-020:zero-audit:000-001",
+        "TASK-022:012-013",
+        "TASK-023:002"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "phone_input_category",
+        "country_prefix_category",
+        "numeric_keyboard_category",
+        "legal_link_category",
+        "gamepad_hint_category"
+      ],
+      "data_dynamics": [
+        "user_or_session_bound",
+        "static",
+        "transient"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Visual keyboard and gamepad hints can be more reliable than XML focus alone.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Credential-like data is represented only as field categories.",
+      "local_only_data_classes": [
+        "phone_or_credential_value",
+        "otp_value",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "real_user_phone",
+        "otp_value_publication"
+      ],
+      "boundary_policy": "Synthetic auth only through approved local helper path.",
+      "risk_or_hypothesis": "ADB text input can be unreliable for masked phone fields.",
+      "test_design_implication": "Auth tests should use the proven visual-keyboard/helper path and redact screenshots."
+    },
+    {
+      "screen_alias": "legal_documents",
+      "screen_family": "license_agreement_webview personal_data_policy_webview",
+      "state_category": "legal_webview",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020 baseline",
+      "evidence_ids": [
+        "TASK-020:010-012",
+        "TASK-020:030",
+        "TASK-020:040-041",
+        "TASK-020:050",
+        "TASK-020:060-063"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "legal_document_title_category",
+        "long_scrollable_text_category",
+        "back_or_recovery_controls"
+      ],
+      "data_dynamics": [
+        "static_or_remote_config_bound"
+      ],
+      "list_or_grid_sampling": "Long legal WebView sampled; full legal text is not republished.",
+      "focus_action_metadata": "Prior evidence includes Back/recovery attempts and WebView accessibility gaps.",
+      "recurrence": "baseline_confirmed",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Document categories only; no verbatim legal dump in this inventory.",
+      "local_only_data_classes": [
+        "raw_webview_text",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "private_url_or_route"
+      ],
+      "boundary_policy": "No external browser or endpoint extraction.",
+      "risk_or_hypothesis": "Legal content can vary by build/config.",
+      "test_design_implication": "Validate presence, scrollability and recovery rather than full text equality."
+    },
+    {
+      "screen_alias": "otp_retry_captcha_frontier",
+      "screen_family": "otp_code_entry auth_wrong_otp_error_retry_transient captcha_image_code_entry",
+      "state_category": "auth_retry_boundary",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020 baseline",
+      "evidence_ids": [
+        "TASK-020:080-082",
+        "TASK-020:zero-audit:079-096"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "otp_input_category",
+        "retry_feedback_category",
+        "visual_snackbar_category",
+        "captcha_image_category"
+      ],
+      "data_dynamics": [
+        "user_or_session_bound",
+        "transient",
+        "external_service_bound"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Wrong-code feedback can be visible in screenshots while absent from XML.",
+      "recurrence": "baseline_confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "OTP/captcha are boundary categories only.",
+      "local_only_data_classes": [
+        "otp_value",
+        "captcha_image",
+        "raw_auth_screenshot"
+      ],
+      "forbidden_data_classes": [
+        "captcha_solution",
+        "real_credential_value"
+      ],
+      "boundary_policy": "Captcha must not be solved or bypassed.",
+      "risk_or_hypothesis": "External auth service may escalate to captcha earlier than the nominal retry count.",
+      "test_design_implication": "Capture every OTP/captcha checkpoint visually and stop at captcha."
+    },
+    {
+      "screen_alias": "onboarding_slides",
+      "screen_family": "onboarding_slides",
+      "state_category": "onboarding",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 recurrence",
+      "evidence_ids": [
+        "TASK-020:089-099",
+        "TASK-022:014-017",
+        "TASK-023:003-006"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "slide_title_category",
+        "slide_body_category",
+        "cta_category",
+        "promotional_artwork_category",
+        "progression_state"
+      ],
+      "data_dynamics": [
+        "profile_state_bound",
+        "remote_config_or_static"
+      ],
+      "list_or_grid_sampling": "Multi-slide progression sampled.",
+      "focus_action_metadata": "Confirm/Button A advances onboarding CTA in baseline evidence.",
+      "recurrence": "confirmed",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Slide categories and CTA states only.",
+      "local_only_data_classes": [
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [],
+      "boundary_policy": "No account mutation beyond approved onboarding completion.",
+      "risk_or_hypothesis": "Onboarding recurrence depends on profile/session state.",
+      "test_design_implication": "Record recurrence cause and completion state per run."
+    },
+    {
+      "screen_alias": "navigation_rail",
+      "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
+      "state_category": "navigation",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 anomaly probes",
+      "evidence_ids": [
+        "TASK-020:303-305",
+        "TASK-020:319-323",
+        "TASK-022:028-032",
+        "TASK-023:037",
+        "TASK-023:049-057"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "rail_item_category",
+        "expanded_label_category",
+        "collapsed_icon_category",
+        "selected_item_indicator_category"
+      ],
+      "data_dynamics": [
+        "static",
+        "focus_state_bound",
+        "profile_state_bound"
+      ],
+      "list_or_grid_sampling": "Expanded/collapsed and route recurrence states sampled.",
+      "focus_action_metadata": "Fresh TASK-023 found route no-ops from a catalog rail state; baseline reached routes from other states.",
+      "recurrence": "confirmed",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Rail labels/categories are public-safe; account card values are local-only.",
+      "local_only_data_classes": [
+        "account_like_value",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "real_account_identifier"
+      ],
+      "boundary_policy": "No logout/account mutation from rail/settings without fixture.",
+      "risk_or_hypothesis": "Rail action result depends on focus origin and app state.",
+      "test_design_implication": "Autotests need a focus oracle before route activation."
+    },
+    {
+      "screen_alias": "games_catalog_top_and_banner",
+      "screen_family": "post_auth_games_catalog_top catalog_banner_qr",
+      "state_category": "catalog",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 checkpoints 006 and 055-057",
+      "evidence_ids": [
+        "TASK-020:100",
+        "TASK-020:114",
+        "TASK-020:qr_decode_114",
+        "TASK-022:017-018",
+        "TASK-023:006",
+        "TASK-023:055-057"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "user_card_category",
+        "continue_game_row_category",
+        "promo_banner_category",
+        "qr_code_image_category",
+        "first_game_card_category",
+        "left_rail_category"
+      ],
+      "data_dynamics": [
+        "remote_catalog_bound",
+        "user_or_session_bound",
+        "dynamic"
+      ],
+      "list_or_grid_sampling": "Top segment sampled; banner QR is a boundary surface.",
+      "focus_action_metadata": "Visual focus and route result may diverge from intended tap/confirm path.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Public docs include only categories and local decode refs, never QR targets or account-like values.",
+      "local_only_data_classes": [
+        "account_like_value",
+        "raw_qr_target",
+        "game_title_values",
+        "price_or_tariff_values",
+        "raw_screenshot"
+      ],
+      "forbidden_data_classes": [
+        "private_catalog_endpoint",
+        "raw_qr_url_publication"
+      ],
+      "boundary_policy": "QR decoded local-only when needed and never opened.",
+      "risk_or_hypothesis": "Catalog top content and continue row are dynamic.",
+      "test_design_implication": "Use category-level assertions and QR boundary checks."
+    },
+    {
+      "screen_alias": "games_catalog_dynamic_grid",
+      "screen_family": "games_catalog_long_scroll_and_bottom complete_game_title_data_inventory",
+      "state_category": "catalog_grid",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 long scroll bottom hash control",
+      "evidence_ids": [
+        "TASK-020:208-300",
+        "TASK-020:325-333",
+        "TASK-022:050-059",
+        "TASK-023:014",
+        "TASK-023:016-036",
+        "TASK-023:060"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "game_card_title_category",
+        "poster_image_category",
+        "save_support_badge_category",
+        "price_or_availability_category",
+        "placeholder_or_fallback_poster_category",
+        "truncation_or_wrapping_category"
+      ],
+      "data_dynamics": [
+        "remote_catalog_bound",
+        "dynamic",
+        "availability_bound"
+      ],
+      "list_or_grid_sampling": "Top, mid, deep and bottom/no-change segments sampled. Complete title/value enumeration is intentionally not collected.",
+      "focus_action_metadata": "D-pad and direct tap can move from rail into grid; direct tap first focused a card before confirm opened detail.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Game list values remain local-only; public report records categories, segment behavior and dynamic-list warning.",
+      "local_only_data_classes": [
+        "individual_game_title_values",
+        "individual_price_values",
+        "raw_screenshots",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "complete_private_catalog_dump"
+      ],
+      "boundary_policy": "No stream/session start from catalog cards without fixture.",
+      "risk_or_hypothesis": "Game list length and content can change; bottom is only a run-specific list boundary.",
+      "test_design_implication": "Tests should not assert fixed game names/counts; validate card schema, focus, scroll and redaction."
+    },
+    {
+      "screen_alias": "search_states",
+      "screen_family": "search_empty_keyboard search_no_results search_results_and_result_to_detail",
+      "state_category": "search",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020 baseline plus TASK-023 no-results/recovery trap",
+      "evidence_ids": [
+        "TASK-020:163-170",
+        "TASK-020:341-344",
+        "TASK-023:038-045"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "search_keyboard_category",
+        "popular_or_empty_state_category",
+        "query_result_card_category",
+        "no_results_message_category"
+      ],
+      "data_dynamics": [
+        "user_query_bound",
+        "remote_catalog_bound",
+        "dynamic"
+      ],
+      "list_or_grid_sampling": "Empty, no-results and result-card categories sampled. Raw query and result values stay local-only.",
+      "focus_action_metadata": "ADB text input did not visibly affect query until visible keyboard keys were tapped; Back did not recover in fresh no-results state.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Public summary uses query/result categories only.",
+      "local_only_data_classes": [
+        "query_text",
+        "result_title_values",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "private_search_endpoint"
+      ],
+      "boundary_policy": "No endpoint extraction or external traversal.",
+      "risk_or_hypothesis": "Search input path and recovery behavior are focus-sensitive.",
+      "test_design_implication": "Search tests need visible-keyboard input and recovery assertions."
+    },
+    {
+      "screen_alias": "session_journal",
+      "screen_family": "session_journal_empty",
+      "state_category": "empty_state_and_history",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline; fresh TASK-023 route blocked by tooling/focus anomaly",
+      "evidence_ids": [
+        "TASK-020:117-118",
+        "TASK-020:203-207",
+        "TASK-020:301-307",
+        "TASK-022:029-030",
+        "TASK-023:049-054"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "empty_history_state_category",
+        "navigation_rail_category"
+      ],
+      "data_dynamics": [
+        "user_or_session_bound"
+      ],
+      "list_or_grid_sampling": "Baseline empty state persisted after delays; no real session was created to populate rows.",
+      "focus_action_metadata": "Fresh TASK-023 attempts to open Journal from catalog did not route; baseline route remains confirmed from a clean state.",
+      "recurrence": "confirmed_with_fresh_route_anomaly",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Only empty-state category is public.",
+      "local_only_data_classes": [
+        "raw_screenshot",
+        "raw_xml",
+        "real_session_history_if_present"
+      ],
+      "forbidden_data_classes": [
+        "real_session_history_publication"
+      ],
+      "boundary_policy": "No paid session is created only to populate journal.",
+      "risk_or_hypothesis": "Continue Game row does not imply a visible journal row.",
+      "test_design_implication": "Session-history tests require an approved session fixture."
+    },
+    {
+      "screen_alias": "qr_boundary_surfaces",
+      "screen_family": "catalog_banner_qr steam_topup_qr feedback_qr how_to_steam_instruction_qr virtual_gamepad_qr payment_checkout_or_payment_qr",
+      "state_category": "qr_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 local-only jsqr decode artifacts plus TASK-023 recurring QR screenshots",
+      "evidence_ids": [
+        "TASK-020:qr_decode_114",
+        "TASK-020:qr_decode_120",
+        "TASK-020:qr_decode_122",
+        "TASK-020:qr_decode_158",
+        "TASK-020:qr_decode_188",
+        "TASK-022:qr_decode_024_payment_qr",
+        "TASK-022:qr_decode_073_payment_qr_recheck",
+        "TASK-023:006",
+        "TASK-023:055-056"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "qr_code_image_category",
+        "target_category",
+        "scheme_category",
+        "boundary_instruction_category"
+      ],
+      "data_dynamics": [
+        "remote_config_bound",
+        "user_or_session_bound",
+        "payment_or_activation_bound"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "QR requires screenshot inspection; raw target decode is local-only and targets are not opened.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Only QR category, scheme category and local redacted refs are public.",
+      "local_only_data_classes": [
+        "raw_qr_url",
+        "raw_qr_path",
+        "raw_qr_query",
+        "token_or_session_value",
+        "raw_screenshot"
+      ],
+      "forbidden_data_classes": [
+        "opened_external_target",
+        "payment_completion"
+      ],
+      "boundary_policy": "Decode with established jsqr path when new or materially changed; never open/follow targets in TASK-023.",
+      "risk_or_hypothesis": "Recurring QR should reuse prior local decode unless visual evidence changes.",
+      "test_design_implication": "QR decode tooling is available; missing ad hoc decoder libraries are not a product blocker."
+    },
+    {
+      "screen_alias": "settings_and_gamepad",
+      "screen_family": "settings_root settings_promo_codes settings_gamepad_setup settings_gamepad_reset_or_detection logout_confirmation_and_relogin gamepad_hint_sleep_visibility",
+      "state_category": "settings",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline",
+      "evidence_ids": [
+        "TASK-020:123-136",
+        "TASK-020:174-179",
+        "TASK-022:035-044",
+        "TASK-022:075-083"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "settings_card_category",
+        "app_version_category",
+        "promo_empty_state_category",
+        "gamepad_mapping_rows_category",
+        "controller_alias_category",
+        "logout_confirmation_category"
+      ],
+      "data_dynamics": [
+        "static",
+        "profile_state_bound",
+        "controller_state_bound",
+        "transient"
+      ],
+      "list_or_grid_sampling": "Settings cards and gamepad mapping rows sampled; reset/remap/pairing not executed.",
+      "focus_action_metadata": "Active gamepad screen required Close for safe recovery; Back/B no-op was recorded.",
+      "recurrence": "baseline_confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Settings categories are public; app/controller/account values remain local-only if user-like.",
+      "local_only_data_classes": [
+        "raw_app_version_text",
+        "raw_controller_identifiers",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "controller_pairing_mutation",
+        "account_logout_without_fixture"
+      ],
+      "boundary_policy": "No reset, remap, pairing, logout confirmation or account mutation.",
+      "risk_or_hypothesis": "Gamepad hints can disappear when physical controller sleeps.",
+      "test_design_implication": "Settings tests must guard mutating controls and confirm controller active/sleep state."
+    },
+    {
+      "screen_alias": "game_detail_metadata",
+      "screen_family": "game_detail_pricing_server_boundary how_to_steam_instruction_qr own_steam_toggle_warning",
+      "state_category": "game_detail",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 detail entry",
+      "evidence_ids": [
+        "TASK-020:141-162",
+        "TASK-020:344-347",
+        "TASK-022:019-021",
+        "TASK-023:060-061"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "game_title_category",
+        "genre_badge_category",
+        "rating_category",
+        "description_category",
+        "own_steam_toggle_category",
+        "steam_help_category",
+        "server_autopick_category"
+      ],
+      "data_dynamics": [
+        "remote_catalog_bound",
+        "game_bound",
+        "profile_state_bound"
+      ],
+      "list_or_grid_sampling": "Detail header and server area sampled.",
+      "focus_action_metadata": "Direct tap first focused card; confirm opened detail in TASK-023.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Game metadata values are local-only; public report records data categories.",
+      "local_only_data_classes": [
+        "game_title_value",
+        "description_text",
+        "rating_value",
+        "server_or_tariff_values",
+        "raw_screenshot"
+      ],
+      "forbidden_data_classes": [
+        "private_catalog_endpoint"
+      ],
+      "boundary_policy": "No account connection or external Steam action.",
+      "risk_or_hypothesis": "Detail content is remote/catalog-bound and can change.",
+      "test_design_implication": "Assert metadata zones and boundaries, not exact title/description text."
+    },
+    {
+      "screen_alias": "server_and_tariff_dynamic_list",
+      "screen_family": "game_detail_pricing_server_boundary server_card_dynamic_list complete_server_row_inventory",
+      "state_category": "game_detail_server_list",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 40-segment server sampling",
+      "evidence_ids": [
+        "TASK-020:141-155",
+        "TASK-020:182-199",
+        "TASK-022:020-024",
+        "TASK-023:062-001-to-062-040"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "autopick_tariff_category",
+        "server_alias_category",
+        "ping_category",
+        "launcher_badge_category",
+        "cloud_save_badge_category",
+        "gpu_category",
+        "cpu_category",
+        "price_or_tariff_category",
+        "steam_required_badge_category"
+      ],
+      "data_dynamics": [
+        "game_bound",
+        "availability_bound",
+        "remote_inventory_bound",
+        "dynamic",
+        "large_list"
+      ],
+      "list_or_grid_sampling": "Forty fresh segments sampled; owner clarified rows can vary by game and may exceed 250. Complete server row/value enumeration is intentionally not collected.",
+      "focus_action_metadata": "D-pad down scrolls server cards while retaining left rail visibility; selection of concrete server can lead to payment/session boundary under gamepad fixture.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Server/tariff values remain local-only; public report records field model and dynamic-list policy.",
+      "local_only_data_classes": [
+        "server_alias_values",
+        "ping_values",
+        "gpu_values",
+        "cpu_values",
+        "tariff_or_price_values",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "complete_server_inventory_dump",
+        "raw_tariff_value_publication"
+      ],
+      "boundary_policy": "No full row scrape, no payment, no stream/session start.",
+      "risk_or_hypothesis": "Server count/content changes by game and availability; values are poor stable test oracles.",
+      "test_design_implication": "Autotests should validate card schema, dynamic pagination/scroll, redaction and boundary behavior instead of fixed rows."
+    },
+    {
+      "screen_alias": "connect_device_payment_stream_boundaries",
+      "screen_family": "connect_device_gate payment_checkout_or_payment_qr stream_or_paid_game_session",
+      "state_category": "payment_or_session_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline",
+      "evidence_ids": [
+        "TASK-020:186-199",
+        "TASK-022:022-024",
+        "TASK-022:070-073"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "connect_device_instruction_category",
+        "payment_wait_category",
+        "payment_qr_category",
+        "session_activation_boundary_category"
+      ],
+      "data_dynamics": [
+        "fixture_bound",
+        "payment_or_session_bound",
+        "transient"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Physical gamepad fixture changed downstream result from connect-device gate to payment QR boundary in TASK-022.",
+      "recurrence": "baseline_confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Only boundary categories are public.",
+      "local_only_data_classes": [
+        "payment_values",
+        "raw_payment_qr_target",
+        "server_selection_values",
+        "raw_screenshot"
+      ],
+      "forbidden_data_classes": [
+        "real_payment",
+        "paid_session_start",
+        "external_payment_target_open"
+      ],
+      "boundary_policy": "No payment, checkout completion, stream/session start or external navigation.",
+      "risk_or_hypothesis": "Fixture state affects whether server selection reaches device gate or payment QR.",
+      "test_design_implication": "Payment/session tests require separate staging/non-real-payment fixture and stricter recovery."
+    },
+    {
+      "screen_alias": "steam_purchase_account_boundaries",
+      "screen_family": "steam_account_connection_boundary buy_gamepad_purchase_boundary profile_or_account_mutation_beyond_logout network_offline_webview_payment_external_traversal",
+      "state_category": "account_purchase_external_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-020/TASK-022 baseline plus TASK-023 route no-op probes",
+      "evidence_ids": [
+        "TASK-020:156-162",
+        "TASK-020:200-202",
+        "TASK-022:062-069",
+        "TASK-023:055-056"
+      ],
+      "prior_evidence_refs": [
+        "task020_full_screen_inventory.summary.json",
+        "task022_xbox_gamepad_full_screen_inventory.summary.json"
+      ],
+      "data_categories_visible": [
+        "own_steam_toggle_category",
+        "steam_account_connection_category",
+        "purchase_boundary_category",
+        "external_navigation_boundary_category"
+      ],
+      "data_dynamics": [
+        "user_or_session_bound",
+        "external_service_bound"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Fresh TASK-023 Steam rail tap/confirm no-oped from catalog; TASK-022 non-A button sampling reached protected Steam-account boundary.",
+      "recurrence": "confirmed",
+      "redaction_class": "local_only",
+      "public_safe_data_policy": "Account/purchase targets and account-like labels stay local-only.",
+      "local_only_data_classes": [
+        "account_like_label",
+        "raw_qr_target",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "account_connection_action",
+        "purchase_action",
+        "external_target_open"
+      ],
+      "boundary_policy": "No Steam connection, purchase, external traversal or profile/account mutation.",
+      "risk_or_hypothesis": "Non-primary buttons can activate account-bearing boundaries and are not harmless by default.",
+      "test_design_implication": "Button sampling must be guarded by exact focus and boundary recovery."
+    },
+    {
+      "screen_alias": "offline_network_error",
+      "screen_family": "network_offline_error_refresh",
+      "state_category": "network_error",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_basis": "TASK-021 baseline",
+      "evidence_ids": [
+        "TASK-021:offline_probe_summary"
+      ],
+      "prior_evidence_refs": [
+        "task021_network_offline_probe.summary.json"
+      ],
+      "data_categories_visible": [
+        "offline_error_message_category",
+        "refresh_action_category",
+        "network_check_loader_category",
+        "post_recovery_route_category"
+      ],
+      "data_dynamics": [
+        "network_state_bound",
+        "transient"
+      ],
+      "list_or_grid_sampling": "not_applicable",
+      "focus_action_metadata": "Focused refresh recovered after reversible DNS offline-like condition.",
+      "recurrence": "baseline_confirmed",
+      "redaction_class": "public_safe",
+      "public_safe_data_policy": "Only error/refresh categories are public.",
+      "local_only_data_classes": [
+        "raw_network_state",
+        "raw_screenshot",
+        "raw_xml"
+      ],
+      "forbidden_data_classes": [
+        "private_endpoint_or_traffic_capture"
+      ],
+      "boundary_policy": "No packet capture, proxying or private endpoint extraction.",
+      "risk_or_hypothesis": "True Wi-Fi-off verdict remains separate from DNS offline-like evidence.",
+      "test_design_implication": "Offline tests need reversible network policy and foreground recovery oracle."
+    }
+  ],
+  "closure_ledger": [
+    {
+      "screen_family": "app_launch_splash_loader",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:000-003",
+        "TASK-023:047-048"
+      ]
+    },
+    {
+      "screen_family": "auth_phone_entry_with_legal_links",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:zero-audit:000-001",
+        "TASK-023:002"
+      ]
+    },
+    {
+      "screen_family": "license_agreement_webview",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:010-012",
+        "TASK-020:030"
+      ]
+    },
+    {
+      "screen_family": "personal_data_policy_webview",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:040-041",
+        "TASK-020:050",
+        "TASK-020:060-063"
+      ]
+    },
+    {
+      "screen_family": "otp_code_entry",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:080-082"
+      ]
+    },
+    {
+      "screen_family": "auth_wrong_otp_error_retry_transient",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:zero-audit:079-086"
+      ]
+    },
+    {
+      "screen_family": "captcha_image_code_entry",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:zero-audit:089",
+        "TASK-020:zero-audit:094-096"
+      ]
+    },
+    {
+      "screen_family": "onboarding_slides",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:089-099",
+        "TASK-023:003-006"
+      ]
+    },
+    {
+      "screen_family": "post_auth_games_catalog_top",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:100",
+        "TASK-023:006"
+      ]
+    },
+    {
+      "screen_family": "games_catalog_long_scroll_and_bottom",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:208-300",
+        "TASK-020:325-333",
+        "TASK-023:016-036"
+      ]
+    },
+    {
+      "screen_family": "complete_game_title_data_inventory",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:016-036"
+      ],
+      "reason": "Dynamic list values are not collected as a complete public inventory."
+    },
+    {
+      "screen_family": "catalog_banner_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:qr_decode_114",
+        "TASK-023:006"
+      ]
+    },
+    {
+      "screen_family": "search_empty_keyboard",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:163-164",
+        "TASK-023:038"
+      ]
+    },
+    {
+      "screen_family": "search_no_results",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:165",
+        "TASK-023:041-045"
+      ]
+    },
+    {
+      "screen_family": "search_results_and_result_to_detail",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:166-170",
+        "TASK-020:343-344"
+      ]
+    },
+    {
+      "screen_family": "session_journal_empty",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:117-118",
+        "TASK-023:049-054"
+      ]
+    },
+    {
+      "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:303-305",
+        "TASK-023:037",
+        "TASK-023:049-057"
+      ]
+    },
+    {
+      "screen_family": "steam_topup_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:119-120",
+        "TASK-020:qr_decode_120",
+        "TASK-023:055-056"
+      ]
+    },
+    {
+      "screen_family": "feedback_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:121-122",
+        "TASK-020:qr_decode_122"
+      ]
+    },
+    {
+      "screen_family": "settings_root",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:123-126",
+        "TASK-022:035-044"
+      ]
+    },
+    {
+      "screen_family": "settings_promo_codes",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:127-133"
+      ]
+    },
+    {
+      "screen_family": "settings_gamepad_setup",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:134-136",
+        "TASK-022:075-083"
+      ]
+    },
+    {
+      "screen_family": "settings_gamepad_reset_or_detection",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:134-136",
+        "TASK-022:075-083"
+      ],
+      "reason": "Reset/remap/pairing can mutate controller state."
+    },
+    {
+      "screen_family": "logout_confirmation_and_relogin",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:174-179"
+      ]
+    },
+    {
+      "screen_family": "game_detail_pricing_server_boundary",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:141-155",
+        "TASK-022:019-021",
+        "TASK-023:060-062"
+      ]
+    },
+    {
+      "screen_family": "server_card_dynamic_list",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:062-001-to-062-040"
+      ],
+      "reason": "Field model and dynamic sampling covered; complete row enumeration not collected."
+    },
+    {
+      "screen_family": "complete_server_row_inventory",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:062-001-to-062-040"
+      ],
+      "reason": "Server count/content can vary by game and exceed 250 rows."
+    },
+    {
+      "screen_family": "how_to_steam_instruction_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:156-159",
+        "TASK-020:qr_decode_158"
+      ]
+    },
+    {
+      "screen_family": "own_steam_toggle_warning",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:160-162"
+      ]
+    },
+    {
+      "screen_family": "connect_device_gate",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:186-193",
+        "TASK-020:197-199"
+      ]
+    },
+    {
+      "screen_family": "virtual_gamepad_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:187-188",
+        "TASK-020:qr_decode_188"
+      ]
+    },
+    {
+      "screen_family": "buy_gamepad_purchase_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:200-202"
+      ]
+    },
+    {
+      "screen_family": "payment_checkout_or_payment_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-022:022-024",
+        "TASK-022:070-073"
+      ]
+    },
+    {
+      "screen_family": "stream_or_paid_game_session",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:186-193",
+        "TASK-022:022-024"
+      ]
+    },
+    {
+      "screen_family": "profile_or_account_mutation_beyond_logout",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:settings_root",
+        "TASK-020:logout_confirmation"
+      ]
+    },
+    {
+      "screen_family": "network_offline_webview_payment_external_traversal",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:legal_webviews",
+        "TASK-021:offline_probe_summary",
+        "TASK-020:qr_boundary_screens"
+      ]
+    },
+    {
+      "screen_family": "external_tv_screensaver",
+      "coverage_status": "blocked_by_external_state",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-020:310-312",
+        "TASK-023:001"
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "alias": "catalog_rail_dpad_down_no_segment_change",
+      "trigger_action": "DPAD_DOWN from catalog rail focus",
+      "expected_result": "Move focus/scroll into next reachable catalog or rail item.",
+      "observed_result": "Top catalog segment repeated across checkpoints.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:007-012",
+        "TASK-023:057"
+      ],
+      "likely_or_hypothesis_cause": "hypothesis: focus remained anchored on rail or route state blocked vertical traversal.",
+      "test_design_implication": "Future tests need explicit visual focus oracle before long-list scrolling."
+    },
+    {
+      "alias": "search_adb_text_input_no_effect_until_visible_keyboard_taps",
+      "trigger_action": "ADB text input into Search",
+      "expected_result": "Query field updates and result/no-result state changes.",
+      "observed_result": "No visible field update until on-screen keyboard keys were tapped.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:039-041"
+      ],
+      "likely_or_hypothesis_cause": "likely: app keyboard focus/input method does not consume raw ADB text in this state.",
+      "test_design_implication": "Use visible keyboard interaction for Search input tests."
+    },
+    {
+      "alias": "search_back_and_route_recovery_trap",
+      "trigger_action": "Back and rail/tap attempts from Search no-results keyboard state",
+      "expected_result": "Recover to catalog or selected rail route.",
+      "observed_result": "Search state persisted until force-stop/relaunch recovery.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:044-048"
+      ],
+      "likely_or_hypothesis_cause": "hypothesis: keyboard/no-results state captures Back and route taps.",
+      "test_design_implication": "Search recovery needs dedicated regression coverage and safe relaunch fallback."
+    },
+    {
+      "alias": "session_journal_route_unreachable_from_fresh_catalog_focus",
+      "trigger_action": "D-pad/tap/icon attempts to open Session Journal from fresh catalog state",
+      "expected_result": "Open journal empty/history screen.",
+      "observed_result": "Catalog remained visible.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:049-054"
+      ],
+      "likely_or_hypothesis_cause": "hypothesis: focus origin or touch/focus mismatch prevented rail route activation.",
+      "test_design_implication": "Route tests must reset to known focus state and verify route result visually."
+    },
+    {
+      "alias": "steam_topup_route_noop_from_fresh_catalog_focus",
+      "trigger_action": "Tap and confirm on Steam top-up rail item",
+      "expected_result": "Open Steam top-up QR boundary.",
+      "observed_result": "Catalog remained visible; no Bad request observed in this probe.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:055-056"
+      ],
+      "likely_or_hypothesis_cause": "hypothesis: rail route activation blocked by focus/state mismatch.",
+      "test_design_implication": "Steam route tests need route-state precondition; if Bad request appears, retry and record instability."
+    },
+    {
+      "alias": "game_card_tap_focuses_before_open",
+      "trigger_action": "Direct tap on first visible game card followed by confirm",
+      "expected_result": "Tap may open detail directly.",
+      "observed_result": "Tap first focused the card; confirm opened detail.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:060-061"
+      ],
+      "likely_or_hypothesis_cause": "likely: TV grid uses two-step focus/activate behavior.",
+      "test_design_implication": "Card-opening tests should allow focus-then-activate sequence."
+    },
+    {
+      "alias": "server_list_dynamic_large_count",
+      "trigger_action": "Repeated DPAD_DOWN through game detail server list",
+      "expected_result": "Stable long list or bottom eventually reached.",
+      "observed_result": "Forty segments still showed changing server cards; owner clarified counts can vary by game and exceed 250.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:062-001-to-062-040"
+      ],
+      "likely_or_hypothesis_cause": "likely: server availability and count are game/backend dependent.",
+      "test_design_implication": "Do not assert exact server rows; assert schema, dynamic scroll, boundary and redaction."
+    },
+    {
+      "alias": "xml_vs_visual_evidence_gap_for_tv_surfaces",
+      "trigger_action": "UIAutomator XML checks on rich catalog/detail surfaces",
+      "expected_result": "XML exposes enough labels/focus to classify data.",
+      "observed_result": "Visual screenshot carried important QR/banner/focus/content evidence; XML alone was insufficient for several states.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "TASK-023:055-062"
+      ],
+      "likely_or_hypothesis_cause": "likely: hybrid/TV rendering exposes partial accessibility tree.",
+      "test_design_implication": "Runtime inventory must always inspect screenshots/video in addition to XML."
+    }
+  ],
+  "multi_agent_status": {
+    "orchestrator": "complete_after_final_verification_and_default_push_authorized",
+    "planner": "complete",
+    "builder": "complete_initial_schema_review",
+    "qa_reviewer_a": "final_recheck_passed_no_blockers",
+    "qa_reviewer_b": "initial_blockers_remediated_by_per_family_ledger_and_dynamic_list_limits",
+    "security_prod_safety_reviewer": "final_recheck_passed_no_blockers",
+    "docs_scribe": "final_recheck_findings_remediated_before_commit"
+  },
+  "closure_result": {
+    "screen_family_ledger_entries": 37,
+    "inventory_row_count": 18,
+    "fresh_runtime_checkpoint_groups": 10,
+    "fresh_runtime_checkpoint_files_observed": "001-062 with sampled subsegments; local-only evidence contains raw screenshots/XML",
+    "complete_game_title_enumeration": "not_run_out_of_scope",
+    "complete_server_row_enumeration": "not_run_out_of_scope",
+    "payment_completion": "blocked_by_boundary",
+    "external_qr_browser_webview_traversal": "blocked_by_boundary",
+    "paid_stream_or_session_start": "blocked_by_boundary",
+    "default_branch_merge_or_push": "not_performed"
+  },
+  "risks_unknowns": [
+    "Game catalog content and server-card content are dynamic. TASK-023 covers data categories and sampled behavior, not complete value lists.",
+    "Payment, external QR traversal and paid stream/session start remain boundary-blocked.",
+    "Raw server, tariff, payment, QR, title, account-like and credential values remain local-only.",
+    "Fresh TASK-023 rail routing hit route no-ops for Journal and Steam from one catalog state; baseline still covers those families from clean states.",
+    "Some local evidence files from interrupted scroll batches are incomplete and are not used as proof."
+  ]
+}

@@ -1,0 +1,801 @@
+{
+    "schema_version":  "task022_xbox_gamepad_screen_inventory_summary_v1",
+    "task_id":  "TASK-022",
+    "mode":  "NON_AUTONOMOUS",
+    "run_status":  "completed_with_boundaries",
+    "coverage_type":  "approved_lane_gamepad_screen_inventory",
+    "evidence_status":  "confirmed_for_recorded_checkpoints",
+    "runtime_lane":  {
+                         "device_alias":  "tv-tpv-013",
+                         "runtime_profile_alias":  "tv-tpv-a12-013",
+                         "build_alias":  "task-005-local-apk-001",
+                         "synthetic_user_alias":  "qa-user-phone-001"
+                     },
+    "controller_fixture":  {
+                               "controller_alias":  "owner_connected_xbox_like_gamepad",
+                               "controller_type":  "xbox_like_gamepad",
+                               "connection_category":  "owner_connected_physical_gamepad",
+                               "fixture_evidence_status":  "confirmed_by_owner_statement_and_runtime_visual_hints",
+                               "raw_controller_ids_public":  false
+                           },
+    "local_evidence_roots":  [
+                                 "task-022-xbox-gamepad-20260703T110303Z",
+                                 "task-019-20260703T111540Z"
+                             ],
+    "raw_values_policy":  {
+                              "raw_phone_or_otp_public":  false,
+                              "raw_controller_ids_public":  false,
+                              "raw_device_identifiers_public":  false,
+                              "raw_qr_targets_public":  false,
+                              "raw_screenshots_public":  false,
+                              "raw_xml_public":  false,
+                              "raw_logs_public":  false,
+                              "raw_server_or_tariff_values_public":  false,
+                              "raw_payment_values_public":  false,
+                              "payment_or_external_link_followed":  false,
+                              "stream_or_paid_session_started":  false,
+                              "captcha_solved_or_bypassed_by_automation":  false
+                          },
+    "controller_input_observations":  [
+                                          {
+                                              "id":  "physical_gamepad_hints_on_auth",
+                                              "status":  "covered",
+                                              "evidence_status":  "confirmed_by_screenshot",
+                                              "evidence_ids":  [
+                                                                   "013"
+                                                               ],
+                                              "screen_family":  "auth_phone_entry_with_keyboard",
+                                              "input_category":  "owner_physical_gamepad_button_once",
+                                              "observed_result":  "Bottom-right gamepad hints appeared after owner pressed the connected physical gamepad.",
+                                              "hint_categories":  [
+                                                                      "gamepad_button_a_select",
+                                                                      "gamepad_button_b_back"
+                                                                  ],
+                                              "difference_from_task020":  "TASK-020 D-pad inventory did not record these bottom-right gamepad hints."
+                                          },
+                                          {
+                                              "id":  "adb_keyevent_a_opens_game_detail_after_content_focus",
+                                              "status":  "covered",
+                                              "evidence_status":  "confirmed_by_screenshot_and_xml",
+                                              "evidence_ids":  [
+                                                                   "018",
+                                                                   "019"
+                                                               ],
+                                              "screen_family":  "post_auth_games_catalog_top",
+                                              "input_category":  "gamepad_dpad_right_then_button_a",
+                                              "observed_result":  "After focus moved from the rail into catalog content, Button A opened the focused game detail card.",
+                                              "difference_from_task020":  "Consistent with select-like behavior, but now sampled with Xbox-like Button A."
+                                          },
+                                          {
+                                              "id":  "post_server_selection_payment_boundary",
+                                              "status":  "covered",
+                                              "evidence_status":  "confirmed_by_screenshot",
+                                              "evidence_ids":  [
+                                                                   "020",
+                                                                   "021",
+                                                                   "022",
+                                                                   "023",
+                                                                   "024",
+                                                                   "070",
+                                                                   "071",
+                                                                   "072",
+                                                                   "073",
+                                                                   "qr_decode_073_payment_qr_recheck"
+                                                               ],
+                                              "screen_family":  "payment_checkout_or_payment_qr",
+                                              "input_category":  "gamepad_button_a_on_concrete_server_card",
+                                              "observed_result":  "Selecting a concrete server reached payment/session-activation boundary instead of the prior TASK-020 connect-device gate.",
+                                              "difference_from_task020":  "TASK-020 safe D-pad path reached connect_device_gate before payment/stream. TASK-022 with connected physical gamepad reached payment wait and then payment QR.",
+                                              "payment_action_performed":  false,
+                                              "stream_or_paid_session_started":  false,
+                                              "external_navigation_followed":  false
+                                          },
+                                          {
+                                              "id":  "settings_active_gamepad_screen",
+                                              "status":  "covered",
+                                              "evidence_status":  "confirmed_by_screenshot_and_xml",
+                                              "evidence_ids":  [
+                                                                   "075",
+                                                                   "076",
+                                                                   "077",
+                                                                   "078",
+                                                                   "079",
+                                                                   "080",
+                                                                   "081",
+                                                                   "082",
+                                                                   "083"
+                                                               ],
+                                              "screen_family":  "settings_gamepad_setup",
+                                              "input_category":  "gamepad_dpad_right_then_button_a_on_gamepad_card",
+                                              "observed_result":  "Settings Gamepad card opened the active gamepad configuration screen for an Xbox Wireless Controller.",
+                                              "hint_categories":  [
+                                                                      "gamepad_button_a_select",
+                                                                      "gamepad_button_b_back"
+                                                                  ],
+                                              "mutation_performed":  false,
+                                              "reset_performed":  false
+                                          }
+                                      ],
+    "qr_decode_metadata":  [
+                               {
+                                   "id":  "qr_decode_024_payment_qr",
+                                   "status":  "decoded_local_only",
+                                   "evidence_status":  "confirmed",
+                                   "source_evidence_id":  "024",
+                                   "target_category":  "payment_or_session_activation_qr_target",
+                                   "scheme_category":  "https",
+                                   "target_sha256_prefix_public":  "recorded_in_local_redacted_artifact",
+                                   "raw_target_public":  false,
+                                   "local_redacted_artifact_ref":  "qr_decode_024_payment.redacted.json",
+                                   "navigation_followed":  false,
+                                   "payment_action_performed":  false
+                               },
+                               {
+                                   "id":  "steam_topup_qr_recurrence",
+                                   "status":  "recurrence_not_redecoded_in_public_summary",
+                                   "evidence_status":  "confirmed_by_screenshot",
+                                   "source_evidence_id":  "032",
+                                   "prior_reference":  "TASK-020 qr_decode_120_steam_topup",
+                                   "raw_target_public":  false,
+                                   "navigation_followed":  false
+                               },
+                               {
+                                   "id":  "qr_decode_073_payment_qr_recheck",
+                                   "status":  "decoded_local_only",
+                                   "evidence_status":  "confirmed",
+                                   "source_evidence_id":  "073",
+                                   "target_category":  "payment_or_session_activation_qr_target",
+                                   "scheme_category":  "https",
+                                   "target_sha256_prefix_public":  "recorded_in_local_redacted_artifact",
+                                   "raw_target_public":  false,
+                                   "local_redacted_artifact_ref":  "qr_decode_073_payment.redacted.json",
+                                   "navigation_followed":  false,
+                                   "payment_action_performed":  false
+                               }
+                           ],
+    "closure_ledger":  [
+                           {
+                               "screen_family":  "auth_phone_entry_with_keyboard",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "012",
+                                                    "013"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "owner_physical_gamepad_button_once"
+                                                             ],
+                               "focus_result":  "numeric_keyboard_focus_visible",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Bottom-right A/B gamepad hints appeared after physical gamepad input.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Auth values stayed local-only; TASK-019 helper-backed auth was used for continuation."
+                           },
+                           {
+                               "screen_family":  "onboarding_slides",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "014",
+                                                    "015",
+                                                    "016",
+                                                    "017"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_button_a_on_onboarding_next"
+                                                             ],
+                               "focus_result":  "next_button_activated",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "No material screen difference recorded; Button A activated the onboarding CTA.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Onboarding recurred after helper-backed auth and returned to catalog."
+                           },
+                           {
+                               "screen_family":  "post_auth_games_catalog_top",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "017",
+                                                    "018",
+                                                    "028",
+                                                    "044",
+                                                    "046"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_right",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "rail_and_content_focus_sampled",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Gamepad hints were not visible on sampled catalog screenshots; physical gamepad mode was confirmed earlier on auth.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Catalog banner QR recurred visually; raw target was not opened."
+                           },
+                           {
+                               "screen_family":  "game_detail_pricing_server_boundary",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "019",
+                                                    "020",
+                                                    "021"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_button_a",
+                                                                 "gamepad_dpad_down"
+                                                             ],
+                               "focus_result":  "server_and_tariff_cards_focusable",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Connected gamepad path allowed progression past server selection into payment boundary.",
+                               "boundary_or_stop_reason":  "server_selection_leads_to_payment_boundary",
+                               "notes":  "Raw server/tariff/payment values remain local-only and are not published."
+                           },
+                           {
+                               "screen_family":  "connect_device_gate",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "007",
+                                                    "008",
+                                                    "009",
+                                                    "010"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "adb_emulated_button_a",
+                                                                 "owner_physical_gamepad_pre_button_checkpoint"
+                                                             ],
+                               "focus_result":  "device_gate_visible",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Before physical gamepad activation, ADB-emulated Button A did not advance beyond the connect-device gate.",
+                               "boundary_or_stop_reason":  "requires_physical_gamepad_or_virtual_gamepad",
+                               "notes":  "Covered as a pre-physical-gamepad checkpoint. No payment or stream action was performed from this gate."
+                           },
+                           {
+                               "screen_family":  "payment_checkout_or_payment_qr",
+                               "gamepad_status":  "blocked_by_boundary",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "022",
+                                                    "023",
+                                                    "024",
+                                                    "025",
+                                                    "026",
+                                                    "027",
+                                                    "028",
+                                                    "qr_decode_024_payment_qr",
+                                                    "070",
+                                                    "071",
+                                                    "072",
+                                                    "073",
+                                                    "qr_decode_073_payment_qr_recheck"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_button_a_on_concrete_server_card",
+                                                                 "gamepad_button_b_recovery_attempt",
+                                                                 "android_back_recovery_attempt",
+                                                                 "force_stop_explicit_relaunch"
+                                                             ],
+                               "focus_result":  "payment_qr_boundary_no_action",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "This screen was reached in TASK-022 but not in TASK-020, where safe probes stopped at connect-device gate/no-op purchase boundary.",
+                               "boundary_or_stop_reason":  "real_payment_forbidden_without_approved_fixture",
+                               "notes":  "QR decoded local-only in both original and owner-requested recheck paths; no external navigation, payment or session start occurred. Original Back/B recovery failed, and the recheck used force-stop/relaunch based on that known pattern."
+                           },
+                           {
+                               "screen_family":  "session_journal_empty",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed_by_runtime_checkpoint",
+                               "evidence_ids":  [
+                                                    "029",
+                                                    "030"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_down",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "rail_navigation_sampled",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "No material difference recorded in the public summary.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Detailed blank-state persistence was not re-sampled beyond the recorded checkpoint."
+                           },
+                           {
+                               "screen_family":  "steam_topup_qr",
+                               "gamepad_status":  "blocked_by_boundary",
+                               "evidence_status":  "confirmed_by_screenshot",
+                               "evidence_ids":  [
+                                                    "031",
+                                                    "032"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_down",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "qr_boundary_visible",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "No material difference recorded; recurrent QR was not opened.",
+                               "boundary_or_stop_reason":  "external_qr_target_not_followed",
+                               "notes":  "Prior TASK-020 local-only decode artifact can be referenced for this recurring QR."
+                           },
+                           {
+                               "screen_family":  "feedback_qr",
+                               "gamepad_status":  "blocked_by_boundary",
+                               "evidence_status":  "confirmed_by_runtime_checkpoint",
+                               "evidence_ids":  [
+                                                    "033",
+                                                    "034"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_down",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "route_sampled",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "No material difference recorded in this summary.",
+                               "boundary_or_stop_reason":  "external_qr_target_not_followed",
+                               "notes":  "Raw QR targets were not opened or published."
+                           },
+                           {
+                               "screen_family":  "settings_root",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed_by_screenshot",
+                               "evidence_ids":  [
+                                                    "035",
+                                                    "036",
+                                                    "075",
+                                                    "076",
+                                                    "077",
+                                                    "078"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_down",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "settings_root_visible",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Initial gamepad focus from Settings could jump to logout confirmation; later targeted sampling safely focused the Gamepad card.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Settings root and Gamepad card focus were re-sampled after owner narrowed scope to the Gamepad section."
+                           },
+                           {
+                               "screen_family":  "settings_promo_codes",
+                               "gamepad_status":  "blocked_by_tooling",
+                               "evidence_status":  "confirmed_for_blocker",
+                               "evidence_ids":  [
+                                                    "037",
+                                                    "038",
+                                                    "043",
+                                                    "044"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_right",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "intended_promo_focus_not_confirmed",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Gamepad subflow probe unexpectedly opened logout confirmation instead of promo codes.",
+                               "boundary_or_stop_reason":  "focus_target_ambiguity_logout_boundary",
+                               "notes":  "Logout was declined by selecting No; no account mutation occurred."
+                           },
+                           {
+                               "screen_family":  "settings_gamepad_setup",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "040",
+                                                    "041",
+                                                    "042",
+                                                    "075",
+                                                    "076",
+                                                    "077",
+                                                    "078",
+                                                    "079",
+                                                    "080",
+                                                    "081",
+                                                    "082",
+                                                    "083"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_right",
+                                                                 "gamepad_button_a",
+                                                                 "gamepad_button_b"
+                                                             ],
+                               "focus_result":  "active_gamepad_configuration_screen_visible",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Targeted owner-requested recheck opened the active gamepad configuration screen with Xbox Wireless Controller label and bottom-right A/B hints.",
+                               "boundary_or_stop_reason":  "reset_remap_pairing_mutation_not_executed",
+                               "notes":  "No button assignment, reset, remap or pairing mutation was performed. Button B and Android Back did not leave the screen; a UI-tree-derived tap on the safe Close button returned from it."
+                           },
+                           {
+                               "screen_family":  "search_empty_keyboard",
+                               "gamepad_status":  "blocked_by_tooling",
+                               "evidence_status":  "confirmed_for_blocker",
+                               "evidence_ids":  [
+                                                    "045",
+                                                    "046",
+                                                    "048",
+                                                    "049"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_up",
+                                                                 "gamepad_button_a"
+                                                             ],
+                               "focus_result":  "search_entry_not_opened_nav_search_not_focusable_in_current_xml",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "From the recovered catalog rail state, the attempted Search route stayed on catalog; XML showed Games focused and Search not focusable in the sampled Xbox/gamepad state.",
+                               "boundary_or_stop_reason":  "focus_target_ambiguity",
+                               "notes":  "TASK-020 had Search covered; TASK-022 records a separate gamepad focus blocker rather than reusing D-pad coverage as Xbox coverage."
+                           },
+                           {
+                               "screen_family":  "post_auth_games_catalog_long_grid",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed_by_screenshot",
+                               "evidence_ids":  [
+                                                    "050",
+                                                    "051",
+                                                    "052",
+                                                    "053",
+                                                    "054",
+                                                    "055",
+                                                    "056",
+                                                    "057",
+                                                    "058",
+                                                    "059"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_right",
+                                                                 "gamepad_dpad_down"
+                                                             ],
+                               "focus_result":  "catalog_grid_scrolls_with_changing_focused_cards",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Xbox-like gamepad sampling confirmed deep catalog scrolling; the sampled run did not reach complete title enumeration.",
+                               "boundary_or_stop_reason":  "complete_game_title_inventory_out_of_scope",
+                               "notes":  "Multiple top/mid/deep lazy-grid segments were captured; no game/payment/session action was performed during scroll sampling."
+                           },
+                           {
+                               "screen_family":  "steam_account_connection_boundary",
+                               "gamepad_status":  "blocked_by_boundary",
+                               "evidence_status":  "confirmed_by_screenshot",
+                               "evidence_ids":  [
+                                                    "060",
+                                                    "061",
+                                                    "062",
+                                                    "063",
+                                                    "064",
+                                                    "065",
+                                                    "066",
+                                                    "067",
+                                                    "068",
+                                                    "069"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_button_x",
+                                                                 "gamepad_button_y",
+                                                                 "gamepad_button_start",
+                                                                 "gamepad_button_select",
+                                                                 "gamepad_button_l1",
+                                                                 "gamepad_button_r1",
+                                                                 "gamepad_button_b_recovery_attempt",
+                                                                 "android_back_recovery_attempt",
+                                                                 "force_stop_explicit_relaunch"
+                                                             ],
+                               "focus_result":  "button_x_activated_focused_catalog_card_start_reached_steam_account_boundary",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Xbox Button X behaved as an activation path from the catalog card in this sampled state. Start then reached a Steam-account connection boundary; Y/Select/L1/R1 did not visibly change that boundary.",
+                               "boundary_or_stop_reason":  "steam_account_or_external_auth_boundary_no_qr_visible_no_external_action",
+                               "notes":  "No external Steam action, QR traversal, payment, stream or session start occurred. B/Back did not recover; force-stop plus explicit relaunch returned to catalog."
+                           },
+                           {
+                               "screen_family":  "payment_action_or_paid_stream_session",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "022",
+                                                    "024",
+                                                    "qr_decode_024_payment_qr",
+                                                    "073",
+                                                    "qr_decode_073_payment_qr_recheck"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_applicable",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Payment QR boundary was reached, but no payment or session start was executed.",
+                               "boundary_or_stop_reason":  "prod_forbidden_without_approved_fixture",
+                               "notes":  "Payment completion and paid stream/session start remain forbidden."
+                           },
+                           {
+                               "screen_family":  "how_to_steam_instruction_qr",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_rechecked_in_task022",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Owner narrowed TASK-022 after confirming physical-gamepad hint behavior; prior D-pad behavior is treated as baseline unless specifically rechecked.",
+                               "boundary_or_stop_reason":  "owner_scope_narrowed_to_hints_post_server_and_settings_gamepad",
+                               "notes":  "TASK-020 prior QR decode evidence remains the baseline; no external QR target was opened in TASK-022."
+                           },
+                           {
+                               "screen_family":  "own_steam_toggle_warning",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_rechecked_in_task022",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Not materially rechecked after owner narrowed TASK-022.",
+                               "boundary_or_stop_reason":  "owner_scope_narrowed_to_hints_post_server_and_settings_gamepad",
+                               "notes":  "No account or Steam mutation was performed."
+                           },
+                           {
+                               "screen_family":  "virtual_gamepad_qr",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_rechecked_after_physical_gamepad_activation",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Initial TASK-022 pre-physical path reached connect-device gate, but virtual-gamepad QR was not re-entered after owner narrowed the audit.",
+                               "boundary_or_stop_reason":  "owner_scope_narrowed_to_hints_post_server_and_settings_gamepad",
+                               "notes":  "Prior TASK-020 local-only QR decode evidence remains the baseline; no QR target was opened."
+                           },
+                           {
+                               "screen_family":  "buy_gamepad_purchase_boundary",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_rechecked_in_task022",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "Not materially rechecked after owner narrowed TASK-022.",
+                               "boundary_or_stop_reason":  "purchase_boundary_out_of_scope",
+                               "notes":  "No purchase or external navigation was attempted."
+                           },
+                           {
+                               "screen_family":  "search_no_results",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "search_entry_blocked_before_query",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "TASK-022 could not reacquire Search via sampled gamepad focus; no query/no-results branch was re-run.",
+                               "boundary_or_stop_reason":  "search_focus_blocker_and_owner_scope_narrowing",
+                               "notes":  "TASK-020 D-pad no-results coverage remains prior evidence only."
+                           },
+                           {
+                               "screen_family":  "search_results_and_result_to_detail",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "search_entry_blocked_before_query",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "TASK-022 could not reacquire Search via sampled gamepad focus; no results/detail branch was re-run.",
+                               "boundary_or_stop_reason":  "search_focus_blocker_and_owner_scope_narrowing",
+                               "notes":  "TASK-020 D-pad results coverage remains prior evidence only."
+                           },
+                           {
+                               "screen_family":  "external_tv_screensaver",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed_scope_decision",
+                               "evidence_ids":  [
+                                                    "owner_scope_update",
+                                                    "TASK-020"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_observed_in_task022",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "No screensaver/ambient surface was observed during TASK-022 active checks after owner narrowed the audit.",
+                               "boundary_or_stop_reason":  "external_state_not_triggered_and_not_required_for_owner_narrowed_recheck",
+                               "notes":  "TASK-020 screensaver recovery remains prior baseline evidence."
+                           },
+                           {
+                               "screen_family":  "gamepad_hint_sleep_visibility",
+                               "gamepad_status":  "covered",
+                               "evidence_status":  "confirmed_by_owner_statement_and_runtime_hint_variability",
+                               "evidence_ids":  [
+                                                    "013",
+                                                    "070",
+                                                    "075",
+                                                    "079",
+                                                    "080"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "owner_physical_gamepad_button_once",
+                                                                 "gamepad_idle_or_sleep_owner_observation"
+                                                             ],
+                               "focus_result":  "hints_visible_when_gamepad_active_may_disappear_after_sleep",
+                               "matched_task020_family":  false,
+                               "differences_from_task020":  "This is a gamepad-specific overlay behavior, not part of the D-pad inventory.",
+                               "boundary_or_stop_reason":  null,
+                               "notes":  "Owner reported the gamepad sleeps and hints disappear. TASK-022 therefore treats hint visibility as conditional on active physical controller state."
+                           },
+                           {
+                               "screen_family":  "logout_confirmation_boundary",
+                               "gamepad_status":  "blocked_by_boundary",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "037",
+                                                    "038",
+                                                    "043",
+                                                    "044"
+                                                ],
+                               "input_categories_observed":  [
+                                                                 "gamepad_dpad_right",
+                                                                 "gamepad_button_a",
+                                                                 "gamepad_button_a_on_no"
+                                                             ],
+                               "focus_result":  "logout_confirmation_visible_no_selected",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "TASK-022 reached logout confirmation while probing Settings focus; logout was declined.",
+                               "boundary_or_stop_reason":  "account_mutation_forbidden_without_explicit_logout_fixture",
+                               "notes":  "Safe No path was selected; no account mutation occurred."
+                           },
+                           {
+                               "screen_family":  "external_qr_browser_webview_traversal",
+                               "gamepad_status":  "not_run_out_of_scope",
+                               "evidence_status":  "confirmed",
+                               "evidence_ids":  [
+                                                    "032",
+                                                    "034",
+                                                    "024",
+                                                    "073",
+                                                    "qr_decode_024_payment_qr",
+                                                    "qr_decode_073_payment_qr_recheck"
+                                                ],
+                               "input_categories_observed":  [
+
+                                                             ],
+                               "focus_result":  "not_applicable",
+                               "matched_task020_family":  true,
+                               "differences_from_task020":  "TASK-022 decoded/referenced QR surfaces local-only and did not follow any external/browser/WebView target.",
+                               "boundary_or_stop_reason":  "external_navigation_forbidden_without_separate_fixture",
+                               "notes":  "Raw QR targets remain local-only; no browser, WebView or external app navigation was performed."
+                           }
+                       ],
+    "anomalies":  [
+                      {
+                          "alias":  "redacted_metadata_initial_account_label_defect",
+                          "evidence_ids":  [
+                                               "000_redaction_defect_remediation"
+                                           ],
+                          "status":  "remediated",
+                          "test_design_implication":  "Do not copy raw UI text samples into redacted metadata; use category-only summaries."
+                      },
+                      {
+                          "alias":  "package_alias_resolve_activity_failed",
+                          "evidence_ids":  [
+                                               "011_resolve_activity"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Use the prior confirmed explicit app component for relaunch on this lane; package-only resolve may fail."
+                      },
+                      {
+                          "alias":  "payment_qr_back_recovery_failed",
+                          "evidence_ids":  [
+                                               "025",
+                                               "026",
+                                               "027",
+                                               "028"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Payment QR recovery should use force-stop plus explicit relaunch after B/Back fail."
+                      },
+                      {
+                          "alias":  "settings_subflow_focus_target_ambiguity",
+                          "evidence_ids":  [
+                                               "037",
+                                               "038",
+                                               "043",
+                                               "044"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Settings subflow entry needs a stronger focus oracle before Button A; logout boundary must be guarded."
+                      },
+                      {
+                          "alias":  "search_route_not_opened_from_recovered_collapsed_catalog_state",
+                          "evidence_ids":  [
+                                               "045",
+                                               "046"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Search route needs a clean rail-focus acquisition step in the continuation."
+                      },
+                      {
+                          "alias":  "adb_multi_device_offline_serial_ambiguity",
+                          "evidence_ids":  [
+                                               "047"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Use an explicit authorized device alias for ADB runtime checkpoints when an offline ADB-over-network endpoint is listed."
+                      },
+                      {
+                          "alias":  "button_x_activation_and_steam_account_boundary",
+                          "evidence_ids":  [
+                                               "060",
+                                               "062",
+                                               "066",
+                                               "067",
+                                               "068",
+                                               "069"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Do not treat Xbox face buttons other than A as harmless by default; Button X activated the focused catalog card and led to a protected Steam-account boundary."
+                      },
+                      {
+                          "alias":  "physical_gamepad_hint_sleep_visibility",
+                          "evidence_ids":  [
+                                               "013",
+                                               "070",
+                                               "075",
+                                               "079",
+                                               "080"
+                                           ],
+                          "status":  "confirmed_by_owner_statement",
+                          "test_design_implication":  "Do not require bottom-right hint visibility on every screen unless the physical gamepad is freshly active; record hint absence/presence as conditional."
+                      },
+                      {
+                          "alias":  "settings_gamepad_back_noop_close_required",
+                          "evidence_ids":  [
+                                               "079",
+                                               "080",
+                                               "081",
+                                               "082",
+                                               "083"
+                                           ],
+                          "status":  "confirmed",
+                          "test_design_implication":  "Active gamepad settings screen needs a safe Close control or stronger focus oracle for recovery; Button B and Android Back did not exit in the sampled state."
+                      }
+                  ],
+    "final_state":  {
+                        "last_runtime_checkpoint":  "083_after_tap_close_from_gamepad_settings",
+                        "last_screen_family":  "settings_root",
+                        "closure_basis":  "Closed owner-narrowed screen-family inventory for the approved safe Xbox-like/gamepad lane. Owner-critical bottom-right hint behavior, gamepad sleep/hint variability, post-server-selection payment boundary, and Settings active gamepad screen are confirmed. Remaining baseline families are explicitly classified against prior TASK-020 evidence and owner-narrowed TASK-022 scope."
+                    },
+    "owner_scope_update":  {
+                               "status":  "confirmed_by_owner_statement",
+                               "evidence_ids":  [
+                                                    "070",
+                                                    "075",
+                                                    "079",
+                                                    "080"
+                                                ],
+                               "summary":  "Owner reported the physical gamepad can sleep, causing navigation hints to disappear. Owner narrowed the practical audit conclusion: base screens are treated as matching prior remote/D-pad behavior, with the gamepad hint block plus focused checks for post-server-selection behavior and Settings gamepad section.",
+                               "raw_controller_ids_public":  false
+                           }
+}

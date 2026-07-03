@@ -190,6 +190,27 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   verdict remains unknown because the Wi-Fi-ADB probe hit an external TV
   screensaver-like interruption; reversible DNS offline-like probing supplied
   the confirmed app evidence.
+- TASK-022 has a 2026-07-03 Xbox-like/gamepad full screen-family inventory
+  report for the same approved lane:
+  `docs/qa/reports/task022_xbox_gamepad_full_screen_inventory.md` and
+  `docs/qa/reports/task022_xbox_gamepad_full_screen_inventory.summary.json`.
+  The run confirmed bottom-right A/B gamepad hints on auth after the owner
+  pressed the connected physical gamepad, confirmed that server selection with
+  the physical gamepad active reached a payment/session-activation QR boundary
+  instead of the prior TASK-020 connect-device gate, decoded the payment QR
+  local-only, and recovered safely without payment, external navigation or
+  stream/session start. After the owner clarified that the physical gamepad can
+  sleep and hide hints, TASK-022 narrowed practical closure to the gamepad hint
+  block plus focused rechecks for post-server-selection behavior and the
+  Settings Gamepad section, treating unrechecked base screens as TASK-020
+  baseline unless TASK-022 evidence shows otherwise. It also recorded sampled
+  long catalog scrolling, session/Steam/feedback/settings recurrences, Search
+  and Settings focus blockers for Xbox/gamepad input, a Steam-account connection
+  boundary reached by non-A face-button sampling, and the active gamepad
+  configuration screen for an Xbox Wireless Controller. Payment completion,
+  paid session start, external QR/WebView traversal, complete game-title
+  enumeration and mutating controller setup/reset/remap/pairing remain not
+  executed.
 
 ## Evidence status policy
 

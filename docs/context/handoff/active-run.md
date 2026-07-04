@@ -110,9 +110,10 @@ python automation/quality/docs_consistency_link_sanity.py
 - `git status --short --branch`: task branch
   `qa/next-task-selection-main-863d00e-blocked` with intended docs-only
   changes.
-- `git log --oneline --decorate -12`: `origin/main`, local `main` and the
-  TASK-025A task branch are aligned at `863d00e`.
-- `git rev-parse --short origin/main`: `863d00e`.
+- `git log --oneline --decorate -12`: selection baseline was
+  `main@863d00e` before the blocker checkpoint branch was created.
+- `git rev-parse --short origin/main`: `863d00e` before checkpoint
+  integration.
 - `git diff --check`: `pass`.
 - `python automation/quality/full_tree_hygiene_scan.py`: `pass`.
 - `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`:
@@ -121,6 +122,17 @@ python automation/quality/docs_consistency_link_sanity.py
   `scanned_files=182`, `findings=0`.
 - `python automation/quality/docs_consistency_link_sanity.py`: `pass`,
   `scanned_files=182`, `findings=0`.
+
+## Integration Results
+
+- First blocker checkpoint commit: `2da42098a73e82e9baa4764d4d8a9c6fe8c35872`.
+- Task branch pushed: `yes`.
+- Default branch integration: `yes; remote main fast-forwarded from task branch
+  because local main is checked out in a separate worktree`.
+- Post-push alignment before terminal sync: `HEAD` and `origin/main` both at
+  `2da42098a73e82e9baa4764d4d8a9c6fe8c35872`.
+- Next thread creation: `not performed; no eligible next independent task is
+  ready`.
 
 ## Thread Handoff
 

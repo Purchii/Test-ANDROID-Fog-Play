@@ -286,6 +286,12 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   physical runtime only after a device is available and owner approvals are
   refreshed. For TASK-025A, runtime execution, APK install, app launch, ADB,
   physical debugging and raw runtime evidence capture were forbidden/not-run.
+- Post-TASK-025A continuation selection ran from `main@863d00e` on
+  `qa/next-task-selection-main-863d00e-blocked`. No eligible next independent
+  task was selected. `TASK-025B` remains deferred because physical-device
+  runtime requires a currently available Android TV/STB target and refreshed
+  owner approvals. No `.qa_local`, APK, ADB, app runtime or raw evidence was
+  inspected during the selection review.
 
 ## Audit-chain continuation
 

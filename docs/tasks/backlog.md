@@ -26,7 +26,7 @@
 | TASK-009 | Compatibility/device matrix and report format | BOUNDED_AUTONOMOUS | qa/task-009-device-matrix | completed |
 | TASK-010 | CI/nightly smoke plan | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-010-ci-nightly-smoke | completed |
 | TASK-011 | Navigation transition map and coverage model | BOUNDED_AUTONOMOUS for public-safe local planning only | qa/task-011-navigation-transition-map | completed |
-| TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; default integration pending |
+| TASK-019 | Android TV auth/session smoke on tv-tpv-013 | NON_AUTONOMOUS runtime task after owner auth data approval | qa/task-019-android-tv-auth-session-smoke | bounded auth/session smoke passed locally on selected TASK-005 lane; integrated to `main` |
 | TASK-020 | Post-auth native navigation transitions, states and session persistence coverage | NON_AUTONOMOUS runtime task after TASK-019 selected-lane approval | qa/task-020-xl-post-auth-navigation-transitions | full screen-inventory ledger executed locally on approved lane; integrated to `main` before TASK-024 |
 | TASK-021 | Network/offline runtime probe | NON_AUTONOMOUS runtime task after TASK-020 selected-lane context | qa/task-021-network-offline-runtime-check | reversible DNS offline-like probe confirmed; true Wi-Fi-off verdict remains unknown; integrated to `main` before TASK-024 |
 | TASK-022 | Xbox-like gamepad full screen inventory | NON_AUTONOMOUS runtime task after TASK-020/TASK-021 selected-lane context | qa/task-022-xbox-gamepad-screen-inventory | Completed with boundaries; final review/verification passed; default push completed by explicit owner command |
@@ -131,6 +131,17 @@ currently available. TASK-025A is limited to no-device automation readiness,
 schema/report hardening and fake/synthetic tests. TASK-025B may execute
 selected-lane physical runtime only after a device is available and owner
 approvals are refreshed.
+
+Post-TASK-025A continuation selection from `main@863d00e` found no eligible
+unfinished `PROD_SAFE` bounded task ready for autonomous execution. `TASK-025B`
+remains `deferred` / `blocked` until a physical Android TV/STB device is
+available and owner approvals are refreshed. Runtime/device/APK/WebView/WebRTC/
+payment/network/live CI work must remain blocked until prerequisites are
+recorded with `evidence_status=confirmed`.
+
+Allowed next action is owner input or an explicit new bounded public-safe task;
+do not invent additional broad hardening unless a concrete false-pass or
+source-of-truth defect is identified.
 
 For the audit chain, owner authorization persists in repository source of
 truth: each independent audit task must start in a fresh thread, verified

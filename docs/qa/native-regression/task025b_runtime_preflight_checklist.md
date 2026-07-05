@@ -7,7 +7,7 @@ Do not start TASK-025B until every item is confirmed:
 | Physical device available | `true` | deferred |
 | Selected device connected and authorized | `yes` | deferred |
 | Runtime lane aliases | refreshed/confirmed | deferred |
-| APK local presence | `.qa_local/apks/task-005/app-under-test.apk` | deferred |
+| APK local presence | target-specific APK under `.qa_local/apks/task-005/` | deferred |
 | APK hash evidence | local-only SHA-256 recorded | deferred |
 | Synthetic QA user env | `.qa_local/secrets/qa_user.env` exists | deferred |
 | Raw phone/OTP printing | forbidden | deferred |
@@ -18,3 +18,9 @@ Do not start TASK-025B until every item is confirmed:
 
 TASK-025B remains blocked until this checklist is refreshed in a fresh task
 thread with current owner approval.
+
+TASK-026A no-device tests require the corresponding report preflight object to
+remain `preflight_status=deferred_no_device` with all runtime-enabling booleans
+set to `false`. A future TASK-025B runtime pass must flip those booleans only
+from fresh physical-device and owner-approval evidence, not from synthetic
+contract tests.

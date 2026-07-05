@@ -16,6 +16,10 @@ WebView / WebRTC testing of MTC Fog Play.
   TASK-025 suite/report contracts, no-device runner, validator hardening,
   synthetic/fake contract tests and TASK-025B handoff. Physical runtime is
   deferred until a device is available and owner approvals are refreshed.
+- TASK-026A expands XL+ no-device TASK-025B readiness coverage with stricter
+  local report/preflight/boundary/evidence contract tests. It does not run ADB,
+  inspect APKs or `.qa_local`, launch the app, collect runtime evidence or
+  validate real device/app behavior.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.

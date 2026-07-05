@@ -12,6 +12,11 @@ selected device authorized, selected APK present locally, local SHA-256
 recorded, synthetic QA user env present, evidence capture approval explicit and
 cleanup policy explicit.
 
+Before any runtime action, confirm TASK-026A no-device readiness artifacts still
+validate and that the TASK-025B report preflight can be supported by fresh
+physical-device evidence and refreshed owner approvals. Do not treat synthetic
+contract tests or no-device pytest results as runtime evidence.
+
 Run only the TASK-025 selected-lane native regression cases NR-001 through
 NR-010. Stop before payment, WebView/browser/external QR traversal,
 stream/WebRTC/media playback/game session start, Steam/account connection,

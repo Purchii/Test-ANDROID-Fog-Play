@@ -210,6 +210,19 @@ evidence for `NR-008`/`NR-009`, duplicate evidence IDs, malformed anomaly
 entries, inconsistent Phase C/runtime status, fake pass as runtime pass, unsafe
 coverage claims and raw public values/paths/artifact references.
 
+TASK-026A XL+ no-device readiness coverage must remain local/static only. It
+may strengthen TASK-025 runner/report/validator contracts and use
+synthetic/fake fixtures, but it must not run ADB, inspect `.qa_local`, read or
+hash APKs, launch the app, collect logcat/screenshots/XML/video, decode real QR
+targets, read secrets or interact with payment/WebView/stream/profile/network
+flows. TASK-026A validation must keep no-device reports blocked/not-run with
+empty runtime evidence IDs and `task025b_preflight.preflight_status` set to
+`deferred_no_device`. Future TASK-025B pass fixtures are schema contracts only:
+they must require refreshed owner approvals, confirmed physical-device
+preflight, non-empty top-level runtime evidence IDs, physical runtime execution
+mode on every passed case, specific boundary-ledger links for `NR-008`/`NR-009`
+and the full forbidden boundary category allowlist.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

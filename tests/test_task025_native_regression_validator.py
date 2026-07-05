@@ -12,6 +12,7 @@ def _valid_runtime_pass_report():
         "run_status": "pass",
         "overall_status": "pass",
         "runtime_execution_status": "pass",
+        "runtime_evidence_ids": ["evidence-runtime-top"],
         "physical_device_available": True,
         "physical_device_status": "available",
         "apk_install_status": "pass",
@@ -23,6 +24,18 @@ def _valid_runtime_pass_report():
             "build_alias": "task-005-local-apk-001",
             "synthetic_user_alias": "qa-user-phone-001",
         },
+        "task025b_preflight": {
+            "preflight_status": "confirmed_for_task025b",
+            "physical_device_available": True,
+            "refreshed_owner_approvals": True,
+            "selected_device_authorized": True,
+            "apk_presence_confirmed": True,
+            "apk_hash_recorded_local_only": True,
+            "synthetic_user_env_confirmed": True,
+            "evidence_capture_approval": True,
+            "cleanup_policy_confirmed": True,
+            "runtime_evidence_required_for_pass": True,
+        },
         "phase_gates": {
             "phase_a_no_device_readiness": "pass",
             "phase_b_schema_validator": "pass",
@@ -33,9 +46,12 @@ def _valid_runtime_pass_report():
                 "case_id": f"NR-{index:03d}",
                 "status": "pass",
                 "evidence_status": "confirmed",
+                "execution_mode": "physical_selected_lane_runtime",
+                "counts_as_runtime_evidence": True,
                 "evidence_ids": [f"evidence-nr-{index:03d}"],
                 "boundary_entered": False,
                 "boundary_evidence_confirmed": index in {8, 9} or None,
+                "boundary_ids": ["payment_boundary_classified_not_entered"] if index in {8, 9} else [],
             }
             for index in range(1, 11)
         ],
@@ -50,8 +66,11 @@ def _valid_runtime_pass_report():
         "boundary_ledger": [
             {
                 "boundary_id": "payment_boundary_classified_not_entered",
+                "boundary_category": "payment/subscription/purchase",
                 "status": "classified_not_entered",
                 "entered": False,
+                "navigation_followed": False,
+                "external_action": "not_performed",
                 "evidence_status": "confirmed",
                 "evidence_ids": ["evidence-boundary-payment"],
             }
@@ -62,6 +81,10 @@ def _valid_runtime_pass_report():
                 "category": "search_recovery",
                 "status": "not_reproduced",
                 "evidence_status": "confirmed",
+                "trigger_action": "synthetic future runtime fixture rechecks search recovery",
+                "expected_result": "search recovery remains safe",
+                "observed_result": "not reproduced in future runtime fixture",
+                "test_design_implication": "keep search recovery as a recheck oracle",
             }
         ],
         "new_anomalies": [],
@@ -86,6 +109,7 @@ def _valid_runtime_pass_report():
             "broad_compatibility_covered": False,
             "selected_lane_native_regression_only": True,
             "fake_synthetic_tests_are_runtime_evidence": False,
+            "synthetic_contract_tests_are_runtime_evidence": False,
         },
         "dynamic_data_policy": {
             "assert_fixed_game_titles": False,
@@ -93,6 +117,14 @@ def _valid_runtime_pass_report():
             "assert_fixed_prices": False,
             "assert_raw_qr_targets": False,
         },
+        "boundary_guard_categories": [
+            "payment/subscription/purchase",
+            "WebView/browser/external QR traversal",
+            "stream/WebRTC/media playback/game session start",
+            "Steam/account connection",
+            "profile/account mutation",
+            "network/offline manipulation",
+        ],
     }
 
 
@@ -105,6 +137,7 @@ def _blocked_no_device_report():
             "run_status": "blocked",
             "overall_status": "blocked",
             "runtime_execution_status": "not_run",
+            "runtime_evidence_ids": [],
             "physical_device_available": False,
             "physical_device_status": "unavailable",
             "apk_install_status": "not_run",
@@ -114,6 +147,18 @@ def _blocked_no_device_report():
                 "phase_a_no_device_readiness": "pass",
                 "phase_b_schema_validator": "pass",
                 "phase_c_runtime": "not_run",
+            },
+            "task025b_preflight": {
+                "preflight_status": "deferred_no_device",
+                "physical_device_available": False,
+                "refreshed_owner_approvals": False,
+                "selected_device_authorized": False,
+                "apk_presence_confirmed": False,
+                "apk_hash_recorded_local_only": False,
+                "synthetic_user_env_confirmed": False,
+                "evidence_capture_approval": False,
+                "cleanup_policy_confirmed": False,
+                "runtime_evidence_required_for_pass": True,
             },
             "regression_cases": [
                 {
@@ -294,7 +339,7 @@ def test_validator_rejects_synthetic_report_as_runtime_pass(tmp_path):
 
     errors = _errors_for(report, tmp_path)
 
-    assert "runtime pass requires execution_mode=physical_selected_lane_runtime." in errors
+    assert "runtime evidence claims require execution_mode=physical_selected_lane_runtime." in errors
     assert "synthetic contract tests must not produce runtime pass reports." in errors
 
 

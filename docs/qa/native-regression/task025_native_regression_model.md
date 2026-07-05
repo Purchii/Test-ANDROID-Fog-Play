@@ -52,3 +52,15 @@ TASK-025A does not run ADB, install APKs, launch the app, execute UIAutomator,
 collect logcat/screenshots/videos, read secrets or capture raw runtime
 evidence. Fake/synthetic contract tests are not runtime evidence and cannot
 make a runtime pass report valid.
+
+## TASK-026A readiness hardening
+
+TASK-026A adds XL+ no-device coverage for the TASK-025B report contract. The
+coverage is local-only and validates that future physical pass reports require
+confirmed TASK-025B preflight, non-empty runtime evidence IDs, physical runtime
+execution mode/counting on passed cases, specific boundary-ledger links for
+`NR-008`/`NR-009` and the full forbidden boundary guard list.
+
+These tests do not prove physical-device availability, APK presence, app
+launch, install/update, account/session state, boundary behavior or product
+runtime behavior.

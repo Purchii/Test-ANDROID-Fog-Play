@@ -1,0 +1,275 @@
+{
+  "apk_install_status": "not_run",
+  "app_launch_status": "not_run",
+  "blocked_reasons": [
+    "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals"
+  ],
+  "boundary_guard_categories": [
+    "payment/subscription/purchase",
+    "WebView/browser/external QR traversal",
+    "stream/WebRTC/media playback/game session start",
+    "Steam/account connection",
+    "profile/account mutation",
+    "network/offline manipulation"
+  ],
+  "boundary_ledger": [],
+  "coverage_claims": {
+    "broad_compatibility_covered": false,
+    "complete_dynamic_value_inventory": false,
+    "exhaustive_app_navigation": false,
+    "fake_synthetic_tests_are_runtime_evidence": false,
+    "payment_or_stream_covered": false,
+    "selected_lane_native_regression_only": true,
+    "synthetic_contract_tests_are_runtime_evidence": false,
+    "webview_covered": false
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_prices": false,
+    "assert_fixed_server_rows": false,
+    "assert_raw_qr_targets": false
+  },
+  "execution_mode": "no_device_readiness",
+  "generated_at_utc": "2026-07-05T13:09:07Z",
+  "known_anomalies_rechecked": [],
+  "mode": "BOUNDED_AUTONOMOUS",
+  "new_anomalies": [],
+  "overall_status": "blocked",
+  "phase_gates": {
+    "phase_a_no_device_readiness": "pass",
+    "phase_b_schema_validator": "pass",
+    "phase_c_runtime": "not_run"
+  },
+  "physical_device_available": false,
+  "physical_device_status": "unavailable",
+  "public_safety": {
+    "adb_runtime_invoked": false,
+    "apk_install_invoked": false,
+    "app_launch_invoked": false,
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "raw_device_identifiers_public": false,
+    "raw_logs_public": false,
+    "raw_phone_otp_public": false,
+    "raw_runtime_evidence_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false
+  },
+  "regression_cases": [
+    {
+      "case_id": "NR-001",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-002",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-003",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-004",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-005",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-006",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-007",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-008",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-009",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    },
+    {
+      "case_id": "NR-010",
+      "counts_as_runtime_evidence": false,
+      "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
+      "reason": "TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals",
+      "status": "not_run"
+    }
+  ],
+  "run_status": "blocked",
+  "runtime_evidence_ids": [],
+  "runtime_execution_status": "not_run",
+  "runtime_lane": {
+    "build_alias": "task-005-local-apk-001",
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "schema_version": "task025-native-regression-summary-v1",
+  "selected_lane": {
+    "build_alias": "task-005-local-apk-001",
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "session_persistence_checkpoints": [],
+  "synthetic_contract_tests": [],
+  "task025b_preflight": {
+    "apk_hash_recorded_local_only": false,
+    "apk_presence_confirmed": false,
+    "cleanup_policy_confirmed": false,
+    "evidence_capture_approval": false,
+    "physical_device_available": false,
+    "preflight_status": "deferred_no_device",
+    "refreshed_owner_approvals": false,
+    "runtime_evidence_required_for_pass": true,
+    "selected_device_authorized": false,
+    "synthetic_user_env_confirmed": false
+  },
+  "task025b_runtime_scenarios": {
+    "boundary_guard_categories": [
+      "payment/subscription/purchase",
+      "WebView/browser/external QR traversal",
+      "stream/WebRTC/media playback/game session start",
+      "Steam/account connection",
+      "profile/account mutation",
+      "network/offline manipulation"
+    ],
+    "case_statuses": [
+      {
+        "case_id": "NR-001",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-002",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-003",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-004",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-005",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-006",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-007",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-008",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-009",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      },
+      {
+        "case_id": "NR-010",
+        "counts_as_runtime_evidence": false,
+        "execution_mode": "no_device_readiness",
+        "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
+        "runtime_evidence_ids": [],
+        "status": "not_run"
+      }
+    ],
+    "counts_as_runtime_evidence": false,
+    "default_no_device_status": "blocked_not_run_deferred",
+    "future_runtime_gate": "requires_confirmed_task025b_preflight",
+    "runtime_evidence_ids": [],
+    "scenario_count": 10,
+    "scenario_source": "docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json",
+    "schema_version": "task025b-runtime-scenarios-v1",
+    "synthetic_executions": [],
+    "synthetic_sequencing_status": "not_run"
+  },
+  "task025b_runtime_status": "deferred",
+  "task026b_report_schema_version": "task026b-task025b-runtime-tests-summary-v1",
+  "task026b_status": "implementation_ready_no_device",
+  "task_id": "TASK-026B"
+}

@@ -74,6 +74,27 @@ Synthetic/fake driver checks use
 flow and boundary-guard contracts locally, but they must keep
 `runtime_execution_status=not_run` and are never runtime evidence.
 
+## TASK-026B runtime scenario contract
+
+TASK-026B implements the future TASK-025B physical runtime tests as no-device
+scenario contracts:
+
+- `docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json`
+  defines `NR-001` through `NR-010` with
+  `future_runtime_gate=requires_confirmed_task025b_preflight`;
+- `automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py`
+  emits a blocked/not-run/deferred report by default;
+- `--synthetic-sequencing-test` uses an in-memory fake driver only and keeps
+  `runtime_evidence_ids=[]`;
+- `automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py`
+  validates both the scenario contract and TASK-026B report section.
+
+The `task025b_runtime_scenarios` report section must keep
+`counts_as_runtime_evidence=false`, empty `runtime_evidence_ids`, case statuses
+limited to `not_run` / `blocked` / `deferred` and the exact boundary guard
+allowlist. Synthetic executions may be `pass` only as contract checks; they
+remain non-runtime evidence.
+
 ## Public safety flags
 
 The `public_safety.*_public` and `public_safety.*_invoked` booleans are

@@ -223,6 +223,20 @@ preflight, non-empty top-level runtime evidence IDs, physical runtime execution
 mode on every passed case, specific boundary-ledger links for `NR-008`/`NR-009`
 and the full forbidden boundary category allowlist.
 
+TASK-026B no-device TASK-025B physical runtime test implementation must remain
+local/static only. It may define future physical runtime scenarios, validate
+scenario/report contracts and run in-memory fake sequencing. It must not run
+ADB, inspect `.qa_local`, read/hash/install APKs, launch the app, collect
+logcat/screenshots/XML/video, decode real QR targets, read secrets or interact
+with payment/WebView/stream/profile/network flows. Default execution must
+return blocked/not-run/deferred with
+`task025b_preflight.preflight_status=deferred_no_device` and empty runtime
+evidence IDs. Synthetic sequencing must use
+`execution_mode=no_device_synthetic_contract_test`,
+`counts_as_runtime_evidence=false` and empty runtime evidence IDs. Boundary
+scenarios may classify guarded categories only; they must not open, follow,
+enter, pay, stream, mutate profile/account state or manipulate network state.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

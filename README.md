@@ -20,6 +20,11 @@ WebView / WebRTC testing of MTC Fog Play.
   local report/preflight/boundary/evidence contract tests. It does not run ADB,
   inspect APKs or `.qa_local`, launch the app, collect runtime evidence or
   validate real device/app behavior.
+- TASK-026B implements no-device TASK-025B future physical runtime scenarios,
+  runner/report contracts, validator and synthetic/fake sequencing tests behind
+  explicit future gates. It does not run ADB, inspect APKs or `.qa_local`,
+  launch the app, collect runtime evidence or validate real device/app
+  behavior.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.

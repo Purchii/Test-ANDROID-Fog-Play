@@ -24,3 +24,14 @@ remain `preflight_status=deferred_no_device` with all runtime-enabling booleans
 set to `false`. A future TASK-025B runtime pass must flip those booleans only
 from fresh physical-device and owner-approval evidence, not from synthetic
 contract tests.
+
+TASK-026B adds ready-to-run future physical scenario contracts while preserving
+the same no-device gate. Before any future TASK-025B runtime action, validate:
+
+```text
+python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json
+```
+
+Passing this command proves only that the scenario/report contract is internally
+consistent. It is not physical-device evidence and does not approve runtime
+execution.

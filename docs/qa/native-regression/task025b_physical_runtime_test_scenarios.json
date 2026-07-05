@@ -1,0 +1,272 @@
+{
+  "schema_version": "task025b-runtime-scenarios-v1",
+  "task_id": "TASK-025B",
+  "runtime_execution_status": "not_run",
+  "execution_policy": "future_physical_runtime_gated",
+  "boundary_guard_categories": [
+    "payment/subscription/purchase",
+    "WebView/browser/external QR traversal",
+    "stream/WebRTC/media playback/game session start",
+    "Steam/account connection",
+    "profile/account mutation",
+    "network/offline manipulation"
+  ],
+  "scenarios": [
+    {
+      "case_id": "NR-001",
+      "title": "auth/session restore preflight",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "launch_app" },
+        { "action": "ensure_authorized_session" },
+        { "action": "classify_screen" },
+        { "action": "assert_focus_present" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-002",
+      "title": "post-auth home/catalog root focus and actionability",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "assert_focus_present" },
+        { "action": "press_dpad", "direction": "down" },
+        { "action": "press_back" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-003",
+      "title": "catalog rail/grid focus and scroll sample",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "assert_focus_present" },
+        { "action": "press_dpad", "direction": "down" },
+        { "action": "press_dpad", "direction": "up" },
+        { "action": "press_dpad", "direction": "left" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-004",
+      "title": "Search keyboard/no-results/recovery",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "press_dpad", "direction": "left" },
+        { "action": "press_dpad", "direction": "right" },
+        { "action": "press_back" },
+        { "action": "classify_screen" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-005",
+      "title": "game card detail plus Back/recovery",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "assert_focus_present" },
+        { "action": "press_dpad", "direction": "right" },
+        { "action": "press_back" },
+        { "action": "classify_screen" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-006",
+      "title": "Settings root and promo codes recovery",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "press_dpad", "direction": "left" },
+        { "action": "press_dpad", "direction": "down" },
+        { "action": "press_back" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-007",
+      "title": "Settings Gamepad safe entry and close",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "press_dpad", "direction": "down" },
+        { "action": "press_back" },
+        { "action": "classify_screen" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-008",
+      "title": "game detail server-list schema sample without payment/session start",
+      "default_no_device_status": "blocked",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "assert_focus_present" },
+        { "action": "press_dpad", "direction": "down" },
+        { "action": "classify_boundary" },
+        { "action": "record_public_safe_evidence_ref" },
+        { "action": "press_back" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-009",
+      "title": "QR/boundary surfaces classified but not opened",
+      "default_no_device_status": "blocked",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "classify_screen" },
+        { "action": "classify_boundary" },
+        { "action": "record_public_safe_evidence_ref" },
+        { "action": "press_back" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    },
+    {
+      "case_id": "NR-010",
+      "title": "Home/foreground and force-stop/relaunch session persistence",
+      "default_no_device_status": "not_run",
+      "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "steps": [
+        { "action": "press_home" },
+        { "action": "foreground_app" },
+        { "action": "assert_session_preserved" },
+        { "action": "force_stop_relaunch" },
+        { "action": "assert_session_preserved" }
+      ],
+      "boundary_policy": {
+        "boundary_actions": "classify_only",
+        "boundary_entered": false,
+        "forbidden_actions": [
+          "press_ok_on_boundary",
+          "follow_qr",
+          "open_webview",
+          "start_stream",
+          "start_payment",
+          "mutate_profile",
+          "toggle_network"
+        ]
+      }
+    }
+  ]
+}

@@ -303,10 +303,11 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   XML/video, decode real QR targets, read secrets or validate real runtime
   behavior. TASK-025B physical runtime remains deferred until a physical
   Android TV/STB is available and owner approvals are refreshed.
-- TASK-026B is in progress in fresh thread
+- TASK-026B completed in fresh thread
   `TASK-026B - No-device implementation of TASK-025B physical runtime tests`
   on branch `qa/task-026b-no-device-task025b-runtime-tests` from detected
-  default branch `main` commit `5f5c0f0`. It is `BOUNDED_AUTONOMOUS` and
+  default branch `main` commit `5f5c0f0` and was integrated/pushed to detected
+  default branch `main` with merge commit `8d890cb`. It is `BOUNDED_AUTONOMOUS` and
   `PROD_SAFE` only: tracked TASK-025B future physical scenario contracts,
   no-device blocked/not-run runner, TASK-026B validator, public-safe template
   and synthetic/fake sequencing tests. It does not inspect `.qa_local`, read or

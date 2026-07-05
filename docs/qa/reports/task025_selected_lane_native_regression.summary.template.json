@@ -20,6 +20,7 @@
     "fake_synthetic_tests_are_runtime_evidence": false,
     "payment_or_stream_covered": false,
     "selected_lane_native_regression_only": true,
+    "synthetic_contract_tests_are_runtime_evidence": false,
     "webview_covered": false
   },
   "dynamic_data_policy": {
@@ -29,7 +30,7 @@
     "assert_raw_qr_targets": false
   },
   "execution_mode": "no_device_readiness",
-  "generated_at_utc": "2026-07-04T00:00:00Z",
+  "generated_at_utc": "2026-07-05T12:16:55Z",
   "known_anomalies_rechecked": [],
   "mode": "BOUNDED_AUTONOMOUS",
   "new_anomalies": [],
@@ -57,66 +58,87 @@
   "regression_cases": [
     {
       "case_id": "NR-001",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-002",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-003",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-004",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-005",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-006",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-007",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-008",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-009",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     },
     {
       "case_id": "NR-010",
+      "counts_as_runtime_evidence": false,
       "evidence_status": "unknown",
+      "execution_mode": "no_device_readiness",
       "reason": "physical device unavailable; runtime deferred",
       "status": "not_run"
     }
   ],
   "run_status": "blocked",
+  "runtime_evidence_ids": [],
   "runtime_execution_status": "not_run",
   "runtime_lane": {
     "build_alias": "task-005-local-apk-001",
@@ -125,7 +147,26 @@
     "synthetic_user_alias": "qa-user-phone-001"
   },
   "schema_version": "task025-native-regression-summary-v1",
+  "selected_lane": {
+    "build_alias": "task-005-local-apk-001",
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
   "session_persistence_checkpoints": [],
+  "synthetic_contract_tests": [],
+  "task025b_preflight": {
+    "apk_hash_recorded_local_only": false,
+    "apk_presence_confirmed": false,
+    "cleanup_policy_confirmed": false,
+    "evidence_capture_approval": false,
+    "physical_device_available": false,
+    "preflight_status": "deferred_no_device",
+    "refreshed_owner_approvals": false,
+    "runtime_evidence_required_for_pass": true,
+    "selected_device_authorized": false,
+    "synthetic_user_env_confirmed": false
+  },
   "task025b_runtime_status": "deferred",
   "task_id": "TASK-025A"
 }

@@ -10,7 +10,8 @@ runtime now.
 - selected device is connected and authorized;
 - selected aliases are `tv-tpv-013` / `tv-tpv-a12-013` or a refreshed
   manual-confirmed replacement;
-- APK is present locally under `.qa_local/apks/task-005/app-under-test.apk`;
+- APK is present locally as the owner-selected target-specific APK under
+  `.qa_local/apks/task-005/`;
 - build alias is `task-005-local-apk-001` or a refreshed
   `task-005-local-apk-NNN`;
 - local SHA-256 is recorded without publishing the value;
@@ -25,3 +26,10 @@ runtime now.
 
 TASK-025B should execute `NR-001` through `NR-010` from the TASK-025 suite and
 publish only public-safe aliases, statuses, categories and evidence IDs.
+
+## TASK-026A no-device readiness note
+
+TASK-026A strengthens local no-device contract coverage for this handoff. Those
+tests confirm only public-safe runner/validator/schema behavior. They do not
+confirm device availability, APK presence, app launch, installation, account
+state, real boundary behavior or runtime product behavior.

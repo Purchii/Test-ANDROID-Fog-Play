@@ -292,6 +292,16 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   runtime requires a currently available Android TV/STB target and refreshed
   owner approvals. No `.qa_local`, APK, ADB, app runtime or raw evidence was
   inspected during the selection review.
+- TASK-026A is running in fresh thread
+  `TASK-026A - XL+ no-device TASK-025B readiness and regression coverage` on
+  branch `qa/task-026a-xl-no-device-task025b-readiness-coverage` from
+  `main` commit `3658388`. It is `BOUNDED_AUTONOMOUS` and `PROD_SAFE` only:
+  local TASK-025B readiness/report/preflight/boundary/evidence contract
+  hardening, synthetic/fake tests and docs. It does not inspect `.qa_local`,
+  read/hash/install APKs, run ADB, launch the app, collect logcat/screenshots/
+  XML/video, decode real QR targets, read secrets or validate real runtime
+  behavior. TASK-025B physical runtime remains deferred until a physical
+  Android TV/STB is available and owner approvals are refreshed.
 
 ## Audit-chain continuation
 

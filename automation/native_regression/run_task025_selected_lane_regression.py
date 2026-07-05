@@ -43,6 +43,7 @@ RUNTIME_STATUSES = {"pass", "partial", "blocked", "not_run", "fail"}
 PHYSICAL_DEVICE_STATUSES = {"available", "unavailable", "unknown"}
 INSTALL_LAUNCH_STATUSES = {"pass", "blocked", "not_run", "fail"}
 TASK025B_STATUSES = {"deferred", "blocked", "ready_after_refreshed_approval"}
+TASK025B_PREFLIGHT_STATUSES = {"deferred_no_device", "blocked_missing_approval", "confirmed_for_task025b"}
 CASE_STATUSES = {"pass", "fail", "blocked", "blocked_by_boundary", "not_run", "known_anomaly"}
 EVIDENCE_STATUSES = {"confirmed", "likely", "hypothesis", "unknown"}
 BOUNDARY_STATUSES = {"blocked_by_boundary", "not_run_out_of_scope", "blocked", "classified_not_entered"}
@@ -246,6 +247,18 @@ def default_blocked_report(reason: str = "physical device unavailable; runtime d
         "selected_lane": TARGET_ALIASES,
         "blocked_reasons": [reason],
         "runtime_evidence_ids": [],
+        "task025b_preflight": {
+            "preflight_status": "deferred_no_device",
+            "physical_device_available": False,
+            "refreshed_owner_approvals": False,
+            "selected_device_authorized": False,
+            "apk_presence_confirmed": False,
+            "apk_hash_recorded_local_only": False,
+            "synthetic_user_env_confirmed": False,
+            "evidence_capture_approval": False,
+            "cleanup_policy_confirmed": False,
+            "runtime_evidence_required_for_pass": True,
+        },
         "phase_gates": {
             "phase_a_no_device_readiness": "pass",
             "phase_b_schema_validator": "pass",
@@ -320,6 +333,7 @@ def synthetic_contract_report(driver: RuntimeDriver) -> dict[str, Any]:
         "screen_alias": screen,
         "boundary_category": boundary,
         "synthetic_ref": synthetic_ref,
+        "counts_as_runtime_evidence": False,
     }
     report["synthetic_contract_tests"] = [
         {
@@ -424,7 +438,9 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
         "apk_install_status",
         "app_launch_status",
         "task025b_runtime_status",
+        "runtime_evidence_ids",
         "runtime_lane",
+        "task025b_preflight",
         "phase_gates",
         "regression_cases",
         "session_persistence_checkpoints",
@@ -434,6 +450,7 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
         "public_safety",
         "coverage_claims",
         "dynamic_data_policy",
+        "boundary_guard_categories",
     )
     for field_name in required:
         if field_name not in report:
@@ -454,6 +471,8 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
         reasons.append("overall_status must be recognized.")
     if report.get("runtime_execution_status") not in RUNTIME_STATUSES:
         reasons.append("runtime_execution_status must be recognized.")
+    if not isinstance(report.get("physical_device_available"), bool):
+        reasons.append("physical_device_available must be boolean.")
     if report.get("physical_device_status") not in PHYSICAL_DEVICE_STATUSES:
         reasons.append("physical_device_status must be recognized.")
     if report.get("apk_install_status") not in INSTALL_LAUNCH_STATUSES:
@@ -462,13 +481,15 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
         reasons.append("app_launch_status must be recognized.")
     if report.get("task025b_runtime_status") not in TASK025B_STATUSES:
         reasons.append("task025b_runtime_status must be recognized.")
-    if "runtime_evidence_ids" in report and not isinstance(report.get("runtime_evidence_ids"), list):
+    if not isinstance(report.get("runtime_evidence_ids"), list):
         reasons.append("runtime_evidence_ids must be a list.")
 
     reasons.extend(public_safety_findings(report))
     reasons.extend(_validate_no_device_contract(report))
+    reasons.extend(_validate_task025b_preflight(report))
     reasons.extend(_validate_phase_gates(report))
     reasons.extend(_validate_regression_cases(report))
+    reasons.extend(_validate_synthetic_contract_section(report))
     reasons.extend(_validate_synthetic_contract_tests(report.get("synthetic_contract_tests", [])))
     reasons.extend(_validate_session_checkpoints(report))
     reasons.extend(_validate_boundary_ledger(report))
@@ -477,8 +498,20 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
     reasons.extend(_validate_public_safety(report.get("public_safety")))
     reasons.extend(_validate_coverage_claims(report.get("coverage_claims")))
     reasons.extend(_validate_dynamic_data_policy(report.get("dynamic_data_policy")))
+    reasons.extend(_validate_boundary_guard_categories(report.get("boundary_guard_categories")))
     reasons.extend(_validate_evidence_id_uniqueness(report))
     return sorted(set(reasons))
+
+
+def _has_runtime_evidence_claim(report: dict[str, Any]) -> bool:
+    if report.get("run_status") in {"pass", "pass_with_known_anomalies"}:
+        return True
+    if report.get("runtime_execution_status") in {"pass", "partial"}:
+        return True
+    cases = report.get("regression_cases")
+    if isinstance(cases, list) and any(isinstance(case, dict) and case.get("status") == "pass" for case in cases):
+        return True
+    return False
 
 
 def _validate_no_device_contract(report: dict[str, Any]) -> list[str]:
@@ -503,23 +536,93 @@ def _validate_no_device_contract(report: dict[str, Any]) -> list[str]:
             if report.get(key) != value:
                 suffix = " for TASK-025A reports." if task025a else " when physical_device_available=false."
                 reasons.append(f"{key} must be {value}{suffix}")
+        if report.get("runtime_evidence_ids") != []:
+            reasons.append("runtime_evidence_ids must be empty for no-device readiness reports.")
+    if report.get("runtime_execution_status") == "not_run" or report.get("run_status") == "blocked":
+        if report.get("runtime_evidence_ids") != []:
+            reasons.append("runtime_evidence_ids must be empty when runtime is not run or report is blocked.")
     if synthetic and report.get("runtime_execution_status") != "not_run":
         reasons.append("synthetic contract tests must keep runtime_execution_status=not_run.")
     if synthetic and report.get("run_status") in {"pass", "pass_with_known_anomalies"}:
         reasons.append("synthetic contract tests must not produce runtime pass reports.")
-    if report.get("run_status") in {"pass", "pass_with_known_anomalies"}:
+    if _has_runtime_evidence_claim(report):
         if report.get("execution_mode") != PHYSICAL_RUNTIME_EXECUTION_MODE:
-            reasons.append("runtime pass requires execution_mode=physical_selected_lane_runtime.")
+            reasons.append("runtime evidence claims require execution_mode=physical_selected_lane_runtime.")
         if report.get("physical_device_available") is not True:
-            reasons.append("runtime pass requires physical_device_available=true.")
+            reasons.append("runtime evidence claims require physical_device_available=true.")
         if report.get("physical_device_status") != "available":
-            reasons.append("runtime pass requires physical_device_status=available.")
-        if report.get("runtime_execution_status") != "pass":
-            reasons.append("runtime pass requires runtime_execution_status=pass.")
+            reasons.append("runtime evidence claims require physical_device_status=available.")
+        if report.get("runtime_execution_status") not in {"pass", "partial"}:
+            reasons.append("runtime evidence claims require runtime_execution_status=pass or partial.")
         if report.get("apk_install_status") != "pass":
-            reasons.append("runtime pass requires apk_install_status=pass.")
+            reasons.append("runtime evidence claims require apk_install_status=pass.")
         if report.get("app_launch_status") != "pass":
-            reasons.append("runtime pass requires app_launch_status=pass.")
+            reasons.append("runtime evidence claims require app_launch_status=pass.")
+        if report.get("task025b_runtime_status") != "ready_after_refreshed_approval":
+            reasons.append("runtime evidence claims require task025b_runtime_status=ready_after_refreshed_approval.")
+        if not report.get("runtime_evidence_ids"):
+            reasons.append("runtime evidence claims require non-empty runtime_evidence_ids.")
+    return reasons
+
+
+def _validate_task025b_preflight(report: dict[str, Any]) -> list[str]:
+    preflight = report.get("task025b_preflight")
+    if not isinstance(preflight, dict):
+        return ["task025b_preflight must be an object."]
+    reasons: list[str] = []
+    status = preflight.get("preflight_status")
+    if status not in TASK025B_PREFLIGHT_STATUSES:
+        reasons.append("task025b_preflight.preflight_status must be recognized.")
+    boolean_fields = (
+        "physical_device_available",
+        "refreshed_owner_approvals",
+        "selected_device_authorized",
+        "apk_presence_confirmed",
+        "apk_hash_recorded_local_only",
+        "synthetic_user_env_confirmed",
+        "evidence_capture_approval",
+        "cleanup_policy_confirmed",
+        "runtime_evidence_required_for_pass",
+    )
+    for key in boolean_fields:
+        if not isinstance(preflight.get(key), bool):
+            reasons.append(f"task025b_preflight.{key} must be boolean.")
+
+    no_device = report.get("physical_device_available") is False or report.get("task_id") == "TASK-025A"
+    if no_device or report.get("execution_mode") == SYNTHETIC_EXECUTION_MODE:
+        expected_false = (
+            "physical_device_available",
+            "refreshed_owner_approvals",
+            "selected_device_authorized",
+            "apk_presence_confirmed",
+            "apk_hash_recorded_local_only",
+            "synthetic_user_env_confirmed",
+            "evidence_capture_approval",
+            "cleanup_policy_confirmed",
+        )
+        for key in expected_false:
+            if preflight.get(key) is not False:
+                reasons.append(f"task025b_preflight.{key} must be false for no-device readiness reports.")
+        if status != "deferred_no_device":
+            reasons.append("task025b_preflight.preflight_status must be deferred_no_device for no-device readiness reports.")
+
+    if _has_runtime_evidence_claim(report):
+        required_true = (
+            "physical_device_available",
+            "refreshed_owner_approvals",
+            "selected_device_authorized",
+            "apk_presence_confirmed",
+            "apk_hash_recorded_local_only",
+            "synthetic_user_env_confirmed",
+            "evidence_capture_approval",
+            "cleanup_policy_confirmed",
+            "runtime_evidence_required_for_pass",
+        )
+        for key in required_true:
+            if preflight.get(key) is not True:
+                reasons.append(f"runtime evidence claims require task025b_preflight.{key}=true.")
+        if status != "confirmed_for_task025b":
+            reasons.append("runtime evidence claims require task025b_preflight.preflight_status=confirmed_for_task025b.")
     return reasons
 
 
@@ -532,6 +635,8 @@ def _validate_phase_gates(report: dict[str, Any]) -> list[str]:
         reasons.append("phase_gates.phase_c_runtime=pass requires runtime_execution_status=pass.")
     if report.get("runtime_execution_status") == "not_run" and gates.get("phase_c_runtime") not in {"not_run", "blocked"}:
         reasons.append("phase_gates.phase_c_runtime must be not_run or blocked when runtime_execution_status=not_run.")
+    if _has_runtime_evidence_claim(report) and gates.get("phase_c_runtime") != "pass":
+        reasons.append("runtime evidence claims require phase_gates.phase_c_runtime=pass.")
     return reasons
 
 
@@ -543,6 +648,11 @@ def _validate_regression_cases(report: dict[str, Any]) -> list[str]:
     seen: set[str] = set()
     boundary_ledger = report.get("boundary_ledger")
     has_boundary_evidence = isinstance(boundary_ledger, list) and bool(boundary_ledger)
+    boundary_ids = {
+        boundary.get("boundary_id")
+        for boundary in boundary_ledger
+        if isinstance(boundary, dict) and isinstance(boundary.get("boundary_id"), str)
+    }
     run_status = report.get("run_status")
     no_device = report.get("physical_device_available") is False
     for index, case in enumerate(cases):
@@ -564,18 +674,26 @@ def _validate_regression_cases(report: dict[str, Any]) -> list[str]:
         if no_device and status not in {"not_run", "blocked"}:
             reasons.append(f"regression_cases[{index}].status must be not_run or blocked for no-device reports.")
         if status == "pass":
+            if case.get("execution_mode") != PHYSICAL_RUNTIME_EXECUTION_MODE:
+                reasons.append(f"regression_cases[{index}].execution_mode must be physical_selected_lane_runtime for pass.")
+            if case.get("counts_as_runtime_evidence") is not True:
+                reasons.append(f"regression_cases[{index}].counts_as_runtime_evidence must be true for pass.")
             if case.get("execution_mode") == NO_DEVICE_EXECUTION_MODE:
                 reasons.append(f"regression_cases[{index}] no-device execution cannot pass a runtime regression case.")
             if case.get("execution_mode") == SYNTHETIC_EXECUTION_MODE:
                 reasons.append(f"regression_cases[{index}] synthetic contract pass cannot count as runtime regression pass.")
-            if "counts_as_runtime_evidence" in case and case.get("counts_as_runtime_evidence") is not True:
-                reasons.append(f"regression_cases[{index}].counts_as_runtime_evidence must be true for pass.")
             if case.get("evidence_status") != "confirmed":
                 reasons.append(f"regression_cases[{index}].evidence_status must be confirmed for pass.")
             if not case.get("evidence_ids"):
                 reasons.append(f"regression_cases[{index}].evidence_ids are required for pass.")
             if case_id in BOUNDARY_SENSITIVE_CASE_IDS and not has_boundary_evidence:
                 reasons.append(f"regression_cases[{index}] {case_id} pass requires confirmed boundary_ledger evidence.")
+            if case_id in BOUNDARY_SENSITIVE_CASE_IDS:
+                linked_boundary_ids = case.get("boundary_ids")
+                if not isinstance(linked_boundary_ids, list) or not linked_boundary_ids:
+                    reasons.append(f"regression_cases[{index}] {case_id} pass requires boundary_ids linked to boundary_ledger.")
+                elif not all(isinstance(boundary_id, str) and boundary_id in boundary_ids for boundary_id in linked_boundary_ids):
+                    reasons.append(f"regression_cases[{index}] {case_id} boundary_ids must reference boundary_ledger entries.")
         if case_id in BOUNDARY_SENSITIVE_CASE_IDS and status == "pass" and case.get("boundary_evidence_confirmed") is not True:
             reasons.append(f"regression_cases[{index}] {case_id} pass requires boundary_evidence_confirmed=true.")
         if status in {"blocked", "blocked_by_boundary", "not_run", "fail", "known_anomaly"} and not case.get("reason"):
@@ -618,6 +736,26 @@ def _validate_synthetic_contract_tests(tests: Any) -> list[str]:
             reasons.append(f"synthetic_contract_tests[{index}].status is not recognized.")
         if test.get("evidence_status") not in EVIDENCE_STATUSES:
             reasons.append(f"synthetic_contract_tests[{index}].evidence_status is not recognized.")
+    return reasons
+
+
+def _validate_synthetic_contract_section(report: dict[str, Any]) -> list[str]:
+    section = report.get("synthetic_contract")
+    if report.get("execution_mode") != SYNTHETIC_EXECUTION_MODE:
+        return []
+    if not isinstance(section, dict):
+        return ["synthetic_contract must be an object for synthetic contract execution."]
+    reasons: list[str] = []
+    if section.get("contract_status") not in CASE_STATUSES:
+        reasons.append("synthetic_contract.contract_status must be recognized.")
+    if not isinstance(section.get("screen_alias"), str) or not section.get("screen_alias", "").strip():
+        reasons.append("synthetic_contract.screen_alias is required.")
+    if section.get("boundary_category") not in FORBIDDEN_BOUNDARY_CATEGORIES:
+        reasons.append("synthetic_contract.boundary_category must be a guarded boundary category.")
+    if not isinstance(section.get("synthetic_ref"), str) or not section.get("synthetic_ref", "").startswith("synthetic-only:"):
+        reasons.append("synthetic_contract.synthetic_ref must be a synthetic-only reference.")
+    if section.get("counts_as_runtime_evidence") is not False:
+        reasons.append("synthetic_contract.counts_as_runtime_evidence must be false.")
     return reasons
 
 
@@ -682,10 +820,16 @@ def _validate_boundary_ledger(report: dict[str, Any]) -> list[str]:
             seen.add(boundary_id)
         if boundary.get("status") not in BOUNDARY_STATUSES:
             reasons.append(f"boundary_ledger[{index}].status must be a boundary-safe terminal status.")
+        if boundary.get("boundary_category") not in FORBIDDEN_BOUNDARY_CATEGORIES:
+            reasons.append(f"boundary_ledger[{index}].boundary_category must be a guarded boundary category.")
         if boundary.get("evidence_status") != "confirmed":
             reasons.append(f"boundary_ledger[{index}].evidence_status must be confirmed.")
         if boundary.get("entered") is not False:
             reasons.append(f"boundary_ledger[{index}].entered must be false.")
+        if boundary.get("navigation_followed") not in (None, False):
+            reasons.append(f"boundary_ledger[{index}].navigation_followed must be false when present.")
+        if boundary.get("external_action") == "performed":
+            reasons.append(f"boundary_ledger[{index}].external_action must not be performed.")
         if boundary.get("result") == "pass":
             reasons.append(f"boundary_ledger[{index}].result must not be pass.")
         if not boundary.get("evidence_ids"):
@@ -709,6 +853,9 @@ def _validate_anomaly_list(items: Any, field_name: str) -> list[str]:
                 reasons.append(f"{field_name}[{index}].{key} is required.")
         if item.get("evidence_status") not in EVIDENCE_STATUSES:
             reasons.append(f"{field_name}[{index}].evidence_status is not recognized.")
+        for key in ("trigger_action", "expected_result", "observed_result", "test_design_implication"):
+            if not item.get(key):
+                reasons.append(f"{field_name}[{index}].{key} is required.")
     return reasons
 
 
@@ -748,6 +895,14 @@ def _validate_dynamic_data_policy(policy: Any) -> list[str]:
     return reasons
 
 
+def _validate_boundary_guard_categories(categories: Any) -> list[str]:
+    if not isinstance(categories, list):
+        return ["boundary_guard_categories must be a list."]
+    if categories != list(FORBIDDEN_BOUNDARY_CATEGORIES):
+        return ["boundary_guard_categories must match the TASK-025 forbidden boundary category allowlist."]
+    return []
+
+
 def _evidence_ids_from(items: Any, prefix: str) -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
     if not isinstance(items, list):
@@ -775,6 +930,7 @@ def _evidence_ids_from(items: Any, prefix: str) -> list[tuple[str, str]]:
 
 def _validate_evidence_id_uniqueness(report: dict[str, Any]) -> list[str]:
     entries: list[tuple[str, str]] = []
+    entries.extend(_evidence_ids_from([{"evidence_ids": report.get("runtime_evidence_ids")}], "runtime_evidence_ids"))
     entries.extend(_evidence_ids_from(report.get("regression_cases"), "regression_cases"))
     entries.extend(_evidence_ids_from(report.get("session_persistence_checkpoints"), "session_persistence_checkpoints"))
     entries.extend(_evidence_ids_from(report.get("boundary_ledger"), "boundary_ledger"))

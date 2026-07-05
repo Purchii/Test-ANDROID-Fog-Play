@@ -17,6 +17,14 @@ validate and that the TASK-025B report preflight can be supported by fresh
 physical-device evidence and refreshed owner approvals. Do not treat synthetic
 contract tests or no-device pytest results as runtime evidence.
 
+Also validate the TASK-026B no-device physical-runtime scenario contract before
+runtime execution:
+
+python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json
+
+This validation only proves implementation readiness. It does not approve or
+execute physical runtime.
+
 Run only the TASK-025 selected-lane native regression cases NR-001 through
 NR-010. Stop before payment, WebView/browser/external QR traversal,
 stream/WebRTC/media playback/game session start, Steam/account connection,

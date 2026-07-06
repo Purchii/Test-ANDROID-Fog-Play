@@ -336,6 +336,109 @@
       "recovery_policy": "Classify ambient/system surface as external and recover app foreground before continuing.",
       "public_safe_note": "External ambient/screensaver recurrence was recovered to app catalog through approved cleanup.",
       "test_design_implication": "Recovery must prove foreground plus actionable focus."
+    },
+    {
+      "transition_id": "TR-027-011",
+      "transition_family": "catalog_to_session_journal",
+      "from_screen_family": "post_auth_games_catalog_top_with_expanded_rail",
+      "to_screen_family": "session_journal_empty",
+      "trigger_category": "focus-verified D-pad route and UI-tree-or-visual target selection attempt",
+      "observed_transition_category": "continuation relaunch reached actionable catalog, but D-pad, coordinate tap and key sanity attempts stayed on catalog instead of opening the session journal destination",
+      "closure_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp045",
+        "rt027-cp046",
+        "rt027-cp047",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-027R"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-027R-007",
+        "ANOM-027R-008"
+      ],
+      "recovery_policy": "Stop after bounded no-op sampling; force-stop cleanup is allowed when safe input cannot change focus or destination.",
+      "public_safe_note": "Evidence IDs prove catalog-state rail attempts and no destination proof; they are not journal-screen coverage.",
+      "test_design_implication": "Future automation needs a more reliable rail focus acquisition or instrumentation oracle before asserting journal route coverage."
+    },
+    {
+      "transition_id": "TR-027-012",
+      "transition_family": "catalog_to_steam_topup_qr",
+      "from_screen_family": "post_auth_games_catalog_top_with_expanded_rail",
+      "to_screen_family": "steam_topup_qr",
+      "trigger_category": "focus-verified D-pad route and UI-tree-or-visual target selection attempt",
+      "observed_transition_category": "prior and continuation rail attempts from catalog did not visually open the Steam/top-up QR destination; forbidden payment or external traversal was not entered",
+      "closure_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp048",
+        "rt027-cp049",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-022",
+        "TASK-023",
+        "TASK-027R"
+      ],
+      "boundary_ids": [
+        "BND-027-PLANNED-001",
+        "BND-027-PLANNED-002"
+      ],
+      "anomaly_ids": [
+        "ANOM-027R-007",
+        "ANOM-027R-008"
+      ],
+      "recovery_policy": "If a Steam/top-up QR screen is reached, decode locally only and do not follow the target; if not reached, stop after bounded no-op evidence.",
+      "public_safe_note": "Current TASK-027R continuation evidence proves no-op catalog attempts, not a newly reached Steam/top-up QR screen.",
+      "test_design_implication": "Separate route acquisition from QR boundary classification; prior QR artifacts cannot substitute for current destination proof."
+    },
+    {
+      "transition_id": "TR-027-013",
+      "transition_family": "catalog_to_feedback_qr",
+      "from_screen_family": "post_auth_games_catalog_top_with_expanded_rail",
+      "to_screen_family": "feedback_qr",
+      "trigger_category": "focus-verified D-pad route and UI-tree-or-visual target selection attempt",
+      "observed_transition_category": "prior and continuation rail attempts from catalog did not visually open the feedback QR destination; forbidden external traversal was not entered",
+      "closure_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp050",
+        "rt027-cp051",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-027R"
+      ],
+      "boundary_ids": [
+        "BND-027-PLANNED-001"
+      ],
+      "anomaly_ids": [
+        "ANOM-027R-007",
+        "ANOM-027R-008"
+      ],
+      "recovery_policy": "If a feedback QR screen is reached, decode locally only and do not follow the target; if not reached, stop after bounded no-op evidence.",
+      "public_safe_note": "Current TASK-027R continuation evidence proves no-op catalog attempts, not a newly reached feedback QR screen.",
+      "test_design_implication": "Feedback route coverage needs visual destination proof before QR-boundary assertions are promoted."
     }
   ],
   "screen_family_closure_ledger": [
@@ -375,7 +478,12 @@
         "rt027-cp006",
         "rt027-cp007",
         "rt027-cp009",
-        "rt027-cp045"
+        "rt027-cp045",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
       ]
     },
     {
@@ -416,8 +524,14 @@
       "evidence_status": "confirmed",
       "evidence_ids": [
         "rt027-cp046",
-        "rt027-cp047"
-      ]
+        "rt027-cp047",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "public_safe_note": "Evidence confirms blocked catalog rail attempts and prior no-op checkpoints; it is not destination-screen coverage."
     },
     {
       "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
@@ -497,8 +611,14 @@
       "evidence_status": "confirmed",
       "evidence_ids": [
         "rt027-cp048",
-        "rt027-cp049"
-      ]
+        "rt027-cp049",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "public_safe_note": "Evidence confirms blocked catalog rail attempts and prior no-op checkpoints; it is not current destination-screen or QR coverage."
     },
     {
       "screen_family": "feedback_qr",
@@ -506,8 +626,14 @@
       "evidence_status": "confirmed",
       "evidence_ids": [
         "rt027-cp050",
-        "rt027-cp051"
-      ]
+        "rt027-cp051",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "public_safe_note": "Evidence confirms blocked catalog rail attempts and prior no-op checkpoints; it is not current destination-screen or QR coverage."
     },
     {
       "screen_family": "connect_device_gate",
@@ -797,6 +923,25 @@
       "recovery_action": "do not count the intended branches as covered; continue in a fresh runtime thread with focus-verified D-pad route or UI-tree-derived target selection",
       "recovered": "safe_state_preserved",
       "test_design_implication": "Rail-route branch coverage requires visual proof of destination state, not just an input event."
+    },
+    {
+      "anomaly_id": "ANOM-027R-008",
+      "category": "rail_focus_input_noop_continuation",
+      "trigger_action": "From continuation relaunch catalog state, attempt session journal rail route with D-pad, visual-coordinate tap and bounded key sanity sampling.",
+      "expected_result": "Rail focus moves to the intended branch or the branch destination opens with recoverable app state.",
+      "observed_result": "The visual checkpoints remained on the catalog; UIAutomator did not expose the visible rail labels as target nodes and safe input attempts did not move focus or open journal, Steam/top-up or feedback destinations.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "likely_or_hypothesis_cause": "likely foreground focus acquisition or hybrid TV rail accessibility mismatch",
+      "recovery_action": "stop bounded runtime continuation and perform approved force-stop cleanup; do not promote rail destinations to covered",
+      "recovered": "safe_cleanup_executed",
+      "test_design_implication": "Rail branch automation needs a reliable focus oracle or alternative owner-approved targeting before full graph closure can be claimed."
     }
   ],
   "public_safety": {
@@ -846,13 +991,26 @@
     "network/offline manipulation"
   ],
   "unverified_areas": [
-    "feedback QR branch in current TASK-027R runtime after promo-code keyboard trap",
-    "Steam or top-up QR branch in current TASK-027R runtime after promo-code keyboard trap",
-    "session journal empty state in current TASK-027R runtime after promo-code keyboard trap",
+    "full reachable graph closure remains unverified because rail-route destinations did not visually open in continuation",
+    "session journal destination screen from current recovered catalog route remains blocked by rail focus/input tooling",
+    "Steam or top-up QR destination from current recovered catalog route remains blocked by rail focus/input tooling",
+    "feedback QR destination from current recovered catalog route remains blocked by rail focus/input tooling",
     "Search typed no-results completion without keyboard trap",
-    "consistent force-stop relaunch recovery after ambient/screensaver recurrence",
     "current dynamic game and server list behavior beyond sampled categories",
-    "payment, stream, external browser, account mutation and network manipulation boundaries beyond safe classification",
-    "rail-route taps to session journal, Steam/top-up and feedback from the recovered catalog state"
-  ]
+    "payment, stream, external browser, account mutation and network manipulation boundaries beyond safe classification"
+  ],
+  "checkpoint_modality_audit": {
+    "status": "partial_public_safe_audit_recorded",
+    "continuation_checkpoint_ids": [
+      "rt027r-cp052b",
+      "rt027r-cp053",
+      "rt027r-cp054",
+      "rt027r-cp055",
+      "rt027r-cp056"
+    ],
+    "screenshot_visual_inspection": "confirmed_local_only_for_continuation_checkpoints",
+    "xml_capture": "confirmed_local_only_for_continuation_checkpoints",
+    "xml_visual_mismatch": "confirmed_for_visible_rail_labels_not_exposed_as_ui_targets_at_rt027r_cp053",
+    "raw_artifacts_public": "false"
+  }
 }

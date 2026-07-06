@@ -4,13 +4,13 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-027R — Full app transition graph physical runtime execution`
-Thread status: `partial_runtime_closed_for_current_thread`
+Thread status: `partial_runtime_checkpoint_continuation_required`
 Fresh thread verified: `yes`
 Task ID: `TASK-027`
-Task branch: `qa/task-027-full-app-transition-graph-physical-runtime`
+Task branch: `qa/task-027r-transition-graph-closure-continuation`
 Default branch: `main`
-Base commit: `f9f58fb`
-Merge/push authority: `NON_AUTONOMOUS; owner explicitly requested safe current-thread closure, push to detected default branch, and continuation in a new thread`
+Base commit: `68d92d7`
+Merge/push authority: `NON_AUTONOMOUS; task branch push allowed after verification; no default-branch merge/push without explicit owner command`
 Production safety classification: tracked docs/source, validators, templates
 and local public-safe scans are `PROD_SAFE`; physical Android TV runtime,
 ADB/APK/app launch, screenshot/XML/log/video capture and local QR decode are
@@ -24,15 +24,19 @@ task covering the full reachable approved transition graph on the same selected
 lane used by TASK-025B.
 
 TASK-025B is a partial baseline only. It does not count as a full graph pass or
-as complete transition coverage for TASK-027. The current TASK-027R thread is
-being closed as a partial runtime checkpoint by owner command; full graph
-closure remains the continuation objective.
+as complete transition coverage for TASK-027. This continuation thread added a
+bounded runtime checkpoint and validator hardening, but full graph closure
+remains unverified because the rail-route destinations did not visually open.
 
 ## Current Status
 
-The fresh TASK-027 thread has been renamed and the task branch has been created
-from the detected default branch `main`. Source-of-truth docs and TASK-025B,
-TASK-020 and TASK-023 public reports have been read.
+The fresh continuation thread has been renamed and the continuation branch was
+created from detected default `main` commit `68d92d7`. Source-of-truth docs and
+the current TASK-027R public report/summary/handoff have been read.
+
+Existing post-preflight runtime-boundary approval was reviewed by
+Security/Prod-safety and remains sufficient only for the same selected
+device/APK/account/evidence lane and only for transition-graph closure.
 
 Strict real multi-agent workflow is active:
 
@@ -47,13 +51,18 @@ Strict real multi-agent workflow is active:
   static/preflight work and conditional physical runtime after gates;
 - Docs/Scribe: proposed TASK-027 source-of-truth/report updates.
 
-Public-safe TASK-027 contract artifacts now exist:
+Public-safe TASK-027 contract artifacts exist and were updated or revalidated:
 
 - `tasks/TASK_027_full_app_transition_graph_physical_runtime.md`;
 - `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`;
 - `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.md`;
 - `automation/native_regression/validate_task027_transition_graph_report.py`;
 - `tests/test_task027_transition_graph_validator.py`.
+
+Validator hardening in this continuation now requires the session journal,
+Steam/top-up QR and feedback QR rail routes to appear as directed transition
+families. It also blocks premature `full_graph_closed` reports unless
+`runtime_execution_status=closed_by_ledger` and unresolved areas are empty.
 
 ## Preflight Gate
 
@@ -115,6 +124,12 @@ Confirmed public-safe checkpoint families so far:
   Gamepad close recovery, Home and foreground persistence.
 - `rt027-cp029` through `rt027-cp035`: promo-code screen recurrence with TV
   keyboard and failed intended rail-branch switching.
+- `rt027r-cp052b` through `rt027r-cp056`: continuation relaunch to actionable
+  catalog, followed by bounded D-pad, visual-coordinate tap and key sanity
+  attempts that remained on the catalog instead of opening session journal,
+  Steam/top-up or feedback rail destinations. Screenshots and XML were captured
+  local-only for these checkpoints; XML did not expose the visible rail labels
+  as usable target nodes.
 
 Bounded crash evidence was captured local-only after the loader recurrence:
 the app process was present and the crash buffer was captured without crash
@@ -161,6 +176,11 @@ anomalies:
   intended rail taps for session journal, Steam/top-up and feedback remained on
   the catalog; do not count those intended branches as covered without visual
   proof of their destination states.
+- `ANOM-027R-008`: in this continuation, relaunch restored actionable catalog,
+  but D-pad, visual-coordinate tap and bounded key sanity sampling still left
+  the view on catalog; UIAutomator did not expose visible rail labels as target
+  nodes. Force-stop cleanup was executed, and the rail destinations remain
+  blocked by tooling rather than covered.
 
 ## Runtime Closure Requirements
 
@@ -237,7 +257,7 @@ Current thread result: `partial runtime checkpoint`.
 
 Owner stop/continuation command: `confirmed`.
 
-Default branch push authority: `confirmed for detected default branch main`.
+Default branch push authority: `not granted for this continuation thread`.
 
 Runtime objective status: `not complete`.
 
@@ -245,16 +265,18 @@ Continuation required: `yes`.
 
 Next thread title target: `TASK-027R — Full app transition graph physical runtime execution`.
 
-Next thread branch/source: continue after this partial checkpoint is committed,
-pushed, merged to `main` and pushed to remote default by explicit owner command.
+Next thread branch/source: continue after this partial checkpoint is committed
+and pushed on the task branch. Because this run is `NON_AUTONOMOUS`, default
+branch merge/push requires explicit owner command.
 
 Continuation focus:
 
 - use `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`
   as the current public-safe closure ledger;
 - do not redo broad preparation unless a concrete blocker appears;
-- continue from unclosed rail-route branches: session journal, Steam/top-up QR
-  and feedback QR destination coverage;
+- continue from the confirmed rail focus/input blocker: session journal,
+  Steam/top-up QR and feedback QR destination coverage is still not visually
+  proven from the recovered catalog route;
 - revisit QR decode with the established local-only path only if needed;
 - preserve all forbidden boundaries: no payment/session start, external QR or
   browser traversal, stream/WebRTC/media playback, Steam/account mutation,

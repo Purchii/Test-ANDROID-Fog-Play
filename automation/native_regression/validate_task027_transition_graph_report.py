@@ -38,6 +38,9 @@ FORBIDDEN_BOUNDARY_CATEGORIES = (
 REQUIRED_TRANSITION_FAMILIES = {
     "launch_recovery_to_catalog",
     "catalog_rail_focus_and_long_scroll",
+    "catalog_to_session_journal",
+    "catalog_to_steam_topup_qr",
+    "catalog_to_feedback_qr",
     "search_input_no_results_and_recovery",
     "settings_gamepad_safe_entry",
     "game_card_to_detail",
@@ -338,6 +341,7 @@ def _validate_boundary_ledger(report: dict[str, Any]) -> list[str]:
         return ["boundary_ledger must be a list."]
     reasons: list[str] = []
     seen: set[str] = set()
+    categories: set[str] = set()
     for index, boundary in enumerate(boundaries):
         if not isinstance(boundary, dict):
             reasons.append(f"boundary_ledger[{index}] must be an object.")
@@ -351,6 +355,8 @@ def _validate_boundary_ledger(report: dict[str, Any]) -> list[str]:
             seen.add(boundary_id)
         if boundary.get("boundary_category") not in FORBIDDEN_BOUNDARY_CATEGORIES:
             reasons.append(f"boundary_ledger[{index}].boundary_category must be a guarded boundary category.")
+        else:
+            categories.add(boundary["boundary_category"])
         if boundary.get("status") not in ALLOWED_BOUNDARY_STATUSES:
             reasons.append(f"boundary_ledger[{index}].status must be boundary-safe.")
         if boundary.get("entered") is not False:
@@ -359,6 +365,15 @@ def _validate_boundary_ledger(report: dict[str, Any]) -> list[str]:
             reasons.append(f"boundary_ledger[{index}].navigation_followed must be false.")
         if boundary.get("external_action") != "not_performed":
             reasons.append(f"boundary_ledger[{index}].external_action must be not_performed.")
+        if report.get("run_status") == "full_graph_closed":
+            if boundary.get("evidence_status") != "confirmed":
+                reasons.append(f"boundary_ledger[{index}].evidence_status must be confirmed for full graph closure.")
+            if not boundary.get("evidence_ids"):
+                reasons.append(f"boundary_ledger[{index}].evidence_ids are required for full graph closure.")
+    if report.get("run_status") == "full_graph_closed":
+        missing = sorted(set(FORBIDDEN_BOUNDARY_CATEGORIES) - categories)
+        if missing:
+            reasons.append(f"boundary_ledger missing guarded boundary categories for full graph closure: {missing}.")
     return reasons
 
 
@@ -422,6 +437,24 @@ def _validate_evidence_id_shape(report: dict[str, Any]) -> list[str]:
     return reasons
 
 
+def _validate_checkpoint_modality_audit(report: dict[str, Any]) -> list[str]:
+    if report.get("run_status") != "full_graph_closed":
+        return []
+    audit = report.get("checkpoint_modality_audit")
+    if not isinstance(audit, dict):
+        return ["full_graph_closed requires checkpoint_modality_audit."]
+    reasons: list[str] = []
+    if not str(audit.get("screenshot_visual_inspection", "")).startswith("confirmed"):
+        reasons.append("checkpoint_modality_audit.screenshot_visual_inspection must be confirmed for full graph closure.")
+    if not str(audit.get("xml_capture", "")).startswith("confirmed"):
+        reasons.append("checkpoint_modality_audit.xml_capture must be confirmed for full graph closure.")
+    if not audit.get("continuation_checkpoint_ids"):
+        reasons.append("checkpoint_modality_audit.continuation_checkpoint_ids are required for full graph closure.")
+    if audit.get("raw_artifacts_public") not in {False, "false"}:
+        reasons.append("checkpoint_modality_audit.raw_artifacts_public must be false.")
+    return reasons
+
+
 def validate_report_shape(report: dict[str, Any]) -> list[str]:
     reasons: list[str] = []
     for field_name in (
@@ -460,6 +493,13 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
         reasons.append("execution_mode is not recognized.")
     if report.get("run_status") == "full_graph_closed" and report.get("execution_mode") != "physical_selected_lane_runtime":
         reasons.append("full_graph_closed requires physical_selected_lane_runtime execution.")
+    if report.get("run_status") == "full_graph_closed":
+        if report.get("runtime_execution_status") != "closed_by_ledger":
+            reasons.append("full_graph_closed requires runtime_execution_status=closed_by_ledger.")
+        if report.get("unverified_areas"):
+            reasons.append("full_graph_closed requires unverified_areas to be empty.")
+    if report.get("runtime_execution_status") == "closed_by_ledger" and report.get("run_status") != "full_graph_closed":
+        reasons.append("runtime_execution_status=closed_by_ledger requires run_status=full_graph_closed.")
     if report.get("run_status") == "blocked_preflight_pending" and report.get("runtime_execution_status") != "not_run":
         reasons.append("blocked_preflight_pending requires runtime_execution_status=not_run.")
     if report.get("boundary_guard_categories") != list(FORBIDDEN_BOUNDARY_CATEGORIES):
@@ -480,6 +520,7 @@ def validate_report_shape(report: dict[str, Any]) -> list[str]:
     reasons.extend(_validate_boundary_ledger(report))
     reasons.extend(_validate_anomalies(report))
     reasons.extend(_validate_evidence_id_shape(report))
+    reasons.extend(_validate_checkpoint_modality_audit(report))
     return sorted(set(reasons))
 
 

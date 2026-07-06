@@ -387,6 +387,25 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`.
   Raw APK hashes, device identifiers, account-like values, QR targets,
   screenshots, XML and logs remain ignored local-only.
+- TASK-027R continuation ran in fresh thread
+  `TASK-027R — Full app transition graph physical runtime execution` on branch
+  `qa/task-027r-transition-graph-closure-continuation` from `main` commit
+  `68d92d7`. Existing selected-lane runtime approval was reviewed as sufficient
+  only for the same device/APK/account/evidence lane. The continuation
+  relaunched to an actionable catalog and captured local-only screenshot/XML
+  checkpoints `rt027r-cp052b` through `rt027r-cp056`, then bounded D-pad,
+  visual-coordinate tap and key sanity attempts still remained on the catalog.
+  UIAutomator did not expose the visible rail labels as target nodes. New
+  anomaly `ANOM-027R-008` records this rail focus/input no-op recurrence, and
+  approved force-stop cleanup was executed. The public summary now models
+  session journal, Steam/top-up QR and feedback QR as explicit directed
+  transition rows with `blocked_by_tooling`, not as covered destination
+  screens. The TASK-027 validator was hardened so `full_graph_closed` requires
+  `runtime_execution_status=closed_by_ledger` and no unresolved
+  `unverified_areas`. Full graph closure remains unverified; payment, stream,
+  external browser/QR traversal, account/profile mutation, network/offline
+  manipulation, complete dynamic game/server enumeration and broad
+  compatibility remain not covered.
 
 ## Audit-chain continuation
 

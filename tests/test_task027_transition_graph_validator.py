@@ -258,7 +258,135 @@ def test_validator_rejects_full_graph_closed_without_physical_runtime():
     errors = validate_report_shape(report)
 
     assert "full_graph_closed requires physical_selected_lane_runtime execution." in errors
+    assert "full_graph_closed requires runtime_execution_status=closed_by_ledger." in errors
+    assert "full_graph_closed requires unverified_areas to be empty." in errors
     assert any("evidence_ids are required for full graph closure" in error for error in errors)
+
+
+def test_validator_rejects_closed_by_ledger_without_full_graph_status():
+    report = _valid_report()
+    report["runtime_execution_status"] = "closed_by_ledger"
+
+    errors = validate_report_shape(report)
+
+    assert "runtime_execution_status=closed_by_ledger requires run_status=full_graph_closed." in errors
+
+
+def test_validator_rejects_full_graph_closed_with_partial_runtime_even_when_evidence_present():
+    report = _valid_report()
+    report["run_status"] = "full_graph_closed"
+    report["runtime_execution_status"] = "partial"
+    report["execution_mode"] = "physical_selected_lane_runtime"
+    report["coverage_claims"]["full_reachable_transition_graph_closed"] = True
+    report["unverified_areas"] = []
+    report["preflight_ledger"] = {
+        key: "confirmed"
+        for key in (
+            "physical_device_available",
+            "selected_device_authorized",
+            "selected_aliases_refreshed",
+            "apk_presence_confirmed",
+            "apk_hash_recorded_local_only",
+            "synthetic_user_env_confirmed",
+            "evidence_storage_approved",
+            "cleanup_policy_confirmed",
+            "qa_reviewer_a_approval",
+            "qa_reviewer_b_approval",
+            "security_prod_safety_approval",
+        )
+    }
+    report["preflight_ledger"]["status"] = "confirmed_for_task027"
+    for row in report["transition_graph_closure_ledger"]:
+        row["evidence_status"] = "confirmed"
+        row["evidence_ids"] = [f"{row['transition_id'].lower()}-evidence"]
+    for row in report["screen_family_closure_ledger"]:
+        row["evidence_status"] = "confirmed"
+        row["evidence_ids"] = [f"{row['screen_family']}-evidence"]
+
+    errors = validate_report_shape(report)
+
+    assert "full_graph_closed requires runtime_execution_status=closed_by_ledger." in errors
+
+
+def _full_closure_candidate_report():
+    report = _valid_report()
+    report["run_status"] = "full_graph_closed"
+    report["runtime_execution_status"] = "closed_by_ledger"
+    report["execution_mode"] = "physical_selected_lane_runtime"
+    report["coverage_claims"]["full_reachable_transition_graph_closed"] = True
+    report["unverified_areas"] = []
+    report["preflight_ledger"] = {
+        key: "confirmed"
+        for key in (
+            "physical_device_available",
+            "selected_device_authorized",
+            "selected_aliases_refreshed",
+            "apk_presence_confirmed",
+            "apk_hash_recorded_local_only",
+            "synthetic_user_env_confirmed",
+            "evidence_storage_approved",
+            "cleanup_policy_confirmed",
+            "qa_reviewer_a_approval",
+            "qa_reviewer_b_approval",
+            "security_prod_safety_approval",
+        )
+    }
+    report["preflight_ledger"]["status"] = "confirmed_for_task027"
+    for row in report["transition_graph_closure_ledger"]:
+        row["evidence_status"] = "confirmed"
+        row["evidence_ids"] = [f"{row['transition_id'].lower()}-evidence"]
+    for row in report["screen_family_closure_ledger"]:
+        row["evidence_status"] = "confirmed"
+        row["evidence_ids"] = [f"{row['screen_family']}-evidence"]
+    report["boundary_ledger"] = [
+        {
+            "boundary_id": f"BND-027-FULL-{index:03d}",
+            "boundary_category": category,
+            "status": "blocked_by_boundary",
+            "entered": False,
+            "navigation_followed": False,
+            "external_action": "not_performed",
+            "evidence_status": "confirmed",
+            "evidence_ids": [f"boundary-{index}-evidence"],
+        }
+        for index, category in enumerate(FORBIDDEN_BOUNDARY_CATEGORIES, start=1)
+    ]
+    report["checkpoint_modality_audit"] = {
+        "continuation_checkpoint_ids": ["rt027-full-cp001"],
+        "screenshot_visual_inspection": "confirmed_for_all_checkpoints",
+        "xml_capture": "confirmed_where_available",
+        "raw_artifacts_public": False,
+    }
+    return report
+
+
+def test_validator_rejects_full_graph_closed_without_modality_audit():
+    report = _full_closure_candidate_report()
+    del report["checkpoint_modality_audit"]
+
+    errors = validate_report_shape(report)
+
+    assert "full_graph_closed requires checkpoint_modality_audit." in errors
+
+
+def test_validator_rejects_full_graph_closed_with_missing_boundary_categories():
+    report = _full_closure_candidate_report()
+    report["boundary_ledger"] = report["boundary_ledger"][:-1]
+
+    errors = validate_report_shape(report)
+
+    assert any("boundary_ledger missing guarded boundary categories for full graph closure" in error for error in errors)
+
+
+def test_validator_rejects_full_graph_closed_with_boundary_without_evidence():
+    report = _full_closure_candidate_report()
+    report["boundary_ledger"][0]["evidence_status"] = "unknown"
+    report["boundary_ledger"][0]["evidence_ids"] = []
+
+    errors = validate_report_shape(report)
+
+    assert "boundary_ledger[0].evidence_status must be confirmed for full graph closure." in errors
+    assert "boundary_ledger[0].evidence_ids are required for full graph closure." in errors
 
 
 def test_validator_cli_accepts_template_report(capsys):

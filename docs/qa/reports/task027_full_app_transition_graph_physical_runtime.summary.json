@@ -1,0 +1,858 @@
+{
+  "schema_version": "task027-full-app-transition-graph-summary-v1",
+  "task_id": "TASK-027",
+  "mode": "NON_AUTONOMOUS",
+  "run_status": "partial",
+  "runtime_execution_status": "partial",
+  "execution_mode": "physical_selected_lane_runtime",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-television-full",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "source_reports": [
+    {
+      "task_id": "TASK-025B",
+      "public_ref": "task025b_selected_lane_physical_runtime.summary.json",
+      "use_as": "partial baseline only"
+    },
+    {
+      "task_id": "TASK-020",
+      "public_ref": "task020_full_screen_inventory.summary.json",
+      "use_as": "screen-family baseline only"
+    },
+    {
+      "task_id": "TASK-023",
+      "public_ref": "task023_full_data_screen_inventory.summary.json",
+      "use_as": "dynamic data and screen-family baseline only"
+    }
+  ],
+  "preflight_ledger": {
+    "status": "confirmed_for_task027",
+    "physical_device_available": "confirmed",
+    "selected_device_authorized": "confirmed",
+    "selected_aliases_refreshed": "confirmed",
+    "apk_presence_confirmed": "confirmed",
+    "apk_hash_recorded_local_only": "confirmed",
+    "synthetic_user_env_confirmed": "confirmed",
+    "evidence_storage_approved": "confirmed",
+    "cleanup_policy_confirmed": "confirmed",
+    "qa_reviewer_a_approval": "approved",
+    "qa_reviewer_b_approval": "approved",
+    "security_prod_safety_approval": "approved"
+  },
+  "transition_graph_closure_ledger": [
+    {
+      "transition_id": "TR-027-001",
+      "transition_family": "launch_recovery_to_catalog",
+      "from_screen_family": "external_or_launcher_or_stopped_app",
+      "to_screen_family": "post_auth_games_catalog_top",
+      "trigger_category": "approved explicit launch or relaunch",
+      "observed_transition_category": "loader observed; one force-stop explicit relaunch recovered catalog; later ambient recovery returned to prolonged loader",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp001c",
+        "rt027-cp002",
+        "rt027-cp005",
+        "rt027-cp006",
+        "rt027-cp036",
+        "rt027-cp040",
+        "rt027-cp045"
+      ],
+      "source_report_refs": [
+        "TASK-025B",
+        "TASK-020"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-025B-001",
+        "ANOM-027R-005"
+      ],
+      "recovery_policy": "Back, Home, foreground, force-stop and explicit relaunch only.",
+      "public_safe_note": "Catalog recovery was observed once after approved cleanup, but a later ambient recovery recurred into prolonged loader.",
+      "test_design_implication": "TASK-027 must distinguish a successful recovery from the original launch anomaly."
+    },
+    {
+      "transition_id": "TR-027-002",
+      "transition_family": "catalog_rail_focus_and_long_scroll",
+      "from_screen_family": "post_auth_games_catalog_top",
+      "to_screen_family": "games_catalog_long_scroll_and_bottom",
+      "trigger_category": "D-pad focus and scroll sampling",
+      "observed_transition_category": "catalog focus moved from rail into dynamic grid and sampled deeper list rows",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp006",
+        "rt027-cp007",
+        "rt027-cp008",
+        "rt027-cp009",
+        "rt027-cp010"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [],
+      "recovery_policy": "Use safe rail/catalog focus recovery and avoid Select on unproven boundary targets.",
+      "public_safe_note": "Dynamic catalog was sampled by category and focus behavior only; no fixed titles or counts are asserted.",
+      "test_design_implication": "Verify focus, categories and scroll behavior, not exact game titles or counts."
+    },
+    {
+      "transition_id": "TR-027-003",
+      "transition_family": "search_input_no_results_and_recovery",
+      "from_screen_family": "post_auth_games_catalog_top",
+      "to_screen_family": "search_empty_keyboard_or_no_results",
+      "trigger_category": "safe search route and visible keyboard input",
+      "observed_transition_category": "search keyboard opened; safe text input had no visual effect; Back and Escape recovery trapped",
+      "closure_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp016",
+        "rt027-cp017",
+        "rt027-cp018",
+        "rt027-cp019",
+        "rt027-cp020",
+        "rt027-cp021"
+      ],
+      "source_report_refs": [
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-025B-002"
+      ],
+      "recovery_policy": "Use visible keyboard controls; recover by safe navigation or force-stop relaunch if trapped.",
+      "public_safe_note": "Search no-results could not be completed because the keyboard recovery trap recurred; cleanup relaunch recovered catalog.",
+      "test_design_implication": "Search recovery is a regression branch, not a solved transition."
+    },
+    {
+      "transition_id": "TR-027-004",
+      "transition_family": "settings_gamepad_safe_entry",
+      "from_screen_family": "settings_root",
+      "to_screen_family": "settings_gamepad_setup",
+      "trigger_category": "safe settings focus movement without logout confirmation",
+      "observed_transition_category": "settings root opened; precise safe Gamepad entry opened setup and close returned to Settings",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp022",
+        "rt027-cp023",
+        "rt027-cp024",
+        "rt027-cp025",
+        "rt027-cp026"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-022",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-025B-003"
+      ],
+      "recovery_policy": "Cancel any logout/profile mutation boundary immediately; do not reset or pair devices.",
+      "public_safe_note": "Gamepad safe-entry was rechecked without logout/profile mutation.",
+      "test_design_implication": "Settings Gamepad needs exact focus-target evidence before pass claims."
+    },
+    {
+      "transition_id": "TR-027-005",
+      "transition_family": "game_card_to_detail",
+      "from_screen_family": "games_catalog_card_focus",
+      "to_screen_family": "game_detail_pricing_server_boundary",
+      "trigger_category": "focus then activate safe game card",
+      "observed_transition_category": "focused dynamic catalog card activated and opened game detail",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp009",
+        "rt027-cp010",
+        "rt027-cp011"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [],
+      "recovery_policy": "Use focus-then-activate and stop before payment or stream boundaries.",
+      "public_safe_note": "Detail content is dynamic; report asserts transition and field categories only.",
+      "test_design_implication": "TASK-027 must prove source focus and target detail state separately."
+    },
+    {
+      "transition_id": "TR-027-006",
+      "transition_family": "detail_server_list_sampling",
+      "from_screen_family": "game_detail_pricing_server_boundary",
+      "to_screen_family": "server_card_dynamic_list",
+      "trigger_category": "safe server-list focus and scroll sampling",
+      "observed_transition_category": "detail server list sampled by safe focus movement without session or payment activation",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013",
+        "rt027-cp014",
+        "rt027-cp015"
+      ],
+      "source_report_refs": [
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-027R-003"
+      ],
+      "recovery_policy": "Do not start stream, paid session or payment; classify those branches as boundaries.",
+      "public_safe_note": "Server-list fields were treated as dynamic categories; Back did not recover, D-pad Left recovered rail focus.",
+      "test_design_implication": "Assert row field categories, focus and boundary handling, not complete server enumeration."
+    },
+    {
+      "transition_id": "TR-027-007",
+      "transition_family": "boundary_qr_classification_and_recovery",
+      "from_screen_family": "qr_or_purchase_or_account_boundary",
+      "to_screen_family": "safe_prior_app_state_or_relaunch_recovery",
+      "trigger_category": "classify boundary, local-only decode when needed, then safe recovery",
+      "observed_transition_category": "catalog QR boundary observed; local-only decode attempt failed after partial crop issue; forbidden external traversal not followed",
+      "closure_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp009",
+        "rt027-qr001",
+        "rt027-cp011",
+        "rt027-cp013",
+        "rt027-cp048",
+        "rt027-cp050"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-022",
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [
+        "BND-027-PLANNED-001",
+        "BND-027-PLANNED-002"
+      ],
+      "anomaly_ids": [
+        "ANOM-027R-002",
+        "ANOM-027R-007"
+      ],
+      "recovery_policy": "Never follow QR targets; use Back, close, cancel or force-stop relaunch.",
+      "public_safe_note": "QR targets stayed local-only and were not opened; recurring QR decode references must stay local-only.",
+      "test_design_implication": "Boundaries are terminal graph nodes, not passed product flows."
+    },
+    {
+      "transition_id": "TR-027-008",
+      "transition_family": "session_persistence_home_foreground",
+      "from_screen_family": "post_auth_safe_state",
+      "to_screen_family": "same_or_equivalent_post_auth_safe_state",
+      "trigger_category": "Home and foreground app",
+      "observed_transition_category": "Home and foreground returned to the same safe post-auth Settings state",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp026",
+        "rt027-cp027",
+        "rt027-cp028"
+      ],
+      "source_report_refs": [
+        "TASK-019",
+        "TASK-020",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [],
+      "recovery_policy": "Foreground only; do not mutate profile or session state.",
+      "public_safe_note": "Foreground persistence was observed without account/profile mutation.",
+      "test_design_implication": "TASK-027 must attach persistence evidence to graph nodes."
+    },
+    {
+      "transition_id": "TR-027-009",
+      "transition_family": "force_stop_relaunch_recovery",
+      "from_screen_family": "trapped_or_boundary_or_safe_state",
+      "to_screen_family": "post_auth_games_catalog_top",
+      "trigger_category": "force-stop and explicit relaunch recovery",
+      "observed_transition_category": "direct force-stop, Home and explicit relaunch recovered actionable catalog after a failed helper-wrapper attempt",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp020",
+        "rt027-cp021",
+        "rt027-cp036",
+        "rt027-cp037",
+        "rt027-cp040",
+        "rt027-cp044",
+        "rt027-cp045"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-025B-001",
+        "ANOM-025B-002",
+        "ANOM-027R-005",
+        "ANOM-027R-006"
+      ],
+      "recovery_policy": "Use only as recovery evidence, not proof that the trapped transition succeeded.",
+      "public_safe_note": "Approved cleanup recovery restored actionable catalog when executed through direct adb commands and verified visually.",
+      "test_design_implication": "Recovery success and original transition failure must be represented as separate graph edges."
+    },
+    {
+      "transition_id": "TR-027-010",
+      "transition_family": "external_system_ambient_recovery",
+      "from_screen_family": "external_tv_screensaver_or_system_overlay",
+      "to_screen_family": "app_foreground_actionable_focus_state",
+      "trigger_category": "wake or app foreground recovery",
+      "observed_transition_category": "ambient recurrence and loader occurred, then direct cleanup relaunch recovered actionable catalog",
+      "closure_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp001c",
+        "rt027-cp036",
+        "rt027-cp037",
+        "rt027-cp040",
+        "rt027-cp044",
+        "rt027-cp045"
+      ],
+      "source_report_refs": [
+        "TASK-020",
+        "TASK-023",
+        "TASK-025B"
+      ],
+      "boundary_ids": [],
+      "anomaly_ids": [
+        "ANOM-025B-001",
+        "ANOM-027R-005"
+      ],
+      "recovery_policy": "Classify ambient/system surface as external and recover app foreground before continuing.",
+      "public_safe_note": "External ambient/screensaver recurrence was recovered to app catalog through approved cleanup.",
+      "test_design_implication": "Recovery must prove foreground plus actionable focus."
+    }
+  ],
+  "screen_family_closure_ledger": [
+    {
+      "screen_family": "app_launch_splash_loader",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp002",
+        "rt027-cp003",
+        "rt027-cp004",
+        "rt027-cp005",
+        "rt027-cp037",
+        "rt027-cp038",
+        "rt027-cp039",
+        "rt027-cp040",
+        "rt027-cp041",
+        "rt027-cp042",
+        "rt027-cp043",
+        "rt027-cp044"
+      ]
+    },
+    {
+      "screen_family": "external_tv_screensaver_or_system_overlay",
+      "coverage_status": "blocked_by_external_state",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp001c",
+        "rt027-cp036"
+      ]
+    },
+    {
+      "screen_family": "post_auth_games_catalog_top",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp006",
+        "rt027-cp007",
+        "rt027-cp009",
+        "rt027-cp045"
+      ]
+    },
+    {
+      "screen_family": "games_catalog_long_scroll_and_bottom",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp007",
+        "rt027-cp008",
+        "rt027-cp009",
+        "rt027-cp010"
+      ]
+    },
+    {
+      "screen_family": "catalog_banner_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp009",
+        "rt027-qr001"
+      ]
+    },
+    {
+      "screen_family": "search_empty_keyboard_or_no_results",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp016",
+        "rt027-cp017",
+        "rt027-cp018",
+        "rt027-cp019",
+        "rt027-cp020"
+      ]
+    },
+    {
+      "screen_family": "session_journal_empty",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp046",
+        "rt027-cp047"
+      ]
+    },
+    {
+      "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp006",
+        "rt027-cp015",
+        "rt027-cp022",
+        "rt027-cp023"
+      ]
+    },
+    {
+      "screen_family": "settings_root",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp023",
+        "rt027-cp026",
+        "rt027-cp028"
+      ]
+    },
+    {
+      "screen_family": "settings_promo_codes",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp029",
+        "rt027-cp030",
+        "rt027-cp031",
+        "rt027-cp032",
+        "rt027-cp033",
+        "rt027-cp034",
+        "rt027-cp035"
+      ]
+    },
+    {
+      "screen_family": "settings_gamepad_setup",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp025",
+        "rt027-cp026"
+      ]
+    },
+    {
+      "screen_family": "logout_confirmation_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp023",
+        "rt027-cp026"
+      ]
+    },
+    {
+      "screen_family": "game_detail_pricing_server_boundary",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011"
+      ]
+    },
+    {
+      "screen_family": "server_card_dynamic_list",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp012",
+        "rt027-cp013",
+        "rt027-cp014",
+        "rt027-cp015"
+      ]
+    },
+    {
+      "screen_family": "steam_topup_qr",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp048",
+        "rt027-cp049"
+      ]
+    },
+    {
+      "screen_family": "feedback_qr",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp050",
+        "rt027-cp051"
+      ]
+    },
+    {
+      "screen_family": "connect_device_gate",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp025"
+      ]
+    },
+    {
+      "screen_family": "payment_checkout_or_payment_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013"
+      ]
+    },
+    {
+      "screen_family": "stream_or_paid_game_session",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013"
+      ]
+    },
+    {
+      "screen_family": "profile_or_account_mutation_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp023",
+        "rt027-cp026",
+        "rt027-cp028"
+      ]
+    },
+    {
+      "screen_family": "network_offline_webview_payment_external_traversal",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    }
+  ],
+  "boundary_ledger": [
+    {
+      "boundary_id": "BND-027-PLANNED-001",
+      "boundary_category": "WebView/browser/external QR traversal",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp009",
+        "rt027-qr001"
+      ]
+    },
+    {
+      "boundary_id": "BND-027-PLANNED-002",
+      "boundary_category": "payment/subscription/purchase",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013"
+      ]
+    },
+    {
+      "boundary_id": "BND-027-PLANNED-003",
+      "boundary_category": "profile/account mutation",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp023",
+        "rt027-cp026",
+        "rt027-cp028"
+      ]
+    }
+  ],
+  "anomaly_records": [
+    {
+      "anomaly_id": "ANOM-025B-001",
+      "category": "startup_loading_recovery",
+      "trigger_action": "Launch, relaunch or foreground recovery after external ambient state.",
+      "expected_result": "Catalog loads without prolonged ambiguous loading.",
+      "observed_result": "Catalog recovered once after approved force-stop relaunch, but later ambient recovery returned to prolonged loader through bounded waits.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp001c",
+        "rt027-cp002",
+        "rt027-cp006",
+        "rt027-cp036",
+        "rt027-cp040"
+      ],
+      "likely_or_hypothesis_cause": "likely startup or foreground recovery race with external TV ambient state",
+      "recovery_action": "use approved force-stop and explicit relaunch only; do not count loader as catalog coverage",
+      "recovered": "partially",
+      "regression_case_ids": [
+        "NR-001",
+        "NR-010"
+      ],
+      "test_design_implication": "Track first-launch, ambient recovery and explicit relaunch as separate graph edges."
+    },
+    {
+      "anomaly_id": "ANOM-025B-002",
+      "category": "search_keyboard_recovery",
+      "trigger_action": "Open Search, attempt safe text input and recover with Back or Escape.",
+      "expected_result": "Search closes or returns to catalog by safe Back or route action.",
+      "observed_result": "Search keyboard remained visible; safe text input had no visible effect and Back or Escape did not recover.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp016",
+        "rt027-cp017",
+        "rt027-cp018",
+        "rt027-cp019",
+        "rt027-cp020",
+        "rt027-cp021"
+      ],
+      "likely_or_hypothesis_cause": "likely TV keyboard focus capture or input-method mismatch",
+      "recovery_action": "force-stop and explicit relaunch restored catalog once",
+      "recovered": "yes_after_cleanup",
+      "regression_case_ids": [
+        "NR-004"
+      ],
+      "test_design_implication": "Search no-results remains blocked until a visible keyboard input path and safe recovery are proven."
+    },
+    {
+      "anomaly_id": "ANOM-025B-003",
+      "category": "settings_boundary_misnavigation",
+      "trigger_action": "Navigate from Settings root toward Gamepad safe entry.",
+      "expected_result": "Gamepad setup opens without profile/logout mutation.",
+      "observed_result": "Precise safe Gamepad entry opened the Gamepad setup screen and close returned to Settings root.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp023",
+        "rt027-cp024",
+        "rt027-cp025",
+        "rt027-cp026"
+      ],
+      "likely_or_hypothesis_cause": "prior selected-lane issue likely depended on focus target ambiguity",
+      "recovery_action": "close Gamepad setup; avoid logout/profile confirmation",
+      "recovered": "yes",
+      "regression_case_ids": [
+        "NR-007"
+      ],
+      "test_design_implication": "Gamepad route is passable only with exact target evidence; generic Settings focus remains risky."
+    },
+    {
+      "anomaly_id": "ANOM-027R-001",
+      "category": "evidence_capture_tooling",
+      "trigger_action": "Capture screenshot through an unsafe binary redirection path.",
+      "expected_result": "Screenshot file is valid visual evidence.",
+      "observed_result": "Initial screenshot artifact was corrupted and could not be used as evidence.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp001",
+        "rt027-cp001b",
+        "rt027-cp001c"
+      ],
+      "likely_or_hypothesis_cause": "tooling binary stream handling issue",
+      "recovery_action": "switch screenshot capture to a binary-safe process stream and recapture checkpoint",
+      "recovered": "yes",
+      "test_design_implication": "Do visual sanity checks before counting any screenshot checkpoint."
+    },
+    {
+      "anomaly_id": "ANOM-027R-002",
+      "category": "qr_decode_tooling",
+      "trigger_action": "Decode catalog banner QR from TASK-027R evidence.",
+      "expected_result": "QR target decoded local-only without following it.",
+      "observed_result": "Initial crop was partial; fullscreen local-only decode did not decode in this run.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp009",
+        "rt027-qr001"
+      ],
+      "likely_or_hypothesis_cause": "likely insufficient QR crop or screenshot-quality constraint",
+      "recovery_action": "do not follow QR; reference prior local-only recurring QR decode artifacts where applicable and revisit at the end if needed",
+      "recovered": "not_yet",
+      "test_design_implication": "QR classification remains boundary-safe, but decode tooling quality is a separate evidence gap."
+    },
+    {
+      "anomaly_id": "ANOM-027R-003",
+      "category": "detail_server_list_recovery",
+      "trigger_action": "Press Back from game detail server-list sampling.",
+      "expected_result": "Return to prior catalog or detail state.",
+      "observed_result": "Back did not recover from the server-list state; D-pad Left recovered rail focus while keeping detail context.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013",
+        "rt027-cp014",
+        "rt027-cp015"
+      ],
+      "likely_or_hypothesis_cause": "likely focus context or nested list navigation behavior",
+      "recovery_action": "use D-pad Left for safe recovery; do not activate server/session cards",
+      "recovered": "yes_with_alternate_navigation",
+      "test_design_implication": "Server-list recovery should test Back and lateral rail recovery as separate edges."
+    },
+    {
+      "anomaly_id": "ANOM-027R-004",
+      "category": "promo_keyboard_navigation_trap",
+      "trigger_action": "Open promo-code screen, then attempt intended rail-boundary taps for other sections.",
+      "expected_result": "Promo screen recovers or rail taps open the intended safe branch.",
+      "observed_result": "The promo-code screen with TV keyboard remained visible across the intended feedback, top-up and journal attempts.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp029",
+        "rt027-cp030",
+        "rt027-cp031",
+        "rt027-cp032",
+        "rt027-cp033",
+        "rt027-cp034",
+        "rt027-cp035"
+      ],
+      "likely_or_hypothesis_cause": "likely keyboard or focus overlay captured navigation/tap attempts",
+      "recovery_action": "use approved force-stop and explicit relaunch; do not count intended branches as covered",
+      "recovered": "cleanup_attempted",
+      "test_design_implication": "Promo-code keyboard recovery and rail switching need explicit checkpoints before branch coverage claims."
+    },
+    {
+      "anomaly_id": "ANOM-027R-005",
+      "category": "post_cleanup_loader_blocker",
+      "trigger_action": "Force-stop and relaunch after promo-code trap, then recover from external ambient surface.",
+      "expected_result": "App foreground returns to actionable catalog or prior safe state.",
+      "observed_result": "Foreground returned to app loader after one recovery path, but a later clean direct force-stop, Home and explicit launch sequence returned to actionable catalog.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp036",
+        "rt027-cp037",
+        "rt027-cp038",
+        "rt027-cp039",
+        "rt027-cp040",
+        "rt027-cp041",
+        "rt027-cp042",
+        "rt027-cp043",
+        "rt027-cp044",
+        "rt027-cp045"
+      ],
+      "likely_or_hypothesis_cause": "likely app startup or foreground state recovery race after external ambient interruption",
+      "recovery_action": "use direct adb recovery commands with visual checkpoint verification; avoid relying on the failed helper wrapper",
+      "recovered": "yes_with_clean_direct_recovery",
+      "test_design_implication": "Remaining branches must not be marked covered while loader blocks visual content."
+    },
+    {
+      "anomaly_id": "ANOM-027R-006",
+      "category": "adb_recovery_wrapper_tooling",
+      "trigger_action": "Run a local PowerShell helper around approved force-stop, Home and explicit launch recovery commands.",
+      "expected_result": "Helper records accurate adb command exit status while preserving local-only raw output.",
+      "observed_result": "The helper reported non-zero command codes while the visual checkpoint was still captured; subsequent classification uses the screenshot and local-only command artifacts, not the wrapper status alone.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp044"
+      ],
+      "likely_or_hypothesis_cause": "likely local PowerShell argument-splatting wrapper issue",
+      "recovery_action": "avoid this helper shape and use explicit adb invocations or previously proven capture helpers",
+      "recovered": "tooling_workaround_available",
+      "test_design_implication": "Do not classify product recovery from wrapper exit code alone; require visual checkpoint evidence."
+    },
+    {
+      "anomaly_id": "ANOM-027R-007",
+      "category": "rail_route_tap_noop_from_catalog",
+      "trigger_action": "From actionable catalog with expanded rail, tap session journal, Steam/top-up and feedback rail regions.",
+      "expected_result": "The intended rail branch opens or shows its boundary screen with recoverable app state.",
+      "observed_result": "The visual checkpoints remained on the catalog after the intended rail-route taps; no journal, Steam/top-up or feedback branch was opened in this attempt.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp045",
+        "rt027-cp046",
+        "rt027-cp047",
+        "rt027-cp048",
+        "rt027-cp049",
+        "rt027-cp050",
+        "rt027-cp051"
+      ],
+      "likely_or_hypothesis_cause": "likely coordinate/focus mismatch on expanded TV rail from the catalog state",
+      "recovery_action": "do not count the intended branches as covered; continue in a fresh runtime thread with focus-verified D-pad route or UI-tree-derived target selection",
+      "recovered": "safe_state_preserved",
+      "test_design_implication": "Rail-route branch coverage requires visual proof of destination state, not just an input event."
+    }
+  ],
+  "public_safety": {
+    "raw_phone_otp_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_apk_hash_public": false,
+    "raw_apk_filename_public": false,
+    "raw_qr_targets_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_logs_public": false,
+    "raw_video_public": false,
+    "raw_runtime_evidence_public": false,
+    "private_routes_or_endpoints_public": false,
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "external_qr_or_browser_opened": false,
+    "steam_account_mutation_performed": false,
+    "network_offline_manipulation_performed": false
+  },
+  "coverage_claims": {
+    "full_reachable_transition_graph_closed": false,
+    "complete_dynamic_value_inventory": false,
+    "complete_game_title_enumeration": false,
+    "complete_server_row_enumeration": false,
+    "payment_or_stream_covered": false,
+    "webview_external_traversal_covered": false,
+    "broad_compatibility_covered": false,
+    "task025b_partial_counts_as_full_graph": false,
+    "task026b_no_device_contract_counts_as_runtime_evidence": false
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_server_rows": false,
+    "assert_fixed_server_aliases": false,
+    "assert_fixed_prices": false,
+    "assert_fixed_hardware_rows": false,
+    "assert_raw_qr_targets": false,
+    "assert_categories_and_transition_invariants_only": true
+  },
+  "boundary_guard_categories": [
+    "payment/subscription/purchase",
+    "WebView/browser/external QR traversal",
+    "stream/WebRTC/media playback/game session start",
+    "Steam/account connection",
+    "profile/account mutation",
+    "network/offline manipulation"
+  ],
+  "unverified_areas": [
+    "feedback QR branch in current TASK-027R runtime after promo-code keyboard trap",
+    "Steam or top-up QR branch in current TASK-027R runtime after promo-code keyboard trap",
+    "session journal empty state in current TASK-027R runtime after promo-code keyboard trap",
+    "Search typed no-results completion without keyboard trap",
+    "consistent force-stop relaunch recovery after ambient/screensaver recurrence",
+    "current dynamic game and server list behavior beyond sampled categories",
+    "payment, stream, external browser, account mutation and network manipulation boundaries beyond safe classification",
+    "rail-route taps to session journal, Steam/top-up and feedback from the recovered catalog state"
+  ]
+}

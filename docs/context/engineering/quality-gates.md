@@ -237,6 +237,29 @@ evidence IDs. Synthetic sequencing must use
 scenarios may classify guarded categories only; they must not open, follow,
 enter, pay, stream, mutate profile/account state or manipulate network state.
 
+TASK-027 full app transition graph coverage must separate preparation/preflight
+from physical app runtime. Public-safe preparation may create the graph
+contract, validator and report template, and redaction-safe physical preflight
+may confirm only device availability, selected aliases, APK presence,
+local-only hash recording, synthetic QA env existence, ignored evidence storage
+and cleanup policy. APK install, app launch, screenshots, XML, logs, video, QR
+decode and app navigation require a later post-preflight QA/Security runtime
+approval. Full graph closure requires a directed transition ledger and
+screen-family ledger where every currently reachable approved node/branch is
+terminally classified as `covered`, `blocked_by_boundary`,
+`blocked_by_tooling`, `blocked_by_external_state` or `not_run_out_of_scope`,
+with confirmed evidence IDs for covered runtime rows. Every checkpoint must
+include screenshot/visual inspection and XML where available; XML-only
+classification is insufficient. Known TASK-025B anomalies must be rechecked or
+explicitly carried. Boundary rows must keep `entered=false`,
+`navigation_followed=false` and `external_action=not_performed`. TASK-027 must
+not claim fixed game titles, server rows, server aliases, prices, hardware
+rows, ping values or complete dynamic value enumeration. The inherited
+`task-005-local-apk-television-full` alias is a TASK-025B family alias only; if
+a future runtime step needs a strict `task-005-local-apk-NNN` build alias, it
+must record a refreshed public-safe mapping without publishing raw APK names,
+paths or hashes.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

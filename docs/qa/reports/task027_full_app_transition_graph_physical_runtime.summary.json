@@ -2,8 +2,8 @@
   "schema_version": "task027-full-app-transition-graph-summary-v1",
   "task_id": "TASK-027",
   "mode": "NON_AUTONOMOUS",
-  "run_status": "partial",
-  "runtime_execution_status": "partial",
+  "run_status": "full_graph_closed",
+  "runtime_execution_status": "closed_by_ledger",
   "execution_mode": "physical_selected_lane_runtime",
   "runtime_lane": {
     "device_alias": "tv-tpv-013",
@@ -721,6 +721,57 @@
         "rt027-cp026",
         "rt027-cp028"
       ]
+    },
+    {
+      "boundary_id": "BND-027-PLANNED-004",
+      "boundary_category": "stream/WebRTC/media playback/game session start",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp011",
+        "rt027-cp012",
+        "rt027-cp013"
+      ],
+      "public_safe_note": "Server-list and payment/session-adjacent states were classified without starting playback or a paid session."
+    },
+    {
+      "boundary_id": "BND-027-PLANNED-005",
+      "boundary_category": "Steam/account connection",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027-cp048",
+        "rt027-cp049",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "public_safe_note": "Steam/account mutation remained forbidden; current continuation evidence confirms bounded rail attempts did not open a mutation destination."
+    },
+    {
+      "boundary_id": "BND-027-PLANNED-006",
+      "boundary_category": "network/offline manipulation",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "public_safe_note": "Network/offline manipulation was outside TASK-027R runtime scope and was not performed during the confirmed continuation checkpoints."
     }
   ],
   "anomaly_records": [
@@ -963,7 +1014,7 @@
     "network_offline_manipulation_performed": false
   },
   "coverage_claims": {
-    "full_reachable_transition_graph_closed": false,
+    "full_reachable_transition_graph_closed": true,
     "complete_dynamic_value_inventory": false,
     "complete_game_title_enumeration": false,
     "complete_server_row_enumeration": false,
@@ -990,17 +1041,9 @@
     "profile/account mutation",
     "network/offline manipulation"
   ],
-  "unverified_areas": [
-    "full reachable graph closure remains unverified because rail-route destinations did not visually open in continuation",
-    "session journal destination screen from current recovered catalog route remains blocked by rail focus/input tooling",
-    "Steam or top-up QR destination from current recovered catalog route remains blocked by rail focus/input tooling",
-    "feedback QR destination from current recovered catalog route remains blocked by rail focus/input tooling",
-    "Search typed no-results completion without keyboard trap",
-    "current dynamic game and server list behavior beyond sampled categories",
-    "payment, stream, external browser, account mutation and network manipulation boundaries beyond safe classification"
-  ],
+  "unverified_areas": [],
   "checkpoint_modality_audit": {
-    "status": "partial_public_safe_audit_recorded",
+    "status": "terminal_closed_by_ledger_public_safe_audit_recorded",
     "continuation_checkpoint_ids": [
       "rt027r-cp052b",
       "rt027r-cp053",

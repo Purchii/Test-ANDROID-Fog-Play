@@ -138,6 +138,7 @@ FIXED_VALUE_DUMP_RE = re.compile(
     r"\b(?:game_title|server_alias|server_count|ping_ms|gpu|cpu|tariff|price|qr_target|account_label)\s*[:=]",
     re.IGNORECASE,
 )
+ALLOWED_EVIDENCE_ID_RE = re.compile(r"^rt027(?:r)?-cp\d{3}[a-z]?$|^rt027-qr\d{3}$")
 
 
 def _public_safety_findings(value: Any, path: str = "$") -> list[str]:
@@ -431,6 +432,8 @@ def _validate_evidence_id_shape(report: dict[str, Any]) -> list[str]:
             for evidence_id in evidence_ids:
                 if not isinstance(evidence_id, str) or not evidence_id.strip():
                     reasons.append(f"{ledger_name}[{index}].evidence_ids contains an invalid evidence id.")
+                elif not ALLOWED_EVIDENCE_ID_RE.fullmatch(evidence_id):
+                    reasons.append(f"{ledger_name}[{index}].evidence_ids contains an unknown TASK-027 evidence id shape.")
                 elif evidence_id in local_seen:
                     reasons.append(f"{ledger_name}[{index}].evidence_ids contains a duplicate evidence id.")
                 local_seen.add(evidence_id)

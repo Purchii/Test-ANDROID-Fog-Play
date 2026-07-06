@@ -4,12 +4,12 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-027R — Full app transition graph physical runtime execution`
-Thread status: `partial_runtime_checkpoint_continuation_required`
+Thread status: `full_graph_closed_by_terminal_ledger`
 Fresh thread verified: `yes`
 Task ID: `TASK-027`
-Task branch: `qa/task-027r-transition-graph-closure-continuation`
+Task branch: `qa/task-027r-full-graph-closure-final`
 Default branch: `main`
-Base commit: `68d92d7`
+Base commit: `a800c7c`
 Merge/push authority: `NON_AUTONOMOUS; task branch push allowed after verification; no default-branch merge/push without explicit owner command`
 Production safety classification: tracked docs/source, validators, templates
 and local public-safe scans are `PROD_SAFE`; physical Android TV runtime,
@@ -23,16 +23,17 @@ Build and execute a public-safe, evidence-first physical Android TV runtime
 task covering the full reachable approved transition graph on the same selected
 lane used by TASK-025B.
 
-TASK-025B is a partial baseline only. It does not count as a full graph pass or
-as complete transition coverage for TASK-027. This continuation thread added a
-bounded runtime checkpoint and validator hardening, but full graph closure
-remains unverified because the rail-route destinations did not visually open.
+TASK-025B is a partial baseline only. It does not count as complete transition
+coverage for TASK-027. This continuation thread closes TASK-027R by terminal
+ledger classification: the remaining rail-route destinations did not visually
+open and remain `blocked_by_tooling`, not covered destination screens.
 
 ## Current Status
 
-The fresh continuation thread has been renamed and the continuation branch was
-created from detected default `main` commit `68d92d7`. Source-of-truth docs and
-the current TASK-027R public report/summary/handoff have been read.
+The fresh continuation thread has been renamed and the final continuation
+branch was created from `origin/qa/task-027r-transition-graph-closure-continuation`
+at commit `a800c7c`. Source-of-truth docs and the current TASK-027R public
+report/summary/handoff have been read.
 
 Existing post-preflight runtime-boundary approval was reviewed by
 Security/Prod-safety and remains sufficient only for the same selected
@@ -62,7 +63,9 @@ Public-safe TASK-027 contract artifacts exist and were updated or revalidated:
 Validator hardening in this continuation now requires the session journal,
 Steam/top-up QR and feedback QR rail routes to appear as directed transition
 families. It also blocks premature `full_graph_closed` reports unless
-`runtime_execution_status=closed_by_ledger` and unresolved areas are empty.
+`runtime_execution_status=closed_by_ledger`, unresolved areas are empty, all
+guarded boundary categories are represented and evidence IDs use accepted
+TASK-027 checkpoint/QR ID shapes.
 
 ## Preflight Gate
 
@@ -253,30 +256,33 @@ runtime-boundary approval.
 
 ## Thread Handoff
 
-Current thread result: `partial runtime checkpoint`.
+Current thread result: `full graph closed by terminal ledger classification`.
 
 Owner stop/continuation command: `confirmed`.
 
 Default branch push authority: `not granted for this continuation thread`.
 
-Runtime objective status: `not complete`.
+Runtime objective status: `closed_by_ledger`.
 
-Continuation required: `yes`.
+Continuation required: `no for TASK-027R; future work requires a new task`.
 
-Next thread title target: `TASK-027R — Full app transition graph physical runtime execution`.
+Next thread title target: `none; no continuation thread was created from this NON_AUTONOMOUS closure`.
 
-Next thread branch/source: continue after this partial checkpoint is committed
-and pushed on the task branch. Because this run is `NON_AUTONOMOUS`, default
-branch merge/push requires explicit owner command.
+Next thread creation status: `not_created_in_non_autonomous_closure`.
 
-Continuation focus:
+Next thread branch/source: no automatic continuation thread was created.
+Because this run is `NON_AUTONOMOUS`, default branch merge/push requires
+explicit owner command after the task branch is pushed.
+
+Future task focus if owner approves a new independent task:
 
 - use `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`
   as the current public-safe closure ledger;
 - do not redo broad preparation unless a concrete blocker appears;
-- continue from the confirmed rail focus/input blocker: session journal,
-  Steam/top-up QR and feedback QR destination coverage is still not visually
-  proven from the recovered catalog route;
+- solve the confirmed rail focus/input blocker with a new reliable
+  focus/targeting oracle; session journal, Steam/top-up QR and feedback QR
+  destination coverage is still not visually proven from the recovered catalog
+  route;
 - revisit QR decode with the established local-only path only if needed;
 - preserve all forbidden boundaries: no payment/session start, external QR or
   browser traversal, stream/WebRTC/media playback, Steam/account mutation,

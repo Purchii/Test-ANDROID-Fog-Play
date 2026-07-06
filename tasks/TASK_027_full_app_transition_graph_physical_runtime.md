@@ -26,6 +26,11 @@ node/branch as `covered`, `blocked_by_boundary`, `blocked_by_tooling`,
 `blocked_by_external_state` or `not_run_out_of_scope`, with evidence IDs when
 runtime evidence exists.
 
+`full_graph_closed` means the approved graph is closed by terminal ledger
+classification. It does not mean every destination screen was visually covered;
+branches may close as `blocked_by_tooling` when confirmed screenshot/XML-backed
+safe attempts prove no destination was reached.
+
 The public build alias `task-005-local-apk-television-full` is inherited from
 the TASK-025B partial runtime report as the approved Television Full APK family
 alias. It is not a raw APK filename or hash. If a future runtime step needs a

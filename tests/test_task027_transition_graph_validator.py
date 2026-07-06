@@ -298,10 +298,10 @@ def test_validator_rejects_full_graph_closed_with_partial_runtime_even_when_evid
     report["preflight_ledger"]["status"] = "confirmed_for_task027"
     for row in report["transition_graph_closure_ledger"]:
         row["evidence_status"] = "confirmed"
-        row["evidence_ids"] = [f"{row['transition_id'].lower()}-evidence"]
+        row["evidence_ids"] = ["rt027r-cp052b"]
     for row in report["screen_family_closure_ledger"]:
         row["evidence_status"] = "confirmed"
-        row["evidence_ids"] = [f"{row['screen_family']}-evidence"]
+        row["evidence_ids"] = ["rt027r-cp053"]
 
     errors = validate_report_shape(report)
 
@@ -334,10 +334,10 @@ def _full_closure_candidate_report():
     report["preflight_ledger"]["status"] = "confirmed_for_task027"
     for row in report["transition_graph_closure_ledger"]:
         row["evidence_status"] = "confirmed"
-        row["evidence_ids"] = [f"{row['transition_id'].lower()}-evidence"]
+        row["evidence_ids"] = ["rt027r-cp052b"]
     for row in report["screen_family_closure_ledger"]:
         row["evidence_status"] = "confirmed"
-        row["evidence_ids"] = [f"{row['screen_family']}-evidence"]
+        row["evidence_ids"] = ["rt027r-cp053"]
     report["boundary_ledger"] = [
         {
             "boundary_id": f"BND-027-FULL-{index:03d}",
@@ -347,7 +347,7 @@ def _full_closure_candidate_report():
             "navigation_followed": False,
             "external_action": "not_performed",
             "evidence_status": "confirmed",
-            "evidence_ids": [f"boundary-{index}-evidence"],
+            "evidence_ids": ["rt027r-cp056"],
         }
         for index, category in enumerate(FORBIDDEN_BOUNDARY_CATEGORIES, start=1)
     ]
@@ -387,6 +387,17 @@ def test_validator_rejects_full_graph_closed_with_boundary_without_evidence():
 
     assert "boundary_ledger[0].evidence_status must be confirmed for full graph closure." in errors
     assert "boundary_ledger[0].evidence_ids are required for full graph closure." in errors
+
+
+def test_validator_rejects_fabricated_evidence_id_shape_for_full_graph_closed():
+    report = _full_closure_candidate_report()
+    report["transition_graph_closure_ledger"][0]["evidence_ids"] = ["tr-027-001-evidence"]
+    report["screen_family_closure_ledger"][0]["evidence_ids"] = ["synthetic-screen-evidence"]
+    report["boundary_ledger"][0]["evidence_ids"] = ["boundary-1-evidence"]
+
+    errors = validate_report_shape(report)
+
+    assert any("unknown TASK-027 evidence id shape" in error for error in errors)
 
 
 def test_validator_cli_accepts_template_report(capsys):

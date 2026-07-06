@@ -2,7 +2,9 @@
 
 Mode: `NON_AUTONOMOUS`
 
-Current status: `partial`; continuation required.
+Current status: `full_graph_closed` by terminal ledger classification.
+Continuation is not required for TASK-027R unless the owner opens a new task to
+solve the rail focus/input tooling blocker.
 
 TASK-027R executed the approved selected-lane physical runtime boundary after
 the TASK-027 preparation/preflight thread. TASK-025B, TASK-020 and TASK-023
@@ -18,7 +20,7 @@ under post-preflight QA/Security approval. Runtime evidence was captured as
 local-only screenshots/XML/log/crash artifacts under ignored evidence storage.
 Public artifacts reference only checkpoint IDs and category-level findings.
 
-Covered or classified in this partial TASK-027R runtime:
+Covered or terminally classified in TASK-027R runtime:
 
 - launch/relaunch, external ambient/screensaver recurrence and recovery to
   actionable catalog;
@@ -34,16 +36,22 @@ Covered or classified in this partial TASK-027R runtime:
   rail-route attempts that remained on the catalog instead of opening session
   journal, Steam/top-up or feedback destinations.
 
-Not closed in this thread:
+Closure basis:
 
-- full reachable graph closure;
-- Search typed no-results completion without keyboard trap;
-- session journal, Steam/top-up QR and feedback QR destination screens from the
-  recovered catalog state; continuation evidence IDs prove input/focus no-op
-  attempts, not destination-screen coverage;
-- complete dynamic game-title or server-row value inventory;
-- payment completion, stream/session start, external browser/WebView traversal,
-  account/profile mutation and network/offline manipulation.
+- `full_graph_closed` means every currently reachable approved branch has a
+  terminal ledger classification: `covered`, `blocked_by_boundary`,
+  `blocked_by_tooling`, `blocked_by_external_state` or
+  `not_run_out_of_scope`.
+- Session journal, Steam/top-up QR and feedback QR destinations are not covered.
+  They are terminally `blocked_by_tooling` with confirmed no-destination
+  catalog evidence.
+- Search typed no-results remains `blocked_by_tooling`.
+- Complete dynamic game-title and server-row enumeration remains out of scope;
+  TASK-027R asserts categories, focus/scroll behavior, boundaries and
+  redaction only.
+- Payment completion, stream/session start, external browser/WebView traversal,
+  account/profile mutation and network/offline manipulation were not performed
+  and remain guarded terminal categories.
 
 ## Anomalies
 
@@ -78,12 +86,16 @@ committed.
 The TASK-027 validator now treats session journal, Steam/top-up QR and feedback
 QR as required directed transition families. It also blocks premature
 `full_graph_closed` claims unless runtime status is `closed_by_ledger` and
-`unverified_areas` is empty.
+`unverified_areas` is empty. This continuation also restricts accepted
+TASK-027 evidence IDs to the public-safe checkpoint/QR ID shapes used by the
+runtime ledger, so fabricated placeholder evidence IDs do not satisfy closure.
 
-## Continuation
+## Handoff
 
-The next runtime continuation, if approved, should start from the current
-summary JSON as the closure ledger, then solve or terminally reclassify the
-rail focus/input blocker before claiming session journal, Steam/top-up QR or
-feedback QR destination coverage. Do not redo broad preparation unless a
-concrete blocker is found.
+This run is `NON_AUTONOMOUS`. The task branch may be pushed after verification,
+but detected default branch `main` must not be merged or pushed without an
+explicit owner command.
+
+A future independent task may try to solve the rail focus/input blocker only
+with a new approved targeting oracle or owner-approved runtime scope. It must
+not treat TASK-027R no-op evidence as destination coverage.

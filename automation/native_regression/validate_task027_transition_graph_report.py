@@ -47,6 +47,29 @@ REQUIRED_TRANSITION_FAMILIES = {
     "force_stop_relaunch_recovery",
     "external_system_ambient_recovery",
 }
+REQUIRED_SCREEN_FAMILIES = {
+    "app_launch_splash_loader",
+    "external_tv_screensaver_or_system_overlay",
+    "post_auth_games_catalog_top",
+    "games_catalog_long_scroll_and_bottom",
+    "catalog_banner_qr",
+    "search_empty_keyboard_or_no_results",
+    "session_journal_empty",
+    "left_navigation_rail_expanded_collapsed_focus_states",
+    "settings_root",
+    "settings_promo_codes",
+    "settings_gamepad_setup",
+    "logout_confirmation_boundary",
+    "game_detail_pricing_server_boundary",
+    "server_card_dynamic_list",
+    "steam_topup_qr",
+    "feedback_qr",
+    "connect_device_gate",
+    "payment_checkout_or_payment_qr",
+    "stream_or_paid_game_session",
+    "profile_or_account_mutation_boundary",
+    "network_offline_webview_payment_external_traversal",
+}
 REQUIRED_TASK025B_ANOMALIES = {"ANOM-025B-001", "ANOM-025B-002", "ANOM-025B-003"}
 REQUIRED_PREFLIGHT_FIELDS = {
     "status",
@@ -298,6 +321,14 @@ def _validate_screen_family_ledger(report: dict[str, Any]) -> list[str]:
             reasons.append(f"screen_family_closure_ledger[{index}].coverage_status is not allowed.")
         if row.get("evidence_status") not in ALLOWED_EVIDENCE_STATUSES:
             reasons.append(f"screen_family_closure_ledger[{index}].evidence_status is not recognized.")
+        if report.get("run_status") == "full_graph_closed" and row.get("coverage_status") != "not_run_out_of_scope":
+            if row.get("evidence_status") != "confirmed":
+                reasons.append(f"screen_family_closure_ledger[{index}].evidence_status must be confirmed for full graph closure.")
+            if not row.get("evidence_ids"):
+                reasons.append(f"screen_family_closure_ledger[{index}].evidence_ids are required for full graph closure.")
+    missing = sorted(REQUIRED_SCREEN_FAMILIES - seen)
+    if missing:
+        reasons.append(f"screen_family_closure_ledger missing required families: {missing}.")
     return reasons
 
 

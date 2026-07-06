@@ -1,5 +1,11 @@
 # TASK-025B runtime preflight checklist
 
+Status note: this checklist preserves the historical pre-runtime gate for
+TASK-025B. It is superseded by the 2026-07-06 TASK-025B partial runtime report:
+`docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`.
+TASK-025B is no longer merely blocked-before-runtime; it ran and closed
+`partial`, not pass.
+
 Do not start TASK-025B until every item is confirmed:
 
 | Check | Required value | Fresh 2026-07-06 TASK-025B status |
@@ -16,8 +22,8 @@ Do not start TASK-025B until every item is confirmed:
 | Cleanup policy | explicit | force-stop/relaunch cleanup remains planned but not used because runtime did not start |
 | Payment/WebView/stream/profile/network boundaries | forbidden | confirmed as forbidden for this TASK-025B scope |
 
-TASK-025B remains blocked until the ledger above is confirmed in this fresh
-TASK-025B thread with current owner approval.
+Historical checkpoint: TASK-025B was blocked at this moment until the ledger
+above was confirmed in the fresh TASK-025B thread with current owner approval.
 
 Fresh 2026-07-06 checkpoint: after explicit owner authorization, redaction-safe
 preflight confirmed ADB availability, one authorized target, approval aliases,
@@ -38,7 +44,8 @@ from fresh physical-device and owner-approval evidence, not from synthetic
 contract tests.
 
 TASK-026B adds ready-to-run future physical scenario contracts while preserving
-the same no-device gate. Before any future TASK-025B runtime action, validate:
+the same no-device gate. Before any future TASK-025B-like runtime action,
+validate:
 
 ```text
 python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json
@@ -46,4 +53,5 @@ python automation/native_regression/validate_task026b_no_device_task025b_runtime
 
 Passing this command proves only that the scenario/report contract is internally
 consistent. It is not physical-device evidence and does not approve runtime
-execution.
+execution. TASK-027 direct graph coverage must use its own preflight and
+runtime-boundary approvals.

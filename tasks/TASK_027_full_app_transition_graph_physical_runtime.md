@@ -26,6 +26,12 @@ node/branch as `covered`, `blocked_by_boundary`, `blocked_by_tooling`,
 `blocked_by_external_state` or `not_run_out_of_scope`, with evidence IDs when
 runtime evidence exists.
 
+The public build alias `task-005-local-apk-television-full` is inherited from
+the TASK-025B partial runtime report as the approved Television Full APK family
+alias. It is not a raw APK filename or hash. If a future runtime step needs a
+strict `task-005-local-apk-NNN` alias, record a refreshed public-safe mapping
+without publishing raw APK names, paths or hashes.
+
 ## Required baseline inputs
 
 - `docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`

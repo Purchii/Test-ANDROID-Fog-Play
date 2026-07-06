@@ -2,6 +2,7 @@ import json
 
 from automation.native_regression.validate_task027_transition_graph_report import (
     FORBIDDEN_BOUNDARY_CATEGORIES,
+    REQUIRED_SCREEN_FAMILIES,
     REQUIRED_TASK025B_ANOMALIES,
     REQUIRED_TRANSITION_FAMILIES,
     main,
@@ -65,11 +66,12 @@ def _valid_report():
         ],
         "screen_family_closure_ledger": [
             {
-                "screen_family": "post_auth_games_catalog_top",
+                "screen_family": family,
                 "coverage_status": "blocked_by_tooling",
                 "evidence_status": "unknown",
                 "evidence_ids": [],
             }
+            for family in sorted(REQUIRED_SCREEN_FAMILIES)
         ],
         "boundary_ledger": [
             {
@@ -160,6 +162,15 @@ def test_validator_rejects_missing_required_transition_family():
     errors = validate_report_shape(report)
 
     assert any("transition_graph_closure_ledger missing required families" in error for error in errors)
+
+
+def test_validator_rejects_missing_required_screen_family():
+    report = _valid_report()
+    report["screen_family_closure_ledger"] = report["screen_family_closure_ledger"][:-1]
+
+    errors = validate_report_shape(report)
+
+    assert any("screen_family_closure_ledger missing required families" in error for error in errors)
 
 
 def test_validator_rejects_task025b_partial_as_full_graph_claim():

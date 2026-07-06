@@ -1,8 +1,13 @@
 # TASK-025B physical runtime handoff
 
-TASK-025B is blocked until a physical Android TV/STB target is confirmed
-connected/authorized and owner approvals are refreshed. This file is a handoff
-stub, not approval to run runtime now.
+Status note: this original pre-runtime handoff is superseded by the 2026-07-06
+TASK-025B partial physical runtime report:
+`docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`.
+
+TASK-025B is closed as `partial`, not pass. It confirmed selected-lane runtime
+preflight, install/launch and several native regression checks, but it did not
+close complete transition graph coverage, Search recovery, Settings Gamepad
+safe entry or `NR-008` game-detail/server-list coverage.
 
 ## Required owner/QA confirmations
 
@@ -22,7 +27,7 @@ stub, not approval to run runtime now.
 - payment, WebView, stream, profile/account mutation and network/offline
   boundaries remain forbidden unless a later task separately approves them.
 
-## Fresh 2026-07-06 blocked checkpoint
+## Historical 2026-07-06 blocked checkpoint
 
 TASK-025B started in a fresh thread on branch
 `qa/task-025b-selected-lane-physical-native-regression` from detected default
@@ -58,6 +63,10 @@ An ignored local-only APK candidate index artifact was created under
 filenames, paths and hashes and must not be committed or copied into public
 reports.
 
+This checkpoint was later superseded in the same TASK-025B thread after the
+owner approved the selected APK family. The public final TASK-025B status is
+the tracked partial runtime report named above.
+
 ## Required execution cases
 
 TASK-025B should execute `NR-001` through `NR-010` from the TASK-025 suite and
@@ -91,6 +100,6 @@ state, real boundary behavior or runtime product behavior.
 TASK-026B implements the future TASK-025B physical runtime scenarios behind
 explicit gates. Default execution remains blocked/not-run/deferred, and
 synthetic sequencing uses only an in-memory fake driver with empty runtime
-evidence IDs. A future physical TASK-025B task must rerun the validator and then
-execute scenarios only after refreshed owner approvals and physical device
-preflight are confirmed.
+evidence IDs. Future TASK-027 runtime work must use TASK-025B as partial
+baseline only and must execute a fresh directed transition graph ledger after
+its own runtime-boundary approvals.

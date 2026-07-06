@@ -216,13 +216,61 @@
   ],
   "screen_family_closure_ledger": [
     {
+      "screen_family": "app_launch_splash_loader",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "external_tv_screensaver_or_system_overlay",
+      "coverage_status": "blocked_by_external_state",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
       "screen_family": "post_auth_games_catalog_top",
       "coverage_status": "blocked_by_tooling",
       "evidence_status": "unknown",
       "evidence_ids": []
     },
     {
+      "screen_family": "games_catalog_long_scroll_and_bottom",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "catalog_banner_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
       "screen_family": "search_empty_keyboard_or_no_results",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "session_journal_empty",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "left_navigation_rail_expanded_collapsed_focus_states",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "settings_root",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "settings_promo_codes",
       "coverage_status": "blocked_by_tooling",
       "evidence_status": "unknown",
       "evidence_ids": []
@@ -234,8 +282,62 @@
       "evidence_ids": []
     },
     {
+      "screen_family": "logout_confirmation_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "game_detail_pricing_server_boundary",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
       "screen_family": "server_card_dynamic_list",
       "coverage_status": "blocked_by_tooling",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "steam_topup_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "feedback_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "connect_device_gate",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "payment_checkout_or_payment_qr",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "stream_or_paid_game_session",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "profile_or_account_mutation_boundary",
+      "coverage_status": "blocked_by_boundary",
+      "evidence_status": "unknown",
+      "evidence_ids": []
+    },
+    {
+      "screen_family": "network_offline_webview_payment_external_traversal",
+      "coverage_status": "not_run_out_of_scope",
       "evidence_status": "unknown",
       "evidence_ids": []
     }

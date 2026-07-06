@@ -36,7 +36,7 @@
 | TASK-026A | XL+ no-device TASK-025B readiness and regression coverage | BOUNDED_AUTONOMOUS; PROD_SAFE no-device tests/docs/validators only | qa/task-026a-xl-no-device-task025b-readiness-coverage | completed; expands local TASK-025B readiness contract coverage without runtime/device/APK actions; integrated to `main` |
 | TASK-026B | No-device implementation of TASK-025B physical runtime tests | BOUNDED_AUTONOMOUS; PROD_SAFE no-device scenario/contracts/synthetic tests only | qa/task-026b-no-device-task025b-runtime-tests | completed; implements future TASK-025B physical runtime scenarios behind gates without runtime/device/APK actions; integrated to `main` |
 | TASK-025B | Selected-lane physical native regression runtime | NON_AUTONOMOUS runtime task after refreshed owner approvals | qa/task-025b-selected-lane-physical-native-regression | closed `partial`; selected-lane runtime executed but did not close full transition graph, Search recovery, Settings Gamepad safe entry or `NR-008` game-detail/server-list path |
-| TASK-027 | Full app transition graph physical runtime coverage | NON_AUTONOMOUS runtime task after refreshed TASK-027 preflight and reviewer approvals | qa/task-027r-full-graph-closure-final | TASK-027R closed by terminal ledger classification; rail-route branches are explicit `blocked_by_tooling` transition rows after confirmed catalog no-op evidence, not destination coverage; validator overclaim guard hardened |
+| TASK-027 | Full app transition graph physical runtime coverage | NON_AUTONOMOUS runtime task after refreshed TASK-027 preflight and reviewer approvals | qa/task-027t-continue-all-destination-screen-coverage | TASK-027R closed by terminal ledger classification; TASK-027S covered launcher/recommendations entry but not target destinations; TASK-027T restored the same selected lane, executed bounded runtime, and visually covered session journal, Steam/top-up QR and feedback QR with fresh `rt027t-*` evidence; no forbidden boundary was crossed |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
@@ -155,6 +155,14 @@ not repeat old coordinate/key/D-pad no-op attempts without that new oracle, and
 must preserve the same production-safety boundaries: no payment/session start,
 external QR/browser traversal, stream/media playback, Steam/account mutation,
 profile mutation, network/offline manipulation or APK modification.
+
+TASK-027T confirms a practical continuation pattern: restore/reconfirm the same
+ignored local-only selected lane before runtime, then prove a loaded actionable
+catalog state before rail destination assertions. Direct rail D-pad and
+UI-tree-derived tap attempts remained no-op, but the TASK-020/TASK-023-style
+deep-catalog/grid-focus plus lateral rail recovery oracle visually reached the
+blank session journal, Steam/top-up QR and feedback QR destinations. Both QR
+targets were decoded local-only at category level and were not followed.
 
 For the audit chain, owner authorization persists in repository source of
 truth: each independent audit task must start in a fresh thread, verified

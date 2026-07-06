@@ -432,6 +432,28 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   network/offline manipulation, APK modification or security bypass was
   performed; raw screenshots, XML, logs, package/component values, device
   identifiers, QR targets and account-like values remain ignored local-only.
+- TASK-027T started in a fresh thread
+  `TASK-027T — Continue visual coverage of all destination screens after
+  TASK-027S` on branch
+  `qa/task-027t-continue-all-destination-screen-coverage` from
+  `origin/qa/task-027s-visual-destination-screen-coverage` commit `df40d50`.
+  The task reviewed the same selected-lane runtime approval and Security
+  classified same-lane runtime as conditionally allowed. After restoring the
+  same local selected-lane material from the same-machine owner checkout,
+  TASK-027T executed bounded physical runtime and visually covered all three
+  target destinations that TASK-027S did not cover: blank session journal
+  (`rt027t-cp011-after-grid-dpad-left`), Steam/top-up QR
+  (`rt027t-cp013-steam-topup-qr-after-center`) and feedback QR
+  (`rt027t-cp015-feedback-qr-after-center`). Both QR targets were decoded
+  local-only as HTTPS-category targets and were not followed/opened. Runtime
+  also recorded external ambient recovery, screenshot-capture tooling, direct
+  D-pad no-op and XML-node tap no-op anomalies before the successful grid-focus
+  plus lateral rail recovery oracle. No payment, stream/session, external QR or
+  browser traversal, Steam/account mutation, profile/account mutation,
+  network/offline manipulation, APK modification or security bypass was
+  performed. Public-safe TASK-027T validator now requires fresh `rt027t-*`
+  checkpoint evidence and rejects top-level covered/partial overclaims without
+  destination proof.
 
 ## Audit-chain continuation
 

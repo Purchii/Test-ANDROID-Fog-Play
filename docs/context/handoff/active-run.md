@@ -2,159 +2,133 @@
 
 ## Run Metadata
 
-Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-026B - No-device implementation of TASK-025B physical runtime tests`
-Thread status: `inactive_completed_after_default_push`
-Fresh thread verified: `yes; current task thread 019f3249-7d44-7b13-a665-2203d25396d1 accepted and renamed`
-Task ID: `TASK-026B`
-Task branch: `qa/task-026b-no-device-task025b-runtime-tests`
+Mode: `NON_AUTONOMOUS`
+Thread title: `TASK-025B - Selected-lane physical native regression runtime`
+Thread status: `closed_partial_runtime_owner_stop`
+Fresh thread verified: `yes`
+Task ID: `TASK-025B`
+Task branch: `qa/task-025b-selected-lane-physical-native-regression`
 Default branch: `main`
-Base commit: `5f5c0f0`
-Merge/push authority: `BOUNDED_AUTONOMOUS after all gates pass; no force-push`
-Production safety classification: `PROD_SAFE` for tracked docs/source,
-scenario contracts, blocked/not-run report generation, validators and
-synthetic/fake in-memory tests only.
+Base commit: `2eaa417`
+Merge/push authority: `NON_AUTONOMOUS; do not merge or push default branch without explicit owner command`
+Production safety classification: tracked docs/source and no-device checks are
+`PROD_SAFE`; physical runtime was `PROD_CONDITIONAL` and was executed only
+inside the refreshed selected-lane boundary. The owner requested finishing the
+current task and stopping.
 
 ## Goal
 
-TASK-026B implements the future TASK-025B physical runtime scenarios now, but
-keeps execution deferred until a later physical-device task confirms device
-availability and refreshed owner approvals.
+Execute TASK-025B selected-lane physical native regression cases `NR-001`
+through `NR-010` after refreshed preflight. Use TASK-026B no-device scenario
+contracts as implementation readiness only, not as runtime evidence.
 
-TASK-026B confirms only no-device implementation readiness. It does not confirm
-real TASK-025B runtime, APK availability, app launch, install, device behavior,
-account/session state, boundary behavior or product behavior.
+## Terminal Status
 
-## Scope
+TASK-025B is closed as `partial`, not `pass`.
 
-- Add TASK-025B physical runtime scenario definitions for `NR-001` through
-  `NR-010` behind `requires_confirmed_task025b_preflight`.
-- Add a no-device runner that emits blocked/not-run/deferred reports by
-  default.
-- Add an in-memory synthetic sequencing mode that proves driver action order
-  and boundary classification contracts without runtime evidence.
-- Add a TASK-026B validator for scenario/report contracts.
-- Add public-safe template report and regression tests.
-- Update source-of-truth docs for handoff, gates, risks and verification memory.
+Confirmed preflight/runtime facts:
 
-## Out Of Scope
+- ADB available: `confirmed`;
+- exactly one authorized Android TV/STB target connected: `confirmed`;
+- public-safe lane aliases `tv-tpv-013` / `tv-tpv-a12-013`: `confirmed`;
+- previously installed/approved Television Full APK family selected under
+  ignored `.qa_local/apks/task-005/`: `confirmed`;
+- APK SHA-256 recorded local-only without printing or committing the value:
+  `confirmed`;
+- `.qa_local/secrets/qa_user.env` exists: `confirmed`; raw values were not
+  printed;
+- ignored local evidence storage under `.qa_local/evidence/task-025b/`:
+  `confirmed`;
+- cleanup/recovery policy used only force-stop/relaunch, Home/foreground and
+  safe cancel/close actions: `confirmed`.
 
-- ADB, emulator/device runtime, app launch, UIAutomator traversal, logcat,
-  screenshots, screenrecord, XML dumps or videos.
-- APK read/hash/install/update/decompile/patch/resign.
-- `.qa_local` inspection, local secrets, raw phone/OTP values, raw QR targets,
-  private endpoints or raw runtime evidence.
-- Payment, WebView/browser, stream/WebRTC/media, Steam/account connection,
-  profile/account mutation, network/offline manipulation or production
-  interaction.
+Runtime outcome:
 
-## Allowed Files
+- `NR-001`, `NR-002`, `NR-003`, `NR-006`, `NR-009` and `NR-010`: `pass` within
+  selected-lane boundaries;
+- `NR-004`: `known_anomaly`;
+- `NR-005` and `NR-007`: `blocked_by_boundary`;
+- `NR-008`: `not_run`.
 
-- `automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py`
-- `automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py`
-- `docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json`
-- `docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json`
-- `tests/test_task026b_no_device_task025b_physical_runtime_tests.py`
-- TASK-025B/TASK-026B docs and source-of-truth files.
+Public-safe report:
+`docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`
 
-## Forbidden Files/Actions
+Human-readable public-safe report:
+`docs/qa/reports/task025b_selected_lane_physical_runtime.md`
 
-- `.qa_local/**`, APK files, secret files, raw evidence, raw QR decode artifacts
-  and private endpoints.
-- ADB/device/runtime commands, process/shell runtime hooks, app launch,
-  installation, logcat, screenshot/XML/video capture, WebView/payment/stream/
-  profile/network execution.
+Raw runtime evidence remains ignored local-only under
+`.qa_local/evidence/task-025b/`.
 
-## Acceptance Criteria
+## Anomalies
 
-- TASK-025B runtime scenarios are implemented behind explicit future
-  approval/device gates.
-- Default no-device execution returns blocked/not-run/deferred, not pass.
-- Synthetic/fake tests prove driver sequencing/report contracts without
-  counting as runtime evidence.
-- Boundary guards prevent payment/WebView/stream/profile/network entry.
-- Docs explain that physical execution remains deferred until a future TASK-025B
-  thread with device and approvals.
-- Local targeted tests and full static/pytest gates pass; no forbidden actions
-  are performed.
+- `ANOM-025B-001`: first launch after ambient recovery stayed in an ambiguous
+  loading state; force-stop cold relaunch restored normal catalog behavior.
+- `ANOM-025B-002`: Search TV keyboard recovery trapped after Back/Escape until
+  app recovery.
+- `ANOM-025B-003`: Settings navigation intended for Gamepad reached logout
+  confirmation boundary; cancel/no prevented account mutation.
+
+## Boundaries
+
+The run classified QR/account boundaries without following external targets or
+performing account/payment/session actions.
+
+Forbidden actions remained not performed:
+
+- real payment completion or paid session start;
+- external QR/WebView/browser traversal;
+- stream/WebRTC/media playback/game session start;
+- Steam/account connection mutation;
+- profile/account mutation;
+- network/offline manipulation;
+- APK patch/decompile/resign or security bypass.
 
 ## Multi-Agent Status
 
-- Orchestrator: `complete; implementation, remediation, verification and default integration complete`.
-- Planner: `complete; recommended separate TASK-026B scenario/runner/validator/test layer with no-device blocked defaults and synthetic sequencing only`.
-- Security/Prod-safety pre-implementation review: `complete; approved_with_guardrails for PROD_SAFE tracked-source work only`.
-- Builder: `complete; approved implementation direction with no edits`.
-- QA Reviewer A: `complete; initially blocked on TASK-026B identity and weak section validation, then approved after remediation`.
-- QA Reviewer B: `complete; approved Android TV/runtime/evidence readiness for no-device scope`.
-- Security/Prod-safety final review: `complete; approved after QA A remediation`.
-- Docs/Scribe: `complete; initially blocked on verification-memory/status bookkeeping and active-run focused-test count mismatch, then approved after remediation`.
+Strict real multi-agent workflow was used earlier in this TASK-025B thread:
 
-## Verification Plan
+- Planner: completed preflight/runtime plan;
+- Builder: completed TASK-026B contract hardening;
+- QA Reviewer A: found and remediation closed ordered-action false-pass gaps;
+- QA Reviewer B: found and remediation closed boundary/synthetic-ledger gaps;
+- Security/Prod-safety Reviewer: approved only bounded runtime after refreshed
+  gates and kept forbidden boundaries closed;
+- Docs/Scribe: updated source-of-truth and handoff materials.
 
-```bash
-git status --short --branch
-git diff --check
-python -m pytest -q tests/test_task025_native_regression.py tests/test_task025_native_regression_validator.py tests/test_task026a_no_device_readiness_coverage.py tests/test_task026b_no_device_task025b_physical_runtime_tests.py
-python automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py
-python automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py --synthetic-sequencing-test
-python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json
-python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json
-python automation/native_regression/run_task025_selected_lane_regression.py
-pytest -q
-python -m pytest -q
-python -m compileall -q automation tests
-python automation/quality/full_tree_hygiene_scan.py
-python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
-python automation/quality/public_repo_safety_scan.py
-python automation/quality/docs_consistency_link_sanity.py
-```
+No new subagent continuation is active for this stopped thread.
 
 ## Verification Results
 
-- `python -m pytest -q tests/test_task026b_no_device_task025b_physical_runtime_tests.py`:
-  `16 passed` after QA A remediation.
-- `python automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py`:
-  `run_status=blocked`, `runtime_execution_status=not_run`,
-  `physical_device_status=unavailable`, `task025b_runtime_status=deferred`,
-  `runtime_evidence_ids=[]`.
-- `python automation/native_regression/run_task026b_no_device_task025b_runtime_tests.py --synthetic-sequencing-test`:
-  synthetic sequencing report generated with `runtime_execution_status=not_run`
-  and empty runtime evidence IDs.
-- `python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json`:
-  `validation_status=pass`.
-- `python -m pytest -q tests/test_task025_native_regression.py tests/test_task025_native_regression_validator.py tests/test_task026a_no_device_readiness_coverage.py tests/test_task026b_no_device_task025b_physical_runtime_tests.py`:
-  `81 passed` after QA A remediation.
-- `pytest -q`: `603 passed, 1 skipped`.
-- `python -m pytest -q`: `603 passed, 1 skipped`.
-- `python -m compileall -q automation tests`: `pass`.
-- `git diff --check`: `pass`.
-- `git diff --cached --check`: `pass`.
-- `python automation/quality/full_tree_hygiene_scan.py`: `pass`.
-- `python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree`:
-  `pass`.
-- `python automation/quality/public_repo_safety_scan.py`: `pass`,
-  `scanned_files=190`, `findings=0`.
-- `python automation/quality/docs_consistency_link_sanity.py`: `pass`,
-  `scanned_files=190`, `findings=0`.
+Already completed before runtime:
 
-## Integration Results
+- TASK-026B scenario/report validator: `pass`;
+- TASK-026B default no-device runner: blocked/not-run, no runtime evidence;
+- TASK-026B synthetic sequencing: fake-only, no runtime evidence;
+- focused TASK-026B tests after remediation: `24 passed`;
+- broader TASK-025/TASK-026 targeted tests after remediation: `89 passed`;
+- full pytest earlier in the thread: `611 passed, 1 skipped`;
+- compileall, diff check, public repo safety and docs link sanity: `pass`.
 
-- Task commit: `4244305b586c4f7956cc7ea505ff7470ac581d0c`.
-- Task branch pushed: `yes`.
-- Default branch integration: `yes; merged into main with merge commit 8d890cb977d2eb7e3f895ec7daae8a18819e81c8`.
-- Default branch pushed: `yes`.
-- Post-push alignment: `yes; local HEAD and origin/main both 8d890cb977d2eb7e3f895ec7daae8a18819e81c8`.
+Final closure checks are recorded in the final assistant report for this
+thread. The existing TASK-025 pass validator is not used to certify this
+partial runtime as a pass because it correctly expects full runtime pass
+semantics.
+
+## Unverified Areas
+
+- complete app transition graph;
+- complete data-source coverage;
+- `NR-008` game-detail server-list path;
+- Search typed no-results path without keyboard recovery trap;
+- Settings Gamepad safe-entry path;
+- payment completion, paid session start and stream/WebRTC/media playback;
+- external QR/browser/WebView traversal;
+- Steam/account mutation and profile mutation;
+- network/offline behavior;
+- broad compatibility matrix.
 
 ## Thread Handoff
 
-- Current thread status: `inactive_completed_after_default_push`.
-- Next thread created: `no`.
-- Next task: `TASK-025B remains deferred until physical Android TV/STB availability and refreshed owner approvals are confirmed`.
-
-## Stop Conditions
-
-Stop if the task requires ADB/device/app runtime execution, APK handling,
-physical debugging, raw evidence capture, private endpoints, real accounts,
-real payments, real phone/OTP/device/QR values, production interaction,
-`.qa_local` inspection or any action that would treat synthetic/no-device tests
-as runtime evidence.
+Stop here per owner command. A later independent task is required for any
+remaining runtime coverage. Do not continue navigation or runtime execution in
+this thread.

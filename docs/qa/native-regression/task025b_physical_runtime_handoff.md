@@ -1,8 +1,8 @@
 # TASK-025B physical runtime handoff
 
-TASK-025B is deferred until a physical Android TV/STB target is available and
-owner approvals are refreshed. This file is a handoff stub, not approval to run
-runtime now.
+TASK-025B is blocked until a physical Android TV/STB target is confirmed
+connected/authorized and owner approvals are refreshed. This file is a handoff
+stub, not approval to run runtime now.
 
 ## Required owner/QA confirmations
 
@@ -21,6 +21,42 @@ runtime now.
 - cleanup policy is explicit;
 - payment, WebView, stream, profile/account mutation and network/offline
   boundaries remain forbidden unless a later task separately approves them.
+
+## Fresh 2026-07-06 blocked checkpoint
+
+TASK-025B started in a fresh thread on branch
+`qa/task-025b-selected-lane-physical-native-regression` from detected default
+branch `main`.
+
+The owner message says a physical Android TV/STB device is connected, but the
+full runtime approval ledger is not confirmed in this thread. Security/
+Prod-safety review returned `BLOCKED NOW` for physical runtime and approved
+only static/preflight validation.
+
+Safe checks completed:
+
+- TASK-026B scenario/report contract validation passed;
+- TASK-026B default runner stayed blocked/not-run/deferred;
+- TASK-026B synthetic sequencing stayed fake-only and non-runtime evidence;
+- targeted TASK-025/TASK-026 no-device tests passed before remediation;
+- QA A false-pass findings were remediated by strengthening per-case scenario
+  action contracts, no-device evidence status checks and synthetic boundary
+  category coverage.
+
+After explicit owner authorization to run the refreshed preflight and continue
+runtime in this task, redaction-safe preflight confirmed ADB availability, one
+authorized device, selected public aliases from valid approval metadata, ignored
+APK directory existence with five APK candidates and synthetic QA env
+existence. Runtime remained blocked because the selected APK path from valid
+approval metadata is missing and the available candidates do not provide a
+unique public-safe alias match. No APK hash/install, app launch, screenshots,
+XML, logcat, secrets, QR targets, payment/WebView/stream/profile/network
+actions or raw runtime evidence were produced.
+
+An ignored local-only APK candidate index artifact was created under
+`.qa_local/evidence/task-025b/preflight/` for owner selection. It contains raw
+filenames, paths and hashes and must not be committed or copied into public
+reports.
 
 ## Required execution cases
 

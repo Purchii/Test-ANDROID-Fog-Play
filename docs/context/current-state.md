@@ -280,18 +280,22 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   hardening` on branch `qa/task-025a-no-device-native-regression-harness` from
   `main` commit `c421dda` and was integrated to `main`. TASK-025
   physical-device runtime execution is
-  deferred because no physical Android TV/STB device is currently available.
+  deferred in that historical thread because no physical Android TV/STB device
+  was available then.
   TASK-025A is limited to no-device automation readiness, schema/report
   hardening and fake/synthetic tests. TASK-025B will execute selected-lane
-  physical runtime only after a device is available and owner approvals are
-  refreshed. For TASK-025A, runtime execution, APK install, app launch, ADB,
-  physical debugging and raw runtime evidence capture were forbidden/not-run.
+  physical runtime only after a device is confirmed connected/authorized and
+  owner approvals are refreshed. For TASK-025A, runtime execution, APK install,
+  app launch, ADB, physical debugging and raw runtime evidence capture were
+  forbidden/not-run.
 - Post-TASK-025A continuation selection ran from `main@863d00e` on
   `qa/next-task-selection-main-863d00e-blocked`. No eligible next independent
   task was selected. `TASK-025B` remains deferred because physical-device
-  runtime requires a currently available Android TV/STB target and refreshed
-  owner approvals. No `.qa_local`, APK, ADB, app runtime or raw evidence was
-  inspected during the selection review.
+  runtime required an available Android TV/STB target and refreshed owner
+  approvals. The fresh 2026-07-06 TASK-025B thread supersedes that availability
+  note with owner-stated connected hardware, but runtime remains blocked until
+  authorization and approval gates are confirmed. No `.qa_local`, APK, ADB, app
+  runtime or raw evidence was inspected during the selection review.
 - TASK-026A completed in fresh thread
   `TASK-026A - XL+ no-device TASK-025B readiness and regression coverage` on
   branch `qa/task-026a-xl-no-device-task025b-readiness-coverage` from
@@ -315,6 +319,34 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   read secrets, decode real QR targets or validate real runtime behavior.
   TASK-025B physical runtime remains deferred until a physical Android TV/STB
   is available and owner approvals are refreshed.
+- TASK-025B ran in a fresh 2026-07-06 thread
+  `TASK-025B - Selected-lane physical native regression runtime` on branch
+  `qa/task-025b-selected-lane-physical-native-regression` from detected default
+  `main` commit `2eaa417` and closed as `partial` after the owner requested
+  finishing the current task and stopping. TASK-026B no-device contracts
+  validated as implementation readiness only. The tracked scenario contract was
+  hardened against semantic false-pass gaps before runtime. After refreshed
+  owner approval, redaction-safe preflight confirmed ADB availability, one
+  authorized target, selected aliases, the Television Full APK family under
+  ignored `.qa_local/apks/task-005/`, local-only APK hash recording, synthetic
+  QA env existence, ignored evidence storage and cleanup/recovery policy. The
+  selected APK installed and launched. First launch after ambient recovery hung
+  in an ambiguous loading state, then force-stop cold relaunch restored normal
+  post-auth catalog behavior. Selected-lane runtime confirmed catalog/rail
+  focus, QR/account boundary classification without external traversal,
+  settings root category and Home/foreground plus force-stop/relaunch session
+  persistence. Search keyboard recovery trapped after Back/Escape, Settings
+  navigation reached a logout confirmation boundary that was cancelled, and the
+  attempted detail path reached a catalog banner QR boundary instead of a game
+  detail/server-list path. `NR-001`, `NR-002`, `NR-003`, `NR-006`, `NR-009` and
+  `NR-010` passed within the boundary; `NR-004` is a known anomaly, `NR-005`
+  and `NR-007` are boundary-blocked, and `NR-008` is not run. Public-safe
+  report: `docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`.
+  Raw APK paths/hashes, phone/OTP values, device identifiers, screenshots, XML,
+  logs and QR targets remain ignored local-only under
+  `.qa_local/evidence/task-025b/`. Complete transition graph, complete data
+  source coverage, payment/WebView/stream/profile/network behavior and broad
+  compatibility remain unverified.
 
 ## Audit-chain continuation
 

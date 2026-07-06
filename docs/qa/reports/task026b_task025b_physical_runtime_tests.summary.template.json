@@ -30,7 +30,7 @@
     "assert_raw_qr_targets": false
   },
   "execution_mode": "no_device_readiness",
-  "generated_at_utc": "2026-07-05T13:09:07Z",
+  "generated_at_utc": "2026-07-06T06:56:19Z",
   "known_anomalies_rechecked": [],
   "mode": "BOUNDED_AUTONOMOUS",
   "new_anomalies": [],
@@ -180,6 +180,7 @@
       {
         "case_id": "NR-001",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -188,6 +189,7 @@
       {
         "case_id": "NR-002",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -196,6 +198,7 @@
       {
         "case_id": "NR-003",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -204,6 +207,7 @@
       {
         "case_id": "NR-004",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -212,6 +216,7 @@
       {
         "case_id": "NR-005",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -220,6 +225,7 @@
       {
         "case_id": "NR-006",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -228,6 +234,7 @@
       {
         "case_id": "NR-007",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -236,6 +243,7 @@
       {
         "case_id": "NR-008",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -244,6 +252,7 @@
       {
         "case_id": "NR-009",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -252,6 +261,7 @@
       {
         "case_id": "NR-010",
         "counts_as_runtime_evidence": false,
+        "evidence_status": "unknown",
         "execution_mode": "no_device_readiness",
         "reason": "Scenario implemented for future TASK-025B; physical execution deferred.",
         "runtime_evidence_ids": [],
@@ -265,6 +275,7 @@
     "scenario_count": 10,
     "scenario_source": "docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json",
     "schema_version": "task025b-runtime-scenarios-v1",
+    "synthetic_boundary_category_coverage": [],
     "synthetic_executions": [],
     "synthetic_sequencing_status": "not_run"
   },

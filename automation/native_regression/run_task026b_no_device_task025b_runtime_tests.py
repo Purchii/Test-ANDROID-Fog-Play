@@ -52,6 +52,7 @@ ALLOWED_ACTIONS = {
     "record_public_safe_evidence_ref",
 }
 BOUNDARY_ACTIONS = {"classify_boundary", "record_public_safe_evidence_ref"}
+BOUNDARY_CLASSIFICATION_ACTION = "classify_boundary"
 FORBIDDEN_SCENARIO_ACTIONS = {
     "press_ok_on_boundary",
     "follow_qr",
@@ -61,6 +62,89 @@ FORBIDDEN_SCENARIO_ACTIONS = {
     "mutate_profile",
     "toggle_network",
 }
+REQUIRED_CASE_ACTIONS = {
+    "NR-001": (
+        "launch_app",
+        "ensure_authorized_session",
+        "classify_screen",
+        "assert_focus_present",
+    ),
+    "NR-002": (
+        "classify_screen",
+        "assert_focus_present",
+        "press_dpad:down",
+        "press_back",
+    ),
+    "NR-003": (
+        "classify_screen",
+        "assert_focus_present",
+        "press_dpad:down",
+        "press_dpad:up",
+        "press_dpad:left",
+    ),
+    "NR-004": (
+        "classify_screen",
+        "press_dpad:left",
+        "press_dpad:right",
+        "press_back",
+        "classify_screen",
+    ),
+    "NR-005": (
+        "classify_screen",
+        "assert_focus_present",
+        "press_dpad:right",
+        "press_back",
+        "classify_screen",
+    ),
+    "NR-006": (
+        "classify_screen",
+        "press_dpad:left",
+        "press_dpad:down",
+        "press_back",
+    ),
+    "NR-007": (
+        "classify_screen",
+        "press_dpad:down",
+        "press_back",
+        "classify_screen",
+    ),
+    "NR-008": (
+        "classify_screen",
+        "assert_focus_present",
+        "press_dpad:down",
+        "classify_boundary",
+        "record_public_safe_evidence_ref",
+        "press_back",
+    ),
+    "NR-009": (
+        "classify_screen",
+        "classify_boundary",
+        "record_public_safe_evidence_ref",
+        "press_back",
+    ),
+    "NR-010": (
+        "press_home",
+        "foreground_app",
+        "assert_session_preserved",
+        "force_stop_relaunch",
+        "assert_session_preserved",
+    ),
+}
+
+
+def _step_signature(step: dict[str, Any]) -> str:
+    action = step.get("action")
+    if action == "press_dpad":
+        return f"press_dpad:{step.get('direction')}"
+    return str(action)
+
+
+def _contains_ordered_subsequence(actual: list[str], expected: tuple[str, ...]) -> bool:
+    position = 0
+    for action in actual:
+        if position < len(expected) and action == expected[position]:
+            position += 1
+    return position == len(expected)
 
 
 @dataclass
@@ -117,6 +201,26 @@ def validate_scenarios(scenarios: dict[str, Any]) -> list[str]:
             reasons.append(f"scenarios[{index}].future_runtime_gate must require confirmed TASK-025B preflight.")
         if case.get("default_no_device_status") not in {"not_run", "blocked", "deferred"}:
             reasons.append(f"scenarios[{index}].default_no_device_status must be not_run, blocked or deferred.")
+        expected_boundary_categories = case.get("expected_boundary_categories")
+        if case_id in {"NR-008", "NR-009"}:
+            if not isinstance(expected_boundary_categories, list) or not expected_boundary_categories:
+                reasons.append(f"scenarios[{index}] {case_id} must declare expected_boundary_categories.")
+            else:
+                for category_index, category in enumerate(expected_boundary_categories):
+                    if category not in FORBIDDEN_BOUNDARY_CATEGORIES:
+                        reasons.append(f"scenarios[{index}].expected_boundary_categories[{category_index}] must be a guarded boundary category.")
+        elif expected_boundary_categories is not None:
+            reasons.append(f"scenarios[{index}].expected_boundary_categories is allowed only for boundary-sensitive cases.")
+        expected_screen_state_categories = case.get("expected_screen_state_categories")
+        if case_id in {"NR-008", "NR-009"}:
+            if not isinstance(expected_screen_state_categories, list) or not expected_screen_state_categories:
+                reasons.append(f"scenarios[{index}] {case_id} must declare expected_screen_state_categories.")
+            else:
+                for category_index, category in enumerate(expected_screen_state_categories):
+                    if not isinstance(category, str) or not category.strip():
+                        reasons.append(f"scenarios[{index}].expected_screen_state_categories[{category_index}] must be a non-empty public-safe category.")
+        elif expected_screen_state_categories is not None:
+            reasons.append(f"scenarios[{index}].expected_screen_state_categories is allowed only for boundary-sensitive cases.")
 
         boundary_policy = case.get("boundary_policy")
         if not isinstance(boundary_policy, dict):
@@ -133,7 +237,11 @@ def validate_scenarios(scenarios: dict[str, Any]) -> list[str]:
         steps = _scenario_steps(case)
         if not steps:
             reasons.append(f"scenarios[{index}].steps must be a non-empty list.")
+        step_signatures = [_step_signature(step) for step in steps]
+        if case_id in REQUIRED_CASE_ACTIONS and not _contains_ordered_subsequence(step_signatures, REQUIRED_CASE_ACTIONS[case_id]):
+            reasons.append(f"scenarios[{index}] {case_id} must include the required ordered action contract.")
         has_boundary_step = False
+        has_boundary_classification_step = False
         for step_index, step in enumerate(steps):
             action = step.get("action")
             if action not in ALLOWED_ACTIONS:
@@ -142,12 +250,16 @@ def validate_scenarios(scenarios: dict[str, Any]) -> list[str]:
                 reasons.append(f"scenarios[{index}].steps[{step_index}].action is forbidden.")
             if action in BOUNDARY_ACTIONS:
                 has_boundary_step = True
+            if action == BOUNDARY_CLASSIFICATION_ACTION:
+                has_boundary_classification_step = True
             if action == "press_ok":
                 reasons.append(f"scenarios[{index}].steps[{step_index}].action is forbidden; use boundary classification instead.")
             if action == "press_dpad" and step.get("direction") not in {"up", "down", "left", "right"}:
                 reasons.append(f"scenarios[{index}].steps[{step_index}].direction must be up/down/left/right.")
         if case_id in {"NR-008", "NR-009"} and not has_boundary_step:
             reasons.append(f"scenarios[{index}] {case_id} must include a boundary classification step.")
+        if case_id in {"NR-008", "NR-009"} and not has_boundary_classification_step:
+            reasons.append(f"scenarios[{index}] {case_id} must include an explicit classify_boundary step.")
 
     missing = sorted(REQUIRED_CASE_IDS - seen)
     if missing:
@@ -210,6 +322,20 @@ def run_synthetic_scenarios(scenarios: dict[str, Any], driver: SyntheticRuntimeD
     return executions
 
 
+def synthetic_boundary_category_coverage(scenarios: dict[str, Any]) -> list[str]:
+    covered: list[str] = []
+    for category in FORBIDDEN_BOUNDARY_CATEGORIES:
+        executions = run_synthetic_scenarios(scenarios, SyntheticRuntimeDriver(boundary_category=category))
+        boundary_executions = [
+            execution
+            for execution in executions
+            if execution.get("case_id") in {"NR-008", "NR-009"}
+        ]
+        if boundary_executions and all(category in execution.get("guarded_boundaries", []) for execution in boundary_executions):
+            covered.append(category)
+    return covered
+
+
 def build_report(scenarios: dict[str, Any], *, synthetic_sequencing_test: bool = False) -> dict[str, Any]:
     report = default_blocked_report("TASK-025B physical runtime scenarios implemented; execution deferred without device and approvals")
     report["task_id"] = "TASK-026B"
@@ -229,6 +355,7 @@ def build_report(scenarios: dict[str, Any], *, synthetic_sequencing_test: bool =
             {
                 "case_id": case.get("case_id"),
                 "status": "not_run",
+                "evidence_status": "unknown",
                 "execution_mode": NO_DEVICE_EXECUTION_MODE,
                 "counts_as_runtime_evidence": False,
                 "runtime_evidence_ids": [],
@@ -237,6 +364,7 @@ def build_report(scenarios: dict[str, Any], *, synthetic_sequencing_test: bool =
             for case in scenarios.get("scenarios", [])
             if isinstance(case, dict)
         ],
+        "synthetic_boundary_category_coverage": [],
         "synthetic_executions": [],
     }
     if synthetic_sequencing_test:
@@ -250,6 +378,7 @@ def build_report(scenarios: dict[str, Any], *, synthetic_sequencing_test: bool =
         }
         report["task025b_runtime_scenarios"]["synthetic_sequencing_status"] = "pass"
         report["task025b_runtime_scenarios"]["synthetic_executions"] = run_synthetic_scenarios(scenarios)
+        report["task025b_runtime_scenarios"]["synthetic_boundary_category_coverage"] = synthetic_boundary_category_coverage(scenarios)
         report["synthetic_contract_tests"].append(
             {
                 "contract_id": "SYN-026B",
@@ -313,6 +442,8 @@ def validate_task026b_report(report: dict[str, Any]) -> list[str]:
                 reasons.append(f"task025b_runtime_scenarios.case_statuses[{index}].case_id is not recognized.")
             if case.get("status") not in {"not_run", "blocked", "deferred"}:
                 reasons.append(f"task025b_runtime_scenarios.case_statuses[{index}].status must remain not_run/blocked/deferred.")
+            if case.get("evidence_status") != "unknown":
+                reasons.append(f"task025b_runtime_scenarios.case_statuses[{index}].evidence_status must be unknown.")
             if case.get("counts_as_runtime_evidence") is not False:
                 reasons.append(f"task025b_runtime_scenarios.case_statuses[{index}].counts_as_runtime_evidence must be false.")
             if case.get("runtime_evidence_ids") != []:
@@ -320,14 +451,27 @@ def validate_task026b_report(report: dict[str, Any]) -> list[str]:
         missing = sorted(REQUIRED_CASE_IDS - seen)
         if missing:
             reasons.append(f"task025b_runtime_scenarios.case_statuses missing required cases: {missing}.")
+    boundary_coverage = section.get("synthetic_boundary_category_coverage")
+    if not isinstance(boundary_coverage, list):
+        reasons.append("task025b_runtime_scenarios.synthetic_boundary_category_coverage must be a list.")
+    elif section.get("synthetic_sequencing_status") == "pass" and boundary_coverage != list(FORBIDDEN_BOUNDARY_CATEGORIES):
+        reasons.append("task025b_runtime_scenarios.synthetic_boundary_category_coverage must cover every guarded boundary category when synthetic sequencing passes.")
     executions = section.get("synthetic_executions")
     if not isinstance(executions, list):
         reasons.append("task025b_runtime_scenarios.synthetic_executions must be a list.")
     else:
+        execution_seen: set[str] = set()
         for index, execution in enumerate(executions):
             if not isinstance(execution, dict):
                 reasons.append(f"task025b_runtime_scenarios.synthetic_executions[{index}] must be an object.")
                 continue
+            case_id = execution.get("case_id")
+            if case_id in execution_seen:
+                reasons.append(f"task025b_runtime_scenarios.synthetic_executions[{index}].case_id is duplicated.")
+            if case_id in REQUIRED_CASE_IDS:
+                execution_seen.add(case_id)
+            else:
+                reasons.append(f"task025b_runtime_scenarios.synthetic_executions[{index}].case_id is not recognized.")
             if execution.get("execution_mode") != SYNTHETIC_EXECUTION_MODE:
                 reasons.append(f"task025b_runtime_scenarios.synthetic_executions[{index}].execution_mode must be synthetic.")
             if execution.get("status") != "blocked":
@@ -354,6 +498,12 @@ def validate_task026b_report(report: dict[str, Any]) -> list[str]:
                         reasons.append(
                             f"task025b_runtime_scenarios.synthetic_executions[{index}].guarded_boundaries[{boundary_index}] must be a guarded boundary category."
                         )
+                if section.get("synthetic_sequencing_status") == "pass" and case_id in {"NR-008", "NR-009"} and not guarded_boundaries:
+                    reasons.append(f"task025b_runtime_scenarios.synthetic_executions[{index}].guarded_boundaries must be non-empty for boundary-sensitive cases.")
+        if section.get("synthetic_sequencing_status") == "pass":
+            missing_executions = sorted(REQUIRED_CASE_IDS - execution_seen)
+            if missing_executions:
+                reasons.append(f"task025b_runtime_scenarios.synthetic_executions missing required cases: {missing_executions}.")
     return sorted(set(reasons))
 
 

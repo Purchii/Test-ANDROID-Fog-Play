@@ -25,6 +25,11 @@ WebView / WebRTC testing of MTC Fog Play.
   explicit future gates. It does not run ADB, inspect APKs or `.qa_local`,
   launch the app, collect runtime evidence or validate real device/app
   behavior.
+- TASK-028 adds the first offline API-layer contract intake harness from the
+  owner-provided API audit pack. It validates the quarantined pack structure,
+  matrix-to-fixture references, 214 fixture JSON files and 21 schema JSON files,
+  then emits a public-safe coverage summary. It does not make live API calls,
+  publish raw endpoints or run payment/order/session/backend mutations.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.
@@ -87,6 +92,7 @@ python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/docs_consistency_link_sanity.py
 python automation/quality/public_repo_safety_scan.py
 python automation/quality/synthetic_redaction_corpus.py --json
+python automation/api_layer_contract/validate_task028_api_layer_contract.py --pack-root .qa_local/api_layer_audit_20260706 --report docs/qa/reports/task028_api_layer_contract_coverage.summary.json
 python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json
 python automation/native_regression/run_task025_selected_lane_regression.py
 ```

@@ -313,6 +313,19 @@ This file records what was actually verified. Do not claim runtime checks passed
   require a second confirm; XML alone misses visual QR/banner/focus/content
   evidence on rich TV surfaces. Record screenshots/video alongside XML for
   every runtime checkpoint.
+- TASK-028 implemented and verified on branch
+  `qa/task-028-api-layer-contract-coverage` from
+  detected default branch `main` commit `df40d50`. The owner-provided API-layer
+  audit pack was extracted only under ignored local quarantine storage. TASK-028
+  adds `automation/api_layer_contract/validate_task028_api_layer_contract.py`
+  and `tests/test_task028_api_layer_contract.py`. The offline validator passed
+  on the quarantined pack and generated
+  `docs/qa/reports/task028_api_layer_contract_coverage.summary.json` with 217
+  matrix rows, 217 fixture/sequence refs, 214 fixture JSON files, 21 schema JSON
+  files, 67 inventory items and no missing fixture refs. Live REST, WebSocket,
+  STOMP, DataChannel, backend authorization, payment/order/session mutation and
+  Android runtime correlation remain `not_run`/`unknown`; raw API pack contents
+  remain local-only.
 
 ## Unverified zones
 
@@ -322,6 +335,10 @@ This file records what was actually verified. Do not claim runtime checks passed
 - Payment/WebView staging behavior.
 - WebView/payment safe runtime behavior, redirect handling and staging-only payment return behavior.
 - Streaming/WebRTC test oracle.
+- Live REST/STOMP/WebSocket/DataChannel backend behavior and authorization/ACL
+  evidence for the API layer.
+- API-layer payment/order/session mutation behavior; TASK-028 covers offline
+  contracts only and leaves live execution `not_run`.
 - Production testing permissions and budgets.
 - Confirmed synthetic user, auth/session, stream, WebView, payment staging, network/offline and evidence fixture approvals.
 - Confirmed network/offline profile policy, resource budget, recovery oracle, evidence storage and cleanup/rollback approvals.

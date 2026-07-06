@@ -37,6 +37,13 @@
 | TASK-026B | No-device implementation of TASK-025B physical runtime tests | BOUNDED_AUTONOMOUS; PROD_SAFE no-device scenario/contracts/synthetic tests only | qa/task-026b-no-device-task025b-runtime-tests | completed; implements future TASK-025B physical runtime scenarios behind gates without runtime/device/APK actions; integrated to `main` |
 | TASK-025B | Selected-lane physical native regression runtime | NON_AUTONOMOUS runtime task after refreshed owner approvals | qa/task-025b-selected-lane-physical-native-regression | closed `partial`; selected-lane runtime executed but did not close full transition graph, Search recovery, Settings Gamepad safe entry or `NR-008` game-detail/server-list path |
 | TASK-027 | Full app transition graph physical runtime coverage | NON_AUTONOMOUS runtime task after refreshed TASK-027 preflight and reviewer approvals | qa/task-027r-full-graph-closure-final | TASK-027R closed by terminal ledger classification; rail-route branches are explicit `blocked_by_tooling` transition rows after confirmed catalog no-op evidence, not destination coverage; validator overclaim guard hardened |
+| TASK-028 | API-layer contract coverage from quarantined audit pack | NON_AUTONOMOUS; offline local quarantine intake only | qa/task-028-api-layer-contract-coverage | implemented and verified on task branch; offline pack intake validator and public-safe coverage ledger added; no live API/backend/runtime execution |
+| TASK-029 | REST schema and fixture contract harness | BOUNDED_AUTONOMOUS for offline fixture/schema tests only | qa/task-029-rest-schema-fixture-contracts | proposed after TASK-028 |
+| TASK-030 | REST negative, cache and state-sequence contract tests | BOUNDED_AUTONOMOUS for offline mocked transport only | qa/task-030-rest-negative-cache-sequences | proposed after TASK-029 |
+| TASK-031 | STOMP signaling and device protocol contract tests | BOUNDED_AUTONOMOUS for offline protocol fixtures only | qa/task-031-stomp-protocol-contracts | proposed after TASK-028 |
+| TASK-032 | DataChannel and gamepad protocol contract tests | BOUNDED_AUTONOMOUS for offline protocol fixtures only | qa/task-032-datachannel-gamepad-contracts | proposed after TASK-028 |
+| TASK-033 | API-layer redaction and production-safety guard tests | BOUNDED_AUTONOMOUS for synthetic/local security guard tests only | qa/task-033-api-redaction-prod-safety-guards | proposed after TASK-028 |
+| TASK-034 | Optional approved staging API execution gate | NON_AUTONOMOUS; PROD_CONDITIONAL only after explicit staging/QA approvals | qa/task-034-staging-api-execution-gate | proposed; blocked until approved backend environment/synthetic user/budget/cleanup/reviews exist |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

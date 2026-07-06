@@ -260,6 +260,17 @@ a future runtime step needs a strict `task-005-local-apk-NNN` build alias, it
 must record a refreshed public-safe mapping without publishing raw APK names,
 paths or hashes.
 
+TASK-028 API-layer contract coverage must remain offline and local-only. The
+validator may read the owner-provided API audit pack only from ignored local
+quarantine storage and may commit only public-safe aliases, counts,
+categories, status values and follow-up task decomposition. It must not
+publish raw endpoints, URLs, headers, payloads, fixture bodies, tokens,
+phone/OTP/captcha values, payment values, device identifiers, local paths or
+executable API recipes. Passing TASK-028 validates matrix/fixture/schema
+coverage only; live REST, WebSocket, STOMP, DataChannel, payment/order/session
+mutation, backend authorization and Android runtime correlation remain
+`not_run` or `unknown` until separate approved tasks.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

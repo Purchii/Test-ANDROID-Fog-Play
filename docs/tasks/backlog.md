@@ -35,7 +35,8 @@
 | TASK-025A | No-device selected-lane native regression harness and report hardening | BOUNDED_AUTONOMOUS; PROD_SAFE no-device docs/schemas/validators/synthetic tests only | qa/task-025a-no-device-native-regression-harness | completed; physical runtime was deferred in TASK-025A because no device was available in that historical thread |
 | TASK-026A | XL+ no-device TASK-025B readiness and regression coverage | BOUNDED_AUTONOMOUS; PROD_SAFE no-device tests/docs/validators only | qa/task-026a-xl-no-device-task025b-readiness-coverage | completed; expands local TASK-025B readiness contract coverage without runtime/device/APK actions; integrated to `main` |
 | TASK-026B | No-device implementation of TASK-025B physical runtime tests | BOUNDED_AUTONOMOUS; PROD_SAFE no-device scenario/contracts/synthetic tests only | qa/task-026b-no-device-task025b-runtime-tests | completed; implements future TASK-025B physical runtime scenarios behind gates without runtime/device/APK actions; integrated to `main` |
-| TASK-025B | Selected-lane physical native regression runtime | NON_AUTONOMOUS runtime task after refreshed owner approvals | qa/task-025b-selected-lane-physical-native-regression | active/blocked before runtime in fresh 2026-07-06 thread; no ADB/APK/app action executed; Security/Prod-safety requires full refreshed preflight and approval ledger before physical execution |
+| TASK-025B | Selected-lane physical native regression runtime | NON_AUTONOMOUS runtime task after refreshed owner approvals | qa/task-025b-selected-lane-physical-native-regression | closed `partial`; selected-lane runtime executed but did not close full transition graph, Search recovery, Settings Gamepad safe entry or `NR-008` game-detail/server-list path |
+| TASK-027 | Full app transition graph physical runtime coverage | NON_AUTONOMOUS runtime task after refreshed TASK-027 preflight and reviewer approvals | qa/task-027-full-app-transition-graph-physical-runtime | active; graph closure contract/validator created and redaction-safe preflight confirmed, physical app runtime remains blocked pending post-preflight QA/Security runtime approval |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
@@ -135,13 +136,11 @@ execute selected-lane physical runtime only after a device is confirmed
 connected/authorized and owner approvals are refreshed in the TASK-025B thread.
 
 Post-TASK-025A continuation selection from `main@863d00e` found no eligible
-unfinished `PROD_SAFE` bounded task ready for autonomous execution. At that
-time `TASK-025B` remained `deferred` / `blocked` until a physical Android TV/STB
-device was available and owner approvals were refreshed. The fresh 2026-07-06
-TASK-025B thread supersedes that availability note with owner-stated connected
-hardware, but runtime/device/APK/WebView/WebRTC/payment/network/live CI work
-remains blocked until prerequisites are recorded with
-`evidence_status=confirmed`.
+unfinished `PROD_SAFE` bounded task ready for autonomous execution. TASK-025B
+later ran in a fresh 2026-07-06 thread and closed as `partial`, not pass. The
+fresh TASK-027 thread supersedes the remaining transition-graph gap, but
+runtime/device/APK/WebView/WebRTC/payment/network/live CI work remains blocked
+until TASK-027 prerequisites are recorded with `evidence_status=confirmed`.
 
 Allowed next action is owner input or an explicit new bounded public-safe task;
 do not invent additional broad hardening unless a concrete false-pass or

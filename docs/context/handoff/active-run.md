@@ -3,132 +3,157 @@
 ## Run Metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-025B - Selected-lane physical native regression runtime`
-Thread status: `closed_partial_runtime_owner_stop`
+Thread title: `TASK-027 — Full app transition graph physical runtime coverage`
+Thread status: `active_preflight_confirmed_runtime_blocked`
 Fresh thread verified: `yes`
-Task ID: `TASK-025B`
-Task branch: `qa/task-025b-selected-lane-physical-native-regression`
+Task ID: `TASK-027`
+Task branch: `qa/task-027-full-app-transition-graph-physical-runtime`
 Default branch: `main`
-Base commit: `2eaa417`
+Base commit: `f9f58fb`
 Merge/push authority: `NON_AUTONOMOUS; do not merge or push default branch without explicit owner command`
-Production safety classification: tracked docs/source and no-device checks are
-`PROD_SAFE`; physical runtime was `PROD_CONDITIONAL` and was executed only
-inside the refreshed selected-lane boundary. The owner requested finishing the
-current task and stopping.
+Production safety classification: tracked docs/source, validators, templates
+and local public-safe scans are `PROD_SAFE`; physical Android TV runtime,
+ADB/APK/app launch, screenshot/XML/log/video capture and local QR decode are
+`PROD_CONDITIONAL` and remain blocked until the TASK-027-specific preflight
+ledger is confirmed.
 
 ## Goal
 
-Execute TASK-025B selected-lane physical native regression cases `NR-001`
-through `NR-010` after refreshed preflight. Use TASK-026B no-device scenario
-contracts as implementation readiness only, not as runtime evidence.
+Build and execute a public-safe, evidence-first physical Android TV runtime
+task covering the full reachable approved transition graph on the same selected
+lane used by TASK-025B.
 
-## Terminal Status
+TASK-025B is a partial baseline only. It does not count as a full graph pass or
+as complete transition coverage for TASK-027.
 
-TASK-025B is closed as `partial`, not `pass`.
+## Current Status
 
-Confirmed preflight/runtime facts:
+The fresh TASK-027 thread has been renamed and the task branch has been created
+from the detected default branch `main`. Source-of-truth docs and TASK-025B,
+TASK-020 and TASK-023 public reports have been read.
 
-- ADB available: `confirmed`;
-- exactly one authorized Android TV/STB target connected: `confirmed`;
-- public-safe lane aliases `tv-tpv-013` / `tv-tpv-a12-013`: `confirmed`;
-- previously installed/approved Television Full APK family selected under
-  ignored `.qa_local/apks/task-005/`: `confirmed`;
+Strict real multi-agent workflow is active:
+
+- Orchestrator: current thread;
+- Planner: completed TASK-027 scope, ledger and verification plan;
+- Builder: completed public-safe report/validator recommendations;
+- QA Reviewer A: blocked acceptance until a real TASK-027 acceptance artifact
+  and graph closure ledger exist;
+- QA Reviewer B: blocked full graph closure until fresh runtime closure ledger,
+  screenshot+XML checkpoints and guarded boundaries exist;
+- Security/Prod-safety Reviewer: `APPROVED_WITH_CONDITIONS` for bounded
+  static/preflight work and conditional physical runtime after gates;
+- Docs/Scribe: proposed TASK-027 source-of-truth/report updates.
+
+Public-safe TASK-027 contract artifacts now exist:
+
+- `tasks/TASK_027_full_app_transition_graph_physical_runtime.md`;
+- `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`;
+- `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.md`;
+- `automation/native_regression/validate_task027_transition_graph_report.py`;
+- `tests/test_task027_transition_graph_validator.py`.
+
+## Preflight Gate
+
+Redaction-safe physical preflight is confirmed in this TASK-027 run:
+
+- physical Android TV/STB target connected and authorized: `confirmed`;
+- selected public-safe device aliases and runtime profile alias refreshed:
+  `confirmed`;
+- selected APK present under ignored local TASK-005 APK storage: `confirmed`;
 - APK SHA-256 recorded local-only without printing or committing the value:
   `confirmed`;
-- `.qa_local/secrets/qa_user.env` exists: `confirmed`; raw values were not
-  printed;
-- ignored local evidence storage under `.qa_local/evidence/task-025b/`:
-  `confirmed`;
-- cleanup/recovery policy used only force-stop/relaunch, Home/foreground and
-  safe cancel/close actions: `confirmed`.
+- synthetic QA user env exists without printing raw values: `confirmed`;
+- ignored local evidence storage and redaction policy approved: `confirmed`;
+- cleanup/recovery policy limited to Back, Home, cancel, close and force-stop or
+  explicit relaunch: `confirmed`;
+- QA Reviewer A, QA Reviewer B and Security/Prod-safety approval for
+  preflight-only: `confirmed`.
 
-Runtime outcome:
+No APK install, app launch, logcat, screenshot/XML/video capture, QR decode,
+navigation, WebView, payment, stream, account/profile mutation or
+network/offline action was performed in preflight.
 
-- `NR-001`, `NR-002`, `NR-003`, `NR-006`, `NR-009` and `NR-010`: `pass` within
-  selected-lane boundaries;
-- `NR-004`: `known_anomaly`;
-- `NR-005` and `NR-007`: `blocked_by_boundary`;
-- `NR-008`: `not_run`.
+Physical app runtime remains `blocked` until QA Reviewer A, QA Reviewer B and
+Security/Prod-safety approve the post-preflight runtime boundary.
 
-Public-safe report:
-`docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json`
+## Runtime Closure Requirements
 
-Human-readable public-safe report:
-`docs/qa/reports/task025b_selected_lane_physical_runtime.md`
+Full graph closure requires a directed transition ledger where every currently
+reachable approved node/branch is terminally classified as:
 
-Raw runtime evidence remains ignored local-only under
-`.qa_local/evidence/task-025b/`.
+- `covered`;
+- `blocked_by_boundary`;
+- `blocked_by_tooling`;
+- `blocked_by_external_state`;
+- `not_run_out_of_scope`.
 
-## Anomalies
+Every runtime checkpoint must include screenshot/visual inspection and XML when
+available. XML-vs-visual mismatches are first-class tooling gaps. Recurrent
+screens and anomalies must be recorded immediately.
 
-- `ANOM-025B-001`: first launch after ambient recovery stayed in an ambiguous
-  loading state; force-stop cold relaunch restored normal catalog behavior.
-- `ANOM-025B-002`: Search TV keyboard recovery trapped after Back/Escape until
-  app recovery.
-- `ANOM-025B-003`: Settings navigation intended for Gamepad reached logout
-  confirmation boundary; cancel/no prevented account mutation.
+## Dynamic Data Rule
+
+Game catalog and server-list contents may change over time. TASK-027 must
+assert screen categories, field models, focus/scroll behavior, transition
+outcomes, redaction and boundaries. It must not assert fixed game titles,
+server counts, server aliases, prices, hardware rows, ping values or complete
+row enumeration.
 
 ## Boundaries
 
-The run classified QR/account boundaries without following external targets or
-performing account/payment/session actions.
-
-Forbidden actions remained not performed:
+Forbidden unless a later separate task approves:
 
 - real payment completion or paid session start;
 - external QR/WebView/browser traversal;
 - stream/WebRTC/media playback/game session start;
 - Steam/account connection mutation;
-- profile/account mutation;
+- profile/account mutation, including logout confirmation acceptance;
 - network/offline manipulation;
-- APK patch/decompile/resign or security bypass.
+- APK patch/decompile/resign or security bypass;
+- printing or committing raw APK hashes, phone/OTP values, device identifiers,
+  QR targets, endpoints, screenshots, XML, logs, videos or private values.
 
-## Multi-Agent Status
+## Known TASK-025B Anomalies
 
-Strict real multi-agent workflow was used earlier in this TASK-025B thread:
+TASK-027 must recheck or explicitly carry with reasons:
 
-- Planner: completed preflight/runtime plan;
-- Builder: completed TASK-026B contract hardening;
-- QA Reviewer A: found and remediation closed ordered-action false-pass gaps;
-- QA Reviewer B: found and remediation closed boundary/synthetic-ledger gaps;
-- Security/Prod-safety Reviewer: approved only bounded runtime after refreshed
-  gates and kept forbidden boundaries closed;
-- Docs/Scribe: updated source-of-truth and handoff materials.
+- `ANOM-025B-001`: ambiguous first launch after ambient recovery; cold relaunch
+  restored catalog.
+- `ANOM-025B-002`: Search TV keyboard Back/Escape recovery trap.
+- `ANOM-025B-003`: Settings navigation intended for Gamepad reached logout
+  confirmation and was cancelled.
 
-No new subagent continuation is active for this stopped thread.
+## Verification Plan
 
-## Verification Results
+Minimum tracked checks:
 
-Already completed before runtime:
+```text
+git status --short --branch
+git diff --check
+python automation/native_regression/validate_task027_transition_graph_report.py --report docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json
+python -m pytest -q tests/test_task027_transition_graph_validator.py
+python automation/native_regression/validate_task026b_no_device_task025b_runtime_tests.py --scenarios docs/qa/native-regression/task025b_physical_runtime_test_scenarios.json --report docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json
+python -m pytest -q tests/test_task025_native_regression.py tests/test_task025_native_regression_validator.py tests/test_task026a_no_device_readiness_coverage.py tests/test_task026b_no_device_task025b_physical_runtime_tests.py tests/test_task027_transition_graph_validator.py
+python -m compileall -q automation tests
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
 
-- TASK-026B scenario/report validator: `pass`;
-- TASK-026B default no-device runner: blocked/not-run, no runtime evidence;
-- TASK-026B synthetic sequencing: fake-only, no runtime evidence;
-- focused TASK-026B tests after remediation: `24 passed`;
-- broader TASK-025/TASK-026 targeted tests after remediation: `89 passed`;
-- full pytest earlier in the thread: `611 passed, 1 skipped`;
-- compileall, diff check, public repo safety and docs link sanity: `pass`.
+Runtime/device checks are allowed only after the preflight gate above is
+confirmed.
 
-Final closure checks are recorded in the final assistant report for this
-thread. The existing TASK-025 pass validator is not used to certify this
-partial runtime as a pass because it correctly expects full runtime pass
-semantics.
+## Stop Conditions
 
-## Unverified Areas
+Stop and report a precise blocker if:
 
-- complete app transition graph;
-- complete data-source coverage;
-- `NR-008` game-detail server-list path;
-- Search typed no-results path without keyboard recovery trap;
-- Settings Gamepad safe-entry path;
-- payment completion, paid session start and stream/WebRTC/media playback;
-- external QR/browser/WebView traversal;
-- Steam/account mutation and profile mutation;
-- network/offline behavior;
-- broad compatibility matrix.
-
-## Thread Handoff
-
-Stop here per owner command. A later independent task is required for any
-remaining runtime coverage. Do not continue navigation or runtime execution in
-this thread.
+- physical device, APK, auth env, evidence storage, cleanup or reviewer
+  approval is missing;
+- runtime navigation reaches a forbidden boundary that cannot be safely
+  classified/recovered;
+- screenshot/XML capture cannot support checkpoint evidence;
+- Search/Settings/focus trap prevents safe continuation and approved recovery
+  does not restore an actionable app state;
+- public-safe scans detect raw values or local-only artifacts.

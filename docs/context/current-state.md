@@ -347,6 +347,24 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   `.qa_local/evidence/task-025b/`. Complete transition graph, complete data
   source coverage, payment/WebView/stream/profile/network behavior and broad
   compatibility remain unverified.
+- TASK-027 started in a fresh 2026-07-06 thread
+  `TASK-027 — Full app transition graph physical runtime coverage` on branch
+  `qa/task-027-full-app-transition-graph-physical-runtime` from detected
+  default `main` commit `f9f58fb`. The task is `NON_AUTONOMOUS`; tracked
+  docs/validators/templates are `PROD_SAFE`, while physical Android TV runtime
+  remains `PROD_CONDITIONAL`. Initial multi-agent review blocked acceptance of
+  an empty branch and required a TASK-027-specific graph closure contract before
+  runtime. The task now has a public-safe task spec, transition graph summary
+  template and validator:
+  `tasks/TASK_027_full_app_transition_graph_physical_runtime.md`,
+  `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`
+  and `automation/native_regression/validate_task027_transition_graph_report.py`.
+  Redaction-safe TASK-027 preflight then confirmed the physical target,
+  selected aliases, APK presence, local-only hash recording, synthetic QA env
+  existence, ignored evidence storage and cleanup policy without APK install,
+  app launch, screenshots/XML/logs/video, QR decode or navigation. Physical app
+  runtime remains blocked pending a separate post-preflight QA/Security runtime
+  approval. TASK-025B remains a partial baseline only, not full graph closure.
 
 ## Audit-chain continuation
 

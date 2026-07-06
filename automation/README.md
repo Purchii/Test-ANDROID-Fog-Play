@@ -167,6 +167,18 @@ WebRTC, payment flows, network services or production systems.
   specimens for TASK-017. It is local/static only and must not be populated
   from real evidence, APKs, endpoints, QR targets, credentials or device data.
 
+## API-layer Contract Coverage
+
+`automation/api_layer_contract/` contains the TASK-028 offline API-layer
+contract intake validator. It reads an owner-provided API audit pack only after
+the pack has been extracted into ignored local quarantine storage and emits a
+public-safe summary with aliases, counts and categories only.
+
+The validator does not make live REST, WebSocket, STOMP, DataChannel, Android
+runtime, APK, payment, stream/session or production calls. It validates matrix
+shape, fixture/sequence references, fixture JSON readability and schema JSON
+readability, then records live API execution as `not_run`.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

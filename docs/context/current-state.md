@@ -113,6 +113,17 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   force-stop/relaunch session persistence passed; no crash/ANR signal was
   observed. Select transitions were not entered because controls were not
   semantically safe enough for unattended selection.
+- TASK-028 implemented and verified on branch
+  `qa/task-028-api-layer-contract-coverage` from
+  detected default branch `main` commit `df40d50` after the owner provided an
+  API-layer audit pack. The task is `NON_AUTONOMOUS` and
+  `PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT`: it validates only local
+  quarantined API contract artifacts and does not make live API/backend,
+  Android runtime, APK, payment, stream/session or production calls. The first
+  offline harness validates 217 matrix rows, 217 fixture/sequence references,
+  214 fixture JSON files, 21 schema JSON files and 67 inventory items, with no
+  missing fixture references. Public reports contain only aliases, counts and
+  categories; raw API pack contents remain local-only.
 
 ## Runtime readiness
 

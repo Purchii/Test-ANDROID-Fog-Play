@@ -1,0 +1,185 @@
+{
+  "archive_intake": {
+    "fixture_json_files": 214,
+    "fixture_or_sequence_refs": 217,
+    "inventory_items": 67,
+    "matrix_rows": 217,
+    "missing_fixture_refs": 0,
+    "required_files_present": true,
+    "schema_json_files": 21
+  },
+  "backend_environment_status": "not_configured",
+  "blocked_reasons": [],
+  "coverage_contract": {
+    "exhaustive_scope": "all_known_rows_fixtures_and_schema_files_in_quarantined_pack",
+    "live_api_surface_status": "unknown_until_separate_approved_task",
+    "payment_stream_mutation_scope": "not_run_blocked_without_separate_approval",
+    "raw_endpoint_publication": "forbidden",
+    "ui_runtime_scope": "parallel_ui_coverage_not_duplicated"
+  },
+  "coverage_summary": {
+    "counts_by_automation_target": {
+      "deferred_with_reason": 4,
+      "fixture_schema_negative_test": 29,
+      "fixture_schema_test": 29,
+      "log_artifact_scanner_or_guard_test": 8,
+      "mock_http_sequence_test": 22,
+      "mock_http_test": 51,
+      "mock_or_fixture_test": 13,
+      "protocol_fixture_test": 38,
+      "protocol_negative_test": 18,
+      "protocol_sequence_or_fixture_test": 5
+    },
+    "counts_by_layer": {
+      "protocol": 61,
+      "rest": 132,
+      "runtime_optional": 4,
+      "security": 8,
+      "state_machine_sequence": 12
+    },
+    "counts_by_priority": {
+      "P0": 83,
+      "P1": 125,
+      "P2": 9
+    },
+    "counts_by_status": {
+      "deferred_not_blocking_this_run": 4,
+      "ready_or_fixture_only": 213
+    },
+    "counts_by_test_type": {
+      "cache_behavior": 10,
+      "critical_edge_case": 13,
+      "explicit_deferred": 4,
+      "negative_auth": 22,
+      "negative_edge_case": 13,
+      "negative_invalid_fields": 6,
+      "negative_malformed_base64": 4,
+      "negative_malformed_json": 29,
+      "negative_server_error": 29,
+      "positive_protocol_schema": 38,
+      "positive_schema": 29,
+      "security_redaction": 8,
+      "sequence_positive_or_negative": 12
+    },
+    "fixture_groups": {
+      "datachannel": 25,
+      "gamepad": 1,
+      "rest": 122,
+      "sequences": 30,
+      "stomp_device": 19,
+      "stomp_signaling": 17
+    },
+    "inventory_types": {
+      "datachannel_message": 19,
+      "device_stomp_message": 11,
+      "rest": 29,
+      "stomp_signaling_message": 8
+    },
+    "schema_groups": {
+      "protocol": 4,
+      "rest": 17
+    }
+  },
+  "evidence_status": "likely",
+  "follow_up_task_decomposition": [
+    {
+      "production_safety_classification": "PROD_SAFE",
+      "scope": "Generate parametrized REST fixture/schema tests from TASK-028 sanitized coverage ledger.",
+      "task_id": "TASK-029",
+      "title": "REST schema and fixture contract harness"
+    },
+    {
+      "production_safety_classification": "PROD_SAFE",
+      "scope": "Implement offline cache/error/sequence tests with mocked transport only.",
+      "task_id": "TASK-030",
+      "title": "REST negative, cache and state-sequence contract tests"
+    },
+    {
+      "production_safety_classification": "PROD_SAFE",
+      "scope": "Validate protocol fixtures and malformed-message behavior offline.",
+      "task_id": "TASK-031",
+      "title": "STOMP signaling and device protocol contract tests"
+    },
+    {
+      "production_safety_classification": "PROD_SAFE",
+      "scope": "Validate DataChannel/gamepad message fixtures and invalid cases offline.",
+      "task_id": "TASK-032",
+      "title": "DataChannel and gamepad protocol contract tests"
+    },
+    {
+      "production_safety_classification": "PROD_SAFE",
+      "scope": "Expand redaction/security guards for API, protocol, payment, device and session evidence.",
+      "task_id": "TASK-033",
+      "title": "API-layer redaction and production-safety guard tests"
+    },
+    {
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scope": "Only after explicit staging/QA environment, synthetic user, budget, cleanup and review approvals.",
+      "task_id": "TASK-034",
+      "title": "Optional approved staging API execution gate"
+    }
+  ],
+  "generated_at_utc": "2026-07-06T13:14:18Z",
+  "live_api_execution_status": "not_run",
+  "mode": "NON_AUTONOMOUS",
+  "overall_status": "pass",
+  "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+  "public_safety": {
+    "apk_or_runtime_actions_performed": false,
+    "live_network_calls_performed": false,
+    "public_report_contains_only_aliases_counts_and_categories": true,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_fixture_bodies_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_pack_signals_detected_in_local_quarantine": true,
+    "raw_payloads_public": false,
+    "raw_payment_values_public": false,
+    "raw_phone_otp_captcha_public": false,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_payment_or_session_mutation_performed": false,
+    "tls_or_security_bypass_performed": false
+  },
+  "raw_pack_signal_summary": {
+    "classification": "local_quarantine_required",
+    "file_groups_with_raw_value_signals": {
+      "README.md": 1,
+      "codex": 2,
+      "docs": 7,
+      "fixtures": 64,
+      "schemas": 21,
+      "source": 1,
+      "specs": 3,
+      "templates": 1
+    },
+    "raw_value_signal_categories": {
+      "device_identifier_keyword_like": 12,
+      "endpoint_path_like": 29,
+      "local_path_like": 31,
+      "payment_keyword_like": 23,
+      "secret_keyword_like": 46,
+      "url_like": 31
+    }
+  },
+  "runtime_execution_status": "not_run",
+  "schema_version": "task028-api-layer-contract-coverage-v1",
+  "source_pack": {
+    "evidence_status": "likely",
+    "raw_archive_location": "local_only_not_committed",
+    "raw_pack_storage": "ignored_local_quarantine",
+    "raw_values_public": false,
+    "source_alias": "api-layer-audit-pack-20260706"
+  },
+  "task_id": "TASK-028",
+  "tool_name": "validate_task028_api_layer_contract",
+  "unverified_areas": [
+    "live REST backend behavior",
+    "live STOMP/WebSocket behavior",
+    "live WebRTC/DataChannel behavior",
+    "real payment/order/session mutations",
+    "backend authorization and ACL enforcement",
+    "runtime correlation with Android app evidence"
+  ]
+}

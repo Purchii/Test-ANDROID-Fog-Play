@@ -370,6 +370,23 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   (`TASK-027R — Full app transition graph physical runtime execution`) was
   created to continue from the TASK-027 preparation branch. TASK-025B remains a
   partial baseline only, not full graph closure.
+- TASK-027R executed partial selected-lane physical runtime in thread
+  `TASK-027R — Full app transition graph physical runtime execution` on branch
+  `qa/task-027-full-app-transition-graph-physical-runtime`. Post-preflight
+  runtime approval allowed APK install/update, explicit launch/relaunch, safe
+  navigation, screenshots/XML, bounded crash/log evidence and local-only QR
+  decode attempts. Runtime confirmed launch/recovery to catalog, catalog
+  rail/focus and dynamic scroll sampling, game-card detail entry, server-list
+  sampling without session/payment activation, Search keyboard trap, Settings
+  root, safe Gamepad setup, Home/foreground persistence, boundary categories
+  and external ambient/screensaver recovery. The run closed as partial because
+  session journal, Steam/top-up QR and feedback QR rail-route destinations did
+  not open from the recovered catalog state and full graph closure remains
+  unverified. Anomaly recording is now explicitly documented as a global
+  project rule in `AGENTS.md`. Public report:
+  `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`.
+  Raw APK hashes, device identifiers, account-like values, QR targets,
+  screenshots, XML and logs remain ignored local-only.
 
 ## Audit-chain continuation
 

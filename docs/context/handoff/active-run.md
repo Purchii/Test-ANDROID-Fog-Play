@@ -3,19 +3,19 @@
 ## Run Metadata
 
 Mode: `NON_AUTONOMOUS`
-Thread title: `TASK-027 — Full app transition graph physical runtime coverage`
-Thread status: `inactive_preparation_completed_runtime_handoff_created`
+Thread title: `TASK-027R — Full app transition graph physical runtime execution`
+Thread status: `partial_runtime_closed_for_current_thread`
 Fresh thread verified: `yes`
 Task ID: `TASK-027`
 Task branch: `qa/task-027-full-app-transition-graph-physical-runtime`
 Default branch: `main`
 Base commit: `f9f58fb`
-Merge/push authority: `NON_AUTONOMOUS; do not merge or push default branch without explicit owner command`
+Merge/push authority: `NON_AUTONOMOUS; owner explicitly requested safe current-thread closure, push to detected default branch, and continuation in a new thread`
 Production safety classification: tracked docs/source, validators, templates
 and local public-safe scans are `PROD_SAFE`; physical Android TV runtime,
 ADB/APK/app launch, screenshot/XML/log/video capture and local QR decode are
-`PROD_CONDITIONAL` and remain blocked until the TASK-027-specific preflight
-ledger is confirmed.
+`PROD_CONDITIONAL` and are open only inside the post-preflight TASK-027R
+runtime boundary approval.
 
 ## Goal
 
@@ -24,7 +24,9 @@ task covering the full reachable approved transition graph on the same selected
 lane used by TASK-025B.
 
 TASK-025B is a partial baseline only. It does not count as a full graph pass or
-as complete transition coverage for TASK-027.
+as complete transition coverage for TASK-027. The current TASK-027R thread is
+being closed as a partial runtime checkpoint by owner command; full graph
+closure remains the continuation objective.
 
 ## Current Status
 
@@ -74,16 +76,91 @@ No APK install, app launch, logcat, screenshot/XML/video capture, QR decode,
 navigation, WebView, payment, stream, account/profile mutation or
 network/offline action was performed in preflight.
 
-Physical app runtime remains `blocked` in this preparation thread. The owner
-requested direct graph coverage in a separate thread after preparation, so a
-fresh runtime execution thread was created:
-`019f3678-274c-7c72-98a9-a35ffd79b9d2`
-(`TASK-027R — Full app transition graph physical runtime execution`).
+Physical app runtime is now unblocked for this fresh TASK-027R thread only
+after post-preflight runtime-boundary review. QA Reviewer A, QA Reviewer B and
+Security/Prod-safety Reviewer returned `APPROVED_WITH_CONDITIONS` in thread
+`019f3678-274c-7c72-98a9-a35ffd79b9d2`.
 
-That runtime thread must request and record QA Reviewer A, QA Reviewer B and
-Security/Prod-safety approval for the post-preflight runtime boundary before
-APK install, app launch, navigation, screenshot/XML/log/video capture or QR
-decode.
+The approval opens only the selected-lane `PROD_CONDITIONAL` runtime boundary:
+APK install/update, app launch/relaunch, safe D-pad/navigation coverage,
+screenshot/visual checkpoints, XML where available, bounded crash/ANR/log
+evidence, optional video evidence and local-only QR decode. It is not an
+acceptance result and not a full graph pass.
+
+Before and during runtime, every checkpoint must keep raw artifacts under
+ignored local evidence storage, must publish only evidence IDs/category-level
+metadata, and must stop at payment, stream/session, WebView/browser/external
+QR traversal, Steam/account connection, profile/account mutation, network
+manipulation, captcha solving/bypass, APK modification or security bypass.
+
+## Runtime Evidence Checkpoints
+
+Local-only TASK-027R runtime evidence is stored under ignored evidence storage.
+Public reports may reference only checkpoint IDs, not raw screenshots, XML,
+logs, APK names/hashes, QR targets, device identifiers or account-like values.
+
+Confirmed public-safe checkpoint families so far:
+
+- `rt027-cp001c`, `rt027-cp036`: external TV ambient/screensaver recurrence,
+  not an app screen.
+- `rt027-cp002` through `rt027-cp006`, `rt027-cp037` through `rt027-cp043`:
+  app loader and loader-after-recovery states.
+- `rt027-cp006` through `rt027-cp010`: post-auth catalog, rail focus movement
+  and dynamic catalog scroll sampling.
+- `rt027-cp011` through `rt027-cp015`: game detail and dynamic server-list
+  sampling without session/payment activation.
+- `rt027-cp016` through `rt027-cp021`: Search keyboard, input/recovery trap and
+  safe force-stop/relaunch recovery.
+- `rt027-cp022` through `rt027-cp028`: Settings root, Gamepad safe-entry,
+  Gamepad close recovery, Home and foreground persistence.
+- `rt027-cp029` through `rt027-cp035`: promo-code screen recurrence with TV
+  keyboard and failed intended rail-branch switching.
+
+Bounded crash evidence was captured local-only after the loader recurrence:
+the app process was present and the crash buffer was captured without crash
+buffer content.
+
+## Runtime Anomalies Recorded In TASK-027R
+
+Record every anomaly immediately. This is a global project rule, not a
+session-local preference: do not defer anomaly records until the end, even for
+tooling issues or branches planned for later revisit. Current TASK-027R
+anomalies:
+
+- `ANOM-025B-001` rechecked: launch and ambient-recovery flows can remain in
+  prolonged app loader states; one earlier force-stop/relaunch recovered the
+  catalog, but a later ambient recovery returned to the loader and did not
+  reach actionable catalog within bounded waits.
+- `ANOM-025B-002` rechecked: Search keyboard accepted the route but raw ADB
+  text input had no visible effect, and Back/Escape did not recover; recovery
+  required force-stop/relaunch.
+- `ANOM-025B-003` rechecked: precise safe Gamepad entry opened the Gamepad
+  setup screen and close returned to Settings root, without logout/profile
+  mutation.
+- `ANOM-027R-001`: initial screenshot capture path corrupted a PNG when binary
+  output was redirected through an unsafe shell path; capture was corrected via
+  a binary-safe process stream.
+- `ANOM-027R-002`: banner QR crop was partial/cut off; fullscreen local-only
+  decode attempt did not decode, so recurring QR classification must reference
+  prior local-only decode artifacts where applicable and keep this TASK-027R
+  QR attempt as a tooling anomaly until revisited.
+- `ANOM-027R-003`: Back from game detail/server-list sampling did not recover;
+  D-pad Left recovered to the rail while retaining detail/server-list context.
+- `ANOM-027R-004`: promo-code screen with TV keyboard trapped multiple intended
+  rail-boundary taps; checkpoints stayed on the promo-code screen rather than
+  opening feedback, Steam/top-up or journal branches.
+- `ANOM-027R-005`: after force-stop/relaunch from the promo-code trap, the TV
+  ambient/screensaver surface recurred, then foreground recovery entered a
+  prolonged app loader that blocked further safe rail traversal in the current
+  session.
+- `ANOM-027R-006`: a local PowerShell helper around approved recovery commands
+  reported non-zero adb command codes while a visual checkpoint was still
+  captured; classify recovery from screenshot/XML evidence and local-only raw
+  command artifacts, not from that wrapper status alone.
+- `ANOM-027R-007`: after clean direct recovery restored the actionable catalog,
+  intended rail taps for session journal, Steam/top-up and feedback remained on
+  the catalog; do not count those intended branches as covered without visual
+  proof of their destination states.
 
 ## Runtime Closure Requirements
 
@@ -156,17 +233,33 @@ runtime-boundary approval.
 
 ## Thread Handoff
 
-Preparation result: `complete`.
+Current thread result: `partial runtime checkpoint`.
 
-Next thread created: `yes`.
+Owner stop/continuation command: `confirmed`.
 
-Next thread ID: `019f3678-274c-7c72-98a9-a35ffd79b9d2`.
+Default branch push authority: `confirmed for detected default branch main`.
 
-Next thread title: `TASK-027R — Full app transition graph physical runtime execution`.
+Runtime objective status: `not complete`.
 
-Next thread branch: continue from `qa/task-027-full-app-transition-graph-physical-runtime`.
+Continuation required: `yes`.
 
-Next thread starting commit: `df7b97c` plus this handoff update.
+Next thread title target: `TASK-027R — Full app transition graph physical runtime execution`.
+
+Next thread branch/source: continue after this partial checkpoint is committed,
+pushed, merged to `main` and pushed to remote default by explicit owner command.
+
+Continuation focus:
+
+- use `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`
+  as the current public-safe closure ledger;
+- do not redo broad preparation unless a concrete blocker appears;
+- continue from unclosed rail-route branches: session journal, Steam/top-up QR
+  and feedback QR destination coverage;
+- revisit QR decode with the established local-only path only if needed;
+- preserve all forbidden boundaries: no payment/session start, external QR or
+  browser traversal, stream/WebRTC/media playback, Steam/account mutation,
+  profile/account mutation or network/offline manipulation;
+- keep recording anomalies immediately as a global project rule.
 
 ## Stop Conditions
 

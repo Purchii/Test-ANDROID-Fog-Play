@@ -218,13 +218,17 @@ accessibility tree. Every checkpoint must include screenshot/visual inspection,
 and any XML-vs-screenshot mismatch must be recorded as a tooling gap plus a
 first-class screen/state event.
 
-Record anomalies immediately when observed. An anomaly is any unexpected screen
-state, navigation mismatch, transient visual state, classifier/accessibility
-gap, repeated screen loop, delayed WebView load, focus trap, failed back/exit,
-or action whose result differs from the intended path. Each anomaly record must
+Record anomalies immediately when observed. This is a global project rule, not
+a session-local preference. An anomaly is any unexpected screen state,
+navigation mismatch, transient visual state, classifier/accessibility gap,
+repeated screen loop, delayed WebView load, focus trap, failed back/exit, or
+action whose result differs from the intended path. Each anomaly record must
 include trigger/action, expected result, observed result, evidence status,
 public-safe alias, likely/hypothesis cause, and test-design implication. Do not
-wait until the end of a run to reconstruct anomalies from memory.
+wait until the end of a run to reconstruct anomalies from memory. Do not defer
+anomaly recording because the run is still in progress, because the agent plans
+to revisit the branch later, or because the anomaly seems like a tooling issue;
+record it first, then continue or recover safely.
 
 Android TV ambient/screensaver caveat: if runtime inventory suddenly shows a
 full-screen scenic/photo/weather-like image, launcher-like overlay, or other

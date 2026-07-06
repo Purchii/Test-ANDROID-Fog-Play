@@ -1,55 +1,75 @@
-# TASK-027 full app transition graph physical runtime
+# TASK-027R full app transition graph physical runtime
 
 Mode: `NON_AUTONOMOUS`
 
-Current status: `blocked`
+Current status: `partial`; continuation required in a fresh thread.
 
-TASK-027 is the fresh selected-lane task for full reachable approved transition
-graph coverage. It starts from TASK-025B as a partial baseline only. TASK-025B
-does not count as full transition graph closure.
+TASK-027R executed the approved selected-lane physical runtime boundary after
+the TASK-027 preparation/preflight thread. TASK-025B, TASK-020 and TASK-023
+remain baselines only; they do not count as this run's full graph closure.
 
 Public-safe machine-readable report:
 `docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json`
 
-## Scope
+## Runtime Result
 
-TASK-027 may cover safe reachable native transition branches on the approved
-selected Android TV lane:
+The selected APK update/install and explicit app launch/relaunch were executed
+under post-preflight QA/Security approval. Runtime evidence was captured as
+local-only screenshots/XML/log/crash artifacts under ignored evidence storage.
+Public artifacts reference only checkpoint IDs and category-level findings.
 
-- launch, foreground and recovery transitions;
-- catalog rail, focus and long-list behavior;
-- Search input, no-results and recovery;
-- Settings root, promo and Gamepad safe-entry branches;
-- game card focus-to-detail and server-list sampling;
-- QR, payment-like, account-like and stream/session boundaries as terminal
-  guarded graph nodes;
-- Home and foreground, force-stop plus relaunch, and external ambient recovery.
+Covered or classified in this partial TASK-027R runtime:
 
-## Not A Value Inventory
+- launch/relaunch, external ambient/screensaver recurrence and recovery to
+  actionable catalog;
+- catalog rail focus movement and dynamic catalog scroll sampling;
+- game card activation into game detail and server-list sampling without
+  payment/session activation;
+- Search keyboard route and confirmed recovery trap;
+- Settings root, safe Gamepad entry and Gamepad close recovery;
+- Home/foreground persistence from a safe post-auth state;
+- catalog QR, payment/session-like, profile/account and external traversal
+  boundaries as guarded terminal categories.
 
-Game and server screens can change over time. TASK-027 must assert stable
-screen categories, transition outcomes, focus/scroll behavior, redaction and
-boundary handling. It must not assert fixed game titles, server counts, server
-aliases, prices, hardware strings, ping values or complete row enumeration.
+Not closed in this thread:
 
-## Boundary Rules
+- full reachable graph closure;
+- Search typed no-results completion without keyboard trap;
+- session journal, Steam/top-up QR and feedback QR destination screens from the
+  recovered catalog state;
+- complete dynamic game-title or server-row value inventory;
+- payment completion, stream/session start, external browser/WebView traversal,
+  account/profile mutation and network/offline manipulation.
 
-Real payment, paid session start, stream/WebRTC/media playback, external
-QR/WebView/browser traversal, Steam/account connection, profile/account
-mutation and network/offline manipulation remain forbidden unless a later
-separate task explicitly approves them. Visible QR targets may be decoded only
-into local-only evidence and must not be opened or followed.
+## Anomalies
 
-## Preflight
+All anomalies are recorded immediately as a global project rule. Current
+TASK-027R public-safe anomaly IDs are tracked in the summary JSON:
 
-TASK-027 redaction-safe preflight is confirmed for this thread: the physical
-target is available and authorized, selected aliases are refreshed, the
-Television Full APK family is present, the APK hash was recorded local-only,
-the synthetic QA env exists, ignored local evidence storage is prepared and
-cleanup/recovery policy is explicit.
+- `ANOM-025B-001` rechecked: launch/ambient recovery can enter prolonged
+  loader; clean direct cleanup relaunch recovered catalog.
+- `ANOM-025B-002` rechecked: Search keyboard Back/Escape recovery trap
+  persisted.
+- `ANOM-025B-003` rechecked: precise Gamepad safe-entry route succeeded without
+  logout/profile mutation.
+- `ANOM-027R-001` through `ANOM-027R-007`: evidence capture tooling, QR decode
+  tooling, server-list Back recovery, promo keyboard trap, post-cleanup loader,
+  adb helper wrapper and rail-route tap no-op anomalies.
 
-Physical app runtime is still blocked pending a new QA and Security approval
-for APK install/launch and graph navigation. Raw APK paths/hashes, phone/OTP
-values, device identifiers, screenshots, XML, logs, videos, QR targets, private
-routes/endpoints, account-like values and payment/session data remain
-local-only and are not committed.
+## Boundaries
+
+No real payment, paid session, stream/WebRTC/media playback, external QR or
+browser traversal, Steam/account connection mutation, profile/account mutation,
+network/offline manipulation, APK modification or security bypass was
+performed. Raw APK hashes, device identifiers, account-like values, QR targets,
+screenshots, XML, logs and private runtime values remain local-only and are not
+committed.
+
+## Continuation
+
+The next thread should continue from the same task branch state after this
+partial runtime checkpoint is merged to the detected default branch by explicit
+owner command. It should start with the current summary JSON as the closure
+ledger, then focus on the unclosed rail-route branches and any remaining
+transition rows without redoing broad preparation unless a concrete blocker is
+found.

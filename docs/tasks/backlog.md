@@ -32,10 +32,10 @@
 | TASK-022 | Xbox-like gamepad full screen inventory | NON_AUTONOMOUS runtime task after TASK-020/TASK-021 selected-lane context | qa/task-022-xbox-gamepad-screen-inventory | Completed with boundaries; final review/verification passed; default push completed by explicit owner command |
 | TASK-023 | Full data screen inventory | NON_AUTONOMOUS runtime/data-inventory task after TASK-022 selected-lane context | qa/task-023-full-data-screen-inventory | full public-safe data inventory completed with dynamic game/server list limits; integrated to `main` before TASK-024 |
 | TASK-024 | Native post-auth regression pack + selected-lane runtime regression | BOUNDED_AUTONOMOUS after owner authorization in TASK-024 thread | qa/task-024-native-post-auth-regression-pack | completed; Phase A/B passed, Phase C blocked before runtime pending approved collector/input, default integration completed |
-| TASK-025A | No-device selected-lane native regression harness and report hardening | BOUNDED_AUTONOMOUS; PROD_SAFE no-device docs/schemas/validators/synthetic tests only | qa/task-025a-no-device-native-regression-harness | completed; physical runtime deferred because no device is available |
+| TASK-025A | No-device selected-lane native regression harness and report hardening | BOUNDED_AUTONOMOUS; PROD_SAFE no-device docs/schemas/validators/synthetic tests only | qa/task-025a-no-device-native-regression-harness | completed; physical runtime was deferred in TASK-025A because no device was available in that historical thread |
 | TASK-026A | XL+ no-device TASK-025B readiness and regression coverage | BOUNDED_AUTONOMOUS; PROD_SAFE no-device tests/docs/validators only | qa/task-026a-xl-no-device-task025b-readiness-coverage | completed; expands local TASK-025B readiness contract coverage without runtime/device/APK actions; integrated to `main` |
 | TASK-026B | No-device implementation of TASK-025B physical runtime tests | BOUNDED_AUTONOMOUS; PROD_SAFE no-device scenario/contracts/synthetic tests only | qa/task-026b-no-device-task025b-runtime-tests | completed; implements future TASK-025B physical runtime scenarios behind gates without runtime/device/APK actions; integrated to `main` |
-| TASK-025B | Selected-lane physical native regression runtime | future runtime task after device returns and approvals refresh | qa/task-025b-selected-lane-physical-native-regression | deferred; must start in fresh thread only after TASK-026B completion/integration, physical Android TV/STB availability and refreshed owner approvals |
+| TASK-025B | Selected-lane physical native regression runtime | NON_AUTONOMOUS runtime task after refreshed owner approvals | qa/task-025b-selected-lane-physical-native-regression | active/blocked before runtime in fresh 2026-07-06 thread; no ADB/APK/app action executed; Security/Prod-safety requires full refreshed preflight and approval ledger before physical execution |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
@@ -128,18 +128,20 @@ public repo-relative reference sanity checks only. It did not read ignored
 network checks, crawl external links or claim runtime/product behavior.
 
 TASK-025A completed as a no-device audit task. TASK-025 physical-device runtime
-execution remains deferred because no physical Android TV/STB device is
-currently available. TASK-025A is limited to no-device automation readiness,
-schema/report hardening and fake/synthetic tests. TASK-025B may execute
-selected-lane physical runtime only after a device is available and owner
-approvals are refreshed.
+execution was deferred in that historical thread because no physical Android
+TV/STB device was available then. TASK-025A is limited to no-device automation
+readiness, schema/report hardening and fake/synthetic tests. TASK-025B may
+execute selected-lane physical runtime only after a device is confirmed
+connected/authorized and owner approvals are refreshed in the TASK-025B thread.
 
 Post-TASK-025A continuation selection from `main@863d00e` found no eligible
-unfinished `PROD_SAFE` bounded task ready for autonomous execution. `TASK-025B`
-remains `deferred` / `blocked` until a physical Android TV/STB device is
-available and owner approvals are refreshed. Runtime/device/APK/WebView/WebRTC/
-payment/network/live CI work must remain blocked until prerequisites are
-recorded with `evidence_status=confirmed`.
+unfinished `PROD_SAFE` bounded task ready for autonomous execution. At that
+time `TASK-025B` remained `deferred` / `blocked` until a physical Android TV/STB
+device was available and owner approvals were refreshed. The fresh 2026-07-06
+TASK-025B thread supersedes that availability note with owner-stated connected
+hardware, but runtime/device/APK/WebView/WebRTC/payment/network/live CI work
+remains blocked until prerequisites are recorded with
+`evidence_status=confirmed`.
 
 Allowed next action is owner input or an explicit new bounded public-safe task;
 do not invent additional broad hardening unless a concrete false-pass or

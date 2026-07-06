@@ -2,22 +2,34 @@
 
 Do not start TASK-025B until every item is confirmed:
 
-| Check | Required value | Status before TASK-025B |
+| Check | Required value | Fresh 2026-07-06 TASK-025B status |
 |---|---|---|
-| Physical device available | `true` | deferred |
-| Selected device connected and authorized | `yes` | deferred |
-| Runtime lane aliases | refreshed/confirmed | deferred |
-| APK local presence | target-specific APK under `.qa_local/apks/task-005/` | deferred |
-| APK hash evidence | local-only SHA-256 recorded | deferred |
-| Synthetic QA user env | `.qa_local/secrets/qa_user.env` exists | deferred |
-| Raw phone/OTP printing | forbidden | deferred |
-| Evidence capture approval | explicit | deferred |
-| Evidence storage | ignored local storage | deferred |
-| Cleanup policy | explicit | deferred |
-| Payment/WebView/stream/profile/network boundaries | forbidden | deferred |
+| Physical device available | `true` | confirmed: one authorized ADB target |
+| Selected device connected and authorized | `yes` | confirmed: one authorized ADB target |
+| Runtime lane aliases | refreshed/confirmed | confirmed from valid local approval metadata: `tv-tpv-013` / `tv-tpv-a12-013` |
+| APK local presence | target-specific APK under `.qa_local/apks/task-005/` | blocked: directory has five APK candidates, but selected metadata path is missing |
+| APK hash evidence | local-only SHA-256 recorded | blocked until selected APK is identified; value must not be printed |
+| Synthetic QA user env | `.qa_local/secrets/qa_user.env` exists | confirmed existence-only; raw values not printed |
+| Raw phone/OTP printing | forbidden | confirmed as forbidden for this TASK-025B scope |
+| Evidence capture approval | explicit | owner authorized refreshed preflight/runtime in this thread; runtime still blocked by selected APK |
+| Evidence storage | ignored local storage | `.qa_local/` ignored; task evidence path not used because runtime did not start |
+| Cleanup policy | explicit | force-stop/relaunch cleanup remains planned but not used because runtime did not start |
+| Payment/WebView/stream/profile/network boundaries | forbidden | confirmed as forbidden for this TASK-025B scope |
 
-TASK-025B remains blocked until this checklist is refreshed in a fresh task
-thread with current owner approval.
+TASK-025B remains blocked until the ledger above is confirmed in this fresh
+TASK-025B thread with current owner approval.
+
+Fresh 2026-07-06 checkpoint: after explicit owner authorization, redaction-safe
+preflight confirmed ADB availability, one authorized target, approval aliases,
+ignored APK directory existence and synthetic QA env existence. Runtime remains
+blocked because the selected APK path from valid approval metadata is missing
+while five APK candidates exist under `.qa_local/apks/task-005/`. No APK hash,
+install, app launch, screenshots, XML, logcat, secrets or raw runtime evidence
+were produced.
+
+An ignored local-only APK candidate index was generated under
+`.qa_local/evidence/task-025b/preflight/` so the owner can select the approved
+candidate without publishing filenames, paths or hashes.
 
 TASK-026A no-device tests require the corresponding report preflight object to
 remain `preflight_status=deferred_no_device` with all runtime-enabling booleans

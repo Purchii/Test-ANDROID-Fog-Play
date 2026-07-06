@@ -7,13 +7,14 @@
 ## Objective
 
 Prepare selected-lane native post-auth regression automation for future
-TASK-025B while no physical Android TV/STB device is currently available.
+TASK-025B while no physical Android TV/STB device was available in that
+historical TASK-025A thread.
 
-TASK-025 physical-device runtime execution is deferred because no physical
-Android TV/STB device is currently available. TASK-025A is limited to no-device
-automation readiness, schema/report hardening and fake/synthetic tests.
-TASK-025B will execute selected-lane physical runtime only after a device is
-available and owner approvals are refreshed.
+TASK-025 physical-device runtime execution was deferred in TASK-025A because no
+physical Android TV/STB device was available then. TASK-025A is limited to
+no-device automation readiness, schema/report hardening and fake/synthetic
+tests. TASK-025B will execute selected-lane physical runtime only after a device
+is confirmed connected/authorized and owner approvals are refreshed.
 
 ## No-device constraints
 

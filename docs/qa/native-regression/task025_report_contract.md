@@ -91,9 +91,23 @@ scenario contracts:
 
 The `task025b_runtime_scenarios` report section must keep
 `counts_as_runtime_evidence=false`, empty `runtime_evidence_ids`, case statuses
-limited to `not_run` / `blocked` / `deferred` and the exact boundary guard
-allowlist. Synthetic executions may be `pass` only as contract checks; they
-remain non-runtime evidence.
+limited to `not_run` / `blocked` / `deferred`, case `evidence_status=unknown`
+and the exact boundary guard allowlist. Synthetic executions may be `pass` only
+as contract checks; they remain non-runtime evidence.
+
+Scenario validation must enforce the ordered minimum action contract for each
+`NR-001` through `NR-010` case, not only the presence of any allowed action.
+Boundary-sensitive scenarios must declare public-safe
+`expected_boundary_categories` and `expected_screen_state_categories`, and
+`NR-008` / `NR-009` must include an explicit `classify_boundary` action rather
+than only a public-safe evidence-reference placeholder.
+Synthetic guarded-boundary coverage may confirm only fake driver handling of
+the boundary category allowlist; it does not prove real payment, WebView,
+stream, Steam/account, profile/account or network/offline behavior.
+When synthetic sequencing status is `pass`, the synthetic execution ledger must
+contain exactly one recognized execution for every required case ID with no
+duplicates, and boundary-sensitive executions must record non-empty guarded
+boundary categories.
 
 ## Public safety flags
 

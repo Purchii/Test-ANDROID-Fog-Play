@@ -1,7 +1,8 @@
 # TASK-025B Codex prompt stub
 
-Use this stub only after a physical device is available and approvals are
-refreshed. Do not use it to run TASK-025A.
+Use this stub only after a physical device is confirmed connected/authorized
+and approvals are refreshed in the fresh TASK-025B thread. Do not use it to run
+TASK-025A.
 
 ```text
 Task: TASK-025B - Selected-lane physical native regression runtime

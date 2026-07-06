@@ -7,11 +7,12 @@ lane used by TASK-005, TASK-019, TASK-020, TASK-021, TASK-022, TASK-023 and
 TASK-024. TASK-025A is no-device readiness only. TASK-025B is the future
 physical runtime run.
 
-TASK-025 physical-device runtime execution is deferred because no physical
-Android TV/STB device is currently available. TASK-025A is limited to no-device
-automation readiness, schema/report hardening and fake/synthetic tests.
-TASK-025B will execute selected-lane physical runtime only after a device is
-available and owner approvals are refreshed.
+TASK-025 physical-device runtime execution was deferred in TASK-025A because no
+physical Android TV/STB device was available in that historical thread.
+TASK-025A is limited to no-device automation readiness, schema/report hardening
+and fake/synthetic tests. TASK-025B will execute selected-lane physical runtime
+only after a device is confirmed connected/authorized and owner approvals are
+refreshed.
 
 ## Future selected lane
 

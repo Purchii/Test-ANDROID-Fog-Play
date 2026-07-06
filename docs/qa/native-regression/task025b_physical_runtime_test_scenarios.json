@@ -195,6 +195,15 @@
       "title": "game detail server-list schema sample without payment/session start",
       "default_no_device_status": "blocked",
       "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "expected_boundary_categories": [
+        "payment/subscription/purchase",
+        "stream/WebRTC/media playback/game session start"
+      ],
+      "expected_screen_state_categories": [
+        "game_detail",
+        "server_list",
+        "purchase_or_session_boundary"
+      ],
       "steps": [
         { "action": "classify_screen" },
         { "action": "assert_focus_present" },
@@ -222,6 +231,17 @@
       "title": "QR/boundary surfaces classified but not opened",
       "default_no_device_status": "blocked",
       "future_runtime_gate": "requires_confirmed_task025b_preflight",
+      "expected_boundary_categories": [
+        "WebView/browser/external QR traversal",
+        "Steam/account connection",
+        "profile/account mutation",
+        "payment/subscription/purchase"
+      ],
+      "expected_screen_state_categories": [
+        "qr_boundary",
+        "external_action_boundary",
+        "settings_or_help_boundary"
+      ],
       "steps": [
         { "action": "classify_screen" },
         { "action": "classify_boundary" },

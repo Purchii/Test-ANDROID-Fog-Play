@@ -4,13 +4,16 @@ from pathlib import Path
 
 from automation.native_regression.run_task026b_no_device_task025b_runtime_tests import (
     DEFAULT_SCENARIOS,
+    FORBIDDEN_BOUNDARY_CATEGORIES,
     FORBIDDEN_SCENARIO_ACTIONS,
     REQUIRED_CASE_IDS,
+    REQUIRED_CASE_ACTIONS,
     SYNTHETIC_EXECUTION_MODE,
     build_report,
     load_scenarios,
     main,
     run_synthetic_scenarios,
+    synthetic_boundary_category_coverage,
     validate_scenarios,
     validate_task026b_report,
 )
@@ -31,6 +34,16 @@ def test_task026b_scenario_contract_covers_all_task025b_cases_without_runtime_st
     assert scenarios["runtime_execution_status"] == "not_run"
     assert {case["case_id"] for case in scenarios["scenarios"]} == REQUIRED_CASE_IDS
     assert all(case["default_no_device_status"] in {"not_run", "blocked", "deferred"} for case in scenarios["scenarios"])
+    for case in scenarios["scenarios"]:
+        actions = [
+            f"press_dpad:{step['direction']}" if step["action"] == "press_dpad" else step["action"]
+            for step in case["steps"]
+        ]
+        required = list(REQUIRED_CASE_ACTIONS[case["case_id"]])
+        search_from = 0
+        for action in required:
+            found_at = actions.index(action, search_from)
+            search_from = found_at + 1
 
 
 def test_task026b_default_report_is_blocked_not_run_and_deferred(capsys):
@@ -47,6 +60,10 @@ def test_task026b_default_report_is_blocked_not_run_and_deferred(capsys):
     assert report["runtime_evidence_ids"] == []
     assert report["task025b_preflight"]["preflight_status"] == "deferred_no_device"
     assert report["task025b_runtime_scenarios"]["scenario_count"] == 10
+    assert all(
+        case["evidence_status"] == "unknown"
+        for case in report["task025b_runtime_scenarios"]["case_statuses"]
+    )
     assert validate_task026b_report(report) == []
 
 
@@ -83,6 +100,7 @@ def test_task026b_synthetic_sequencing_is_not_runtime_evidence(capsys):
     assert report["runtime_execution_status"] == "not_run"
     assert section["synthetic_sequencing_status"] == "pass"
     assert len(section["synthetic_executions"]) == 10
+    assert section["synthetic_boundary_category_coverage"] == list(FORBIDDEN_BOUNDARY_CATEGORIES)
     assert all(execution["counts_as_runtime_evidence"] is False for execution in section["synthetic_executions"])
     assert all(execution["runtime_evidence_ids"] == [] for execution in section["synthetic_executions"])
     assert validate_task026b_report(report) == []
@@ -97,18 +115,34 @@ def test_task026b_fake_scenarios_record_boundary_classification_without_selectin
     assert all("classify_boundary" in item["action_log"] for item in boundary_executions.values())
     assert all(not any(action == "press_ok" for action in item["action_log"]) for item in executions)
     assert all(item["guarded_boundaries"] for item in boundary_executions.values())
+    assert synthetic_boundary_category_coverage(scenarios) == list(FORBIDDEN_BOUNDARY_CATEGORIES)
+
+
+def test_task026b_boundary_sensitive_scenarios_declare_expected_categories():
+    scenarios = _loaded_scenarios()
+    boundary_cases = {case["case_id"]: case for case in scenarios["scenarios"] if case["case_id"] in {"NR-008", "NR-009"}}
+
+    assert boundary_cases["NR-008"]["expected_boundary_categories"] == [
+        "payment/subscription/purchase",
+        "stream/WebRTC/media playback/game session start",
+    ]
+    assert "server_list" in boundary_cases["NR-008"]["expected_screen_state_categories"]
+    assert "WebView/browser/external QR traversal" in boundary_cases["NR-009"]["expected_boundary_categories"]
+    assert "qr_boundary" in boundary_cases["NR-009"]["expected_screen_state_categories"]
 
 
 def test_task026b_validator_rejects_scenario_runtime_evidence_claim():
     report = build_report(_loaded_scenarios(), synthetic_sequencing_test=True)
     report["task025b_runtime_scenarios"]["runtime_evidence_ids"] = ["runtime-evidence-hidden"]
     report["task025b_runtime_scenarios"]["case_statuses"][0]["status"] = "pass"
+    report["task025b_runtime_scenarios"]["case_statuses"][0]["evidence_status"] = "confirmed"
     report["task025b_runtime_scenarios"]["synthetic_executions"][0]["counts_as_runtime_evidence"] = True
 
     errors = validate_task026b_report(report)
 
     assert "task025b_runtime_scenarios.runtime_evidence_ids must be empty." in errors
     assert "task025b_runtime_scenarios.case_statuses[0].status must remain not_run/blocked/deferred." in errors
+    assert "task025b_runtime_scenarios.case_statuses[0].evidence_status must be unknown." in errors
     assert "task025b_runtime_scenarios.synthetic_executions[0].counts_as_runtime_evidence must be false." in errors
 
 
@@ -154,6 +188,60 @@ def test_task026b_validator_rejects_unsafe_synthetic_execution_details():
     )
 
 
+def test_task026b_validator_rejects_incomplete_synthetic_boundary_category_coverage():
+    report = build_report(_loaded_scenarios(), synthetic_sequencing_test=True)
+    report["task025b_runtime_scenarios"]["synthetic_boundary_category_coverage"] = [
+        "payment/subscription/purchase"
+    ]
+
+    errors = validate_task026b_report(report)
+
+    assert (
+        "task025b_runtime_scenarios.synthetic_boundary_category_coverage must cover every guarded boundary category when synthetic sequencing passes."
+        in errors
+    )
+
+
+def test_task026b_validator_rejects_synthetic_pass_without_exact_case_coverage():
+    report = build_report(_loaded_scenarios(), synthetic_sequencing_test=True)
+    section = report["task025b_runtime_scenarios"]
+    section["synthetic_executions"] = section["synthetic_executions"][:-1]
+
+    errors = validate_task026b_report(report)
+
+    assert "task025b_runtime_scenarios.synthetic_executions missing required cases: ['NR-010']." in errors
+
+
+def test_task026b_validator_rejects_synthetic_execution_missing_or_duplicate_case_id():
+    report = build_report(_loaded_scenarios(), synthetic_sequencing_test=True)
+    executions = report["task025b_runtime_scenarios"]["synthetic_executions"]
+    executions[0].pop("case_id")
+    executions[1]["case_id"] = "NR-003"
+
+    errors = validate_task026b_report(report)
+
+    assert "task025b_runtime_scenarios.synthetic_executions[0].case_id is not recognized." in errors
+    assert "task025b_runtime_scenarios.synthetic_executions[2].case_id is duplicated." in errors
+    assert "task025b_runtime_scenarios.synthetic_executions missing required cases: ['NR-001', 'NR-002']." in errors
+
+
+def test_task026b_validator_rejects_boundary_sensitive_synthetic_execution_without_boundary():
+    report = build_report(_loaded_scenarios(), synthetic_sequencing_test=True)
+    boundary_execution = next(
+        execution
+        for execution in report["task025b_runtime_scenarios"]["synthetic_executions"]
+        if execution["case_id"] == "NR-008"
+    )
+    boundary_execution["guarded_boundaries"] = []
+
+    errors = validate_task026b_report(report)
+
+    assert (
+        "task025b_runtime_scenarios.synthetic_executions[7].guarded_boundaries must be non-empty for boundary-sensitive cases."
+        in errors
+    )
+
+
 def test_task026b_scenario_validator_rejects_boundary_entry_and_forbidden_action():
     scenarios = _loaded_scenarios()
     scenarios["scenarios"][7]["boundary_policy"]["boundary_entered"] = True
@@ -173,6 +261,40 @@ def test_task026b_scenario_validator_rejects_missing_boundary_classification_for
     errors = validate_scenarios(scenarios)
 
     assert any("NR-009 must include a boundary classification step" in error for error in errors)
+
+
+def test_task026b_scenario_validator_rejects_evidence_ref_only_boundary_case():
+    scenarios = _loaded_scenarios()
+    scenarios["scenarios"][7]["steps"] = [
+        {"action": "classify_screen"},
+        {"action": "record_public_safe_evidence_ref"},
+        {"action": "press_back"},
+    ]
+
+    errors = validate_scenarios(scenarios)
+
+    assert any("NR-008 must include an explicit classify_boundary step" in error for error in errors)
+    assert any("NR-008 must include the required ordered action contract" in error for error in errors)
+
+
+def test_task026b_scenario_validator_rejects_missing_expected_boundary_categories():
+    scenarios = _loaded_scenarios()
+    scenarios["scenarios"][7].pop("expected_boundary_categories")
+    scenarios["scenarios"][8]["expected_screen_state_categories"] = []
+
+    errors = validate_scenarios(scenarios)
+
+    assert any("NR-008 must declare expected_boundary_categories" in error for error in errors)
+    assert any("NR-009 must declare expected_screen_state_categories" in error for error in errors)
+
+
+def test_task026b_scenario_validator_rejects_missing_required_case_actions():
+    scenarios = _loaded_scenarios()
+    scenarios["scenarios"][9]["steps"] = [{"action": "press_home"}]
+
+    errors = validate_scenarios(scenarios)
+
+    assert any("NR-010 must include the required ordered action contract" in error for error in errors)
 
 
 def test_task026b_scenario_validator_rejects_raw_public_values():

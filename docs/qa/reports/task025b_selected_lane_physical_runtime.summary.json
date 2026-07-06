@@ -1,0 +1,301 @@
+{
+  "schema_version": "task025b-selected-lane-physical-runtime-summary-v1",
+  "generated_at_local": "2026-07-06",
+  "task_id": "TASK-025B",
+  "mode": "NON_AUTONOMOUS",
+  "execution_mode": "physical_selected_lane_runtime",
+  "run_status": "partial",
+  "runtime_execution_status": "partial",
+  "physical_device_available": true,
+  "physical_device_status": "available",
+  "apk_install_status": "pass",
+  "app_launch_status": "pass_after_force_stop_relaunch",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-television-full",
+    "synthetic_user_alias": "qa-user-phone-001"
+  },
+  "task025b_preflight": {
+    "preflight_status": "confirmed_for_task025b",
+    "physical_device_available": true,
+    "refreshed_owner_approvals": true,
+    "selected_device_authorized": true,
+    "apk_presence_confirmed": true,
+    "apk_hash_recorded_local_only": true,
+    "synthetic_user_env_confirmed": true,
+    "evidence_capture_approval": true,
+    "cleanup_policy_confirmed": true,
+    "runtime_evidence_required_for_pass": true
+  },
+  "runtime_evidence_ids": [
+    "rt-preflight-001",
+    "rt-install-001",
+    "rt-launch-001",
+    "rt-cp001",
+    "rt-cp002",
+    "rt-cp004",
+    "rt-cp006",
+    "rt-cp008",
+    "rt-cp009",
+    "rt-cp010",
+    "rt-cp013",
+    "rt-cp018",
+    "rt-cp019",
+    "rt-cp023",
+    "rt-cp025",
+    "rt-cp028",
+    "rt-cp029",
+    "rt-cp030",
+    "rt-cp031"
+  ],
+  "boundary_guard_categories": [
+    "payment/subscription/purchase",
+    "WebView/browser/external QR traversal",
+    "stream/WebRTC/media playback/game session start",
+    "Steam/account connection",
+    "profile/account mutation",
+    "network/offline manipulation"
+  ],
+  "regression_cases": [
+    {
+      "case_id": "NR-001",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp006", "rt-cp019"],
+      "summary": "Authorized post-auth catalog state restored after force-stop relaunch."
+    },
+    {
+      "case_id": "NR-002",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp006", "rt-cp019"],
+      "summary": "Catalog root and side-rail focus/actionability sampled."
+    },
+    {
+      "case_id": "NR-003",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp006", "rt-cp026", "rt-cp027"],
+      "summary": "Catalog rail/grid focus and limited scroll/focus sample confirmed."
+    },
+    {
+      "case_id": "NR-004",
+      "status": "known_anomaly",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp013", "rt-cp018", "rt-cp019"],
+      "reason": "Search opened and TV keyboard input path was visible, but Back/Escape recovery remained trapped until app recovery.",
+      "anomaly_ids": ["ANOM-025B-002"]
+    },
+    {
+      "case_id": "NR-005",
+      "status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp028", "rt-cp029"],
+      "reason": "Attempted safe detail path reached a catalog banner QR boundary instead of game detail; external target was not opened."
+    },
+    {
+      "case_id": "NR-006",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp010", "rt-cp020", "rt-cp025"],
+      "summary": "Settings root/promo-code category was visible and safe recovery returned to catalog."
+    },
+    {
+      "case_id": "NR-007",
+      "status": "blocked_by_boundary",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp023", "rt-cp025"],
+      "reason": "Settings navigation reached logout confirmation boundary instead of gamepad safe entry; cancel/no was selected and no account mutation was performed.",
+      "anomaly_ids": ["ANOM-025B-003"]
+    },
+    {
+      "case_id": "NR-008",
+      "status": "not_run",
+      "evidence_status": "unknown",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": false,
+      "reason": "Game detail server-list path was not reached before the owner requested task stop; no payment/session/stream boundary was entered."
+    },
+    {
+      "case_id": "NR-009",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp008", "rt-cp009", "rt-cp028", "rt-cp023"],
+      "boundary_ids": ["BND-025B-001", "BND-025B-002", "BND-025B-003", "BND-025B-004"],
+      "boundary_evidence_confirmed": true,
+      "summary": "QR and account-mutation boundary surfaces were classified; targets/actions were not followed."
+    },
+    {
+      "case_id": "NR-010",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "execution_mode": "physical_selected_lane_runtime",
+      "counts_as_runtime_evidence": true,
+      "evidence_ids": ["rt-cp005", "rt-cp006", "rt-cp030", "rt-cp031"],
+      "summary": "Force-stop/relaunch and Home/foreground restored catalog session state. A TV system overlay appeared and was classified as external."
+    }
+  ],
+  "boundary_ledger": [
+    {
+      "boundary_id": "BND-025B-001",
+      "boundary_category": "Steam/account connection",
+      "status": "classified_not_entered",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp008"],
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "target_category": "http_url_target",
+      "raw_target_local_only": true
+    },
+    {
+      "boundary_id": "BND-025B-002",
+      "boundary_category": "WebView/browser/external QR traversal",
+      "status": "classified_not_entered",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp009"],
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "target_category": "http_url_target",
+      "raw_target_local_only": true
+    },
+    {
+      "boundary_id": "BND-025B-003",
+      "boundary_category": "WebView/browser/external QR traversal",
+      "status": "classified_not_entered",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp028"],
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "target_category": "http_url_target",
+      "raw_target_local_only": true
+    },
+    {
+      "boundary_id": "BND-025B-004",
+      "boundary_category": "profile/account mutation",
+      "status": "classified_not_entered",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp023", "rt-cp025"],
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "target_category": "logout_confirmation_cancelled",
+      "raw_target_local_only": true
+    }
+  ],
+  "known_anomalies_rechecked": [
+    {
+      "anomaly_id": "ANOM-025B-001",
+      "category": "startup_loading_recovery",
+      "status": "confirmed_recovered",
+      "evidence_status": "confirmed",
+      "trigger_action": "first app launch after external ambient recovery",
+      "expected_result": "catalog loads without prolonged ambiguous loading",
+      "observed_result": "first launch stayed on ambiguous loading state; force-stop cold relaunch restored normal catalog behavior",
+      "test_design_implication": "Keep first-launch sustained loading as a regression watchpoint distinct from successful cold relaunch."
+    },
+    {
+      "anomaly_id": "ANOM-025B-002",
+      "category": "search_keyboard_recovery",
+      "status": "confirmed",
+      "evidence_status": "confirmed",
+      "trigger_action": "open search, move inside TV keyboard, press Back/Escape",
+      "expected_result": "search keyboard closes or returns to catalog",
+      "observed_result": "keyboard/search surface remained until force-stop relaunch recovery",
+      "test_design_implication": "Search no-results/recovery needs a dedicated safe input/recovery helper."
+    },
+    {
+      "anomaly_id": "ANOM-025B-003",
+      "category": "settings_boundary_misnavigation",
+      "status": "confirmed_cancelled",
+      "evidence_status": "confirmed",
+      "trigger_action": "settings navigation intended for gamepad safe entry",
+      "expected_result": "gamepad safe settings surface opens",
+      "observed_result": "logout confirmation boundary opened; cancel/no was selected",
+      "test_design_implication": "Settings/gamepad route needs a safer focus-target helper before retest."
+    }
+  ],
+  "external_system_events": [
+    {
+      "event_id": "SYS-025B-001",
+      "category": "external_system_surface_overlay",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp031"],
+      "summary": "TV system game-mode style overlay appeared over the app after foreground; app catalog remained visible."
+    },
+    {
+      "event_id": "SYS-025B-002",
+      "category": "external_system_ambient",
+      "evidence_status": "confirmed",
+      "evidence_ids": ["rt-cp001"],
+      "summary": "Initial ambient/screensaver surface was classified as external/system and recovered by foreground relaunch."
+    }
+  ],
+  "public_safety": {
+    "raw_phone_otp_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_apk_hash_public": false,
+    "raw_apk_filename_public": false,
+    "raw_qr_targets_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_logs_public": false,
+    "raw_runtime_evidence_public": false,
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "external_qr_or_browser_opened": false,
+    "steam_account_mutation_performed": false,
+    "network_offline_manipulation_performed": false
+  },
+  "coverage_claims": {
+    "selected_lane_native_regression_only": true,
+    "exhaustive_app_navigation": false,
+    "complete_dynamic_value_inventory": false,
+    "complete_data_sources_covered": false,
+    "payment_or_stream_covered": false,
+    "webview_covered": false,
+    "broad_compatibility_covered": false,
+    "fake_synthetic_tests_are_runtime_evidence": false,
+    "task026b_no_device_contract_counts_as_runtime_evidence": false
+  },
+  "dynamic_data_policy": {
+    "assert_fixed_game_titles": false,
+    "assert_fixed_server_rows": false,
+    "assert_fixed_prices": false,
+    "assert_raw_qr_targets": false
+  },
+  "unverified_areas": [
+    "complete app transition graph",
+    "complete data source coverage",
+    "game detail server-list runtime path for NR-008",
+    "search typed no-results path without keyboard recovery trap",
+    "settings gamepad safe-entry path",
+    "payment completion",
+    "paid session start",
+    "stream/WebRTC/media playback",
+    "external QR/browser/WebView traversal",
+    "Steam/account mutation",
+    "network/offline behavior",
+    "broad compatibility matrix"
+  ],
+  "stop_reason": "Owner requested finishing the current task and stopping; no further runtime navigation was performed."
+}

@@ -411,6 +411,28 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   complete dynamic game/server enumeration and broad compatibility remain not
   covered.
 
+- TASK-027S is running on branch
+  `qa/task-027s-visual-destination-screen-coverage` from TASK-027R closure
+  commit `ac9e78b` in `NON_AUTONOMOUS` mode. It explicitly treats TASK-027R
+  `full_graph_closed` as terminal ledger closure only, not visual destination
+  coverage. TASK-027S found and covered a new entry surface category: Google TV
+  launcher / recommendations app entry. That route reached a frequent
+  anomalous app-shell-loader state with left rail visible and persistent
+  central loader instead of catalog or destination content. The public-safe
+  state alias is `app_shell_loader_after_launcher_entry`; it must not be
+  classified as catalog, session journal, Steam/top-up QR, feedback QR or
+  covered destination. TASK-027S now uses a 120-second timeout policy for that
+  preloader state, then records the anomaly, collects local-only diagnostics
+  and moves on. Bounded D-pad/center attempts and direct visible rail-icon taps
+  from the loader still did not visually reach session journal, Steam/top-up QR
+  or feedback QR. Those destinations remain
+  `blocked_by_app_shell_loader_and_prior_rail_input_blocker` pending a new
+  reliable state/focus/targeting oracle. No payment, stream/session, external
+  QR/browser traversal, Steam/account mutation, profile/account mutation,
+  network/offline manipulation, APK modification or security bypass was
+  performed; raw screenshots, XML, logs, package/component values, device
+  identifiers, QR targets and account-like values remain ignored local-only.
+
 ## Audit-chain continuation
 
 Owner standing instruction for this audit chain: work autonomously on audit

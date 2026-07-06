@@ -146,6 +146,16 @@ Allowed next action is owner input or an explicit new bounded public-safe task;
 do not invent additional broad hardening unless a concrete false-pass or
 source-of-truth defect is identified.
 
+TASK-027S adds a concrete follow-up candidate after final verification:
+implement or specify a reliable runtime detector for
+`app_shell_loader_after_launcher_entry` with a 120-second timeout and local-only
+diagnostic collection, then design a new safe state/focus/targeting oracle for
+session journal, Steam/top-up QR and feedback QR routes. The route retry must
+not repeat old coordinate/key/D-pad no-op attempts without that new oracle, and
+must preserve the same production-safety boundaries: no payment/session start,
+external QR/browser traversal, stream/media playback, Steam/account mutation,
+profile mutation, network/offline manipulation or APK modification.
+
 For the audit chain, owner authorization persists in repository source of
 truth: each independent audit task must start in a fresh thread, verified
 completed audit tasks may be pushed/merged to the detected default branch

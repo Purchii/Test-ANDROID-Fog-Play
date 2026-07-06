@@ -1,0 +1,326 @@
+{
+  "schema_version": "task027s-visual-destination-screen-coverage-v1",
+  "task_id": "TASK-027S",
+  "mode": "NON_AUTONOMOUS",
+  "run_status": "blocked_by_app_shell_loader",
+  "runtime_execution_status": "blocked",
+  "execution_mode": "physical_selected_lane_runtime",
+  "runtime_lane": {
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-television-full",
+    "synthetic_user_alias": "qa-user-phone-001",
+    "lane_unchanged_from_task027r": true
+  },
+  "source_reports": [
+    {
+      "task_id": "TASK-027R",
+      "public_ref": "task027_full_app_transition_graph_physical_runtime.summary.json",
+      "use_as": "terminal ledger baseline only, not visual destination coverage"
+    },
+    {
+      "task_id": "TASK-020",
+      "public_ref": "task020_full_screen_inventory.summary.json",
+      "use_as": "prior screen-family baseline only"
+    },
+    {
+      "task_id": "TASK-023",
+      "public_ref": "task023_full_data_screen_inventory.summary.json",
+      "use_as": "prior data/screen-family baseline only"
+    }
+  ],
+  "target_destination_ledger": [
+    {
+      "target_id": "T027S-DST-001",
+      "screen_family": "session_journal_empty",
+      "coverage_status": "blocked_by_app_shell_loader_and_prior_rail_input_blocker",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp075-after-rail-down-to-journal-candidate",
+        "rt027s-cp076-after-journal-center",
+        "rt027s-cp081-loader-rail-before-icon-taps",
+        "rt027s-cp082-after-loader-journal-icon-tap",
+        "rt027s-cp086-loader-timeout-after-2min",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "visual_destination_proof": false,
+      "public_safe_note": "TASK-027S repeatedly reached or remained in app shell loader after launcher entry and rail attempts; no session journal destination was visually reached."
+    },
+    {
+      "target_id": "T027S-DST-002",
+      "screen_family": "steam_topup_qr",
+      "coverage_status": "blocked_by_app_shell_loader_and_prior_rail_input_blocker",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp077-after-rail-down-to-steam-candidate",
+        "rt027s-cp078-after-steam-center",
+        "rt027s-cp081-loader-rail-before-icon-taps",
+        "rt027s-cp083-after-loader-steam-icon-tap",
+        "rt027s-cp086-loader-timeout-after-2min",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "visual_destination_proof": false,
+      "qr_decode_status": "not_reached",
+      "qr_navigation_followed": false,
+      "public_safe_note": "TASK-027S repeatedly reached or remained in app shell loader after launcher entry and rail attempts; no Steam/top-up QR destination was visually reached, and no QR target was followed."
+    },
+    {
+      "target_id": "T027S-DST-003",
+      "screen_family": "feedback_qr",
+      "coverage_status": "blocked_by_app_shell_loader_and_prior_rail_input_blocker",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp079-after-rail-down-to-feedback-candidate",
+        "rt027s-cp080-after-feedback-center",
+        "rt027s-cp081-loader-rail-before-icon-taps",
+        "rt027s-cp084-after-loader-feedback-icon-tap",
+        "rt027s-cp086-loader-timeout-after-2min",
+        "rt027r-cp052b",
+        "rt027r-cp053",
+        "rt027r-cp054",
+        "rt027r-cp055",
+        "rt027r-cp056"
+      ],
+      "visual_destination_proof": false,
+      "qr_decode_status": "not_reached",
+      "qr_navigation_followed": false,
+      "public_safe_note": "TASK-027S repeatedly reached or remained in app shell loader after launcher entry and rail attempts; no feedback QR destination was visually reached, and no QR target was followed."
+    }
+  ],
+  "entry_surface_ledger": [
+    {
+      "entry_id": "T027S-ENTRY-001",
+      "entry_surface": "google_tv_launcher_apps_row_or_recommendations",
+      "coverage_status": "covered_as_entry_surface",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp066-launcher-recommendations-pre-entry",
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp086-loader-timeout-after-2min"
+      ],
+      "resulting_state": "app_shell_loader_after_launcher_entry",
+      "entered_expected_catalog": false,
+      "public_safe_note": "Launcher/recommendations entry is a real entry surface; in TASK-027S it led to a persistent app shell loader, not a loaded catalog or destination."
+    },
+    {
+      "entry_id": "T027S-ENTRY-002",
+      "entry_surface": "explicit_component_launch_oracle",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp057-launch-wait",
+        "rt027s-cp058-post-launch"
+      ],
+      "resulting_state": "google_tv_launcher_surface",
+      "entered_expected_catalog": false,
+      "public_safe_note": "Explicit launch oracle did not restore the in-app catalog state during TASK-027S."
+    },
+    {
+      "entry_id": "T027S-ENTRY-003",
+      "entry_surface": "leanback_package_launch_oracle",
+      "coverage_status": "blocked_by_tooling",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp064-monkey-launch",
+        "rt027s-cp065-monkey-launch-wait"
+      ],
+      "resulting_state": "google_tv_launcher_surface",
+      "entered_expected_catalog": false,
+      "public_safe_note": "Alternate package launch oracle still stayed on the Google TV launcher surface."
+    }
+  ],
+  "state_detection_targets": [
+    {
+      "state_alias": "app_shell_loader_after_launcher_entry",
+      "state_category": "app_loader_anomaly",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp075-after-rail-down-to-journal-candidate",
+        "rt027s-cp076-after-journal-center",
+        "rt027s-cp077-after-rail-down-to-steam-candidate",
+        "rt027s-cp078-after-steam-center",
+        "rt027s-cp079-after-rail-down-to-feedback-candidate",
+        "rt027s-cp080-after-feedback-center",
+        "rt027s-cp081-loader-rail-before-icon-taps",
+        "rt027s-cp082-after-loader-journal-icon-tap",
+        "rt027s-cp083-after-loader-steam-icon-tap",
+        "rt027s-cp084-after-loader-feedback-icon-tap",
+        "rt027s-cp086-loader-timeout-after-2min"
+      ],
+      "visual_markers_public_safe": [
+        "left app rail visible",
+        "main content spinner or loader visible",
+        "destination content absent"
+      ],
+      "xml_markers_public_safe": [
+        "no focused node",
+        "no clickable nodes exposed for visible rail state",
+        "no scrollable nodes exposed for visible rail state",
+        "reduced node set compared with normal catalog"
+      ],
+      "must_not_classify_as": [
+        "post_auth_games_catalog_top",
+        "session_journal_empty",
+        "steam_topup_qr",
+        "feedback_qr",
+        "covered_destination"
+      ],
+      "timeout_policy_seconds": 120,
+      "test_action_after_timeout": "record anomaly with screenshot, XML and local-only diagnostics, then recover or move to the next bounded route without waiting indefinitely",
+      "hypotheses_public_safe": [
+        "content bootstrap or shell hydration does not complete after launcher entry",
+        "route host remains in a preloader state while the rail shell is already visible",
+        "profile/session/entitlement bootstrap or content service response may be unresolved without a user-visible error state",
+        "rail focus/action nodes may be registered only after content bootstrap, leaving the visible rail non-interactive"
+      ]
+    }
+  ],
+  "anomaly_records": [
+    {
+      "anomaly_id": "ANOM-027S-001",
+      "category": "app_shell_loader_after_launcher_entry",
+      "trigger_action": "Activate visible MTC Fog Play app entry from Google TV launcher or recommendation surface.",
+      "expected_result": "A loaded post-auth catalog or another recoverable app destination screen appears.",
+      "observed_result": "The app shell rail appeared, but the main content area remained on a spinner/loader through delayed captures and a 120-second timeout checkpoint.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp067-after-visible-app-icon-entry",
+        "rt027s-cp068-after-entry-wait",
+        "rt027s-cp074-after-entry-short-wait",
+        "rt027s-cp086-loader-timeout-after-2min"
+      ],
+      "likely_or_hypothesis_cause": "likely launcher-entry or shell-hydration/content-bootstrap stall where the navigation shell renders but catalog/content route resolution does not complete; possible profile/session/entitlement wait without user-visible error state",
+      "recovery_action": "After up to 120 seconds, classify as app-shell-loader anomaly, collect local-only screenshot/XML/log/dumpsys diagnostics, and move on via safe recovery instead of waiting indefinitely.",
+      "test_design_implication": "Automation needs an explicit detector and 120-second timeout for app_shell_loader_after_launcher_entry before rail destination assertions."
+    },
+    {
+      "anomaly_id": "ANOM-027S-002",
+      "category": "launch_oracle_stayed_on_system_surface",
+      "trigger_action": "Attempt explicit and leanback launch oracles for the selected app lane.",
+      "expected_result": "The in-app catalog rail state appears.",
+      "observed_result": "The visual checkpoints remained on a Google TV launcher surface or app recommendation surface.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp057-launch-wait",
+        "rt027s-cp058-post-launch",
+        "rt027s-cp064-monkey-launch",
+        "rt027s-cp065-monkey-launch-wait"
+      ],
+      "likely_or_hypothesis_cause": "likely launch-intent or foreground recovery oracle mismatch in the current device state",
+      "recovery_action": "Use launcher entry surface as a separate entry path and keep raw package/component details local-only.",
+      "test_design_implication": "Entry-surface coverage and in-app destination coverage must be tracked separately."
+    },
+    {
+      "anomaly_id": "ANOM-027S-003",
+      "category": "external_tv_ambient_interruption",
+      "trigger_action": "Attempt to continue rail navigation after app-shell-loader evidence while device/app had been idle.",
+      "expected_result": "The app foreground remains available for the next bounded navigation checkpoint.",
+      "observed_result": "A TV/system ambient surface appeared instead of app navigation content.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp069-loader-rail-start"
+      ],
+      "likely_or_hypothesis_cause": "likely Android TV ambient/screensaver interruption during idle time, not an app destination screen",
+      "recovery_action": "Classify as external/system interruption, recover the approved app lane safely, and do not count it as app coverage.",
+      "test_design_implication": "Runtime state detector must distinguish app-shell-loader, launcher and external ambient surfaces before making destination assertions."
+    },
+    {
+      "anomaly_id": "ANOM-027S-004",
+      "category": "rail_input_on_loader_no_destination",
+      "trigger_action": "From app-shell-loader state, apply bounded D-pad/center attempts and direct taps on visible rail icon regions for journal, Steam/top-up and feedback candidates.",
+      "expected_result": "A visually distinct session journal, Steam/top-up QR or feedback QR destination appears, or focus moves to a usable rail target.",
+      "observed_result": "The visual checkpoints remained on the app shell loader; XML exposed no focused, clickable or scrollable target nodes for the visible rail state.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027s-cp075-after-rail-down-to-journal-candidate",
+        "rt027s-cp076-after-journal-center",
+        "rt027s-cp078-after-steam-center",
+        "rt027s-cp080-after-feedback-center",
+        "rt027s-cp082-after-loader-journal-icon-tap",
+        "rt027s-cp083-after-loader-steam-icon-tap",
+        "rt027s-cp084-after-loader-feedback-icon-tap"
+      ],
+      "likely_or_hypothesis_cause": "likely rail action/focus registration is blocked while content bootstrap is incomplete, or the visible rail is a non-interactive shell layer until content route resolution finishes",
+      "recovery_action": "Do not repeat additional coordinate/key attempts from loader without a new oracle; classify destination coverage as not visually reached for this task.",
+      "test_design_implication": "Future route tests need a state oracle proving loaded catalog or actionable rail focus before asserting destination transitions."
+    }
+  ],
+  "checkpoint_modality_audit": {
+    "screenshot_visual_inspection": "confirmed_local_only_for_task027s_checkpoints",
+    "xml_capture": "confirmed_local_only_for_task027s_checkpoints",
+    "xml_visual_mismatch": "confirmed_for_app_shell_loader_no_focused_node",
+    "raw_artifacts_public": false,
+    "local_only_archive_created": true,
+    "public_archive_reference": "local-only task027s app-shell-loader developer handoff archive",
+    "timeout_policy_seconds_for_app_shell_loader": 120,
+    "local_only_diagnostics_collected": [
+      "screenshot",
+      "UI XML",
+      "app-process logcat when available",
+      "crash buffer",
+      "activity/window/input dumpsys",
+      "meminfo/gfxinfo when available"
+    ]
+  },
+  "public_safety": {
+    "raw_phone_otp_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_apk_hash_public": false,
+    "raw_apk_filename_public": false,
+    "raw_qr_targets_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_logs_public": false,
+    "raw_video_public": false,
+    "raw_runtime_evidence_public": false,
+    "private_routes_or_endpoints_public": false,
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "external_qr_or_browser_opened": false,
+    "steam_account_mutation_performed": false,
+    "network_offline_manipulation_performed": false
+  },
+  "coverage_claims": {
+    "session_journal_visually_covered": false,
+    "steam_topup_qr_visually_covered": false,
+    "feedback_qr_visually_covered": false,
+    "launcher_entry_surface_covered": true,
+    "app_shell_loader_counts_as_catalog": false,
+    "app_shell_loader_counts_as_destination": false,
+    "qr_target_decoded": false,
+    "qr_navigation_followed": false,
+    "payment_or_stream_covered": false,
+    "profile_or_account_mutation_covered": false,
+    "network_offline_covered": false
+  },
+  "unverified_areas": [
+    "session journal visual destination coverage",
+    "Steam/top-up QR visual destination coverage",
+    "feedback QR visual destination coverage",
+    "recovery from app_shell_loader_after_launcher_entry",
+    "root cause of launcher-entry loader anomaly",
+    "app shell loader timeout diagnosis"
+  ]
+}

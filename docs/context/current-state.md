@@ -364,7 +364,12 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   existence, ignored evidence storage and cleanup policy without APK install,
   app launch, screenshots/XML/logs/video, QR decode or navigation. Physical app
   runtime remains blocked pending a separate post-preflight QA/Security runtime
-  approval. TASK-025B remains a partial baseline only, not full graph closure.
+  approval. The owner then requested direct runtime coverage in a separate
+  thread after preparation, so fresh thread
+  `019f3678-274c-7c72-98a9-a35ffd79b9d2`
+  (`TASK-027R — Full app transition graph physical runtime execution`) was
+  created to continue from the TASK-027 preparation branch. TASK-025B remains a
+  partial baseline only, not full graph closure.
 
 ## Audit-chain continuation
 

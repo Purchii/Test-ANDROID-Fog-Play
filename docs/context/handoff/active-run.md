@@ -4,7 +4,7 @@
 
 Mode: `NON_AUTONOMOUS`
 Thread title: `TASK-027 — Full app transition graph physical runtime coverage`
-Thread status: `active_preflight_confirmed_runtime_blocked`
+Thread status: `inactive_preparation_completed_runtime_handoff_created`
 Fresh thread verified: `yes`
 Task ID: `TASK-027`
 Task branch: `qa/task-027-full-app-transition-graph-physical-runtime`
@@ -74,8 +74,16 @@ No APK install, app launch, logcat, screenshot/XML/video capture, QR decode,
 navigation, WebView, payment, stream, account/profile mutation or
 network/offline action was performed in preflight.
 
-Physical app runtime remains `blocked` until QA Reviewer A, QA Reviewer B and
-Security/Prod-safety approve the post-preflight runtime boundary.
+Physical app runtime remains `blocked` in this preparation thread. The owner
+requested direct graph coverage in a separate thread after preparation, so a
+fresh runtime execution thread was created:
+`019f3678-274c-7c72-98a9-a35ffd79b9d2`
+(`TASK-027R — Full app transition graph physical runtime execution`).
+
+That runtime thread must request and record QA Reviewer A, QA Reviewer B and
+Security/Prod-safety approval for the post-preflight runtime boundary before
+APK install, app launch, navigation, screenshot/XML/log/video capture or QR
+decode.
 
 ## Runtime Closure Requirements
 
@@ -143,7 +151,22 @@ python automation/quality/docs_consistency_link_sanity.py
 ```
 
 Runtime/device checks are allowed only after the preflight gate above is
-confirmed.
+confirmed and after the fresh runtime execution thread records post-preflight
+runtime-boundary approval.
+
+## Thread Handoff
+
+Preparation result: `complete`.
+
+Next thread created: `yes`.
+
+Next thread ID: `019f3678-274c-7c72-98a9-a35ffd79b9d2`.
+
+Next thread title: `TASK-027R — Full app transition graph physical runtime execution`.
+
+Next thread branch: continue from `qa/task-027-full-app-transition-graph-physical-runtime`.
+
+Next thread starting commit: `df7b97c` plus this handoff update.
 
 ## Stop Conditions
 

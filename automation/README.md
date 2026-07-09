@@ -169,7 +169,7 @@ WebRTC, payment flows, network services or production systems.
 
 ## API-layer Contract Coverage
 
-`automation/api_layer_contract/` contains the TASK-028 through TASK-032 offline
+`automation/api_layer_contract/` contains the TASK-028 through TASK-033 offline
 API-layer contract validators. They read an owner-provided API audit pack only
 after the pack has been extracted into ignored local quarantine storage and emit
 public-safe summaries with aliases, counts, categories, statuses and blockers
@@ -179,7 +179,9 @@ The validators do not make live REST, WebSocket, STOMP, DataChannel, gamepad,
 Android runtime, APK, payment, stream/session or production calls. They validate
 matrix shape, fixture/sequence references, fixture JSON readability, schema JSON
 readability and offline protocol fixture boundaries, then record live API and
-runtime execution as `not_run`.
+runtime execution as `not_run`. TASK-033 is stricter: it is synthetic/static
+only, does not read ignored API pack raw values, and validates fabricated
+redaction/production-safety guard specimens plus tracked public-summary counts.
 
 ## Static Text Inventory
 

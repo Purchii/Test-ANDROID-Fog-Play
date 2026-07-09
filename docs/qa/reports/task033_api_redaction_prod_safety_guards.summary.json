@@ -1,0 +1,257 @@
+{
+  "android_runtime_status": "not_run",
+  "backend_environment_status": "not_configured",
+  "blocked_reasons": [],
+  "coverage_summary": {
+    "counts_by_expected_public_action": {
+      "block": 3,
+      "deny_execution": 1,
+      "redact": 5,
+      "zero_live_budget": 1
+    },
+    "counts_by_guard_category": {
+      "account_payment_value": 1,
+      "budget_counter": 1,
+      "cookie_session": 1,
+      "credential_token_header": 1,
+      "device_identifier": 1,
+      "local_path_artifact": 1,
+      "payload_body": 1,
+      "qr_target": 1,
+      "runtime_live_action": 1,
+      "url_endpoint_route": 1
+    },
+    "counts_by_validation_status": {
+      "pass": 10
+    },
+    "guard_count": 10
+  },
+  "evidence_status": "likely",
+  "generated_at_utc": "2026-07-09T17:33:36Z",
+  "guard_ledger": [
+    {
+      "category": "credential_token_header",
+      "evidence_status": "likely",
+      "expected_public_action": "redact",
+      "guard_id": "t033-guard-credential-token",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-token-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "cookie_session",
+      "evidence_status": "likely",
+      "expected_public_action": "redact",
+      "guard_id": "t033-guard-cookie-session",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-cookie-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "url_endpoint_route",
+      "evidence_status": "likely",
+      "expected_public_action": "block",
+      "guard_id": "t033-guard-url-endpoint",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-url-route-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "payload_body",
+      "evidence_status": "likely",
+      "expected_public_action": "redact",
+      "guard_id": "t033-guard-payload-body",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-payload-body-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "local_path_artifact",
+      "evidence_status": "likely",
+      "expected_public_action": "block",
+      "guard_id": "t033-guard-local-path",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-local-path-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "device_identifier",
+      "evidence_status": "likely",
+      "expected_public_action": "redact",
+      "guard_id": "t033-guard-device-id",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-device-id-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "account_payment_value",
+      "evidence_status": "likely",
+      "expected_public_action": "redact",
+      "guard_id": "t033-guard-account-payment",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-account-payment-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "qr_target",
+      "evidence_status": "likely",
+      "expected_public_action": "block",
+      "guard_id": "t033-guard-qr-target",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-qr-target-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "runtime_live_action",
+      "evidence_status": "likely",
+      "expected_public_action": "deny_execution",
+      "guard_id": "t033-guard-runtime-live",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-live-action-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    },
+    {
+      "category": "budget_counter",
+      "evidence_status": "likely",
+      "expected_public_action": "zero_live_budget",
+      "guard_id": "t033-guard-budget-counter",
+      "input_material_status": "fabricated_synthetic_redacted",
+      "raw_specimen_public": false,
+      "raw_values_public": false,
+      "specimen_id": "synthetic-budget-counter-specimen",
+      "synthetic_only": true,
+      "validation_status": "pass"
+    }
+  ],
+  "live_api_execution_status": "not_run",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "network_execution_status": "not_run",
+  "overall_status": "pass",
+  "production_safety_boundary": {
+    "adb_actions": "not_run",
+    "android_runtime_actions": "not_run",
+    "apk_actions": "not_run",
+    "budget_source": "synthetic_offline_zero_budget",
+    "classification": "PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY",
+    "concurrency": 0,
+    "live_backend_calls": "not_run",
+    "live_request_count": 0,
+    "load_or_fuzz_loop_performed": false,
+    "payment_or_session_mutation": "not_run",
+    "retry_count": 0
+  },
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY",
+  "public_safety": {
+    "adb_or_android_runtime_actions_performed": false,
+    "apk_read_install_or_modification_performed": false,
+    "datachannel_webrtc_connections_performed": false,
+    "device_binding_mutated": false,
+    "live_backend_calls_performed": false,
+    "live_budget_zero": true,
+    "live_network_calls_performed": false,
+    "local_static_validation_only": true,
+    "profile_or_account_mutation_performed": false,
+    "public_report_contains_only_aliases_counts_categories_status_and_blockers": true,
+    "raw_account_values_public": false,
+    "raw_cookies_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_fixture_bodies_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_payloads_public": false,
+    "raw_payment_values_public": false,
+    "raw_phone_otp_captcha_public": false,
+    "raw_qr_targets_public": false,
+    "raw_specimens_not_persisted_or_printed": true,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_payment_or_session_mutation_performed": false,
+    "stream_or_session_started": false,
+    "synthetic_specimens_only": true,
+    "tls_or_security_bypass_performed": false,
+    "websocket_stomp_connections_performed": false
+  },
+  "redaction_specimen_suite": {
+    "categories_covered": [
+      "account_payment_value",
+      "budget_counter",
+      "cookie_session",
+      "credential_token_header",
+      "device_identifier",
+      "local_path_artifact",
+      "payload_body",
+      "qr_target",
+      "runtime_live_action",
+      "url_endpoint_route"
+    ],
+    "raw_specimens_persisted": false,
+    "raw_specimens_printed": false,
+    "raw_values_public": false,
+    "specimen_material": "fabricated_synthetic_only",
+    "specimen_source": "embedded_fabricated_synthetic_specimens",
+    "specimens_failed": 0,
+    "specimens_passed": 10,
+    "specimens_total": 10,
+    "suite_status": "pass"
+  },
+  "runtime_execution_status": "not_run",
+  "schema_version": "task033-api-redaction-prod-safety-guards-v1",
+  "source_summary": {
+    "known_guard_targets": 8,
+    "known_redaction_tests": 8,
+    "known_security_rows": 8,
+    "source_reports": {
+      "task028": {
+        "live_api_execution_status": "not_run",
+        "overall_status": "pass",
+        "runtime_execution_status": "not_run",
+        "source_report_alias": "task028_api_layer_contract_coverage_summary"
+      },
+      "task036": {
+        "live_api_execution_status": "not_run",
+        "overall_status": "partial_blocked",
+        "runtime_execution_status": "not_run",
+        "source_report_alias": "task036_api_layer_exhaustive_coverage_summary",
+        "task033_ledger_status": "tracked_summary_validated_synthetic_guard_tests_required"
+      }
+    }
+  },
+  "task_id": "TASK-033",
+  "tool_name": "validate_task033_api_redaction_prod_safety_guards",
+  "unverified_areas": [
+    "real evidence redaction behavior",
+    "live REST backend behavior",
+    "live STOMP WebSocket behavior",
+    "live WebRTC DataChannel behavior",
+    "Android runtime correlation",
+    "payment order session mutation behavior"
+  ]
+}

@@ -1,0 +1,1948 @@
+{
+  "blocked_reasons": [
+    "full_raw_static_text_value_list_missing_from_available_sanitized_source"
+  ],
+  "classification_summary": {
+    "category_counts": {
+      "auth_phone_otp_captcha_like": 7,
+      "cyrillic": 6,
+      "device_or_controller_like": 11,
+      "format_placeholder": 11,
+      "latin": 159,
+      "long_text": 5,
+      "multiline": 6,
+      "non_ascii": 10,
+      "payment_or_account_like": 5,
+      "secret_keyword_like": 7,
+      "url_or_domain_like": 7,
+      "vector_path_like": 5
+    },
+    "length_buckets": {
+      "len_17_40": 73,
+      "len_1_16": 67,
+      "len_41_80": 15,
+      "len_81_160": 5
+    },
+    "redaction_class_counts": {
+      "device_identifier_or_controller_like": 11,
+      "endpoint_or_domain_like": 7,
+      "payment_account_like": 5,
+      "phone_otp_captcha_like": 7,
+      "public_summary_hash_only": 123,
+      "token_secret_or_session_like": 7
+    }
+  },
+  "coverage_contract": {
+    "accessibility_behavior_status": "unknown_not_run",
+    "blocked_scope": "full raw list for likely_ui_string_total_from_source is absent from the available sanitized artifact",
+    "complete_scope": "all raw static text values available in the local sanitized source artifact were inventoried",
+    "fixed_dynamic_value_oracles_allowed": false,
+    "runtime_visibility_status": "unknown_not_run",
+    "translation_quality_status": "unknown_not_run"
+  },
+  "evidence_status": "likely",
+  "execution_boundaries": {
+    "adb_execution_status": "not_run",
+    "apk_patch_or_modification_status": "not_run",
+    "decompile_or_smali_status": "not_run",
+    "live_backend_or_network_status": "not_run",
+    "runtime_execution_status": "not_run"
+  },
+  "follow_up_actions": [
+    {
+      "action": "provide an approved local-only full static string export if exact 19187-value raw coverage is required",
+      "production_safety_classification": "PROD_SAFE_LOCAL_STATIC_ONLY",
+      "task": "owner_input_or_local_artifact"
+    },
+    {
+      "action": "map static strings to visible runtime screens only in a separate approved runtime task",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "task": "runtime_text_visibility_audit"
+    }
+  ],
+  "generated_at_utc": "2026-07-09T12:46:24Z",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "overall_status": "partial_blocked",
+  "production_safety_classification": "PROD_SAFE_LOCAL_STATIC_ONLY",
+  "public_safety": {
+    "apk_patch_decompile_or_source_used": false,
+    "apk_runtime_or_adb_execution_performed": false,
+    "live_backend_or_network_calls_performed": false,
+    "local_inventory_contains_raw_text_values": true,
+    "local_inventory_storage": "ignored_local_only",
+    "public_report_contains_hashes_counts_categories_only": true,
+    "public_report_contains_raw_text_values": false,
+    "raw_device_identifier_values_public": false,
+    "raw_local_paths_public": false,
+    "raw_payment_account_values_public": false,
+    "raw_phone_otp_captcha_values_public": false,
+    "raw_static_text_values_public": false,
+    "raw_token_secret_or_session_values_public": false,
+    "raw_url_or_endpoint_values_public": false
+  },
+  "sample_hash_ledger": [
+    {
+      "categories": [
+        "latin",
+        "url_or_domain_like"
+      ],
+      "inventory_id": "stxt-sample-0001-a1733a2b2353",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "a1733a2b235345cc"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "latin",
+        "multiline",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0002-76b065e510f0",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "76b065e510f08dad"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "multiline",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0003-6adfd8b814cc",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "6adfd8b814cc2421"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "latin",
+        "multiline",
+        "non_ascii",
+        "url_or_domain_like"
+      ],
+      "inventory_id": "stxt-sample-0004-17e1bbe2443f",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "17e1bbe2443f44af"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0005-a4e623bf9591",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a4e623bf95919953"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0006-a669c4d1800d",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a669c4d1800d73f4"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "format_placeholder",
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0007-ee2433c97c1e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "ee2433c97c1e38a2"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "format_placeholder",
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0008-e267e675ca02",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e267e675ca025d92"
+    },
+    {
+      "categories": [
+        "cyrillic",
+        "format_placeholder",
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0009-1e5cd7c02747",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "1e5cd7c0274798f7"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0010-e0bac3dc531a",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e0bac3dc531a3ddd"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0011-0deab0b3ffc0",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "0deab0b3ffc085b0"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0012-4f62681c3582",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "4f62681c35822620"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0013-a22e33ca7d3d",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a22e33ca7d3dc038"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0014-fe3b71bc1fc7",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fe3b71bc1fc737c2"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0015-fb9e5248cfd7",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fb9e5248cfd78308"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0016-67adfaecc47c",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "67adfaecc47cf6ff"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0017-fdb2f1a695e8",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fdb2f1a695e8ff91"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0018-8102a2624361",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8102a2624361c30e"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0019-bcd69e97cd90",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "bcd69e97cd90feaa"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0020-b6927f52a764",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b6927f52a764c0f4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0021-51867bc73dce",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "51867bc73dce0f87"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0022-62a7bc35df04",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "62a7bc35df04895f"
+    },
+    {
+      "categories": [
+        "latin",
+        "non_ascii"
+      ],
+      "inventory_id": "stxt-sample-0023-ffe2764cc0b7",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "ffe2764cc0b7253d"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0024-e504e5431853",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "e504e54318534a7f"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0025-bde6272d2246",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "bde6272d2246a3de"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0026-61ad990902e7",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "61ad990902e7bc32"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0027-65b52e8c6521",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "65b52e8c6521a21d"
+    },
+    {
+      "categories": [
+        "latin",
+        "long_text",
+        "multiline"
+      ],
+      "inventory_id": "stxt-sample-0028-b8ef401d1e10",
+      "length_bucket": "len_81_160",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b8ef401d1e109a6a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0029-841e9e5a55d8",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "841e9e5a55d88f24"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0030-8a2589516538",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "8a25895165382f4c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0031-dc3cd069aae6",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "dc3cd069aae6d6bd"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0032-eef407137962",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "eef4071379621c87"
+    },
+    {
+      "categories": [
+        "latin",
+        "payment_or_account_like"
+      ],
+      "inventory_id": "stxt-sample-0033-bbb437c2f36b",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "payment_account_like"
+      ],
+      "sha256_prefix": "bbb437c2f36b5a6e"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0034-b8c2d0ef9b3a",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b8c2d0ef9b3aa103"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0035-fcbc1f6dc015",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fcbc1f6dc015986d"
+    },
+    {
+      "categories": [
+        "latin",
+        "payment_or_account_like"
+      ],
+      "inventory_id": "stxt-sample-0036-d7f9b2e923a6",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "payment_account_like"
+      ],
+      "sha256_prefix": "d7f9b2e923a6db48"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0037-8cb8970183ea",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8cb8970183eac9ea"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0038-d7bf748680e9",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "d7bf748680e9ee85"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0039-5f435c4f75db",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "5f435c4f75db401f"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0040-13fe06b64cc4",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "13fe06b64cc4ecda"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0041-789b74b6ad18",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "789b74b6ad181af3"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0042-2b928ca35a86",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "2b928ca35a86a710"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0043-71140e3f2606",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "71140e3f2606a46d"
+    },
+    {
+      "categories": [
+        "latin",
+        "non_ascii",
+        "payment_or_account_like"
+      ],
+      "inventory_id": "stxt-sample-0044-b15391b9055b",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "payment_account_like"
+      ],
+      "sha256_prefix": "b15391b9055bcaae"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0045-9afb85e21525",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "9afb85e215251006"
+    },
+    {
+      "categories": [
+        "latin",
+        "long_text"
+      ],
+      "inventory_id": "stxt-sample-0046-fa145af7c07f",
+      "length_bucket": "len_81_160",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fa145af7c07fbc36"
+    },
+    {
+      "categories": [
+        "latin",
+        "payment_or_account_like"
+      ],
+      "inventory_id": "stxt-sample-0047-dd3c3f5829c3",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "payment_account_like"
+      ],
+      "sha256_prefix": "dd3c3f5829c3c4ac"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0048-a73eec4a156a",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a73eec4a156ac5c9"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0049-2470ec747cbc",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "2470ec747cbc4a4d"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0050-51c1db7e6008",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "51c1db7e60081f7b"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0051-2c08490da127",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "2c08490da12758d3"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0052-fd72ebc81bc3",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fd72ebc81bc337a4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0053-d527da812b9e",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "d527da812b9ecbd1"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0054-c2886bc3844e",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "c2886bc3844e960e"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0055-8b9b4f57f1c7",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8b9b4f57f1c79971"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0056-47f37e7cef2a",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "47f37e7cef2a6cde"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0057-48a1982ccf79",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "48a1982ccf793bd6"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0058-b0470df90ef4",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b0470df90ef4eb9c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0059-79d90c89b59f",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "79d90c89b59f0e1a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0060-102aed1ea2b1",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "102aed1ea2b15731"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0061-208ff89db776",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "208ff89db7763204"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0062-d39e50fecb66",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "d39e50fecb66e895"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0063-f3630ca8f4dc",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "f3630ca8f4dc09de"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0064-52116389851c",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "52116389851c1f57"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0065-376e20162ce0",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "376e20162ce00255"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0066-35c1a1585d21",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "35c1a1585d217dbf"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0067-61ec70e2856d",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "61ec70e2856d8470"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0068-88f9f2467da1",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "88f9f2467da138e4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0069-e47450cf5767",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e47450cf57679eb0"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0070-a7657a5913ef",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "a7657a5913ef129a"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0071-b6b285283160",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "b6b28528316058fe"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0072-fcb9cf8754d8",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "fcb9cf8754d8dcaf"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0073-9145e1ba14cc",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "9145e1ba14ccc87a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0074-8b7b88fdf758",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8b7b88fdf758dcdd"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0075-8d137af9c64f",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8d137af9c64fba09"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0076-6c44751e6268",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "6c44751e62681094"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0077-cd97ea1cff3e",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "cd97ea1cff3e4e0a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0078-12129fb4c4d9",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "12129fb4c4d9e029"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0079-c380b1410c3b",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "c380b1410c3b1308"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0080-cd76f5a7a9e6",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "cd76f5a7a9e6589a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0081-10403b308337",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "10403b3083378b75"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0082-e4da8a252a77",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e4da8a252a77e2a6"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0083-6fb1c28071a4",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "6fb1c28071a42cd7"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0084-97b1f7f36661",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "97b1f7f3666161d0"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0085-b075c3a04ee0",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b075c3a04ee0daee"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0086-255c3ca4b650",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "255c3ca4b650aa4d"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0087-f35642895bf2",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "f35642895bf2bae3"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0088-a66924d7af35",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a66924d7af353fa4"
+    },
+    {
+      "categories": [
+        "format_placeholder",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0089-5f0035888dd3",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "5f0035888dd3df63"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0090-183c70811006",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "183c7081100618ae"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0091-a85d4e62e02d",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a85d4e62e02d83b1"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0092-87e4dd157266",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "87e4dd157266bd46"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0093-3299c1e4296d",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "3299c1e4296dd24c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0094-1ed9b860bab8",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "1ed9b860bab85fd6"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0095-77499e103925",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "77499e1039252562"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0096-72f3b77ffa89",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "72f3b77ffa89b455"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0097-c5217973a45d",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "c5217973a45d1014"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0098-6ce519722608",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "6ce5197226089da3"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0099-818ab7c195e3",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "818ab7c195e341f4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0100-18534912c800",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "18534912c800eb2c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0101-f7be6761c5da",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "f7be6761c5daf796"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0102-e854e387693a",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "e854e387693ac59e"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0103-a419dc60a527",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "a419dc60a5270ffb"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0104-400e50132dc3",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "400e50132dc33758"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0105-02e4cbc0b112",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "02e4cbc0b1120048"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0106-c8e130c018c7",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "c8e130c018c76fcb"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0107-002a432133b4",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "002a432133b483a6"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0108-851b9489d887",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "851b9489d88746b1"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0109-016a7554794a",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "016a7554794a15c1"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0110-80f8168ec54e",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "80f8168ec54eea2a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0111-477d73f6667a",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "477d73f6667a48e0"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0112-8a7347ac87cb",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8a7347ac87cbdf82"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0113-0173b04c752d",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "0173b04c752dc154"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0114-b2202d8ceb69",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b2202d8ceb69002a"
+    },
+    {
+      "categories": [
+        "latin",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0115-ff5a627f9c56",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "ff5a627f9c56d0a9"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0116-8217fde0671b",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8217fde0671b8635"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0117-76ba4c82ea08",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "76ba4c82ea088073"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0118-60ddb696c47e",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "60ddb696c47ed502"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0119-bb6008a41ba3",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "bb6008a41ba36d18"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0120-e54b74eb9192",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e54b74eb9192b480"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0121-fd1bd13f1f07",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fd1bd13f1f071e8a"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0122-fa45fe28171e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "fa45fe28171ed7f2"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0123-23b4685fc30e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "23b4685fc30ea78b"
+    },
+    {
+      "categories": [
+        "latin",
+        "multiline"
+      ],
+      "inventory_id": "stxt-sample-0124-2e4c344c0cf6",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "2e4c344c0cf6c70c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0125-0f60ccccf613",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "0f60ccccf613fc1f"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0126-f39cd5599f98",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "f39cd5599f98c12c"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0127-09e4f52bf202",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "09e4f52bf202a0ea"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0128-9a37fe481929",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "9a37fe4819294e75"
+    },
+    {
+      "categories": [
+        "device_or_controller_like",
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0129-59723df4a339",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "device_identifier_or_controller_like"
+      ],
+      "sha256_prefix": "59723df4a3399e33"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0130-0c1413b28ee0",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "0c1413b28ee09c88"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0131-d261934d2294",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "d261934d229474c1"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0132-e348491591d1",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "e348491591d150a5"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0133-0f1061d49969",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "0f1061d49969d7d4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0134-853acdb1203b",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "853acdb1203bffc7"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0135-9c08dc4f4346",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "9c08dc4f4346e89c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0136-b83bb34133eb",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "b83bb34133ebcdf5"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0137-867daa7c4528",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "867daa7c4528a89e"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0138-8979c9940392",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "8979c99403920286"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0139-11116d08c642",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "11116d08c6420bbb"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0140-ce2d710c2272",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "ce2d710c2272dbac"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0141-ec038c87e77e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "ec038c87e77e4f29"
+    },
+    {
+      "categories": [
+        "latin",
+        "long_text",
+        "secret_keyword_like"
+      ],
+      "inventory_id": "stxt-sample-0142-9965c16b2a69",
+      "length_bucket": "len_81_160",
+      "redaction_classes": [
+        "token_secret_or_session_like"
+      ],
+      "sha256_prefix": "9965c16b2a699171"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0143-a31650d84806",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "a31650d8480673f5"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0144-1ec8779349f9",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "1ec8779349f9d058"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0145-6b3a2e267734",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "6b3a2e267734d3c0"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0146-f94ac181818e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "f94ac181818ef01c"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0147-c9bbbe834722",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "c9bbbe8347222271"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0148-5601b6abcfec",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "5601b6abcfecb258"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0149-49616145514e",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "49616145514e9abf"
+    },
+    {
+      "categories": [
+        "latin",
+        "payment_or_account_like"
+      ],
+      "inventory_id": "stxt-sample-0150-ed31daf7d840",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "payment_account_like"
+      ],
+      "sha256_prefix": "ed31daf7d84092c6"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0151-57e45cf7ccf8",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "57e45cf7ccf8e4db"
+    },
+    {
+      "categories": [
+        "auth_phone_otp_captcha_like",
+        "latin",
+        "long_text",
+        "multiline"
+      ],
+      "inventory_id": "stxt-sample-0152-d18a40389b29",
+      "length_bucket": "len_81_160",
+      "redaction_classes": [
+        "phone_otp_captcha_like"
+      ],
+      "sha256_prefix": "d18a40389b29877f"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0153-9c62f6c4d109",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "9c62f6c4d10985e4"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0154-7e44dae5def1",
+      "length_bucket": "len_1_16",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "7e44dae5def152d5"
+    },
+    {
+      "categories": [
+        "latin"
+      ],
+      "inventory_id": "stxt-sample-0155-adf1c512435f",
+      "length_bucket": "len_17_40",
+      "redaction_classes": [
+        "public_summary_hash_only"
+      ],
+      "sha256_prefix": "adf1c512435fc563"
+    },
+    {
+      "categories": [
+        "latin",
+        "url_or_domain_like",
+        "vector_path_like"
+      ],
+      "inventory_id": "stxt-sample-0156-94771a31b29b",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "94771a31b29b27f0"
+    },
+    {
+      "categories": [
+        "latin",
+        "url_or_domain_like",
+        "vector_path_like"
+      ],
+      "inventory_id": "stxt-sample-0157-7dc3a9027123",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "7dc3a90271236b99"
+    },
+    {
+      "categories": [
+        "latin",
+        "url_or_domain_like",
+        "vector_path_like"
+      ],
+      "inventory_id": "stxt-sample-0158-71a4f1ec1266",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "71a4f1ec1266e085"
+    },
+    {
+      "categories": [
+        "latin",
+        "url_or_domain_like",
+        "vector_path_like"
+      ],
+      "inventory_id": "stxt-sample-0159-85408c86a68b",
+      "length_bucket": "len_41_80",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "85408c86a68bef5c"
+    },
+    {
+      "categories": [
+        "latin",
+        "long_text",
+        "url_or_domain_like",
+        "vector_path_like"
+      ],
+      "inventory_id": "stxt-sample-0160-32558efc6cbe",
+      "length_bucket": "len_81_160",
+      "redaction_classes": [
+        "endpoint_or_domain_like"
+      ],
+      "sha256_prefix": "32558efc6cbeebd3"
+    }
+  ],
+  "schema_version": "task035-static-text-inventory-v1",
+  "source_artifact": {
+    "raw_values_public": false,
+    "source_alias": "apk-analysis-sanitized-local-raw-json",
+    "source_kind": "sanitized_static_reverse_analysis_json",
+    "source_path_public": "local_ignored_reverse_analysis_artifact",
+    "source_path_tracked": false
+  },
+  "static_text_inventory": {
+    "available_raw_sample_inventory_count": 160,
+    "coverage_status": "blocked_by_missing_full_static_text_values_source",
+    "duplicate_sample_hashes": 0,
+    "full_raw_value_list_available_in_source": false,
+    "likely_ui_string_total_from_source": 19187,
+    "local_inventory_artifact_public_ref": "local_only_ignored_task035_available_inventory",
+    "localization_qualifier_count": 0,
+    "localization_qualifiers_observed": [],
+    "missing_raw_value_count": 19027,
+    "raw_text_values_public": false,
+    "resource_key_sample_count": 200,
+    "resource_type_count": 25
+  },
+  "task_id": "TASK-035",
+  "tool_name": "build_task035_static_text_inventory"
+}

@@ -179,6 +179,19 @@ runtime, APK, payment, stream/session or production calls. It validates matrix
 shape, fixture/sequence references, fixture JSON readability and schema JSON
 readability, then records live API execution as `not_run`.
 
+## Static Text Inventory
+
+`automation/static_text_inventory/` contains the TASK-035 static text inventory
+builder. It reads the ignored local sanitized static artifact, writes raw string
+records only to ignored `.qa_local/static_text_inventory/`, and emits a
+public-safe report with counts, hash prefixes, categories, redaction classes
+and explicit blockers when the full raw static string list is unavailable.
+
+The builder does not run Android runtime, ADB, APK install/launch,
+decompilation, smali inspection, live backend/API/network, payment, stream or
+account actions. Runtime text visibility and translation/accessibility behavior
+remain `not_run` or `unknown` until a separate approved runtime task.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

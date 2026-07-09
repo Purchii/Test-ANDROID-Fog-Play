@@ -30,6 +30,10 @@ WebView / WebRTC testing of MTC Fog Play.
   matrix-to-fixture references, 214 fixture JSON files and 21 schema JSON files,
   then emits a public-safe coverage summary. It does not make live API calls,
   publish raw endpoints or run payment/order/session/backend mutations.
+- TASK-035 adds a static text inventory harness. It reads the ignored local
+  sanitized static artifact, inventories raw values only into ignored local
+  storage and emits a public-safe summary with counts, hash prefixes,
+  categories and explicit full-list blockers only.
 - TASK-017 adds a synthetic-only redaction corpus for local validator/redactor
   tests; it does not inspect real evidence, APKs, endpoints, QR targets or
   device data.
@@ -93,6 +97,7 @@ python automation/quality/docs_consistency_link_sanity.py
 python automation/quality/public_repo_safety_scan.py
 python automation/quality/synthetic_redaction_corpus.py --json
 python automation/api_layer_contract/validate_task028_api_layer_contract.py --pack-root .qa_local/api_layer_audit_20260706 --report docs/qa/reports/task028_api_layer_contract_coverage.summary.json
+python automation/static_text_inventory/build_task035_static_text_inventory.py --validate-only --report docs/qa/reports/task035_static_text_inventory.summary.json
 python automation/native_regression/validate_task025_native_regression_report.py --report docs/qa/reports/task025_selected_lane_native_regression.summary.template.json
 python automation/native_regression/run_task025_selected_lane_regression.py
 ```

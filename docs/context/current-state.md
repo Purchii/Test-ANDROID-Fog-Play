@@ -124,6 +124,19 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   214 fixture JSON files, 21 schema JSON files and 67 inventory items, with no
   missing fixture references. Public reports contain only aliases, counts and
   categories; raw API pack contents remain local-only.
+- TASK-035 is running on branch
+  `qa/task-035-full-static-text-inventory-audit` from detected default branch
+  `main` commit `30e67e0`. It is `BOUNDED_AUTONOMOUS` and
+  `PROD_SAFE_LOCAL_STATIC_ONLY`: the static text inventory builder reads the
+  ignored local sanitized reverse-analysis artifact, writes raw string records
+  only under ignored `.qa_local/static_text_inventory/`, and commits only a
+  public-safe report with counts, hash prefixes, categories, redaction classes
+  and status values. The available source reports `19187` likely UI/static
+  strings but exposes only `160` raw sample values, so exact full raw-value
+  coverage for the remaining `19027` values is
+  `blocked_by_missing_full_static_text_values_source`. TASK-035 does not run
+  Android runtime, ADB, APK install/launch, decompilation, smali inspection,
+  live backend/API/network, payment, stream/session or account actions.
 
 ## Runtime readiness
 

@@ -134,6 +134,30 @@ TASK-031 does not validate live STOMP/WebSocket behavior, backend subscription
 routing or delivery, real device pairing behavior, backend authorization/ACL,
 Android runtime correlation or DataChannel/gamepad behavior.
 
+## TASK-032 DataChannel and gamepad protocol harness
+
+TASK-032 implements the next protocol follow-up from the TASK-028/TASK-036 API
+audit chain. It validates tracked TASK-028/TASK-031/TASK-036 summaries and,
+when the ignored local quarantine pack is present, checks only `datachannel`
+and `gamepad` protocol fixture references and JSON shapes.
+
+Current TASK-032 local result:
+
+- tracked TASK-028/TASK-031/TASK-036 summary reconciliation: `pass`;
+- local quarantine pack DataChannel/gamepad fixture validation: `pass`;
+- TASK-032 matrix rows checked: `26`;
+- `datachannel` rows: `25`;
+- `gamepad` rows: `1`;
+- protocol negative rows checked in TASK-032 scope: `6`;
+- fixture references checked in TASK-032 scope: `26`;
+- live WebRTC/DataChannel/backend/runtime/network execution: `not_run`;
+- live controller input or Android runtime behavior: `not_run`;
+- raw pack fixture values remain local-only.
+
+TASK-032 does not validate live WebRTC/DataChannel behavior, backend data
+delivery, real gamepad/controller input behavior, backend authorization/ACL or
+Android runtime correlation.
+
 ## Assertions policy
 
 Offline API tests should assert:

@@ -1,0 +1,154 @@
+{
+  "android_runtime_status": "not_run",
+  "blocked_reasons": [],
+  "datachannel_gamepad_protocol_summary": {
+    "all_datachannel_gamepad_rows_are_claimed_by_task032_only": true,
+    "datachannel_gamepad_rows_required": true,
+    "live_datachannel_gamepad_behavior_status": "not_run",
+    "source_reconciliation_status": "pass",
+    "task031_reserved_fixture_groups": [
+      "stomp_device",
+      "stomp_signaling"
+    ],
+    "task032_scope_fixture_groups": [
+      "datachannel",
+      "gamepad"
+    ]
+  },
+  "evidence_status": "likely",
+  "generated_at_utc": "2026-07-09T17:12:16Z",
+  "live_api_execution_status": "not_run",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "network_execution_status": "not_run",
+  "offline_execution_boundary": {
+    "android_adb_runtime_actions": "not_run",
+    "apk_read_install_or_modification": "not_run",
+    "auth_token_cookie_header_replay": "not_run",
+    "gamepad_runtime_input_or_pairing": "not_run",
+    "live_rest_backend_calls": "not_run",
+    "transport_strategy": "offline_protocol_fixture_shape_validation_only",
+    "webrtc_datachannel_connections": "not_run",
+    "websocket_stomp_connections": "not_run"
+  },
+  "overall_status": "pass",
+  "pack_contract": {
+    "counts_by_contract_kind": {
+      "negative_protocol_fixture": 6,
+      "positive_protocol_fixture": 20
+    },
+    "counts_by_priority": {
+      "P0": 3,
+      "P1": 23
+    },
+    "counts_by_task032_automation_target": {
+      "mock_or_fixture_test": 1,
+      "protocol_fixture_test": 19,
+      "protocol_negative_test": 6
+    },
+    "counts_by_task032_fixture_group": {
+      "datachannel": 25,
+      "gamepad": 1
+    },
+    "counts_by_task032_test_type": {
+      "critical_edge_case": 1,
+      "negative_invalid_fields": 6,
+      "positive_protocol_schema": 19
+    },
+    "datachannel_rows": 25,
+    "evidence_status": "likely",
+    "fixture_json_malformed": 0,
+    "fixture_refs_checked": 26,
+    "fixture_refs_invalid": 0,
+    "fixture_refs_missing": 0,
+    "fixture_shape_counts": {
+      "object": 26
+    },
+    "gamepad_rows": 1,
+    "negative_invalid_fields_rows": 6,
+    "negative_malformed_base64_rows": 0,
+    "negative_malformed_json_rows": 0,
+    "offline_protocol_model": {
+      "controller_mapping_oracle": "not_run",
+      "gamepad_runtime_input_or_pairing": "not_run",
+      "message_delivery_oracle": "not_run",
+      "network_calls": "not_run",
+      "transport": "local_fixture_shape_validation_only",
+      "webrtc_datachannel_connections": "not_run"
+    },
+    "positive_protocol_schema_rows": 19,
+    "protocol_fixture_rows": 19,
+    "protocol_fixture_shape_invalid": 0,
+    "protocol_negative_rows": 6,
+    "protocol_sequence_or_fixture_rows": 0,
+    "raw_pack_storage": "ignored_local_quarantine",
+    "raw_values_public": false,
+    "source_alias": "api-layer-audit-pack-20260706",
+    "status": "pass",
+    "task031_reserved_fixture_groups": {
+      "stomp_device": 19,
+      "stomp_signaling": 17
+    },
+    "task031_reserved_protocol_rows": 36,
+    "task032_matrix_rows": 26
+  },
+  "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+  "public_safety": {
+    "adb_or_android_runtime_actions_performed": false,
+    "apk_read_install_or_modification_performed": false,
+    "datachannel_webrtc_connections_performed": false,
+    "gamepad_runtime_pairing_or_input_actions_performed": false,
+    "live_backend_calls_performed": false,
+    "live_network_calls_performed": false,
+    "local_quarantine_pack_required_for_pack_backed_parametrization": true,
+    "offline_protocol_fixture_validation_only": true,
+    "public_report_contains_only_aliases_counts_categories_status_and_blockers": true,
+    "raw_account_values_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_fixture_bodies_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_pack_content_read_from_public_repo": false,
+    "raw_payloads_public": false,
+    "raw_payment_values_public": false,
+    "raw_phone_otp_captcha_public": false,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_payment_or_session_mutation_performed": false,
+    "tls_or_security_bypass_performed": false,
+    "websocket_stomp_connections_performed": false
+  },
+  "runtime_execution_status": "not_run",
+  "schema_version": "task032-datachannel-gamepad-contracts-v1",
+  "source_summaries": {
+    "task028": {
+      "evidence_status": "likely",
+      "known_datachannel_fixture_group_count": 25,
+      "known_datachannel_inventory_count": 19,
+      "known_gamepad_fixture_group_count": 1,
+      "source_report_alias": "task028_api_layer_contract_coverage_summary",
+      "status": "pass"
+    },
+    "task031": {
+      "evidence_status": "likely",
+      "source_report_alias": "task031_stomp_protocol_contracts_summary",
+      "status": "pass"
+    },
+    "task036": {
+      "evidence_status": "likely_with_blockers",
+      "source_report_alias": "task036_api_layer_exhaustive_coverage_summary",
+      "status": "partial_blocked",
+      "task032_ledger_status": "tracked_summary_validated_offline_protocol_fixtures_required"
+    }
+  },
+  "task_id": "TASK-032",
+  "tool_name": "validate_task032_datachannel_gamepad_contracts",
+  "unverified_areas": [
+    "live WebRTC/DataChannel behavior",
+    "backend DataChannel message routing or delivery behavior",
+    "real gamepad input mapping behavior",
+    "real gamepad pairing, reset, remap or controller setup behavior",
+    "backend authorization and ACL enforcement",
+    "Android runtime correlation with protocol evidence"
+  ]
+}

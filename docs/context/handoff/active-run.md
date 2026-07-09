@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-029 - REST schema and fixture contract harness`
-Thread status: `verified_pending_merge`
+Thread status: `inactive_completed`
 Fresh thread verified: `accepted fresh continuation thread 019f473f-1a23-7a12-80d1-3693f8f029eb; renamed after Planner selected TASK-029`
 Task ID: `TASK-029`
 Task branch: `qa/task-029-rest-schema-fixture-contracts`
@@ -70,8 +70,7 @@ Implementation status:
   test coverage.
 - QA Reviewer B: approved; no Android/runtime/evidence overclaim found.
 - Security/Prod-safety Reviewer: approved; no unresolved R0/R1 risk found.
-- Docs/Scribe: initial review requested final closure/status reconciliation;
-  final re-review pending after this active-run and verification-memory update.
+- Docs/Scribe: approved after final closure/status reconciliation.
 
 ## Allowed Files
 
@@ -135,26 +134,27 @@ Stop and report a blocker if:
 
 ## Final Handoff Notes
 
-TASK-029 is verified locally pending task-branch/default-branch integration and
-next-thread handoff. The offline REST schema/fixture harness validates the
-tracked TASK-028/TASK-036 summaries and the ignored local quarantine pack for
-REST matrix/fixture/schema contracts only. Public report status is `pass`.
-Live REST/backend/network, Android runtime/ADB/APK, endpoint publication,
-auth/token replay, payment/order/session mutation and runtime correlation
-remain `not_run` or `unknown`.
+TASK-029 is verified, task branch was pushed, default branch integration was
+completed, and a fresh continuation thread was created for the next task
+selection. The offline REST schema/fixture harness validates the tracked
+TASK-028/TASK-036 summaries and the ignored local quarantine pack for REST
+matrix/fixture/schema contracts only. Public report status is `pass`. Live
+REST/backend/network, Android runtime/ADB/APK, endpoint publication, auth/token
+replay, payment/order/session mutation and runtime correlation remain `not_run`
+or `unknown`.
 
 Subagent closure audit before final report:
 
-- Planner and initial Security selection reviewers: outputs recorded; close
-  after final handoff.
-- Builder: output recorded and independently verified; close after final
-  handoff.
-- QA Reviewer A/B, Security/Prod-safety and Docs/Scribe: preserve until final
-  approvals are recorded, then close before thread completion.
+- Planner and initial Security selection reviewers: outputs recorded.
+- Builder: output recorded and independently verified.
+- QA Reviewer A/B, Security/Prod-safety and Docs/Scribe: outputs recorded; no
+  remaining output is needed after final report.
 
 Next task/thread handoff after merge/push:
 
-- Recommended next backlog task: `TASK-030 - REST negative, cache and
-  state-sequence contract tests`.
-- The next task must start in one fresh continuation thread from updated
+- Fresh continuation thread: `019f4785-25c7-7d00-b68f-9a23f70c7874`.
+- Temporary title: `NEXT_TASK_SELECTION_FROM_main@2def2ab`.
+- Recommended next backlog task for Planner review: `TASK-030 - REST negative,
+  cache and state-sequence contract tests`.
+- The next task must start in that fresh continuation thread from updated
   `main`, not in this completed TASK-029 thread.

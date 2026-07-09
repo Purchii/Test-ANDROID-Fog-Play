@@ -192,6 +192,20 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   Android runtime/ADB/APK, endpoint publication, auth/token replay, payment/
   order/session mutation and runtime correlation remain `not_run` or
   `unknown`.
+- TASK-030 is running on branch
+  `qa/task-030-rest-negative-cache-sequences` from detected default branch
+  `main` commit `2def2ab`. It is `BOUNDED_AUTONOMOUS` and
+  `PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT`: the validator checks
+  tracked TASK-028/TASK-029/TASK-036 summaries and the ignored local quarantine
+  pack for offline mocked-transport REST negative/cache/state-sequence
+  contracts only. Public report:
+  `docs/qa/reports/task030_rest_negative_cache_sequences.summary.json`.
+  Current pack-backed report status is `pass`: 73 TASK-030 rows, 51 mocked HTTP
+  rows, 22 mocked sequence rows, 10 cache behavior rows and 12
+  state-machine-sequence rows. Live REST/backend/network, Android
+  runtime/ADB/APK, endpoint publication, auth/token replay, payment/order/
+  session mutation, real backend cache behavior and runtime correlation remain
+  `not_run` or `unknown`.
 
 ## Runtime readiness
 

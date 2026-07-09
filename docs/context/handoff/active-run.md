@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-031 - STOMP signaling and device protocol contract tests`
-Thread status: `active`
+Thread status: `inactive_completed`
 Fresh thread verified: `accepted fresh continuation thread 019f47a8-92f3-7733-8057-a3516c224eb4 from TASK-030 next-task selection; renamed after Planner selected TASK-031`
 Task ID: `TASK-031`
 Task branch: `qa/task-031-stomp-protocol-contracts`
@@ -60,6 +60,7 @@ Implementation status:
   `not_run`;
 - report scopes TASK-031 to `stomp_signaling` and `stomp_device` fixture
   groups and explicitly leaves `datachannel` and `gamepad` rows for TASK-032.
+- task branch was pushed and prepared for verified default-branch integration.
 
 ## Multi-agent Status
 
@@ -148,8 +149,9 @@ Stop and report a blocker if:
 
 ## Final Handoff Notes
 
-TASK-031 is verified locally and ready for task-branch commit/integration after
-final git checks. The offline STOMP/device protocol fixture harness validates
+TASK-031 is verified, task branch was pushed, default branch integration was
+completed, and a fresh continuation thread is being created for the next task
+selection. The offline STOMP/device protocol fixture harness validates
 tracked TASK-028/TASK-030/TASK-036 summaries and the ignored local quarantine
 pack for `stomp_signaling` and `stomp_device` fixture contracts only. Public
 report status is `pass`: 36 TASK-031 rows, 17 `stomp_signaling` rows, 19

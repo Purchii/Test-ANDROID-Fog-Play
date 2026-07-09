@@ -283,6 +283,17 @@ correlation, payment/order/session mutation and endpoint publication remain
 `not_run` or `unknown` until TASK-034-style `PROD_CONDITIONAL` prerequisites
 and reviewer approvals are confirmed.
 
+TASK-037 production bounded API/runtime exploratory coverage may run only inside
+the owner-approved read-only safe lane recorded in `active-run.md`. Public
+reports must use the TASK-037 validator and contain only aliases, counts,
+categories, status values, evidence ids and blockers. They must fail closed on
+raw endpoints, URLs, headers, payloads, cookies, tokens, QR targets, device
+identifiers, local paths, secrets, real user data, mutation overclaims, boundary
+actions performed, unsupported categories, concurrency above `1`, retry count
+above `3` or missing preflight fields. Stream start, order, payment, profile or
+account mutation, device binding mutation, destructive/revoke/update/delete
+actions, APK modification/decompilation and security bypass remain forbidden.
+
 TASK-035 static text inventory must remain local/static only. The builder may
 read the ignored sanitized reverse-analysis JSON and write raw string inventory
 only under ignored `.qa_local/static_text_inventory/`. Public reports may

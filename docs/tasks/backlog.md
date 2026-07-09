@@ -46,6 +46,7 @@
 | TASK-034 | Optional approved staging API execution gate | NON_AUTONOMOUS; PROD_CONDITIONAL only after explicit staging/QA approvals | qa/task-034-staging-api-execution-gate | proposed; blocked until approved backend environment/synthetic user/budget/cleanup/reviews exist |
 | TASK-035 | Full static text inventory and coverage audit | BOUNDED_AUTONOMOUS; PROD_SAFE_LOCAL_STATIC_ONLY | qa/task-035-full-static-text-inventory-audit | verified partial-blocked; inventories all 160 available local sanitized sample strings and records exact full-list coverage blocker for the missing 19027 raw values |
 | TASK-036 | Exhaustive API-layer test coverage and exploratory evidence intake | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY | qa/task-036-exhaustive-api-layer-test-coverage | verified partial-blocked; tracked TASK-028 API summary exhaustiveness validated, local quarantine pack absent, live exploration not_run until prerequisites are confirmed |
+| TASK-037 | Production bounded API/runtime exploratory coverage with read-only/live safe lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE after owner safe-lane passport and reviewer gates | qa/task-037-production-api-runtime-exploratory-coverage | verified partial-blocked; safe-lane preflight and bounded runtime correlation completed, direct live API calls not_run pending public-safe invocation oracle |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

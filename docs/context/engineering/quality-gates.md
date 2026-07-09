@@ -296,6 +296,22 @@ overclaims. Live REST/backend behavior, real authorization/ACL,
 payment/order/session mutation, Android runtime correlation and real backend
 cache/state behavior remain `not_run` or `unknown`.
 
+TASK-031 STOMP signaling and device protocol contract tests must remain
+offline/local only. They may validate tracked TASK-028/TASK-030/TASK-036 public
+summaries and read the ignored local API quarantine pack for `stomp_signaling`
+and `stomp_device` protocol fixture references and JSON shape only. Public
+reports may contain only aliases, counts, categories, status values and
+blockers. Missing local pack must produce controlled `partial_blocked`/
+`blocked_missing_local_quarantine_pack`. The harness must reject raw endpoints,
+URLs, STOMP destinations, headers, payloads, fixture bodies, tokens, cookies,
+local paths, device/account/payment values, live WebSocket/STOMP/backend
+claims, DataChannel/WebRTC execution claims and Android runtime overclaims.
+DataChannel/gamepad protocol rows must remain explicit TASK-032 out-of-scope
+rows, not counted as TASK-031 coverage. Live STOMP/WebSocket behavior, backend
+subscription routing/delivery, real device pairing behavior, backend
+authorization/ACL and Android runtime correlation remain `not_run` or
+`unknown`.
+
 TASK-036 API-layer exhaustive coverage guard must remain offline/static and
 synthetic-only unless a separate approved execution task is opened. The
 validator may consume tracked public-safe TASK-028 summaries and may optionally

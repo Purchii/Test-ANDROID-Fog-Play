@@ -207,6 +207,21 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   session mutation, real backend cache behavior and runtime correlation remain
   `not_run` or `unknown`. The task was integrated and pushed to detected
   default branch `main`.
+- TASK-031 is running on branch
+  `qa/task-031-stomp-protocol-contracts` from detected default branch `main`
+  commit `3244ed1`. It is `BOUNDED_AUTONOMOUS` and
+  `PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT`: the validator checks
+  tracked TASK-028/TASK-030/TASK-036 summaries and the ignored local quarantine
+  pack for offline STOMP signaling and device protocol fixture references and
+  JSON shape only. Public report:
+  `docs/qa/reports/task031_stomp_protocol_contracts.summary.json`. Current
+  pack-backed report status is `pass`: 36 TASK-031 rows, 17 `stomp_signaling`
+  rows, 19 `stomp_device` rows, 12 protocol-negative rows and 5 protocol
+  sequence-or-fixture rows. DataChannel and gamepad protocol rows remain
+  explicitly reserved for TASK-032. Live STOMP/WebSocket/backend/network,
+  Android runtime/ADB/APK, endpoint publication, auth/token replay, payment/
+  order/session mutation, real device pairing behavior and runtime correlation
+  remain `not_run` or `unknown`.
 
 ## Runtime readiness
 

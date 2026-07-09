@@ -108,6 +108,32 @@ backend cache/state behavior. TASK-031, TASK-032 and TASK-033 remain the planned
 offline protocol/datachannel/redaction follow-ups; TASK-034 remains the optional
 approved staging/live execution gate.
 
+## TASK-031 STOMP signaling and device protocol harness
+
+TASK-031 implements the next protocol follow-up from the TASK-028/TASK-036 API
+audit chain. It validates tracked TASK-028/TASK-030/TASK-036 summaries and,
+when the ignored local quarantine pack is present, checks only
+`stomp_signaling` and `stomp_device` protocol fixture references and JSON
+shapes.
+
+Current TASK-031 local result:
+
+- tracked TASK-028/TASK-030/TASK-036 summary reconciliation: `pass`;
+- local quarantine pack STOMP/device protocol fixture validation: `pass`;
+- TASK-031 matrix rows checked: `36`;
+- `stomp_signaling` rows: `17`;
+- `stomp_device` rows: `19`;
+- protocol negative rows checked in TASK-031 scope: `12`;
+- protocol sequence-or-fixture rows checked in TASK-031 scope: `5`;
+- DataChannel/gamepad protocol rows are explicitly reserved for TASK-032:
+  `26`;
+- live STOMP/WebSocket/backend/runtime/network execution: `not_run`;
+- raw pack fixture values remain local-only.
+
+TASK-031 does not validate live STOMP/WebSocket behavior, backend subscription
+routing or delivery, real device pairing behavior, backend authorization/ACL,
+Android runtime correlation or DataChannel/gamepad behavior.
+
 ## Assertions policy
 
 Offline API tests should assert:

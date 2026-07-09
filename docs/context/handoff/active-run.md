@@ -4,7 +4,7 @@
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-030 - REST negative, cache and state-sequence contract tests`
-Thread status: `verified_pending_merge`
+Thread status: `inactive_completed`
 Fresh thread verified: `accepted fresh continuation thread 019f4785-25c7-7d00-b68f-9a23f70c7874 from TASK-029; renamed after Planner selected TASK-030`
 Task ID: `TASK-030`
 Task branch: `qa/task-030-rest-negative-cache-sequences`
@@ -143,11 +143,12 @@ Stop and report a blocker if:
 
 ## Final Handoff Notes
 
-TASK-030 is verified locally pending task-branch/default-branch integration and
-next-thread handoff. The offline mocked-transport REST negative/cache/
-state-sequence harness validates the tracked TASK-028/TASK-029/TASK-036
-summaries and the ignored local quarantine pack for REST negative/cache/
-state-sequence contracts only. Public report status is `pass`. Live
+TASK-030 is verified, task branch was pushed, default branch integration was
+completed, and a fresh continuation thread is being created for the next task
+selection. The offline mocked-transport REST negative/cache/state-sequence
+harness validates the tracked TASK-028/TASK-029/TASK-036 summaries and the
+ignored local quarantine pack for REST negative/cache/state-sequence contracts
+only. Public report status is `pass`. Live
 REST/backend/network, Android runtime/ADB/APK, endpoint publication, auth/token
 replay, payment/order/session mutation, real backend cache/state behavior and
 runtime correlation remain `not_run` or `unknown`.

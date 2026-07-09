@@ -312,6 +312,20 @@ subscription routing/delivery, real device pairing behavior, backend
 authorization/ACL and Android runtime correlation remain `not_run` or
 `unknown`.
 
+TASK-032 DataChannel and gamepad protocol contract tests must remain
+offline/local only. They may validate tracked TASK-028/TASK-031/TASK-036 public
+summaries and read the ignored local API quarantine pack for `datachannel` and
+`gamepad` protocol fixture references and JSON shape only. Public reports may
+contain only aliases, counts, categories, status values and blockers. Missing
+local pack must produce controlled `partial_blocked`/
+`blocked_missing_local_quarantine_pack`. The harness must reject raw endpoints,
+URLs, headers, payloads, fixture bodies, tokens, cookies, local paths,
+device/account/payment values, live WebRTC/DataChannel/backend claims, live
+gamepad/input claims and Android runtime overclaims. Passing TASK-032 validates
+offline fixture contracts only; live DataChannel/WebRTC behavior, controller
+pairing/input behavior, backend authorization/ACL and Android runtime
+correlation remain `not_run` or `unknown`.
+
 TASK-036 API-layer exhaustive coverage guard must remain offline/static and
 synthetic-only unless a separate approved execution task is opened. The
 validator may consume tracked public-safe TASK-028 summaries and may optionally

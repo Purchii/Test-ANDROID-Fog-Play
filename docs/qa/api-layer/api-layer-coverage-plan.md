@@ -83,6 +83,31 @@ payment/order/session mutation behavior, Android runtime correlation or real
 cache behavior against a backend. TASK-030 remains the planned offline mocked
 REST negative/cache/state-sequence follow-up.
 
+## TASK-030 REST negative/cache/state-sequence harness
+
+TASK-030 implements the next REST follow-up from the TASK-028/TASK-029 API
+audit chain. It validates tracked TASK-028/TASK-029/TASK-036 summaries and,
+when the ignored local quarantine pack is present, checks mocked-transport REST
+negative rows, cache behavior rows and state-sequence fixture shapes.
+
+Current TASK-030 result:
+
+- tracked TASK-028/TASK-029/TASK-036 summary reconciliation: `pass`;
+- local quarantine pack mocked-transport validation: `pass`;
+- TASK-030 matrix rows checked: `73`;
+- mocked HTTP rows: `51`;
+- mocked sequence rows: `22`;
+- cache behavior rows: `10`;
+- state-machine sequence rows: `12`;
+- live REST/backend/runtime/network execution: `not_run`;
+- raw pack fixture values remain local-only.
+
+TASK-030 does not validate live backend behavior, real authorization/ACL,
+payment/order/session mutation behavior, Android runtime correlation or real
+backend cache/state behavior. TASK-031, TASK-032 and TASK-033 remain the planned
+offline protocol/datachannel/redaction follow-ups; TASK-034 remains the optional
+approved staging/live execution gate.
+
 ## Assertions policy
 
 Offline API tests should assert:

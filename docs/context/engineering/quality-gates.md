@@ -283,6 +283,19 @@ runtime overclaim. Live REST/backend behavior, real authz/ACL, payment/order/
 session mutation, Android runtime correlation and real network/cache behavior
 remain `not_run` or `unknown`.
 
+TASK-030 REST negative/cache/state-sequence contract tests must remain
+offline/local only. They may validate tracked TASK-028/TASK-029/TASK-036 public
+summaries and read the ignored local API quarantine pack for mocked REST
+negative rows, cache behavior rows and state-sequence fixtures. Public reports
+may contain only aliases, counts, categories, status values and blockers.
+Missing local pack must produce controlled `partial_blocked`/
+`blocked_missing_local_quarantine_pack`. The harness must reject raw endpoints,
+URLs, headers, payloads, fixture bodies, tokens, cookies, local paths,
+device/account/payment values, live network/backend claims and runtime
+overclaims. Live REST/backend behavior, real authorization/ACL,
+payment/order/session mutation, Android runtime correlation and real backend
+cache/state behavior remain `not_run` or `unknown`.
+
 TASK-036 API-layer exhaustive coverage guard must remain offline/static and
 synthetic-only unless a separate approved execution task is opened. The
 validator may consume tracked public-safe TASK-028 summaries and may optionally

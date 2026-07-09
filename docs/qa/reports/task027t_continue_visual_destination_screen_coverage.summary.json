@@ -1,0 +1,311 @@
+{
+  "schema_version": "task027t-continue-visual-destination-screen-coverage-v1",
+  "task_id": "TASK-027T",
+  "mode": "NON_AUTONOMOUS",
+  "run_status": "covered",
+  "runtime_execution_status": "covered",
+  "execution_mode": "physical_selected_lane_runtime",
+  "runtime_scope": {
+    "runtime_performed": true,
+    "selected_lane_approval_reviewed": true,
+    "lane_unchanged_from_task027s": true,
+    "device_alias": "tv-tpv-013",
+    "runtime_profile_alias": "tv-tpv-a12-013",
+    "build_alias": "task-005-local-apk-television-full",
+    "synthetic_user_alias": "qa-user-phone-001",
+    "local_selected_lane_material_present": true,
+    "runtime_approval_required_before_execution": false,
+    "adb_or_device_commands_performed": true,
+    "ignored_local_evidence_inspected": true
+  },
+  "preflight_blockers": [],
+  "source_reports": [
+    {
+      "task_id": "TASK-027R",
+      "public_ref": "task027_full_app_transition_graph_physical_runtime.summary.json",
+      "use_as": "terminal ledger and rail input blocker context only, not TASK-027T visual destination proof"
+    },
+    {
+      "task_id": "TASK-027S",
+      "public_ref": "task027s_visual_destination_screen_coverage.summary.json",
+      "use_as": "launcher entry and app shell loader blocker context only, not TASK-027T visual destination proof"
+    },
+    {
+      "task_id": "TASK-020",
+      "public_ref": "task020_full_screen_inventory.summary.json",
+      "use_as": "prior screen-family baseline only"
+    },
+    {
+      "task_id": "TASK-023",
+      "public_ref": "task023_full_data_screen_inventory.summary.json",
+      "use_as": "prior data and screen-family baseline only"
+    }
+  ],
+  "target_destination_ledger": [
+    {
+      "target_id": "T027T-DST-001",
+      "screen_family": "session_journal_empty",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp002-explicit-launch",
+        "rt027t-cp009-game-card-focus-tap",
+        "rt027t-cp010-after-grid-dpad-down",
+        "rt027t-cp011-after-grid-dpad-left"
+      ],
+      "visual_destination_proof": true,
+      "runtime_evidence_collected": true,
+      "prior_blockers": [
+        "TASK-027R rail focus/input no-op",
+        "TASK-027S app shell loader after launcher entry"
+      ],
+      "public_safe_note": "TASK-027T visually reached the session journal destination through a loaded catalog/grid focus oracle followed by lateral rail recovery. The observed journal state was blank/empty; this is visual destination coverage, not proof of populated session history."
+    },
+    {
+      "target_id": "T027T-DST-002",
+      "screen_family": "steam_topup_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp012-steam-focus-from-journal",
+        "rt027t-cp013-steam-topup-qr-after-center"
+      ],
+      "visual_destination_proof": true,
+      "runtime_evidence_collected": true,
+      "qr_decode_status": "local_only_decoded",
+      "qr_navigation_followed": false,
+      "prior_blockers": [
+        "TASK-027R rail focus/input no-op",
+        "TASK-027S app shell loader after launcher entry"
+      ],
+      "public_safe_note": "TASK-027T visually reached the Steam/top-up QR destination. The QR target was decoded local-only as an HTTPS-category target, stored only as local evidence metadata, and was not followed."
+    },
+    {
+      "target_id": "T027T-DST-003",
+      "screen_family": "feedback_qr",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp014-feedback-focus-from-steam",
+        "rt027t-cp015-feedback-qr-after-center"
+      ],
+      "visual_destination_proof": true,
+      "runtime_evidence_collected": true,
+      "qr_decode_status": "local_only_decoded",
+      "qr_navigation_followed": false,
+      "prior_blockers": [
+        "TASK-027R rail focus/input no-op",
+        "TASK-027S app shell loader after launcher entry"
+      ],
+      "public_safe_note": "TASK-027T visually reached the feedback QR destination. The QR target was decoded local-only as an HTTPS-category target, stored only as local evidence metadata, and was not followed."
+    }
+  ],
+  "route_gate_ledger": [
+    {
+      "gate_id": "T027T-GATE-001",
+      "gate_alias": "loaded_actionable_app_state_before_destination_assertions",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp002-explicit-launch"
+      ],
+      "runtime_evidence_collected": true,
+      "must_be_true_before_destination_coverage": true,
+      "public_safe_note": "TASK-027T reached a loaded actionable catalog state before route assertions. The launcher-entry app-shell loader was not used as the starting state."
+    },
+    {
+      "gate_id": "T027T-GATE-002",
+      "gate_alias": "app_shell_loader_after_launcher_entry",
+      "coverage_status": "not_run_out_of_scope",
+      "evidence_status": "confirmed",
+      "evidence_ids": [],
+      "runtime_evidence_collected": false,
+      "must_not_classify_as": [
+        "post_auth_games_catalog_top",
+        "session_journal_empty",
+        "steam_topup_qr",
+        "feedback_qr",
+        "covered_destination"
+      ],
+      "timeout_policy_seconds": 120,
+      "public_safe_note": "TASK-027T did not encounter, use or count the TASK-027S app-shell-loader state as catalog or destination coverage. This row is an exclusion guard with a 120-second timeout policy, not loader recovery coverage."
+    },
+    {
+      "gate_id": "T027T-GATE-003",
+      "gate_alias": "fresh_task027t_visual_evidence_required",
+      "coverage_status": "covered",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp011-after-grid-dpad-left",
+        "rt027t-cp013-steam-topup-qr-after-center",
+        "rt027t-cp015-feedback-qr-after-center"
+      ],
+      "runtime_evidence_collected": true,
+      "must_be_true_before_destination_coverage": true,
+      "public_safe_note": "Fresh TASK-027T public-safe checkpoint IDs support the three target destination coverage claims."
+    }
+  ],
+  "planned_runtime_boundaries": [
+    {
+      "boundary_id": "T027T-BND-001",
+      "boundary_category": "payment/subscription/purchase",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed"
+    },
+    {
+      "boundary_id": "T027T-BND-002",
+      "boundary_category": "WebView/browser/external QR traversal",
+      "status": "blocked_by_boundary",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "confirmed"
+    },
+    {
+      "boundary_id": "T027T-BND-003",
+      "boundary_category": "stream/WebRTC/media playback/game session start",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "unknown"
+    },
+    {
+      "boundary_id": "T027T-BND-004",
+      "boundary_category": "Steam/account connection",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "unknown"
+    },
+    {
+      "boundary_id": "T027T-BND-005",
+      "boundary_category": "profile/account mutation",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "unknown"
+    },
+    {
+      "boundary_id": "T027T-BND-006",
+      "boundary_category": "network/offline manipulation",
+      "status": "not_run_out_of_scope",
+      "entered": false,
+      "navigation_followed": false,
+      "external_action": "not_performed",
+      "evidence_status": "unknown"
+    }
+  ],
+  "anomaly_records": [
+    {
+      "anomaly_id": "ANOM-027T-001",
+      "category": "external_tv_ambient_interruption",
+      "trigger_action": "Initial launch attempt followed by visual checkpoint.",
+      "expected_result": "A loaded app catalog or recoverable app state appears.",
+      "observed_result": "The checkpoint showed an external Android TV ambient/screensaver surface, not app navigation content.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp001-post-launch"
+      ],
+      "likely_or_hypothesis_cause": "likely Android TV ambient/screensaver interruption during launch or wake state",
+      "recovery_action": "Classified as external/system evidence and recovered through explicit app launch.",
+      "test_design_implication": "Do not count ambient/system surfaces as app screens or destination coverage."
+    },
+    {
+      "anomaly_id": "ANOM-027T-002",
+      "category": "evidence_capture_tooling",
+      "trigger_action": "Capture screenshot through unsafe Windows shell redirection and a conflicting local helper name.",
+      "expected_result": "Valid screenshot checkpoint files are produced.",
+      "observed_result": "Initial screenshot handling was not usable until recaptured with a binary-safe process stream; one helper name collided with a shell alias and skipped intended intermediate capture.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp001-post-launch",
+        "rt027t-cp004-session-journal-after-center"
+      ],
+      "likely_or_hypothesis_cause": "local tooling issue in binary stream handling and shell alias selection",
+      "recovery_action": "Recaptured screenshots with a binary-safe helper and continued from visually verified checkpoints.",
+      "test_design_implication": "Runtime checkpoints must validate screenshot integrity before they count as evidence."
+    },
+    {
+      "anomaly_id": "ANOM-027T-003",
+      "category": "rail_dpad_noop_from_loaded_catalog",
+      "trigger_action": "From loaded catalog, attempt journal route with D-pad movement and center activation.",
+      "expected_result": "Focus moves to the journal route or the journal destination opens.",
+      "observed_result": "The visual checkpoint stayed on the catalog with games rail state selected.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp004-session-journal-after-center",
+        "rt027t-cp008-after-center-from-left-down"
+      ],
+      "likely_or_hypothesis_cause": "likely focus acquisition mismatch while XML reports no focused node",
+      "recovery_action": "Switched to a grid-focus then lateral rail recovery oracle.",
+      "test_design_implication": "Do not rely on direct D-pad rail attempts from catalog without a proven focus oracle."
+    },
+    {
+      "anomaly_id": "ANOM-027T-004",
+      "category": "xml_node_tap_noop_from_loaded_catalog",
+      "trigger_action": "Tap the UI-tree-derived session journal rail bounds from loaded catalog.",
+      "expected_result": "The session journal destination opens.",
+      "observed_result": "The checkpoint remained on the catalog despite XML exposing the rail label bounds.",
+      "evidence_status": "confirmed",
+      "evidence_ids": [
+        "rt027t-cp005-session-journal-ui-node-tap"
+      ],
+      "likely_or_hypothesis_cause": "likely non-clickable rail text node or touch/focus routing mismatch",
+      "recovery_action": "Used the TASK-020/TASK-023-style grid focus plus D-pad left oracle instead.",
+      "test_design_implication": "XML node visibility is not sufficient as an activation oracle when nodes are focusable but not clickable."
+    }
+  ],
+  "checkpoint_modality_audit": {
+    "runtime_checkpoints_captured": true,
+    "screenshot_visual_inspection": "confirmed_local_only_for_task027t_checkpoints",
+    "xml_capture": "confirmed_local_only_for_task027t_checkpoints",
+    "raw_artifacts_public": false,
+    "local_only_diagnostics_collected": true,
+    "timeout_policy_seconds_for_app_shell_loader": 120,
+    "public_safe_note": "TASK-027T runtime checkpoints were captured local-only with screenshots and XML. Binary-safe screenshot capture was used after an unsafe redirect anomaly."
+  },
+  "public_safety": {
+    "raw_phone_otp_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_apk_hash_public": false,
+    "raw_apk_filename_public": false,
+    "raw_qr_targets_public": false,
+    "raw_screenshots_public": false,
+    "raw_xml_public": false,
+    "raw_logs_public": false,
+    "raw_video_public": false,
+    "raw_runtime_evidence_public": false,
+    "private_routes_or_endpoints_public": false,
+    "payment_webview_stream_entered": false,
+    "profile_account_mutation_entered": false,
+    "external_qr_or_browser_opened": false,
+    "steam_account_mutation_performed": false,
+    "network_offline_manipulation_performed": false
+  },
+  "coverage_claims": {
+    "runtime_executed": true,
+    "session_journal_visually_covered": true,
+    "steam_topup_qr_visually_covered": true,
+    "feedback_qr_visually_covered": true,
+    "loaded_actionable_app_state_reconfirmed": true,
+    "app_shell_loader_counts_as_catalog": false,
+    "app_shell_loader_counts_as_destination": false,
+    "prior_task027r_or_task027s_evidence_counts_as_task027t_visual_proof": false,
+    "qr_target_decoded": true,
+    "qr_navigation_followed": false,
+    "payment_or_stream_covered": false,
+    "profile_or_account_mutation_covered": false,
+    "network_offline_covered": false
+  },
+  "unverified_areas": [
+    "recovery from app_shell_loader_after_launcher_entry",
+    "root cause of rail no-op before grid-focus oracle",
+    "complete dynamic game/server value inventory"
+  ]
+}

@@ -164,6 +164,14 @@ must preserve the same production-safety boundaries: no payment/session start,
 external QR/browser traversal, stream/media playback, Steam/account mutation,
 profile mutation, network/offline manipulation or APK modification.
 
+TASK-027T confirms a practical continuation pattern: restore/reconfirm the same
+ignored local-only selected lane before runtime, then prove a loaded actionable
+catalog state before rail destination assertions. Direct rail D-pad and
+UI-tree-derived tap attempts remained no-op, but the TASK-020/TASK-023-style
+deep-catalog/grid-focus plus lateral rail recovery oracle visually reached the
+blank session journal, Steam/top-up QR and feedback QR destinations. Both QR
+targets were decoded local-only at category level and were not followed.
+
 For the audit chain, owner authorization persists in repository source of
 truth: each independent audit task must start in a fresh thread, verified
 completed audit tasks may be pushed/merged to the detected default branch

@@ -104,9 +104,9 @@ Current TASK-030 result:
 
 TASK-030 does not validate live backend behavior, real authorization/ACL,
 payment/order/session mutation behavior, Android runtime correlation or real
-backend cache/state behavior. TASK-031, TASK-032 and TASK-033 remain the planned
-offline protocol/datachannel/redaction follow-ups; TASK-034 remains the optional
-approved staging/live execution gate.
+backend cache/state behavior. TASK-031, TASK-032 and TASK-033 are the offline
+protocol/datachannel/redaction follow-ups in this chain; TASK-034 remains the
+optional approved staging/live execution gate.
 
 ## TASK-031 STOMP signaling and device protocol harness
 
@@ -157,6 +157,32 @@ Current TASK-032 local result:
 TASK-032 does not validate live WebRTC/DataChannel behavior, backend data
 delivery, real gamepad/controller input behavior, backend authorization/ACL or
 Android runtime correlation.
+
+## TASK-033 API-layer redaction and production-safety guards
+
+TASK-033 implements the synthetic/static redaction and production-safety guard
+follow-up from the TASK-028/TASK-036 API audit chain. It validates tracked
+TASK-028/TASK-036 public summaries for the 8 known API-layer security/
+redaction rows and checks fabricated guard specimens only.
+
+Current TASK-033 local result:
+
+- tracked TASK-028/TASK-036 source reconciliation: `pass`;
+- embedded fabricated synthetic guard suite: `pass`;
+- synthetic guard cases: `10`;
+- guard categories covered: credential/token/header, cookie/session,
+  URL/endpoint/route, payload body, local artifact/path, device identifier,
+  account/payment value, QR target, runtime-live-action and budget counter;
+- live REST/backend/network execution: `not_run`;
+- Android runtime/ADB/APK execution: `not_run`;
+- live WebRTC/DataChannel/gamepad/controller behavior: `not_run`;
+- payment/order/session/profile/device mutation: `not_run`;
+- raw specimens are not printed or persisted in public output.
+
+TASK-033 does not validate real evidence redaction behavior, live backend/API
+behavior, real authorization/ACL, Android runtime correlation or payment/order/
+session mutation. TASK-034 remains the optional approved staging/live execution
+gate.
 
 ## Assertions policy
 

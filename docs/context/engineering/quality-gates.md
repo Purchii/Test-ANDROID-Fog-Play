@@ -326,6 +326,20 @@ offline fixture contracts only; live DataChannel/WebRTC behavior, controller
 pairing/input behavior, backend authorization/ACL and Android runtime
 correlation remain `not_run` or `unknown`.
 
+TASK-033 API-layer redaction and production-safety guard tests must remain
+offline/static and synthetic-only. They may validate tracked TASK-028/TASK-036
+public summaries for the 8 known security/redaction rows and may validate only
+fabricated synthetic guard specimens. Public reports may contain only aliases,
+counts, categories, status values and blockers. The harness must reject raw
+endpoints, URLs, headers, payloads, fixture bodies, tokens, cookies, QR
+targets, local paths, device/account/payment/session values, protocol payload
+bodies, gamepad mapping values, live/runtime/API overclaims, nonzero live
+budget counters, unsafe public-safety flags, unknown fields and
+pass-with-blockers. Passing TASK-033 validates synthetic/static guard behavior
+only; real evidence redaction behavior, live backend/API behavior,
+authorization/ACL, Android runtime correlation and payment/order/session
+mutation remain `not_run` or `unknown`.
+
 TASK-036 API-layer exhaustive coverage guard must remain offline/static and
 synthetic-only unless a separate approved execution task is opened. The
 validator may consume tracked public-safe TASK-028 summaries and may optionally

@@ -271,6 +271,18 @@ coverage only; live REST, WebSocket, STOMP, DataChannel, payment/order/session
 mutation, backend authorization and Android runtime correlation remain
 `not_run` or `unknown` until separate approved tasks.
 
+TASK-029 REST schema/fixture contract harness must remain offline/local only.
+It may validate tracked TASK-028/TASK-036 public summaries and read the ignored
+local API quarantine pack for REST matrix rows, REST fixture references, REST
+fixture JSON readability and REST schema shape. Public reports may contain only
+aliases, counts, categories, status values and blockers. Missing local pack
+must produce controlled `partial_blocked`/`blocked_missing_local_quarantine_pack`.
+The harness must reject raw endpoints, URLs, headers, payloads, fixture bodies,
+tokens, cookies, local paths, device/account/payment values and any live or
+runtime overclaim. Live REST/backend behavior, real authz/ACL, payment/order/
+session mutation, Android runtime correlation and real network/cache behavior
+remain `not_run` or `unknown`.
+
 TASK-036 API-layer exhaustive coverage guard must remain offline/static and
 synthetic-only unless a separate approved execution task is opened. The
 validator may consume tracked public-safe TASK-028 summaries and may optionally

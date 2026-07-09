@@ -125,7 +125,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   214 fixture JSON files, 21 schema JSON files and 67 inventory items, with no
   missing fixture references. Public reports contain only aliases, counts and
   categories; raw API pack contents remain local-only.
-- TASK-035 is running on branch
+- TASK-035 completed on branch
   `qa/task-035-full-static-text-inventory-audit` from detected default branch
   `main` commit `30e67e0`. It is `BOUNDED_AUTONOMOUS` and
   `PROD_SAFE_LOCAL_STATIC_ONLY`: the static text inventory builder reads the
@@ -154,6 +154,30 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   `not_run`/`unknown`. QA remediation closed false-pass risks around omitted
   pack roots, invalid TASK-028 arithmetic and missing live/runtime status
   fields.
+- TASK-037 completed local verification in fresh thread
+  `TASK-037 - Production bounded API/runtime exploratory coverage with
+  read-only/live safe lane` on branch
+  `qa/task-037-production-api-runtime-exploratory-coverage` from detected
+  default branch `main` commit `719b7f7`. It is `BOUNDED_AUTONOMOUS` and
+  `PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE`. Owner safe-lane approval was
+  recorded before live action. Local-only preflight confirmed ignored raw
+  evidence storage, synthetic secret material presence, ADB availability and the
+  approved target by public-safe alias without printing raw values. Runtime
+  evidence captured an external TV ambient/screensaver interruption, safe Back
+  recovery to Google TV launcher, a bounded launcher-entry app launch to the
+  post-auth catalog surface, screenshot/XML/log checkpoints and a public-safe
+  `no_signal_in_bounded_log_tail` crash/ANR summary. Direct live API calls were not executed
+  because TASK-037 did not establish a public-safe invocation oracle that avoids
+  raw endpoint dependency; direct read-only config/catalog/reference/status/
+  profile/entitlement API behavior remains `not_run` or
+  `unknown_not_verified`. Public report:
+  `docs/qa/reports/task037_production_api_runtime_exploratory.summary.json`.
+  Raw screenshots, XML, logs, command traces, secret values, target details,
+  package candidates and any account-like UI values remain ignored local-only
+  under `.qa_local/evidence/task-037/`.
+  Multi-agent review passed after remediation. Non-blocking follow-up: harden
+  broader TASK-037 summary/status count reconciliation before any future
+  pass-style live API report.
 
 ## Runtime readiness
 

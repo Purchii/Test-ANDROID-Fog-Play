@@ -1,0 +1,313 @@
+{
+  "anomaly_ledger": [
+    {
+      "anomaly_id": "ANOM-037-001",
+      "evidence_ids": [
+        "rt037-runtime-screenshot-recapture",
+        "rt037-runtime-ambient-recovery"
+      ],
+      "evidence_status": "confirmed",
+      "expected_result": "approved runtime target shows app or launcher state after wake",
+      "likely_or_hypothesis_cause": "Android TV idle or wake state exposed an external system ambient surface before the app was foregrounded",
+      "observed_result": "external ambient/screensaver surface appeared before app recovery",
+      "public_safe_alias": "external_tv_ambient_screensaver_surface",
+      "test_design_implication": "future runtime/API correlation must begin with an app-foreground checkpoint and treat ambient surfaces as external system interruptions",
+      "trigger_action": "initial runtime screenshot after target preflight"
+    },
+    {
+      "anomaly_id": "ANOM-037-002",
+      "evidence_ids": [
+        "rt037-runtime-app-launch"
+      ],
+      "evidence_status": "confirmed",
+      "expected_result": "installed app launch can use a unique local package candidate",
+      "likely_or_hypothesis_cause": "local package listing matched multiple app-like package candidates and no approved public-safe package alias was available",
+      "observed_result": "local package-candidate selection was ambiguous, so package-based launch was not attempted",
+      "public_safe_alias": "package_candidate_selection_ambiguous",
+      "test_design_implication": "future live/runtime tasks need a public-safe launch alias mapped to one local-only package/component oracle before package-based relaunch",
+      "trigger_action": "local package-candidate preflight"
+    },
+    {
+      "anomaly_id": "ANOM-037-003",
+      "evidence_ids": [
+        "rt037-runtime-app-catalog-xml-check"
+      ],
+      "evidence_status": "confirmed",
+      "expected_result": "visual transient overlay is represented in XML when visible on screenshot",
+      "likely_or_hypothesis_cause": "transient TV overlay was visually rendered outside the accessibility tree snapshot",
+      "observed_result": "visual transient overlay was visible in screenshot but not observed in XML",
+      "public_safe_alias": "transient_visual_overlay_missing_from_xml",
+      "test_design_implication": "runtime inventory must keep screenshot/visual inspection as authoritative for transient overlays",
+      "trigger_action": "post-launcher-entry catalog XML check"
+    }
+  ],
+  "api_coverage_ledger": [
+    {
+      "category": "config",
+      "evidence_ids": [],
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "catalog",
+      "evidence_ids": [
+        "rt037-runtime-launcher-entry-tap",
+        "rt037-runtime-app-catalog-xml-check"
+      ],
+      "evidence_status": "likely",
+      "execution_status": "unknown_not_verified",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "reference_dictionary",
+      "evidence_ids": [],
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "available_status",
+      "evidence_ids": [],
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "synthetic_profile_status",
+      "evidence_ids": [],
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "synthetic_entitlement_status",
+      "evidence_ids": [],
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    },
+    {
+      "category": "auth_session_bootstrap",
+      "evidence_ids": [
+        "rt037-preflight-safe-lane"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "unknown_not_verified",
+      "mutation_performed": false,
+      "raw_values_public": false,
+      "request_count": 0,
+      "retry_count": 0
+    }
+  ],
+  "blocked_reasons": [
+    "No direct live API request was executed because TASK-037 did not establish a public-safe API invocation oracle that avoids raw endpoint dependency.",
+    "Package-based app launch was blocked by ambiguous local package-candidate selection; launcher-entry recovery was used instead."
+  ],
+  "boundary_ledger": [],
+  "budget": {
+    "concurrency": 1,
+    "load_or_fuzz_loop_performed": false,
+    "retry_cap": 3,
+    "total_live_request_count": 0,
+    "total_retry_count": 0
+  },
+  "coverage_summary": {
+    "counts_by_api_category": {
+      "auth_session_bootstrap": 0,
+      "available_status": 0,
+      "catalog": 0,
+      "config": 0,
+      "reference_dictionary": 0,
+      "synthetic_entitlement_status": 0,
+      "synthetic_profile_status": 0
+    },
+    "counts_by_execution_status": {
+      "covered": 5,
+      "not_run": 5,
+      "unknown_not_verified": 2
+    },
+    "counts_by_runtime_category": {
+      "app_launch": 1,
+      "current_screen_alias": 1,
+      "external_system_recovery": 1,
+      "log_snippet_check": 1,
+      "screenshot_xml_checkpoint": 1
+    }
+  },
+  "evidence_status": "confirmed",
+  "live_api_execution_status": "not_run",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "overall_status": "partial_blocked",
+  "preflight": {
+    "forbidden_action_guard_preflight": {
+      "evidence_status": "confirmed",
+      "raw_values_printed": false,
+      "status": "confirmed"
+    },
+    "owner_safe_lane_recorded": true,
+    "raw_evidence_storage_preflight": {
+      "evidence_status": "confirmed",
+      "raw_values_printed": false,
+      "status": "confirmed"
+    },
+    "redaction_preflight": {
+      "evidence_status": "confirmed",
+      "raw_values_printed": false,
+      "status": "confirmed"
+    },
+    "synthetic_secret_preflight": {
+      "evidence_status": "confirmed",
+      "raw_values_printed": false,
+      "status": "confirmed"
+    },
+    "target_preflight": {
+      "evidence_status": "confirmed",
+      "raw_values_printed": false,
+      "status": "confirmed"
+    }
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE",
+  "public_safety": {
+    "apk_modified_or_decompiled": false,
+    "device_binding_mutated": false,
+    "mutation_performed": false,
+    "order_or_payment_performed": false,
+    "raw_cookies_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_payloads_public": false,
+    "raw_qr_targets_public": false,
+    "raw_secrets_public": false,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_user_data_public": false,
+    "stream_or_session_started": false,
+    "tls_or_security_bypass_performed": false
+  },
+  "runtime_coverage_ledger": [
+    {
+      "category": "app_launch",
+      "evidence_ids": [
+        "rt037-runtime-launcher-entry-tap"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "covered",
+      "focus_action_category": "launcher_entry",
+      "raw_values_public": false,
+      "risk_hypothesis_note": "bounded launcher-entry activation reached the app catalog surface after package-based launch was blocked by ambiguous local package candidates",
+      "screen_alias": "post_auth_catalog_surface",
+      "state_category": "runtime_app_surface"
+    },
+    {
+      "category": "current_screen_alias",
+      "evidence_ids": [
+        "rt037-runtime-launcher-entry-tap"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "covered",
+      "focus_action_category": "visual_catalog_observation",
+      "raw_values_public": false,
+      "risk_hypothesis_note": "catalog alias is confirmed visually; direct catalog API behavior remains unknown_not_verified",
+      "screen_alias": "post_auth_catalog_surface",
+      "state_category": "catalog_surface"
+    },
+    {
+      "category": "screenshot_xml_checkpoint",
+      "evidence_ids": [
+        "rt037-runtime-launcher-entry-tap",
+        "rt037-runtime-app-catalog-xml-check"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "covered",
+      "focus_action_category": "screenshot_plus_xml_check",
+      "raw_values_public": false,
+      "risk_hypothesis_note": "visual transient overlay was present in screenshot but absent from XML, so screenshot evidence remains authoritative for transient overlays",
+      "screen_alias": "post_auth_catalog_surface_with_transient_overlay",
+      "state_category": "catalog_surface_transient_overlay"
+    },
+    {
+      "category": "log_snippet_check",
+      "evidence_ids": [
+        "rt037-runtime-log-snippet-check"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "covered",
+      "focus_action_category": "bounded_log_tail_check",
+      "crash_anr_signal_status": "no_signal_in_bounded_log_tail",
+      "raw_values_public": false,
+      "risk_hypothesis_note": "bounded local log tail showed no crash/ANR signal count in the public-safe summary; raw log remains local-only",
+      "screen_alias": "post_auth_catalog_surface",
+      "state_category": "runtime_health_check"
+    },
+    {
+      "category": "external_system_recovery",
+      "evidence_ids": [
+        "rt037-runtime-ambient-recovery"
+      ],
+      "evidence_status": "confirmed",
+      "execution_status": "covered",
+      "focus_action_category": "safe_back_recovery",
+      "raw_values_public": false,
+      "risk_hypothesis_note": "ambient/screensaver is external system evidence, not an app boundary; recovery reached Google TV launcher before app entry",
+      "screen_alias": "external_tv_ambient_screensaver_surface",
+      "state_category": "external_system_surface"
+    }
+  ],
+  "runtime_execution_status": "partial_runtime_correlated",
+  "safe_lane": {
+    "allowed_api_scope": [
+      "config",
+      "catalog",
+      "reference_dictionary",
+      "available_status",
+      "synthetic_profile_status",
+      "synthetic_entitlement_status",
+      "auth_session_bootstrap"
+    ],
+    "blocked_actions": [
+      "stream_start",
+      "order",
+      "payment",
+      "profile_account_mutation",
+      "device_binding_mutation",
+      "destructive_revoke_update_delete"
+    ],
+    "environment": "production",
+    "raw_secret_values_public": false,
+    "synthetic_user_allowed": true,
+    "target_alias": "task037-approved-tv-target",
+    "target_raw_value_public": false
+  },
+  "schema_version": "task037-production-api-runtime-exploratory-v1",
+  "task_id": "TASK-037",
+  "tool_name": "validate_task037_production_api_runtime_report",
+  "unverified_areas": [
+    "direct live read-only config API behavior",
+    "direct live read-only catalog API behavior",
+    "direct live read-only reference dictionary/status behavior",
+    "synthetic profile/entitlement/status direct API read behavior",
+    "state-change verification oracle for direct read-only API operations",
+    "unique public-safe package/component launch alias"
+  ]
+}

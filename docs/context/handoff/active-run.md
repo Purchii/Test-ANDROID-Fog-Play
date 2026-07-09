@@ -3,83 +3,102 @@
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-035 - Full static text inventory and coverage audit`
-Thread status: `verified_partial_blocked_by_missing_full_raw_static_text_source`
-Fresh thread verified: `current task thread accepted for TASK-035 after owner requested reducing excess threads`
-Task ID: `TASK-035`
-Task branch: `qa/task-035-full-static-text-inventory-audit`
+Thread title: `TASK-036 - Exhaustive API-layer test coverage and exploratory evidence intake`
+Thread status: `verified_partial_blocked_missing_local_quarantine_pack`
+Fresh thread verified: `current fresh task thread accepted; title set via Codex thread tool`
+Task ID: `TASK-036`
+Task branch: `qa/task-036-exhaustive-api-layer-test-coverage`
 Default branch: `main`
-Base commit: `30e67e0`
+Base commit: `2cfc83f`
 Merge/push authority: `BOUNDED_AUTONOMOUS; merge/push default branch only after checks and multi-agent reviews pass`
-Production safety classification: `PROD_SAFE_LOCAL_STATIC_ONLY`
+Production safety classification: `PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY`
 
 ## Goal
 
-Build a fail-closed static text inventory foundation for all static text values
-available from the local sanitized reverse-analysis artifact. Raw text values
-must remain local-only; public outputs may contain only aliases, counts, hash
-prefixes, categories, redaction classes and status values.
+Build exhaustive API-layer test coverage over all currently available tracked
+public-safe API-layer information and any approved ignored local quarantine pack
+if present. Unknown live behavior must be recorded as `unknown`/`not_run` with a
+fail-closed exploratory intake path, not inferred.
 
 ## Current Status
 
-TASK-035 has a local static inventory builder and public-safe summary:
+TASK-036 validates the TASK-028 offline API contract baseline:
 
-- `automation/static_text_inventory/build_task035_static_text_inventory.py`;
-- `tests/test_task035_static_text_inventory.py`;
-- `docs/qa/reports/task035_static_text_inventory.summary.json`;
-- `docs/qa/static-text/static-text-inventory-policy.md`;
-- `tasks/TASK_035_full_static_text_inventory_audit.md`.
+- `automation/api_layer_contract/validate_task028_api_layer_contract.py`;
+- `tests/test_task028_api_layer_contract.py`;
+- `docs/qa/reports/task028_api_layer_contract_coverage.summary.json`;
+- `docs/qa/api-layer/api-layer-import-policy.md`;
+- `docs/qa/api-layer/api-layer-coverage-plan.md`;
+- `tasks/TASK_028_api_layer_contract_coverage.md`.
 
-The available ignored sanitized source reports `19187` likely UI/static strings
-but exposes only `160` raw sample values. TASK-035 inventories every available
-raw sample value into ignored local storage and records the remaining `19027`
-raw values as `blocked_by_missing_full_static_text_values_source`.
+The current worktree has no `.qa_local/` directory and no local quarantined API
+pack available, so TASK-036 must proceed from tracked public-safe summaries and
+synthetic/mock fixtures only. Local pack execution remains supported as a
+fail-closed optional path if `.qa_local/api_layer_audit_20260706` is restored.
 
-This is a static coverage finding, not runtime/product evidence. Exact full
-raw-value coverage of all `19187` values remains blocked until an approved
-local-only full static string export exists.
+Final local verification passed after QA remediation. The public TASK-036 report
+is `partial_blocked` only because the ignored local API quarantine pack is not
+available in this worktree; live API/backend/runtime behavior remains
+`not_run`/`unknown`.
 
 ## Multi-agent status
 
 - Orchestrator: current thread.
-- Planner: delegated source/scope review.
-- Builder: implemented static inventory builder, tests, report and docs in the
-  current branch.
-- Security/Prod-safety Reviewer: conditionally approved the static-only
-  boundary; requires raw values to stay local-only and runtime/API/APK actions
-  to remain `not_run`.
-- QA Reviewer A: approved after validator fail-closed remediation for unknown
-  public fields, missing-full-list false pass, raw-public source flag and
-  ledger/summary reconciliation.
-- QA Reviewer B: approved after count-schema hardening for non-negative counts,
-  sample-count bounds, secondary-count validation and strict generated
-  timestamp validation.
-- Security/Prod-safety Reviewer: approved after exact follow-up action
-  allowlist remediation for plain raw static text in allowed string fields.
-- Docs/Scribe: approved; source-of-truth updates are coherent and public-safe.
+- Planner: delegated source/scope review completed.
+- Builder: current thread implementation completed after source-of-truth review.
+- QA Reviewer A: approved after false-pass remediation.
+- QA Reviewer B: approved after false-pass remediation.
+- Security/Prod-safety Reviewer: approved offline/static/local mocked scope
+  after remediation; live/API/runtime remains blocked/not_run until a separate
+  safe-lane passport is recorded.
+- Docs/Scribe: reviewed docs, requested closure wording, and remediation was
+  applied.
 
 ## Boundaries
 
-TASK-035 must not perform:
+TASK-036 may perform:
 
-- Android runtime, ADB, app launch or UI traversal;
-- APK install, APK patching/modification, decompilation, smali or method-body
-  inspection;
-- live REST/backend/API/network/WebSocket/STOMP/DataChannel calls;
-- endpoint extraction or endpoint publication;
-- auth with real user data;
+- tracked source-of-truth review;
+- local static validation of tracked public-safe TASK-028 summary;
+- synthetic/mock transport tests;
+- optional ignored local quarantine pack validation if the pack is present;
+- public reports with aliases, counts, categories, statuses and blockers only.
+
+TASK-036 must not perform:
+
+- live REST/backend calls;
+- WebSocket/STOMP/DataChannel live connections;
+- Android runtime, ADB, APK install/launch or network capture/proxying;
+- endpoint discovery, endpoint publication or executable API recipes;
 - token/cookie/session/header replay;
+- auth with real user data;
 - real order, payment, stream or session mutation;
-- raw static string publication in tracked files.
+- APK patching/modification, decompilation, smali or source-code use;
+- raw endpoint/header/payload/fixture/body/device/payment/local-path
+  publication.
+
+## Acceptance Criteria
+
+- Public TASK-028 API-layer summary is validated fail-closed for arithmetic,
+  status, safety and overclaim invariants.
+- TASK-036 report records exact current coverage from tracked data and explicit
+  blockers for missing local pack or missing live approvals.
+- Offline REST/protocol/state/security follow-up areas are represented as
+  executable or synthetic/mock coverage classes, not live behavior claims.
+- Exploratory evidence intake path is documented as `PROD_CONDITIONAL` and
+  blocked until approved staging/test backend, synthetic user, budget,
+  cleanup/rollback, redaction, local-only storage and QA/Security reviews exist.
+- Unit tests cover pass and fail-closed cases.
+- Docs, verification memory and task spec are updated.
 
 ## Verification Plan
 
 ```text
 git status --short --branch
 git diff --check
-python automation/static_text_inventory/build_task035_static_text_inventory.py --source qa_reverse_analysis/raw/apk_analysis_sanitized.json --local-inventory .qa_local/static_text_inventory/task035_available_static_text_inventory.local.jsonl --report docs/qa/reports/task035_static_text_inventory.summary.json
-python automation/static_text_inventory/build_task035_static_text_inventory.py --validate-only --report docs/qa/reports/task035_static_text_inventory.summary.json
-python -m pytest -q tests/test_task035_static_text_inventory.py
+python automation/api_layer_contract/validate_task036_api_layer_exhaustive_coverage.py --task028-report docs/qa/reports/task028_api_layer_contract_coverage.summary.json --report docs/qa/reports/task036_api_layer_exhaustive_coverage.summary.json
+python automation/api_layer_contract/validate_task036_api_layer_exhaustive_coverage.py --task028-report docs/qa/reports/task028_api_layer_contract_coverage.summary.json --pack-root .qa_local/api_layer_audit_20260706 --report docs/qa/reports/task036_api_layer_exhaustive_coverage.summary.json
+python -m pytest -q tests/test_task028_api_layer_contract.py tests/test_task036_api_layer_exhaustive_coverage.py
 python -m compileall -q automation tests
 python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
@@ -87,14 +106,20 @@ python automation/quality/public_repo_safety_scan.py
 python automation/quality/docs_consistency_link_sanity.py
 ```
 
+The pack-root command is expected to return top-level `partial_blocked` in this
+worktree if the ignored local quarantine pack is absent, with
+`local_pack_crosscheck.status=blocked_missing_local_quarantine_pack`. That
+blocker is acceptable and must be recorded without treating live/API behavior
+as tested.
+
 ## Stop Conditions
 
 Stop and report a blocker if:
 
-- the local sanitized source artifact is unavailable or malformed;
-- public report validation finds raw static text, raw URL/domain/path-like
-  values, full hashes or runtime overclaims;
-- any test or script requires runtime, ADB, APK, live backend/API/network,
-  payment, stream or account action;
-- any reviewer identifies an unresolved R0/R1 safety, redaction or overclaim
-  concern.
+- any implementation requires live API/backend/network/runtime/ADB/APK action;
+- local pack validation tries to publish raw endpoints, headers, payloads,
+  fixture bodies, tokens, device identifiers, payment values or local paths;
+- public summary validation finds raw values, live execution claims or unsafe
+  public flags;
+- tests fail and cannot be fixed inside this task scope;
+- multi-agent review reports unresolved R0/R1 risk.

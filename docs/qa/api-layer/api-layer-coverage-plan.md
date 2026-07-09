@@ -41,6 +41,25 @@ network calls or publishing raw payloads.
 a staging/QA environment, synthetic user, resource budget, cleanup/rollback,
 audit trail, redaction and reviewer sign-off.
 
+## TASK-036 aggregate offline guard
+
+TASK-036 aggregates the TASK-029 through TASK-033 offline follow-up scope into a
+single public-safe exhaustiveness validator over the tracked TASK-028 summary.
+It validates count arithmetic, follow-up coverage classes, public-safety flags
+and the fail-closed exploratory intake gate.
+
+Current TASK-036 result:
+
+- tracked TASK-028 summary validation: `pass`;
+- local quarantine pack cross-check: `blocked_missing_local_quarantine_pack`
+  in the current worktree;
+- live API/backend/runtime exploration: `not_run` and blocked until
+  TASK-034-style `PROD_CONDITIONAL` prerequisites are confirmed.
+
+TASK-036 does not publish raw pack contents and does not claim live API
+behavior. Pack-backed per-row parametrization remains blocked until the
+approved ignored local quarantine pack is present in the active worktree.
+
 ## Assertions policy
 
 Offline API tests should assert:

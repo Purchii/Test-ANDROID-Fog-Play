@@ -1,0 +1,181 @@
+{
+  "blocked_reasons": [
+    "local quarantine API pack is not available in this worktree."
+  ],
+  "coverage_area_ledger": [
+    {
+      "area": "rest_schema_fixture_contracts",
+      "known_fixture_schema_tests": 29,
+      "known_matrix_rows": 132,
+      "known_negative_fixture_schema_tests": 29,
+      "source_task": "TASK-029",
+      "status": "tracked_summary_validated_pack_parametrization_blocked_without_local_pack"
+    },
+    {
+      "area": "rest_negative_cache_state_sequences",
+      "known_cache_behavior_tests": 10,
+      "known_mock_http_sequence_tests": 22,
+      "known_mock_http_tests": 51,
+      "known_sequence_rows": 12,
+      "source_task": "TASK-030",
+      "status": "tracked_summary_validated_mock_transport_required"
+    },
+    {
+      "area": "stomp_and_device_protocol_contracts",
+      "known_protocol_fixture_tests": 38,
+      "known_protocol_negative_tests": 18,
+      "known_protocol_rows": 61,
+      "source_task": "TASK-031",
+      "status": "tracked_summary_validated_offline_protocol_fixtures_required"
+    },
+    {
+      "area": "datachannel_and_gamepad_contracts",
+      "known_datachannel_fixture_group_count": 25,
+      "known_gamepad_fixture_group_count": 1,
+      "source_task": "TASK-032",
+      "status": "tracked_summary_validated_offline_protocol_fixtures_required"
+    },
+    {
+      "area": "api_redaction_prod_safety_guards",
+      "known_redaction_tests": 8,
+      "known_security_rows": 8,
+      "source_task": "TASK-033",
+      "status": "tracked_summary_validated_synthetic_guard_tests_required"
+    },
+    {
+      "area": "approved_staging_or_live_exploration",
+      "known_runtime_optional_rows": 4,
+      "source_task": "TASK-034",
+      "status": "blocked_until_prod_conditional_prerequisites_confirmed"
+    }
+  ],
+  "coverage_totals": {
+    "counts_by_automation_target": {
+      "deferred_with_reason": 4,
+      "fixture_schema_negative_test": 29,
+      "fixture_schema_test": 29,
+      "log_artifact_scanner_or_guard_test": 8,
+      "mock_http_sequence_test": 22,
+      "mock_http_test": 51,
+      "mock_or_fixture_test": 13,
+      "protocol_fixture_test": 38,
+      "protocol_negative_test": 18,
+      "protocol_sequence_or_fixture_test": 5
+    },
+    "counts_by_layer": {
+      "protocol": 61,
+      "rest": 132,
+      "runtime_optional": 4,
+      "security": 8,
+      "state_machine_sequence": 12
+    },
+    "counts_by_status": {
+      "deferred_not_blocking_this_run": 4,
+      "ready_or_fixture_only": 213
+    },
+    "counts_by_test_type": {
+      "cache_behavior": 10,
+      "critical_edge_case": 13,
+      "explicit_deferred": 4,
+      "negative_auth": 22,
+      "negative_edge_case": 13,
+      "negative_invalid_fields": 6,
+      "negative_malformed_base64": 4,
+      "negative_malformed_json": 29,
+      "negative_server_error": 29,
+      "positive_protocol_schema": 38,
+      "positive_schema": 29,
+      "security_redaction": 8,
+      "sequence_positive_or_negative": 12
+    },
+    "fixture_groups": {
+      "datachannel": 25,
+      "gamepad": 1,
+      "rest": 122,
+      "sequences": 30,
+      "stomp_device": 19,
+      "stomp_signaling": 17
+    },
+    "inventory_types": {
+      "datachannel_message": 19,
+      "device_stomp_message": 11,
+      "rest": 29,
+      "stomp_signaling_message": 8
+    },
+    "schema_groups": {
+      "protocol": 4,
+      "rest": 17
+    }
+  },
+  "evidence_status": "likely_with_blockers",
+  "exploratory_evidence_intake_gate": {
+    "android_runtime_correlation": "not_run",
+    "live_datachannel_webrtc_connections": "not_run",
+    "live_rest_backend_calls": "not_run",
+    "live_stomp_websocket_connections": "not_run",
+    "production_safety_classification": "PROD_CONDITIONAL",
+    "raw_endpoint_publication": "forbidden",
+    "required_prerequisites": [
+      "approved staging or test backend alias is not confirmed",
+      "synthetic user/session policy is not confirmed",
+      "resource budget and rate limits are not confirmed",
+      "cleanup/rollback/kill switch is not confirmed",
+      "local-only raw evidence storage and redaction review are not confirmed",
+      "QA A, QA B and Security pre-execution approvals are not confirmed"
+    ],
+    "status": "blocked_missing_prod_conditional_prerequisites"
+  },
+  "generated_at_utc": "2026-07-09T13:16:36Z",
+  "live_api_execution_status": "not_run",
+  "local_pack_crosscheck": {
+    "evidence_status": "unknown",
+    "raw_pack_storage": "ignored_local_quarantine",
+    "raw_values_public": false,
+    "status": "blocked_missing_local_quarantine_pack"
+  },
+  "mode": "BOUNDED_AUTONOMOUS",
+  "overall_status": "partial_blocked",
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY",
+  "public_safety": {
+    "apk_or_runtime_actions_performed": false,
+    "live_network_calls_performed": false,
+    "local_quarantine_pack_required_for_pack_backed_parametrization": true,
+    "public_report_contains_only_aliases_counts_and_categories": true,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_fixture_bodies_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_pack_content_read_from_public_repo": false,
+    "raw_payloads_public": false,
+    "raw_payment_values_public": false,
+    "raw_phone_otp_captcha_public": false,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_payment_or_session_mutation_performed": false,
+    "tls_or_security_bypass_performed": false
+  },
+  "runtime_execution_status": "not_run",
+  "schema_version": "task036-api-layer-exhaustive-coverage-v1",
+  "source_summary": {
+    "evidence_status": "likely",
+    "fixture_json_files": 214,
+    "fixture_or_sequence_refs": 217,
+    "inventory_items": 67,
+    "matrix_rows": 217,
+    "schema_json_files": 21,
+    "source_report_alias": "task028_api_layer_contract_coverage_summary",
+    "source_task_id": "TASK-028"
+  },
+  "task_id": "TASK-036",
+  "tool_name": "validate_task036_api_layer_exhaustive_coverage",
+  "unverified_areas": [
+    "pack-backed per-row fixture parametrization when local quarantine pack is absent",
+    "live REST backend behavior",
+    "live STOMP/WebSocket behavior",
+    "live WebRTC/DataChannel behavior",
+    "backend authorization and ACL enforcement",
+    "real payment/order/session mutation behavior",
+    "Android runtime correlation with API-layer evidence"
+  ]
+}

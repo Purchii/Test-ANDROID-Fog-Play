@@ -138,6 +138,22 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   `blocked_by_missing_full_static_text_values_source`. TASK-035 does not run
   Android runtime, ADB, APK install/launch, decompilation, smali inspection,
   live backend/API/network, payment, stream/session or account actions.
+- TASK-036 completed local verification in fresh thread
+  `TASK-036 - Exhaustive API-layer test coverage and exploratory evidence
+  intake` on branch `qa/task-036-exhaustive-api-layer-test-coverage` from
+  detected default branch `main` commit `2cfc83f`. It is
+  `BOUNDED_AUTONOMOUS` and
+  `PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY`: the validator checks tracked
+  TASK-028 API-layer public summary arithmetic, follow-up coverage classes,
+  explicit live/runtime `not_run` fields, public-safety flags and a fail-closed
+  exploratory intake gate. The active worktree has no ignored local API
+  quarantine pack, so pack-backed per-row parametrization is
+  `blocked_missing_local_quarantine_pack`; live REST, STOMP/WebSocket,
+  DataChannel/WebRTC, backend ACL/authz, Android runtime correlation,
+  payment/order/session mutation and endpoint publication remain
+  `not_run`/`unknown`. QA remediation closed false-pass risks around omitted
+  pack roots, invalid TASK-028 arithmetic and missing live/runtime status
+  fields.
 
 ## Runtime readiness
 

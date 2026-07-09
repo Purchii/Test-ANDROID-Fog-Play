@@ -271,6 +271,18 @@ coverage only; live REST, WebSocket, STOMP, DataChannel, payment/order/session
 mutation, backend authorization and Android runtime correlation remain
 `not_run` or `unknown` until separate approved tasks.
 
+TASK-036 API-layer exhaustive coverage guard must remain offline/static and
+synthetic-only unless a separate approved execution task is opened. The
+validator may consume tracked public-safe TASK-028 summaries and may optionally
+cross-check the ignored local quarantine pack through TASK-028 validation when
+the pack exists. Public reports may contain only aliases, counts, categories,
+status values and blockers. Missing local pack material must produce
+`blocked_missing_local_quarantine_pack`, not product evidence. Live REST,
+STOMP/WebSocket, DataChannel/WebRTC, backend ACL/authz, Android runtime
+correlation, payment/order/session mutation and endpoint publication remain
+`not_run` or `unknown` until TASK-034-style `PROD_CONDITIONAL` prerequisites
+and reviewer approvals are confirmed.
+
 TASK-035 static text inventory must remain local/static only. The builder may
 read the ignored sanitized reverse-analysis JSON and write raw string inventory
 only under ignored `.qa_local/static_text_inventory/`. Public reports may

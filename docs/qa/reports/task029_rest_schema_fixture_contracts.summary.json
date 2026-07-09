@@ -1,0 +1,131 @@
+{
+  "android_runtime_status": "not_run",
+  "blocked_reasons": [],
+  "evidence_status": "likely",
+  "generated_at_utc": "2026-07-09T15:33:35Z",
+  "live_api_execution_status": "not_run",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "network_execution_status": "not_run",
+  "offline_execution_boundary": {
+    "android_adb_runtime_actions": "not_run",
+    "apk_read_install_or_modification": "not_run",
+    "live_rest_backend_calls": "not_run",
+    "transport_strategy": "local_filesystem_json_only",
+    "webrtc_datachannel_connections": "not_run",
+    "websocket_stomp_connections": "not_run"
+  },
+  "overall_status": "pass",
+  "pack_contract": {
+    "counts_by_rest_automation_target": {
+      "fixture_schema_negative_test": 29,
+      "fixture_schema_test": 29,
+      "mock_http_sequence_test": 10,
+      "mock_http_test": 51,
+      "mock_or_fixture_test": 13
+    },
+    "counts_by_rest_status": {
+      "ready_or_fixture_only": 132
+    },
+    "counts_by_rest_test_type": {
+      "cache_behavior": 10,
+      "critical_edge_case": 13,
+      "negative_auth": 22,
+      "negative_malformed_json": 29,
+      "negative_server_error": 29,
+      "positive_schema": 29
+    },
+    "evidence_status": "likely",
+    "raw_pack_signal_categories": {
+      "device_identifier_keyword_like": 12,
+      "endpoint_path_like": 29,
+      "local_path_like": 31,
+      "payment_or_account_keyword_like": 19,
+      "secret_keyword_like": 46,
+      "url_like": 31
+    },
+    "raw_pack_storage": "ignored_local_quarantine",
+    "raw_values_public": false,
+    "rest_contract_rows": 71,
+    "rest_fixture_groups_checked": {
+      "gamepad": 1,
+      "rest": 70
+    },
+    "rest_fixture_json_malformed": 0,
+    "rest_fixture_refs_checked": 71,
+    "rest_fixture_refs_invalid": 0,
+    "rest_fixture_refs_missing": 0,
+    "rest_inventory_item_mismatches": 0,
+    "rest_matrix_rows": 132,
+    "rest_schema_json_files": 17,
+    "rest_schema_json_malformed_or_invalid": 0,
+    "source_alias": "api-layer-audit-pack-20260706",
+    "status": "pass"
+  },
+  "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+  "public_safety": {
+    "adb_or_android_runtime_actions_performed": false,
+    "apk_read_install_or_modification_performed": false,
+    "live_backend_calls_performed": false,
+    "live_network_calls_performed": false,
+    "local_quarantine_pack_required_for_pack_backed_parametrization": true,
+    "pack_raw_signal_categories_are_counted_only": true,
+    "public_report_contains_only_aliases_counts_categories_status_and_blockers": true,
+    "raw_account_values_public": false,
+    "raw_device_identifiers_public": false,
+    "raw_endpoints_public": false,
+    "raw_fixture_bodies_public": false,
+    "raw_headers_public": false,
+    "raw_local_paths_public": false,
+    "raw_pack_content_read_from_public_repo": false,
+    "raw_payloads_public": false,
+    "raw_payment_values_public": false,
+    "raw_phone_otp_captcha_public": false,
+    "raw_tokens_or_sessions_public": false,
+    "raw_urls_public": false,
+    "real_payment_or_session_mutation_performed": false,
+    "tls_or_security_bypass_performed": false,
+    "websocket_or_datachannel_connections_performed": false
+  },
+  "rest_contract_summary": {
+    "known_gamepad_fixture_group_count": 1,
+    "known_rest_fixture_group_count": 122,
+    "known_rest_fixture_schema_contract_targets": {
+      "fixture_schema_negative_test": 29,
+      "fixture_schema_test": 29,
+      "mock_or_fixture_test": 13
+    },
+    "known_rest_matrix_rows": 132,
+    "known_rest_schema_group_count": 17,
+    "source_reconciliation_status": "pass"
+  },
+  "runtime_execution_status": "not_run",
+  "schema_version": "task029-rest-schema-fixture-contracts-v1",
+  "source_summaries": {
+    "task028": {
+      "evidence_status": "likely",
+      "fixture_schema_negative_tests": 29,
+      "fixture_schema_tests": 29,
+      "matrix_rows": 217,
+      "rest_fixture_json_files": 122,
+      "rest_matrix_rows": 132,
+      "rest_schema_json_files": 17,
+      "source_report_alias": "task028_api_layer_contract_coverage_summary",
+      "status": "pass"
+    },
+    "task036": {
+      "evidence_status": "likely_with_blockers",
+      "source_report_alias": "task036_api_layer_exhaustive_coverage_summary",
+      "status": "partial_blocked",
+      "task029_ledger_status": "tracked_summary_validated_pack_parametrization_blocked_without_local_pack"
+    }
+  },
+  "task_id": "TASK-029",
+  "tool_name": "validate_task029_rest_schema_fixture_contracts",
+  "unverified_areas": [
+    "live REST backend behavior",
+    "backend authorization and ACL enforcement",
+    "cache behavior against a real backend",
+    "real payment order session mutation behavior",
+    "Android runtime correlation with API-layer evidence"
+  ]
+}

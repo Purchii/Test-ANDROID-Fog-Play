@@ -178,6 +178,20 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
   Multi-agent review passed after remediation. Non-blocking follow-up: harden
   broader TASK-037 summary/status count reconciliation before any future
   pass-style live API report.
+- TASK-029 completed local implementation in fresh thread
+  `TASK-029 - REST schema and fixture contract harness` on branch
+  `qa/task-029-rest-schema-fixture-contracts` from detected default branch
+  `main` commit `7f468f3`. It is `BOUNDED_AUTONOMOUS` and
+  `PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT`: the validator reconciles
+  tracked TASK-028/TASK-036 public summaries and reads the ignored local API
+  quarantine pack only to validate REST matrix rows, REST fixture references,
+  fixture JSON readability, REST schema shape and public-safety boundaries.
+  The public report records `132` known REST matrix rows, `71` REST contract
+  rows, `17` REST schema JSON files and pack contract `pass` using aliases,
+  counts, categories, statuses and blockers only. Live REST/backend/network,
+  Android runtime/ADB/APK, endpoint publication, auth/token replay, payment/
+  order/session mutation and runtime correlation remain `not_run` or
+  `unknown`.
 
 ## Runtime readiness
 

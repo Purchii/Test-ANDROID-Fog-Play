@@ -3,145 +3,108 @@
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-037 - Production bounded API/runtime exploratory coverage with read-only/live safe lane`
-Thread status: `verified_partial_blocked_direct_api_not_run`
-Fresh thread verified: `accepted fresh continuation thread 019f470e-2358-7fb0-a1ad-e298784e7382; renamed after Planner selected TASK-037`
-Task ID: `TASK-037`
-Task branch: `qa/task-037-production-api-runtime-exploratory-coverage`
+Thread title: `TASK-029 - REST schema and fixture contract harness`
+Thread status: `verified_pending_merge`
+Fresh thread verified: `accepted fresh continuation thread 019f473f-1a23-7a12-80d1-3693f8f029eb; renamed after Planner selected TASK-029`
+Task ID: `TASK-029`
+Task branch: `qa/task-029-rest-schema-fixture-contracts`
 Default branch: `main`
-Base commit: `719b7f7`
+Base commit: `7f468f3`
 Merge/push authority: `BOUNDED_AUTONOMOUS; merge/push default branch only after checks and multi-agent reviews pass`
-Production safety classification: `PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE`
+Production safety classification: `PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT`
 
 ## Goal
 
-Execute bounded production API/runtime exploratory coverage only inside the
-owner-approved read-only safe lane, using a synthetic user/session and local-only
-raw evidence. Public tracked artifacts may contain only aliases, counts,
-categories, status values, evidence ids and blockers.
-
-## Owner Safe-Lane Passport
-
-Evidence status: `confirmed` from the TASK-037 owner handoff prompt.
-
-- Environment: production, bounded `PROD_CONDITIONAL`.
-- Runtime target: owner-approved local target alias `task037-approved-tv-target`.
-- Synthetic user/session: allowed from ignored local secrets after preflight
-  confirms presence without printing values.
-- Runtime/app evidence: installed build lane from prior selected-lane work may
-  be used; launch, screenshots, XML and bounded log snippets are local-only.
-- API scope allowed: read-only config, catalog, reference dictionaries,
-  available statuses and synthetic-user profile/entitlement/status.
-- Conditional auth scope allowed: login/auth refresh/session bootstrap for the
-  synthetic user.
-- Boundary rule: boundary is not a stopper; record the endpoint/screen/API path
-  as `blocked_by_boundary`, do not execute boundary action, recover safely and
-  continue other safe coverage.
-- Budget: concurrency `1`; retry cap `3`; minimal requests/time; no load or
-  fuzz loops.
-- State-change verification: baseline read/status signals before and after
-  where possible; otherwise record `unknown_not_verified`.
+Implement an offline REST schema/fixture contract harness for the API-layer
+audit chain. The harness may read the ignored local API quarantine pack when it
+is present, but tracked artifacts may contain only aliases, counts, categories,
+status values and blockers.
 
 ## Forbidden Actions
 
 `PROD_FORBIDDEN`:
 
-- stream start or paid/free session activation;
-- order creation or order state changes;
-- payment, checkout, payment QR follow/open/confirmation or external payment
-  navigation;
-- profile/account mutation;
-- device binding mutation;
-- destructive, revoke, update or delete actions;
-- load testing, fuzzing or concurrent request fan-out;
-- endpoint discovery/publication beyond category aliases;
-- token/cookie/session/header replay outside approved synthetic bootstrap;
-- APK patching/modification, decompilation, smali/method body/source use;
+- live REST/backend calls;
+- WebSocket/STOMP/DataChannel live connections;
+- auth/session/token/header replay;
+- endpoint discovery/publication or executable API recipes;
+- Android runtime, ADB, APK read/hash/install/launch or modification;
+- network capture/proxying;
+- payment, order, profile, account, device binding or session mutation;
+- stream/session start;
 - TLS/pinning/security bypass;
-- printing or committing raw endpoints, headers, payloads, cookies, tokens,
-  QR targets, device identifiers, local paths, secrets or real user data.
+- printing or committing raw endpoints, URLs, headers, payloads, fixture bodies,
+  cookies, tokens, QR targets, device identifiers, local paths, secrets,
+  account/payment values or real user data.
 
 ## Current Status
 
-Source-of-truth review is complete through `docs/tasks/backlog.md`,
-task-specific TASK-028/TASK-036 specs and public reports, and TASK-037 local
-evidence summary artifacts. TASK-037 is valid because the owner explicitly
-provided a bounded task candidate and safe-lane passport after TASK-036.
+Source-of-truth review is complete through `docs/tasks/backlog.md`, TASK-028,
+TASK-036 and TASK-037 context. Planner and Security/Prod-safety subagents
+approved TASK-029 selection as a bounded offline/local follow-up.
 
-Implementation/runtime status:
+Implementation status:
 
-- TASK-037 task spec, backlog entry, risk entry, quality gate, public report,
-  validator and tests were added.
-- Local-only preflight confirmed ignored evidence storage, synthetic secret
-  material presence, ADB availability and the owner-approved target by alias,
-  without printing raw values.
-- Initial runtime screenshot showed an external TV ambient/screensaver surface;
-  it was classified as external/system evidence, then safe Back recovery reached
-  the Google TV launcher.
-- Package-based launch was not attempted because local package-candidate
-  selection was ambiguous. A bounded visible launcher-entry tap reached the app
-  catalog surface.
-- Screenshot/XML/log evidence stayed under ignored local evidence. Public report
-  records only `rt037-*` evidence ids, aliases, counts, categories, statuses and
-  blockers.
-- Direct live API calls were not executed because no public-safe API invocation
-  oracle was established without depending on raw endpoint material. Catalog API
-  behavior remains `likely`/`unknown_not_verified` from app-visible runtime
-  correlation only.
-- A transient visual overlay was visible in screenshot but not observed in XML;
-  recorded as `ANOM-037-003`.
+- task branch created from `main@7f468f3`;
+- task spec added;
+- validator added at
+  `automation/api_layer_contract/validate_task029_rest_schema_fixture_contracts.py`;
+- synthetic pytest coverage added at
+  `tests/test_task029_rest_schema_fixture_contracts.py`;
+- public-safe report generated at
+  `docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json`;
+- local pack-backed run currently reports `pass` for offline REST
+  schema/fixture contract checks and keeps live/runtime/network statuses
+  `not_run`.
 
-Pre-execution multi-agent status:
+## Multi-agent Status
 
-- Orchestrator: current thread; source-of-truth read and branch created.
-- Planner: completed; TASK-037 is valid as a new explicit bounded task and
-  provided acceptance/verification/stop gates.
-- Security/Prod-safety Reviewer: completed with `GO_CONDITIONAL`; no live
-  action may start until this active-run records the safe-lane gates.
-- Builder: current thread implementation completed after reviewer remediation.
-- QA Reviewer A: approved with non-blocking R2 follow-up for broader summary/status reconciliation hardening.
-- QA Reviewer B: approved after pass-overclaim remediation.
-- Security/Prod-safety Reviewer: approved after raw-key/value scanning and synthetic fixture remediation.
-- Docs/Scribe: approved after verification-memory/current-state/status remediation.
+- Orchestrator: current thread; source-of-truth read, task selected, branch
+  created and implementation coordinated.
+- Planner: completed with `GO` for TASK-029 as
+  `BOUNDED_AUTONOMOUS` offline/local work.
+- Security/Prod-safety Reviewer: completed with `GO` only inside
+  `PROD_SAFE_OFFLINE_LOCAL` boundaries.
+- Builder: delegated implementation for validator/report/tests.
+- QA Reviewer A: approved after remediation for malformed REST fixture JSON
+  test coverage.
+- QA Reviewer B: approved; no Android/runtime/evidence overclaim found.
+- Security/Prod-safety Reviewer: approved; no unresolved R0/R1 risk found.
+- Docs/Scribe: initial review requested final closure/status reconciliation;
+  final re-review pending after this active-run and verification-memory update.
 
 ## Allowed Files
 
 Tracked:
 
-- `tasks/TASK_037_production_api_runtime_exploratory_coverage.md`;
+- `tasks/TASK_029_rest_schema_fixture_contracts.md`;
 - `docs/tasks/backlog.md`;
 - `docs/context/handoff/active-run.md`;
 - `docs/context/current-state.md`;
 - `docs/context/engineering/quality-gates.md`;
 - `docs/context/engineering/verification-memory.md`;
 - `docs/context/governance/risk-register.md`;
-- `docs/qa/reports/task037_production_api_runtime_exploratory.summary.json`;
-- `automation/api_layer_contract/validate_task037_production_api_runtime_report.py`;
-- `tests/test_task037_production_api_runtime_report.py`.
+- `docs/qa/api-layer/api-layer-coverage-plan.md`;
+- `docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json`;
+- `automation/api_layer_contract/validate_task029_rest_schema_fixture_contracts.py`;
+- `tests/test_task029_rest_schema_fixture_contracts.py`.
 
-Ignored local-only:
+Ignored local-only input:
 
-- `.qa_local/evidence/task-037/`;
-- `.qa_local/secrets/*`;
-- raw API/runtime responses, logs, screenshots, XML, QR decode output, command
-  traces and local preflight evidence.
+- `.qa_local/api_layer_audit_20260706/`.
 
 ## Acceptance Criteria
 
-- Fresh TASK-037 thread, goal and branch are verified.
-- Owner safe-lane approval and Security `GO_CONDITIONAL` are recorded before
-  live actions.
-- Public-safe task spec, report and validator exist and fail closed on raw
-  values, mutation overclaims, unsafe live scope or missing preflight fields.
-- Synthetic secret preflight confirms required local secret material exists
-  without printing values, or records a blocker.
-- Live/API/runtime coverage, if executed, stays inside allowed read-only scope,
-  concurrency `1`, retry cap `3` and minimal request budget.
-- Boundary rows use `blocked_by_boundary` and no forbidden boundary action is
-  performed.
-- Public report contains only aliases, counts, categories, status values,
-  evidence ids and blockers.
-- Raw evidence remains ignored and uncommitted.
+- Fresh TASK-029 thread, goal and branch are verified.
+- Public-safe task spec, report, validator and tests exist.
+- Validator reconciles TASK-028/TASK-036 tracked summaries.
+- Present local quarantine pack produces a `pass` report for offline REST
+  schema/fixture contracts.
+- Missing local pack is a controlled `partial_blocked` report, not product
+  evidence.
+- Public report contains only aliases, counts, categories, status values and
+  blockers.
+- Runtime/live/network/API execution statuses remain `not_run`.
 - QA A, QA B, Security/Prod-safety and Docs/Scribe reviews complete without
   unresolved R0/R1 blockers.
 
@@ -150,8 +113,8 @@ Ignored local-only:
 ```text
 git status --short --branch
 git diff --check
-python automation/api_layer_contract/validate_task037_production_api_runtime_report.py --report docs/qa/reports/task037_production_api_runtime_exploratory.summary.json
-python -m pytest -q tests/test_task037_production_api_runtime_report.py
+python automation/api_layer_contract/validate_task029_rest_schema_fixture_contracts.py --pack-root .qa_local/api_layer_audit_20260706 --report docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json
+python -m pytest -q tests/test_task028_api_layer_contract.py tests/test_task036_api_layer_exhaustive_coverage.py tests/test_task029_rest_schema_fixture_contracts.py
 python -m compileall -q automation tests
 python automation/quality/full_tree_hygiene_scan.py
 python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
@@ -159,31 +122,39 @@ python automation/quality/public_repo_safety_scan.py
 python automation/quality/docs_consistency_link_sanity.py
 ```
 
-Live/runtime commands are `PROD_CONDITIONAL` and must write raw outputs only
-under ignored local evidence. Public docs must not contain executable private
-API/device recipes.
-
 ## Stop Conditions
 
 Stop and report a blocker if:
 
-- the local synthetic secret preflight is missing or would need value printing;
-- target selection is ambiguous or not the owner-approved TASK-037 lane;
-- any planned action would mutate profile, account, device binding, payment,
-  order, stream/session or backend state;
-- captcha, anti-abuse, account lock, suspicious activity or rate-limit signals
-  appear;
-- retry cap `3`, concurrency `1` or minimal request budget cannot be enforced;
-- raw endpoint/header/token/cookie/payload/QR/device/local-path data would enter
-  tracked output;
-- tests fail and cannot be fixed inside TASK-037 scope;
+- implementation requires live API/backend/network/runtime/ADB/APK execution;
+- public output would include raw endpoints, URLs, headers, payloads, fixture
+  bodies, tokens, cookies, device/account/payment values or local paths;
+- TASK-028/TASK-036 summary reconciliation fails;
+- tests fail and cannot be fixed inside TASK-029 scope;
 - QA or Security review reports unresolved R0/R1 risk.
 
 ## Final Handoff Notes
 
-TASK-037 is verified partial-blocked: production safe-lane preflight and bounded
-runtime correlation ran, but direct live API calls stayed `not_run` because no
-public-safe invocation oracle was established without raw endpoint dependency.
-The next follow-up should either define a public-safe direct API invocation
-oracle inside the same safe lane, or harden TASK-037 summary/status count
-reconciliation before any pass-style live API report is allowed.
+TASK-029 is verified locally pending task-branch/default-branch integration and
+next-thread handoff. The offline REST schema/fixture harness validates the
+tracked TASK-028/TASK-036 summaries and the ignored local quarantine pack for
+REST matrix/fixture/schema contracts only. Public report status is `pass`.
+Live REST/backend/network, Android runtime/ADB/APK, endpoint publication,
+auth/token replay, payment/order/session mutation and runtime correlation
+remain `not_run` or `unknown`.
+
+Subagent closure audit before final report:
+
+- Planner and initial Security selection reviewers: outputs recorded; close
+  after final handoff.
+- Builder: output recorded and independently verified; close after final
+  handoff.
+- QA Reviewer A/B, Security/Prod-safety and Docs/Scribe: preserve until final
+  approvals are recorded, then close before thread completion.
+
+Next task/thread handoff after merge/push:
+
+- Recommended next backlog task: `TASK-030 - REST negative, cache and
+  state-sequence contract tests`.
+- The next task must start in one fresh continuation thread from updated
+  `main`, not in this completed TASK-029 thread.

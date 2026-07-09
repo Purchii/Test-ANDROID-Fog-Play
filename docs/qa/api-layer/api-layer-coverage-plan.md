@@ -60,6 +60,29 @@ TASK-036 does not publish raw pack contents and does not claim live API
 behavior. Pack-backed per-row parametrization remains blocked until the
 approved ignored local quarantine pack is present in the active worktree.
 
+## TASK-029 REST schema/fixture harness
+
+TASK-029 implements the first concrete REST follow-up from the TASK-028 API
+audit chain. It validates the tracked TASK-028/TASK-036 summaries and, when the
+ignored local quarantine pack is present, checks REST matrix rows, REST fixture
+references, REST fixture JSON readability, REST schema shape and public-safety
+boundaries.
+
+Current TASK-029 result:
+
+- tracked TASK-028/TASK-036 summary reconciliation: `pass`;
+- local quarantine pack REST contract validation: `pass`;
+- known REST matrix rows: `132`;
+- REST contract rows checked through fixture/schema-oriented targets: `71`;
+- REST schema JSON files: `17`;
+- live REST/backend/runtime/network execution: `not_run`;
+- raw pack signal categories are counted only and raw values remain local-only.
+
+TASK-029 does not validate live backend behavior, real authorization/ACL,
+payment/order/session mutation behavior, Android runtime correlation or real
+cache behavior against a backend. TASK-030 remains the planned offline mocked
+REST negative/cache/state-sequence follow-up.
+
 ## Assertions policy
 
 Offline API tests should assert:

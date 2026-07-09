@@ -44,6 +44,7 @@
 | TASK-032 | DataChannel and gamepad protocol contract tests | BOUNDED_AUTONOMOUS for offline protocol fixtures only | qa/task-032-datachannel-gamepad-contracts | proposed after TASK-028 |
 | TASK-033 | API-layer redaction and production-safety guard tests | BOUNDED_AUTONOMOUS for synthetic/local security guard tests only | qa/task-033-api-redaction-prod-safety-guards | proposed after TASK-028 |
 | TASK-034 | Optional approved staging API execution gate | NON_AUTONOMOUS; PROD_CONDITIONAL only after explicit staging/QA approvals | qa/task-034-staging-api-execution-gate | proposed; blocked until approved backend environment/synthetic user/budget/cleanup/reviews exist |
+| TASK-035 | Full static text inventory and coverage audit | BOUNDED_AUTONOMOUS; PROD_SAFE_LOCAL_STATIC_ONLY | qa/task-035-full-static-text-inventory-audit | verified partial-blocked; inventories all 160 available local sanitized sample strings and records exact full-list coverage blocker for the missing 19027 raw values |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

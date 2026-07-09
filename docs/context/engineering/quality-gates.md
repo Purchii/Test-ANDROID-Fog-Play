@@ -271,6 +271,21 @@ coverage only; live REST, WebSocket, STOMP, DataChannel, payment/order/session
 mutation, backend authorization and Android runtime correlation remain
 `not_run` or `unknown` until separate approved tasks.
 
+TASK-035 static text inventory must remain local/static only. The builder may
+read the ignored sanitized reverse-analysis JSON and write raw string inventory
+only under ignored `.qa_local/static_text_inventory/`. Public reports may
+contain only source aliases, counts, hash prefixes, category counts,
+redaction-class counts, length buckets and status values. Public reports must
+fail closed on raw text values, raw URL/domain/path-like values, full SHA-256
+hashes, raw local paths, runtime/API/APK status drift or raw-public flags. If
+the source-reported likely UI string count is larger than the available raw
+sample list, the report must use `partial_blocked` with
+`blocked_by_missing_full_static_text_values_source`; it must not infer,
+reconstruct, decompile, patch or extract APK/source material to fill the gap.
+Runtime visibility, translation quality, accessibility behavior, Android
+runtime, live backend/API, payment/order/session and stream behavior remain
+`not_run` or `unknown`.
+
 ## TASK-020 post-auth navigation gates
 
 Phase A may pass only when:

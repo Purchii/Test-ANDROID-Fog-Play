@@ -37,6 +37,15 @@ The generator is designed to fail closed:
 - blocked, failed, not-run or non-confirmed R0/R1 gates keep the release decision blocked;
 - notes and artifact references are redacted before output.
 
+TASK-038 adds `automation/reporting/generate_report_manifest.py`, an
+offline/static report manifest generator and validator. It indexes only
+tracked public-safe JSON reports matching `docs/qa/reports/*.json`, computes SHA-256
+values, validates v2 evidence envelopes, records legacy migration blockers and
+fails closed on duplicate authority, missing/stale references, hash drift,
+unknown schemas, unsafe artifact refs and raw/private-looking values. It does
+not read ignored `.qa_local` evidence, APKs, Android devices, runtime logs,
+network/API material or private endpoints.
+
 ## Manual Runtime Maps
 
 `automation/manual_runtime_maps/` contains the TASK-004 manual runtime screen/focus map report generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service, WebView, WebRTC session or production environment.

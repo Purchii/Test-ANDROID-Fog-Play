@@ -613,6 +613,19 @@ verified task branches and merge/push the detected default/trunk branch
 one fresh continuation thread for the next audit task or next-task selection.
 Completed task threads must not implement the next independent task.
 
+TASK-038 is the current audit-chain task in recovery mode:
+`TASK-038 - Evidence schema v2 and authoritative report manifest` on branch
+`qa/task-038-evidence-schema-v2-report-manifest` from detected default branch
+`main@1e38170e4e387bc1f5674c0b59928fad4670719f`. Scope is strictly
+QA-P0-01/F-004/F-005: public-safe evidence envelope v2 and authoritative
+report manifest. It is `PROD_SAFE_OFFLINE_STATIC_ONLY` and does not use ADB,
+device IP, APK read/hash/install/launch, Android runtime, WebView, payment,
+stream/session, live API/backend/network, ignored `.qa_local` raw evidence,
+private endpoints, secrets or raw values. The original same-directory first
+turn for TASK-038 stalled after initial context/audit reading; recovery in the
+Codex worktree preserved partial changes and recorded this as
+`TASK-038-LIFECYCLE-ANOMALY-001`.
+
 Post-TASK-033 continuation selection started from `main@5b0bbf5` after
 TASK-033 was merged and pushed to detected default branch `main`; the task
 commit is `880b5254e9947c22936132e4d535265b9e28246e`. Planner found no

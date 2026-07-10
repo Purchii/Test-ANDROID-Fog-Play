@@ -4,6 +4,45 @@ Task: `TASK-003 - Reporting, evidence schema and release gate generator`
 
 This schema is public-safe and shared by blocked reports, exported component guard summaries, future redacted runtime summaries and release-gate inputs. It intentionally excludes raw logs, screenshots, videos, private endpoints, credentials, APK artifacts and executable runtime/device recipes.
 
+## Evidence Report Envelope v2
+
+TASK-038 adds the forward-compatible public-safe envelope
+`evidence-report-envelope-v2` in
+`docs/qa/schemas/evidence-report-envelope-v2.schema.json`.
+
+The v2 envelope separates these status dimensions so a report cannot convert
+unknown or blocked evidence into release confidence:
+
+- `schema_validation_status`: schema/envelope validity; v2-valid reports use
+  `pass`, while manifest records normalize source reports to `v2_valid`,
+  `legacy_migration_blocked`, `unknown_schema` or `invalid`.
+- `execution_status`: whether the described check passed, failed, was blocked,
+  not run, partial, closed by ledger or unknown.
+- `coverage_status`: whether the intended scope was covered, partial, blocked,
+  not run or unknown.
+- `evidence_status`: `confirmed`, `likely`, `hypothesis` or `unknown`, with the
+  existing extended values used by prior public summaries.
+- `release_effect`: `candidate_evidence`, `blocks_release`,
+  `no_release_claim`, `deferred` or `unknown`.
+- `production_safety_classification`: explicit `PROD_*` class for the report.
+
+Required identity/provenance fields are `generated_at_utc`, `task_id`,
+`build_ref`, optional public-safe build hash prefix inside `build_ref`,
+`target_alias`, `run_id`, `artifacts[]`, `blocked_reasons`, `unknowns`,
+`risks`, `verification`, `review` and `provenance`. `artifacts[]` entries use
+public repo-relative references plus SHA-256; raw evidence paths, ignored
+`.qa_local` material, absolute paths, URLs, endpoints, secrets and private
+values are forbidden.
+
+TASK-038 also adds `docs/qa/schemas/report-manifest-v1.schema.json` and the
+generated manifest `docs/qa/reports/report-manifest.json`. The manifest indexes
+tracked public-safe JSON summaries matching `docs/qa/reports/*.json`, validates file
+existence and SHA-256, chooses at most one authoritative v2 record per
+task/build/target/run and fails closed on duplicate authority, stale or missing
+references, unknown schemas, invalid v2 envelopes or unsafe values. Existing
+pre-v2 reports are not ignored and are not authoritative; they are recorded as
+`legacy_migration_blocked` until a later task migrates them.
+
 ## Status Vocabulary
 
 | Field | Allowed values |

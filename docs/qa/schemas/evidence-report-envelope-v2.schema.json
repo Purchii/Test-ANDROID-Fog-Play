@@ -1,0 +1,209 @@
+{
+  "$id": "docs/qa/schemas/evidence-report-envelope-v2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Public-safe evidence/report envelope for authoritative QA report records. Legacy task summaries remain migration-blocked until converted to this envelope.",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_status": {
+            "$ref": "#/$defs/evidence_status"
+          },
+          "kind": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "reference": {
+            "description": "Public repo-relative reference only. Raw evidence, ignored storage, absolute paths, URLs and endpoint-like values are forbidden by the TASK-038 validator.",
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reference",
+          "sha256",
+          "kind",
+          "evidence_status"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "blocked_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "build_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "public_hash_prefix": {
+          "description": "Optional public-safe short hash/prefix. Raw APK hashes are not required and must not be published when private.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "alias"
+      ],
+      "type": "object"
+    },
+    "coverage_status": {
+      "enum": [
+        "covered",
+        "partial",
+        "partial_blocked",
+        "blocked",
+        "not_run",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "evidence_status": {
+      "$ref": "#/$defs/evidence_status"
+    },
+    "execution_status": {
+      "enum": [
+        "pass",
+        "fail",
+        "blocked",
+        "not_run",
+        "partial",
+        "partial_blocked",
+        "covered",
+        "closed_by_ledger",
+        "partial_runtime_correlated",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "payload": {
+      "description": "Optional task-specific public-safe object. Unknown top-level fields outside payload are blocked.",
+      "type": "object"
+    },
+    "production_safety_classification": {
+      "pattern": "^PROD_",
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "release_effect": {
+      "enum": [
+        "candidate_evidence",
+        "blocks_release",
+        "no_release_claim",
+        "deferred",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "review": {
+      "type": "object"
+    },
+    "risks": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_validation_status": {
+      "const": "pass"
+    },
+    "schema_version": {
+      "const": "evidence-report-envelope-v2"
+    },
+    "supersession": {
+      "additionalProperties": false,
+      "properties": {
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersedes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "target_alias": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^TASK-[0-9]{3}[A-Z]?$",
+      "type": "string"
+    },
+    "unknowns": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "verification": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "schema_validation_status",
+    "execution_status",
+    "coverage_status",
+    "evidence_status",
+    "release_effect",
+    "production_safety_classification",
+    "generated_at_utc",
+    "task_id",
+    "build_ref",
+    "target_alias",
+    "run_id",
+    "artifacts",
+    "blocked_reasons",
+    "unknowns",
+    "risks",
+    "verification",
+    "review",
+    "provenance"
+  ],
+  "title": "Evidence Report Envelope v2",
+  "type": "object",
+  "$defs": {
+    "evidence_status": {
+      "enum": [
+        "confirmed",
+        "confirmed_for_recorded_checkpoints",
+        "likely",
+        "likely_with_blockers",
+        "hypothesis",
+        "unknown"
+      ],
+      "type": "string"
+    }
+  }
+}

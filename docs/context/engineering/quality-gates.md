@@ -553,6 +553,29 @@ TASK-016 inventory evidence can confirm only device/build inventory collection,
 alias generation and redaction. It cannot confirm APK install, app launch,
 runtime smoke, WebView, WebRTC, payment or navigation behavior.
 
+## Evidence schema v2 and report manifest gates
+
+TASK-038 report-manifest work is `PROD_SAFE_OFFLINE_STATIC_ONLY`. It may read
+tracked public-safe JSON summaries matching `docs/qa/reports/*.json` and
+public schemas matching `docs/qa/schemas/*.json` only.
+
+The manifest generator must fail closed when:
+
+- no report records are indexed;
+- a report reference is missing or its SHA-256 no longer matches;
+- a report uses an unknown or invalid schema;
+- more than one v2-valid record is authoritative for the same task/build/target/run;
+- a v2 envelope claims pass with non-confirmed evidence or blockers;
+- a v2 envelope contains unknown top-level fields, unsafe artifact references,
+  URL-like/private/local/raw evidence values, endpoint-like text, secrets or
+  ignored `.qa_local` references.
+
+Existing non-v2 public summaries must be explicit
+`legacy_migration_blocked` records, not silently ignored and not authoritative.
+TASK-038 does not rewrite the release generator and does not approve Android
+runtime, APK/device, WebView/payment, stream/session, live API/backend/network
+or ignored raw-evidence access.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

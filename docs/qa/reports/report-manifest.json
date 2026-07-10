@@ -1,0 +1,1717 @@
+{
+  "authoritative_record_count": 0,
+  "blocked_reasons": [],
+  "generated_at_utc": "2026-07-10T12:00:35Z",
+  "invalid_record_count": 0,
+  "legacy_record_count": 23,
+  "manifest_status": "pass_with_legacy_migration_blockers",
+  "mode": "BOUNDED_AUTONOMOUS",
+  "path_source": "git_tracked",
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+  "record_count": 23,
+  "records": [
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task020_full_invalid_phone_negative.summary.json",
+          "sha256": "890e7ca0fd8211831b659d8b77f5f2238b3f2ef14a33e7aeceeb0da76920ee5a"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task020_full_invalid_phone_negative.summary.json",
+        "source_sha256": "890e7ca0fd8211831b659d8b77f5f2238b3f2ef14a33e7aeceeb0da76920ee5a"
+      },
+      "record_id": "TASK-020__unknown_build__unknown_target__task020_full_invalid_phone_negative.summary__task020_full_invalid_phone_negative.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task020_full_invalid_phone_negative.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task020_full_invalid_phone_negative_summary_v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-020",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task020_full_invalid_phone_negative.summary.json",
+          "sha256": "890e7ca0fd8211831b659d8b77f5f2238b3f2ef14a33e7aeceeb0da76920ee5a",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task020_full_screen_inventory.summary.json",
+          "sha256": "133d895649f07ca0a26d7322665eaba4414c4f9b26af9e4e711364c9ef75ea3d"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "confirmed",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task020_full_screen_inventory.summary.json",
+        "source_sha256": "133d895649f07ca0a26d7322665eaba4414c4f9b26af9e4e711364c9ef75ea3d"
+      },
+      "record_id": "TASK-020__unknown_build__unknown_target__task020_full_screen_inventory.summary__task020_full_screen_inventory.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task020_full_screen_inventory.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task020_full_screen_inventory_summary_v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-020",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task020_full_screen_inventory.summary.json",
+          "sha256": "133d895649f07ca0a26d7322665eaba4414c4f9b26af9e4e711364c9ef75ea3d",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task020_invalid_phone_negative.summary.json",
+          "sha256": "8096ad7be0774a614b79f24b325f0296d493cda97279608e2f6847a1299cc22f"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task020_invalid_phone_negative.summary.json",
+        "source_sha256": "8096ad7be0774a614b79f24b325f0296d493cda97279608e2f6847a1299cc22f"
+      },
+      "record_id": "TASK-020__unknown_build__unknown_target__task020_invalid_phone_negative.summary__task020_invalid_phone_negative.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task020_invalid_phone_negative.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task020_invalid_phone_negative_summary_v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-020",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task020_invalid_phone_negative.summary.json",
+          "sha256": "8096ad7be0774a614b79f24b325f0296d493cda97279608e2f6847a1299cc22f",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task020_post_auth_navigation_transition.summary.json",
+          "sha256": "cf856a123ead0b40ff64bc8f7e8bd4de51d4971b7295eae8b7bc3cacef4be62b"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "confirmed",
+      "execution_status": "partial",
+      "generated_at_utc": "2026-07-02T10:01:21Z",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task020_post_auth_navigation_transition.summary.json",
+        "source_sha256": "cf856a123ead0b40ff64bc8f7e8bd4de51d4971b7295eae8b7bc3cacef4be62b"
+      },
+      "record_id": "TASK-020__unknown_build__unknown_target__task020_post_auth_navigation_transition.summary__task020_post_auth_navigation_transition.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task020_post_auth_navigation_transition.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task-020-post-auth-navigation-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-020",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task020_post_auth_navigation_transition.summary.json",
+          "sha256": "cf856a123ead0b40ff64bc8f7e8bd4de51d4971b7295eae8b7bc3cacef4be62b",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task021_network_offline_probe.summary.json",
+          "sha256": "be3868b2d20b4640bcc70cf33af49ca0ab52e2ecf78818a8fc463a26f3f838d0"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task021_network_offline_probe.summary.json",
+        "source_sha256": "be3868b2d20b4640bcc70cf33af49ca0ab52e2ecf78818a8fc463a26f3f838d0"
+      },
+      "record_id": "TASK-021__unknown_build__unknown_target__task021_network_offline_probe.summary__task021_network_offline_probe.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task021_network_offline_probe.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task021_network_offline_probe_summary_v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-021",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task021_network_offline_probe.summary.json",
+          "sha256": "be3868b2d20b4640bcc70cf33af49ca0ab52e2ecf78818a8fc463a26f3f838d0",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed_for_recorded_checkpoints",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task022_xbox_gamepad_full_screen_inventory.summary.json",
+          "sha256": "4ababbb66e121566d8ca39e9dbc62f342c2c2643a8010d71b65dad14cf1c9512"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "confirmed_for_recorded_checkpoints",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task022_xbox_gamepad_full_screen_inventory.summary.json",
+        "source_sha256": "4ababbb66e121566d8ca39e9dbc62f342c2c2643a8010d71b65dad14cf1c9512"
+      },
+      "record_id": "TASK-022__unknown_build__unknown_target__task022_xbox_gamepad_full_screen_inventory.summary__task022_xbox_gamepad_full_screen_inventory.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task022_xbox_gamepad_full_screen_inventory.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task022_xbox_gamepad_screen_inventory_summary_v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-022",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task022_xbox_gamepad_full_screen_inventory.summary.json",
+          "sha256": "4ababbb66e121566d8ca39e9dbc62f342c2c2643a8010d71b65dad14cf1c9512",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task023_full_data_screen_inventory.summary.json",
+          "sha256": "2b91578799eb50a059fa06df270e280c6ee6cc23d57060f461c4ea1e99205eef"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "confirmed",
+      "execution_status": "unknown",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task023_full_data_screen_inventory.summary.json",
+        "source_sha256": "2b91578799eb50a059fa06df270e280c6ee6cc23d57060f461c4ea1e99205eef"
+      },
+      "record_id": "TASK-023__unknown_build__unknown_target__task023_full_data_screen_inventory.summary__task023_full_data_screen_inventory.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task023_full_data_screen_inventory.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task023_full_data_screen_inventory_summary_v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-023",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task023_full_data_screen_inventory.summary.json",
+          "sha256": "2b91578799eb50a059fa06df270e280c6ee6cc23d57060f461c4ea1e99205eef",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task024_native_post_auth_regression.summary.json",
+          "sha256": "d5ccf662cf3527843191a42701ef1aa2139ec8a00bdb51309832d2ef1f4891e9"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "blocked",
+      "evidence_status": "unknown",
+      "execution_status": "blocked",
+      "generated_at_utc": "2026-07-03T16:45:59Z",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task024_native_post_auth_regression.summary.json",
+        "source_sha256": "d5ccf662cf3527843191a42701ef1aa2139ec8a00bdb51309832d2ef1f4891e9"
+      },
+      "record_id": "TASK-024__unknown_build__unknown_target__task024_native_post_auth_regression.summary__task024_native_post_auth_regression.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task024_native_post_auth_regression.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task024-native-regression-summary-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-024",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task024_native_post_auth_regression.summary.json",
+          "sha256": "d5ccf662cf3527843191a42701ef1aa2139ec8a00bdb51309832d2ef1f4891e9",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task025_selected_lane_native_regression.summary.template.json",
+          "sha256": "e863cf04e689fbeb8ed2219bbcff528a7350ef8bfd5165f60a84546053d07e5b"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "blocked",
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-05T12:16:55Z",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task025_selected_lane_native_regression.summary.template.json",
+        "source_sha256": "e863cf04e689fbeb8ed2219bbcff528a7350ef8bfd5165f60a84546053d07e5b"
+      },
+      "record_id": "TASK-025A__unknown_build__unknown_target__task025_selected_lane_native_regression.summary.template__task025_selected_lane_native_regression.summary.template",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task025_selected_lane_native_regression.summary.template",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task025-native-regression-summary-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-025A",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task025_selected_lane_native_regression.summary.template.json",
+          "sha256": "e863cf04e689fbeb8ed2219bbcff528a7350ef8bfd5165f60a84546053d07e5b",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json",
+          "sha256": "d7c815254144b465462c83074ffd6fe36df6967bdb0f6868d285729efa480cb9"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "partial",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json",
+        "source_sha256": "d7c815254144b465462c83074ffd6fe36df6967bdb0f6868d285729efa480cb9"
+      },
+      "record_id": "TASK-025B__unknown_build__unknown_target__task025b_selected_lane_physical_runtime.summary__task025b_selected_lane_physical_runtime.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task025b_selected_lane_physical_runtime.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task025b-selected-lane-physical-runtime-summary-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-025B",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task025b_selected_lane_physical_runtime.summary.json",
+          "sha256": "d7c815254144b465462c83074ffd6fe36df6967bdb0f6868d285729efa480cb9",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json",
+          "sha256": "3c7f40afd6c938642d11e22a80941b8661273b9342b8db19e998db64eb18eef8"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "blocked",
+      "evidence_status": "unknown",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-06T06:56:19Z",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json",
+        "source_sha256": "3c7f40afd6c938642d11e22a80941b8661273b9342b8db19e998db64eb18eef8"
+      },
+      "record_id": "TASK-026B__unknown_build__unknown_target__task026b_task025b_physical_runtime_tests.summary.template__task026b_task025b_physical_runtime_tests.summary.template",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task026b_task025b_physical_runtime_tests.summary.template",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task025-native-regression-summary-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-026B",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task026b_task025b_physical_runtime_tests.summary.template.json",
+          "sha256": "3c7f40afd6c938642d11e22a80941b8661273b9342b8db19e998db64eb18eef8",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json",
+          "sha256": "8ac0e15af981b7bde85f6e00610a1533f04083468c5e9608125933d52bd52107"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "closed_by_ledger",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json",
+        "source_sha256": "8ac0e15af981b7bde85f6e00610a1533f04083468c5e9608125933d52bd52107"
+      },
+      "record_id": "TASK-027__unknown_build__unknown_target__task027_full_app_transition_graph_physical_runtime.summary__task027_full_app_transition_graph_physical_runtime.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task027_full_app_transition_graph_physical_runtime.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task027-full-app-transition-graph-summary-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-027",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task027_full_app_transition_graph_physical_runtime.summary.json",
+          "sha256": "8ac0e15af981b7bde85f6e00610a1533f04083468c5e9608125933d52bd52107",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task027s_visual_destination_screen_coverage.summary.json",
+          "sha256": "1810e83cb1af4ab2884c915c0139dfc2a4b17662917c2dcdfeead918458eae08"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "blocked",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task027s_visual_destination_screen_coverage.summary.json",
+        "source_sha256": "1810e83cb1af4ab2884c915c0139dfc2a4b17662917c2dcdfeead918458eae08"
+      },
+      "record_id": "TASK-027S__unknown_build__unknown_target__task027s_visual_destination_screen_coverage.summary__task027s_visual_destination_screen_coverage.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task027s_visual_destination_screen_coverage.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task027s-visual-destination-screen-coverage-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-027S",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task027s_visual_destination_screen_coverage.summary.json",
+          "sha256": "1810e83cb1af4ab2884c915c0139dfc2a4b17662917c2dcdfeead918458eae08",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "unknown",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task027t_continue_visual_destination_screen_coverage.summary.json",
+          "sha256": "6310ceaeca6efbfce8a84ca9745ff5ad31849d1c52f41cd4430dcedf64be9c61"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "unknown",
+      "execution_status": "covered",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "unknown",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task027t_continue_visual_destination_screen_coverage.summary.json",
+        "source_sha256": "6310ceaeca6efbfce8a84ca9745ff5ad31849d1c52f41cd4430dcedf64be9c61"
+      },
+      "record_id": "TASK-027T__unknown_build__unknown_target__task027t_continue_visual_destination_screen_coverage.summary__task027t_continue_visual_destination_screen_coverage.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task027t_continue_visual_destination_screen_coverage.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task027t-continue-visual-destination-screen-coverage-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-027T",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-EVIDENCE_STATUS",
+          "question": "Legacy report has no top-level evidence_status."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-PRODUCTION_SAFETY_CLASSIFICATION",
+          "question": "Legacy report has no top-level production_safety_classification."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task027t_continue_visual_destination_screen_coverage.summary.json",
+          "sha256": "6310ceaeca6efbfce8a84ca9745ff5ad31849d1c52f41cd4430dcedf64be9c61",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task028_api_layer_contract_coverage.summary.json",
+          "sha256": "145c54b8a068254f5a06148f913c85ee3b98ed96bd7df939cb785084e866d46f"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-06T13:14:18Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task028_api_layer_contract_coverage.summary.json",
+        "source_sha256": "145c54b8a068254f5a06148f913c85ee3b98ed96bd7df939cb785084e866d46f"
+      },
+      "record_id": "TASK-028__unknown_build__unknown_target__task028_api_layer_contract_coverage.summary__task028_api_layer_contract_coverage.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task028_api_layer_contract_coverage.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task028-api-layer-contract-coverage-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-028",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task028_api_layer_contract_coverage.summary.json",
+          "sha256": "145c54b8a068254f5a06148f913c85ee3b98ed96bd7df939cb785084e866d46f",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json",
+          "sha256": "50d6ecd11867810d3b4ec851b00636f0a8dbe6f5b827951f51f7d36c18baba8a"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T15:38:25Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json",
+        "source_sha256": "50d6ecd11867810d3b4ec851b00636f0a8dbe6f5b827951f51f7d36c18baba8a"
+      },
+      "record_id": "TASK-029__unknown_build__unknown_target__task029_rest_schema_fixture_contracts.summary__task029_rest_schema_fixture_contracts.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task029_rest_schema_fixture_contracts.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task029-rest-schema-fixture-contracts-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-029",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task029_rest_schema_fixture_contracts.summary.json",
+          "sha256": "50d6ecd11867810d3b4ec851b00636f0a8dbe6f5b827951f51f7d36c18baba8a",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task030_rest_negative_cache_sequences.summary.json",
+          "sha256": "d4c33951535a2245f372fa605e1e17d27d39b7f6e51278fdf8a48471fa470e12"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T16:09:25Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task030_rest_negative_cache_sequences.summary.json",
+        "source_sha256": "d4c33951535a2245f372fa605e1e17d27d39b7f6e51278fdf8a48471fa470e12"
+      },
+      "record_id": "TASK-030__unknown_build__unknown_target__task030_rest_negative_cache_sequences.summary__task030_rest_negative_cache_sequences.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task030_rest_negative_cache_sequences.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task030-rest-negative-cache-sequences-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-030",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task030_rest_negative_cache_sequences.summary.json",
+          "sha256": "d4c33951535a2245f372fa605e1e17d27d39b7f6e51278fdf8a48471fa470e12",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task031_stomp_protocol_contracts.summary.json",
+          "sha256": "f88dd38189b9de3e2e397fc4b197bdb4bbf1976379d9f91194a13c675dd99423"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T16:36:54Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task031_stomp_protocol_contracts.summary.json",
+        "source_sha256": "f88dd38189b9de3e2e397fc4b197bdb4bbf1976379d9f91194a13c675dd99423"
+      },
+      "record_id": "TASK-031__unknown_build__unknown_target__task031_stomp_protocol_contracts.summary__task031_stomp_protocol_contracts.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task031_stomp_protocol_contracts.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task031-stomp-protocol-contracts-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-031",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task031_stomp_protocol_contracts.summary.json",
+          "sha256": "f88dd38189b9de3e2e397fc4b197bdb4bbf1976379d9f91194a13c675dd99423",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task032_datachannel_gamepad_contracts.summary.json",
+          "sha256": "9920e1b15464ad9e053f8ca91795762da575059442a237f1968fd9beac734ee5"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T17:12:16Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_WITH_LOCAL_QUARANTINE_INPUT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task032_datachannel_gamepad_contracts.summary.json",
+        "source_sha256": "9920e1b15464ad9e053f8ca91795762da575059442a237f1968fd9beac734ee5"
+      },
+      "record_id": "TASK-032__unknown_build__unknown_target__task032_datachannel_gamepad_contracts.summary__task032_datachannel_gamepad_contracts.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task032_datachannel_gamepad_contracts.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task032-datachannel-gamepad-contracts-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-032",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task032_datachannel_gamepad_contracts.summary.json",
+          "sha256": "9920e1b15464ad9e053f8ca91795762da575059442a237f1968fd9beac734ee5",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task033_api_redaction_prod_safety_guards.summary.json",
+          "sha256": "82487a96443666decd3a40d016a179d4b4e44d3ff96264bf4b32acaaf2305efa"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "unknown",
+      "evidence_status": "likely",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T17:33:36Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task033_api_redaction_prod_safety_guards.summary.json",
+        "source_sha256": "82487a96443666decd3a40d016a179d4b4e44d3ff96264bf4b32acaaf2305efa"
+      },
+      "record_id": "TASK-033__unknown_build__unknown_target__task033_api_redaction_prod_safety_guards.summary__task033_api_redaction_prod_safety_guards.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task033_api_redaction_prod_safety_guards.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task033-api-redaction-prod-safety-guards-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-033",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task033_api_redaction_prod_safety_guards.summary.json",
+          "sha256": "82487a96443666decd3a40d016a179d4b4e44d3ff96264bf4b32acaaf2305efa",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task035_static_text_inventory.summary.json",
+          "sha256": "dd380d4be6c14a864705a98132f7810307e2d7e3b935418207859644a6d91a08"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "likely",
+      "execution_status": "partial_blocked",
+      "generated_at_utc": "2026-07-09T12:46:24Z",
+      "production_safety_classification": "PROD_SAFE_LOCAL_STATIC_ONLY",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task035_static_text_inventory.summary.json",
+        "source_sha256": "dd380d4be6c14a864705a98132f7810307e2d7e3b935418207859644a6d91a08"
+      },
+      "record_id": "TASK-035__unknown_build__unknown_target__task035_static_text_inventory.summary__task035_static_text_inventory.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task035_static_text_inventory.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task035-static-text-inventory-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-035",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task035_static_text_inventory.summary.json",
+          "sha256": "dd380d4be6c14a864705a98132f7810307e2d7e3b935418207859644a6d91a08",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "likely_with_blockers",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task036_api_layer_exhaustive_coverage.summary.json",
+          "sha256": "8ad544c12b86720e4ebcbb11b9c1d2d8ebe5530ab4704a7e80c34403c3eed942"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "likely_with_blockers",
+      "execution_status": "not_run",
+      "generated_at_utc": "2026-07-09T13:16:36Z",
+      "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_AND_SYNTHETIC_ONLY",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task036_api_layer_exhaustive_coverage.summary.json",
+        "source_sha256": "8ad544c12b86720e4ebcbb11b9c1d2d8ebe5530ab4704a7e80c34403c3eed942"
+      },
+      "record_id": "TASK-036__unknown_build__unknown_target__task036_api_layer_exhaustive_coverage.summary__task036_api_layer_exhaustive_coverage.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task036_api_layer_exhaustive_coverage.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task036-api-layer-exhaustive-coverage-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-036",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task036_api_layer_exhaustive_coverage.summary.json",
+          "sha256": "8ad544c12b86720e4ebcbb11b9c1d2d8ebe5530ab4704a7e80c34403c3eed942",
+          "status": "pass"
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task037_production_api_runtime_exploratory.summary.json",
+          "sha256": "7a130dc7611cafdc71db6895e50471ba558722c4297c69423834c7c429b48900"
+        }
+      ],
+      "authoritative": false,
+      "authority_status": "legacy_not_authoritative",
+      "blocked_reasons": [
+        "legacy_report_not_evidence_envelope_v2"
+      ],
+      "build_ref": {
+        "alias": "unknown_build"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "confirmed",
+      "execution_status": "partial_runtime_correlated",
+      "generated_at_utc": "unknown",
+      "production_safety_classification": "PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task037_production_api_runtime_exploratory.summary.json",
+        "source_sha256": "7a130dc7611cafdc71db6895e50471ba558722c4297c69423834c7c429b48900"
+      },
+      "record_id": "TASK-037__unknown_build__unknown_target__task037_production_api_runtime_exploratory.summary__task037_production_api_runtime_exploratory.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "legacy_migration_blocked"
+      },
+      "risks": [
+        {
+          "id": "RISK-065",
+          "level": "High",
+          "status": "active",
+          "summary": "Legacy or unknown report schema cannot be used as authoritative release evidence."
+        }
+      ],
+      "run_id": "task037_production_api_runtime_exploratory.summary",
+      "schema_validation_status": "legacy_migration_blocked",
+      "schema_version": "task037-production-api-runtime-exploratory-v1",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "unknown_target",
+      "task_id": "TASK-037",
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MIGRATION",
+          "question": "Report is not yet migrated to evidence-report-envelope-v2."
+        },
+        {
+          "evidence_status": "unknown",
+          "id": "U-T038-MISSING-GENERATED_AT_UTC",
+          "question": "Legacy report has no top-level generated_at_utc."
+        }
+      ],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task037_production_api_runtime_exploratory.summary.json",
+          "sha256": "7a130dc7611cafdc71db6895e50471ba558722c4297c69423834c7c429b48900",
+          "status": "pass"
+        }
+      ]
+    }
+  ],
+  "reports_root": "docs/qa/reports",
+  "schema_version": "report-manifest-v1",
+  "task_id": "TASK-038",
+  "tool_name": "reporting.report_manifest_generator",
+  "unknown_schema_record_count": 0,
+  "v2_record_count": 0,
+  "verification": [
+    {
+      "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+      "evidence_status": "confirmed",
+      "name": "manifest_generation",
+      "note": "Indexed public-safe report JSON files only; no ignored raw evidence was read.",
+      "status": "pass"
+    }
+  ]
+}

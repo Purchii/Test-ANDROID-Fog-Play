@@ -626,8 +626,9 @@ detected default branch `main` through merge commit
 `50ef67da175fb09e66135eb8b7139dc82359027d` from task commit
 `1b3f333`. It adds a fail-closed evidence-backed release-readiness generator,
 adversarial tests and a v2 public summary. Post-merge stabilization made text
-artifact SHA-256 independent of LF/CRLF checkout differences; stabilization
-commit and remote default push are pending. Scope remained strictly
+artifact SHA-256 independent of LF/CRLF checkout differences. Stabilization
+commit `0a633eb66037fea720f1105bfbc0b347b38b3fff` is pushed and aligned with
+`origin/main`. Scope remained strictly
 `PROD_SAFE_OFFLINE_STATIC_ONLY`: no ADB, device IP, APK read/hash/install/launch,
 Android runtime, WebView, payment, stream/session, live API/backend/network,
 ignored `.qa_local` raw evidence, private endpoints, secrets or raw values were

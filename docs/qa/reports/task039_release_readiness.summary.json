@@ -1,0 +1,235 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "task_spec",
+      "reference": "tasks/TASK_039_evidence_backed_release_readiness_generator.md",
+      "sha256": "6223958578b2b1efd3dbb3e2db7c23a018cc6875aec75e93d2230dec6c7002bb"
+    }
+  ],
+  "blocked_reasons": [
+    "RG-001:no_authoritative_v2_evidence",
+    "RG-002:no_authoritative_v2_evidence",
+    "RG-003:no_authoritative_v2_evidence",
+    "RG-004:no_authoritative_v2_evidence",
+    "RG-005:no_authoritative_v2_evidence",
+    "RG-006:no_authoritative_v2_evidence",
+    "RG-007:no_authoritative_v2_evidence",
+    "RG-008:no_authoritative_v2_evidence",
+    "RG-009:no_authoritative_v2_evidence",
+    "RG-010:no_authoritative_v2_evidence",
+    "RG-011:no_authoritative_v2_evidence",
+    "authoritative_v2_gate_evidence_records_missing"
+  ],
+  "build_ref": {
+    "alias": "public-safe-repo-main-0770840"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-07-10T20:59:41Z",
+  "payload": {
+    "excluded_domains": [
+      "payment",
+      "webview",
+      "stream_session",
+      "live_api_backend",
+      "broad_compatibility",
+      "performance_qoe_soak",
+      "accessibility_localization",
+      "product_security_privacy"
+    ],
+    "input_integrity_reasons": [],
+    "input_integrity_status": "pass",
+    "manifest_authoritative_record_count": 1,
+    "manifest_legacy_record_count": 23,
+    "manifest_record_count": 24,
+    "manifest_reference": "docs/qa/reports/report-manifest.json",
+    "readiness_decision": "blocked",
+    "release_gates": [
+      {
+        "blocked_reasons": [
+          "RG-001:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-001",
+        "name": "prerequisites",
+        "risk_level": "R0",
+        "runtime_dependent": false,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-002:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-002",
+        "name": "runtime_startup",
+        "risk_level": "R0",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-003:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-003",
+        "name": "first_focus",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-004:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-004",
+        "name": "exported_component_guards",
+        "risk_level": "R0",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-005:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-005",
+        "name": "auth_session_guard",
+        "risk_level": "R0",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-006:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-006",
+        "name": "redacted_evidence",
+        "risk_level": "R1",
+        "runtime_dependent": false,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-007:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-007",
+        "name": "network_offline_recovery",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-008:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-008",
+        "name": "compatibility_device_matrix",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-009:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-009",
+        "name": "webview_payment_safe_boundary",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-010:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-010",
+        "name": "ci_nightly_smoke_readiness",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      },
+      {
+        "blocked_reasons": [
+          "RG-011:no_authoritative_v2_evidence"
+        ],
+        "decision": "blocked",
+        "evidence_status": "unknown",
+        "id": "RG-011",
+        "name": "navigation_transition_coverage",
+        "risk_level": "R1",
+        "runtime_dependent": true,
+        "source_record_ids": []
+      }
+    ]
+  },
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+  "provenance": {
+    "generator": "reporting.release_readiness_report_generator",
+    "source_manifest_authoritative_record_count": 1,
+    "source_manifest_record_count": 24,
+    "source_manifest_reference": "docs/qa/reports/report-manifest.json",
+    "source_manifest_schema_version": "report-manifest-v1"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending",
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety_reviewer": "pending"
+  },
+  "risks": [
+    {
+      "id": "RISK-066",
+      "level": "Critical",
+      "status": "active",
+      "summary": "Release readiness must not pass from self-asserted metadata or legacy-only summaries."
+    }
+  ],
+  "run_id": "task039-manifest-backed-release-readiness",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "repo-public-safe",
+  "task_id": "TASK-039",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "U-T039-LEGACY-MIGRATION",
+      "question": "Legacy public summaries cannot satisfy release readiness until migrated to evidence-report-envelope-v2."
+    }
+  ],
+  "verification": [
+    {
+      "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+      "evidence_status": "confirmed",
+      "name": "report_manifest_validation",
+      "note": "Validated tracked public-safe report manifest only.",
+      "status": "pass"
+    },
+    {
+      "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+      "evidence_status": "confirmed",
+      "name": "release_readiness_generation",
+      "note": "Generated without Android/runtime/device/network/API/raw-evidence access.",
+      "status": "pass"
+    }
+  ]
+}

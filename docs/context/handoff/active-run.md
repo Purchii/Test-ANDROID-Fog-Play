@@ -1,37 +1,29 @@
 # Active run
 
-## Current TASK-038 Run
+## Current TASK-039 Run
 
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
-Thread title: `TASK-038 - Evidence schema v2 and authoritative report manifest`
-Thread status: `verified_reviews_passed_pending_integration`
-Fresh thread verified: `accepted recovery worktree thread after original same-directory first turn stalled`
-Task ID: `TASK-038`
-Task branch: `qa/task-038-evidence-schema-v2-report-manifest`
+Thread title: `TASK-039 - Evidence-backed release-readiness generator`
+Thread status: `verified_integration_pending`
+Fresh thread verified: `accepted continuation thread from TASK-038 handoff; renamed after Planner selected TASK-039`
+Task ID: `TASK-039`
+Task branch: `qa/task-039-evidence-backed-release-readiness-generator`
 Default branch: `main`
-Base commit: `1e38170e4e387bc1f5674c0b59928fad4670719f`
+Base commit: `07708404073d247d7b4d4585387b693819c4d8f6`
 Production safety classification: `PROD_SAFE_OFFLINE_STATIC_ONLY`
 Merge/push authority: `BOUNDED_AUTONOMOUS; merge/push default branch only after checks and multi-agent reviews pass`
+Next top-level dialog profile: `gpt-5.6-sol` (display name `5.6 Sol`) with reasoning effort `high`
 
 ## Goal
 
-Implement audit backlog QA-P0-01 for findings F-004/F-005: add the
-versioned public-safe evidence/report envelope v2, add an authoritative
-report manifest generator/validator for tracked reports matching
-`docs/qa/reports/*.json`, generate `docs/qa/reports/report-manifest.json` and keep
-existing pre-v2 reports explicit as legacy migration blockers.
-
-## Lifecycle Anomaly
-
-`TASK-038-LIFECYCLE-ANOMALY-001`: the original same-directory TASK-038 first
-turn from source thread `019f4b78-2b7b-7ac1-a138-5956198083a2` stalled after
-initial source-of-truth/audit-context reading and partial setup. Recovery
-continued in the accepted Codex recovery worktree on
-`qa/task-038-evidence-schema-v2-report-manifest`. The recovery preserved the
-partial diff, avoided reusing the stalled thread as the next independent task
-and kept scope to QA-P0-01/F-004/F-005 only.
+Implement audit backlog `QA-P0-02`: add an evidence-backed release-readiness
+generator that consumes TASK-038 `report-manifest-v1`, rejects self-asserted
+release PASS claims and keeps release readiness blocked until required R0/R1
+gates are backed by authoritative `evidence-report-envelope-v2` records with
+confirmed evidence, reviewer approval, valid artifact hashes, evidence storage
+and cleanup/rollback prerequisites.
 
 ## Forbidden Actions
 
@@ -43,30 +35,31 @@ and kept scope to QA-P0-01/F-004/F-005 only.
 - endpoint discovery, raw endpoint/header/payload publication, secrets,
   credentials, tokens, cookies, QR targets, account/payment/session values,
   device identifiers, raw screenshots/logs/videos or absolute local paths;
-- release-generator rewrite, docs checker rewrite, archive/export scanner
-  implementation or CI coverage work in this task.
+- docs checker rewrite, archive/export scanner implementation, CI/toolchain
+  locking or migration of every legacy report in this task.
 
 ## Implementation Status
 
-- `automation/reporting/generate_report_manifest.py` added as an offline/static
-  generator and validator.
-- `docs/qa/schemas/evidence-report-envelope-v2.schema.json` added.
-- `docs/qa/schemas/report-manifest-v1.schema.json` added.
-- `docs/qa/reports/report-manifest.json` generated with 23 existing tracked
-  JSON reports, all explicit `legacy_migration_blocked`, zero authoritative
-  v2 records.
-- `tests/test_report_manifest.py` added with focused stdlib `unittest`
-  adversarial coverage for duplicate authority, missing ref, hash mismatch,
-  unknown schema, zero reports, legacy migration and v2 false-pass cases.
+- Planner selected `QA-P0-02` after reading repository source-of-truth and the
+  audit archive remediation backlog.
+- Security/Prod-safety initial review returned `GO` for strict
+  `PROD_SAFE_OFFLINE_STATIC_ONLY` implementation.
+- `tasks/TASK_039_evidence_backed_release_readiness_generator.md` added.
+- `automation/reporting/generate_release_readiness_report.py` added.
+- `tests/test_release_readiness_report.py` added.
+- `docs/qa/reports/task039_release_readiness.summary.json` generated as
+  blocked because no external authoritative v2 gate-evidence record exists;
+  the report's own v2 manifest record is excluded from satisfying gates.
 
 ## Verification Plan
 
 ```text
 git status --short --branch
 git diff --check
+python automation/reporting/generate_release_readiness_report.py --manifest docs/qa/reports/report-manifest.json --output docs/qa/reports/task039_release_readiness.summary.json --allow-blocked
 python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
 python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
-python -m unittest -q tests.test_report_manifest
+python -m unittest -q tests.test_release_readiness_report tests.test_report_manifest tests.test_release_gate_report
 python -m pytest -q tests/test_report_manifest.py (if pytest is available)
 python -m pytest -q (if pytest is available/feasible)
 python -m compileall -q automation tests
@@ -78,29 +71,51 @@ python automation/quality/docs_consistency_link_sanity.py
 
 ## Multi-agent Status
 
-- Planner: completed earlier in the recovery run with `GO` for TASK-038
-  limited to QA-P0-01/F-004/F-005.
-- Builder: completed implementation draft and local static checks; Orchestrator
-  integrated and hardened tests/schemas.
-- QA Reviewer A: final `GO` after v2 internal artifact existence/SHA
-  remediation.
-- QA Reviewer B: final `GO` after tracked-index validate-only and nested
-  payload overclaim remediation.
-- Security/Prod-safety Reviewer: final `GO` after public-field sanitization,
-  raw-family scanning, no-glob fallback and absolute-path docs remediation.
-- Docs/Scribe: final `GO`; docs link sanity passed.
+- Planner: `GO` for TASK-039 / QA-P0-02 before QA-P0-03/04.
+- Security/Prod-safety initial reviewer: `GO` for
+  `PROD_SAFE_OFFLINE_STATIC_ONLY` with tracked manifest/report inputs only.
+- Builder: `GO with recommendations`; implementation should make manifest the
+  source of truth and avoid circular manifest SHA dependency.
+- QA Reviewer A: initial `BLOCKED`; manifest/source and provenance/artifact
+  false-pass gaps remediated; re-review `GO`.
+- QA Reviewer B: initial `BLOCKED`; internal artifact drift,
+  `--allow-blocked` integrity and incomplete PASS gaps remediated; re-review
+  `GO`.
+- Security/Prod-safety final reviewer: initial `BLOCKED`; unrestricted manifest
+  path pre-read gap was hardened further after a second `BLOCKED`: production
+  now requires the literal relative path plus Git-index confirmation before
+  content I/O and exposes no API bypass; final re-review `GO`.
+- Docs/Scribe: initial `BLOCKED`; stale historical handoff, legacy-only wording
+  and model identifier ambiguity remediated; re-review `GO`.
+
+## Verification Status
+
+- Manifest generation and validate-only checks passed with 24 records: 1
+  authoritative TASK-039 v2 record and 23 explicit legacy migration blockers.
+- Targeted stdlib suite passed after remediation: 35 tests.
+- Full system pytest suite passed after remediation: 837 passed, 1 skipped. The bundled Python
+  runtime has no pytest module, so the repository's system pytest executable
+  was used for the full suite.
+- Compileall, diff checks, both full-tree hygiene modes, public repository
+  safety and docs consistency/link sanity passed.
+- No Android/runtime/device/APK/network/live API/raw evidence action was run.
+- QA Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe final
+  re-reviews returned `GO`; no unresolved R0/R1 blocker remains.
 
 ## Stop Conditions
 
 Stop and report a blocker if final verification fails and cannot be remediated
-inside TASK-038, if reviewers find unresolved R0/R1 risk, if integration would
+inside TASK-039, if reviewers find unresolved R0/R1 risk, if integration would
 require force push/destructive git, or if any step would require credentials,
 external approvals, production authority, Android runtime, APK/device access,
 live network/API/backend, raw evidence or secrets.
 
 ---
 
-## Current Selection Checkpoint
+## Historical Selection Checkpoint (superseded by TASK-038/TASK-039)
+
+This section records the state observed after TASK-033 and is not current
+backlog or task-selection guidance.
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `NEXT_TASK_SELECTION_FROM_main@5b0bbf5`
@@ -131,8 +146,8 @@ Confirmed facts:
   cleanup/rollback, audit trail, redaction, QA review and
   Security/Prod-safety review exist.
 - TASK-035, TASK-036 and TASK-037 are already verified.
-- No TASK-038 or other ready public-safe bounded task exists in the current
-  backlog.
+- At that historical checkpoint, no TASK-038 or other ready public-safe bounded
+  task existed in the then-current backlog.
 
 ### Forbidden Actions
 

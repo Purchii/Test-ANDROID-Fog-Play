@@ -1,5 +1,105 @@
 # Active run
 
+## Current TASK-038 Run
+
+## Run Metadata
+
+Mode: `BOUNDED_AUTONOMOUS`
+Thread title: `TASK-038 - Evidence schema v2 and authoritative report manifest`
+Thread status: `verified_reviews_passed_pending_integration`
+Fresh thread verified: `accepted recovery worktree thread after original same-directory first turn stalled`
+Task ID: `TASK-038`
+Task branch: `qa/task-038-evidence-schema-v2-report-manifest`
+Default branch: `main`
+Base commit: `1e38170e4e387bc1f5674c0b59928fad4670719f`
+Production safety classification: `PROD_SAFE_OFFLINE_STATIC_ONLY`
+Merge/push authority: `BOUNDED_AUTONOMOUS; merge/push default branch only after checks and multi-agent reviews pass`
+
+## Goal
+
+Implement audit backlog QA-P0-01 for findings F-004/F-005: add the
+versioned public-safe evidence/report envelope v2, add an authoritative
+report manifest generator/validator for tracked reports matching
+`docs/qa/reports/*.json`, generate `docs/qa/reports/report-manifest.json` and keep
+existing pre-v2 reports explicit as legacy migration blockers.
+
+## Lifecycle Anomaly
+
+`TASK-038-LIFECYCLE-ANOMALY-001`: the original same-directory TASK-038 first
+turn from source thread `019f4b78-2b7b-7ac1-a138-5956198083a2` stalled after
+initial source-of-truth/audit-context reading and partial setup. Recovery
+continued in the accepted Codex recovery worktree on
+`qa/task-038-evidence-schema-v2-report-manifest`. The recovery preserved the
+partial diff, avoided reusing the stalled thread as the next independent task
+and kept scope to QA-P0-01/F-004/F-005 only.
+
+## Forbidden Actions
+
+`PROD_FORBIDDEN`:
+
+- Android runtime, ADB, APK read/hash/install/launch or device IP use;
+- WebView, payment, stream, session, live API/backend or network actions;
+- reading ignored `.qa_local` raw evidence or local quarantine raw values;
+- endpoint discovery, raw endpoint/header/payload publication, secrets,
+  credentials, tokens, cookies, QR targets, account/payment/session values,
+  device identifiers, raw screenshots/logs/videos or absolute local paths;
+- release-generator rewrite, docs checker rewrite, archive/export scanner
+  implementation or CI coverage work in this task.
+
+## Implementation Status
+
+- `automation/reporting/generate_report_manifest.py` added as an offline/static
+  generator and validator.
+- `docs/qa/schemas/evidence-report-envelope-v2.schema.json` added.
+- `docs/qa/schemas/report-manifest-v1.schema.json` added.
+- `docs/qa/reports/report-manifest.json` generated with 23 existing tracked
+  JSON reports, all explicit `legacy_migration_blocked`, zero authoritative
+  v2 records.
+- `tests/test_report_manifest.py` added with focused stdlib `unittest`
+  adversarial coverage for duplicate authority, missing ref, hash mismatch,
+  unknown schema, zero reports, legacy migration and v2 false-pass cases.
+
+## Verification Plan
+
+```text
+git status --short --branch
+git diff --check
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python -m unittest -q tests.test_report_manifest
+python -m pytest -q tests/test_report_manifest.py (if pytest is available)
+python -m pytest -q (if pytest is available/feasible)
+python -m compileall -q automation tests
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+## Multi-agent Status
+
+- Planner: completed earlier in the recovery run with `GO` for TASK-038
+  limited to QA-P0-01/F-004/F-005.
+- Builder: completed implementation draft and local static checks; Orchestrator
+  integrated and hardened tests/schemas.
+- QA Reviewer A: final `GO` after v2 internal artifact existence/SHA
+  remediation.
+- QA Reviewer B: final `GO` after tracked-index validate-only and nested
+  payload overclaim remediation.
+- Security/Prod-safety Reviewer: final `GO` after public-field sanitization,
+  raw-family scanning, no-glob fallback and absolute-path docs remediation.
+- Docs/Scribe: final `GO`; docs link sanity passed.
+
+## Stop Conditions
+
+Stop and report a blocker if final verification fails and cannot be remediated
+inside TASK-038, if reviewers find unresolved R0/R1 risk, if integration would
+require force push/destructive git, or if any step would require credentials,
+external approvals, production authority, Android runtime, APK/device access,
+live network/API/backend, raw evidence or secrets.
+
+---
+
 ## Current Selection Checkpoint
 
 Mode: `BOUNDED_AUTONOMOUS`

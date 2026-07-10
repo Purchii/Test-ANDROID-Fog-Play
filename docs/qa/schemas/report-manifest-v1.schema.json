@@ -1,0 +1,258 @@
+{
+  "$id": "docs/qa/schemas/report-manifest-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Public-safe authoritative index for tracked docs/qa/reports JSON summaries. The TASK-038 generator performs the fail-closed semantic checks.",
+  "properties": {
+    "authoritative_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "blocked_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "invalid_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "legacy_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "manifest_status": {
+      "enum": [
+        "pass",
+        "pass_with_legacy_migration_blockers",
+        "blocked"
+      ],
+      "type": "string"
+    },
+    "mode": {
+      "const": "BOUNDED_AUTONOMOUS"
+    },
+    "path_source": {
+      "enum": [
+        "git_tracked",
+        "public_reports_directory_fallback",
+        "explicit"
+      ],
+      "type": "string"
+    },
+    "production_safety_classification": {
+      "const": "PROD_SAFE_OFFLINE_STATIC_ONLY"
+    },
+    "record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifacts": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_status": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "reference": {
+                  "pattern": "^docs/qa/reports/[^/]+\\.json$",
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "reference",
+                "sha256",
+                "kind",
+                "evidence_status"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "authoritative": {
+            "type": "boolean"
+          },
+          "authority_status": {
+            "enum": [
+              "authoritative",
+              "superseded",
+              "legacy_not_authoritative",
+              "blocked"
+            ],
+            "type": "string"
+          },
+          "blocked_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "build_ref": {
+            "type": "object"
+          },
+          "coverage_status": {
+            "type": "string"
+          },
+          "evidence_status": {
+            "type": "string"
+          },
+          "execution_status": {
+            "type": "string"
+          },
+          "generated_at_utc": {
+            "type": "string"
+          },
+          "production_safety_classification": {
+            "type": "string"
+          },
+          "provenance": {
+            "type": "object"
+          },
+          "record_id": {
+            "type": "string"
+          },
+          "release_effect": {
+            "type": "string"
+          },
+          "review": {
+            "type": "object"
+          },
+          "risks": {
+            "type": "array"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "schema_validation_status": {
+            "enum": [
+              "v2_valid",
+              "legacy_migration_blocked",
+              "unknown_schema",
+              "invalid"
+            ],
+            "type": "string"
+          },
+          "schema_version": {
+            "type": "string"
+          },
+          "superseded_by": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supersedes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "target_alias": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "unknowns": {
+            "type": "array"
+          },
+          "verification": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "record_id",
+          "task_id",
+          "build_ref",
+          "target_alias",
+          "run_id",
+          "generated_at_utc",
+          "schema_version",
+          "schema_validation_status",
+          "execution_status",
+          "coverage_status",
+          "evidence_status",
+          "release_effect",
+          "production_safety_classification",
+          "authority_status",
+          "authoritative",
+          "supersedes",
+          "superseded_by",
+          "artifacts",
+          "blocked_reasons",
+          "unknowns",
+          "risks",
+          "verification",
+          "review",
+          "provenance"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "reports_root": {
+      "const": "docs/qa/reports"
+    },
+    "schema_version": {
+      "const": "report-manifest-v1"
+    },
+    "task_id": {
+      "const": "TASK-038"
+    },
+    "tool_name": {
+      "const": "reporting.report_manifest_generator"
+    },
+    "unknown_schema_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "v2_record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "verification": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "generated_at_utc",
+    "task_id",
+    "tool_name",
+    "mode",
+    "production_safety_classification",
+    "manifest_status",
+    "reports_root",
+    "path_source",
+    "record_count",
+    "authoritative_record_count",
+    "legacy_record_count",
+    "v2_record_count",
+    "unknown_schema_record_count",
+    "invalid_record_count",
+    "blocked_reasons",
+    "records",
+    "verification"
+  ],
+  "title": "Report Manifest v1",
+  "type": "object"
+}

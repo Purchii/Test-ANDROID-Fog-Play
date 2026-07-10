@@ -4,6 +4,12 @@ Task: `TASK-003 - Reporting, evidence schema and release gate generator`
 
 Use this template for public-safe release gate summaries. Do not attach raw artifacts, raw component inventories, private endpoints, credentials or executable runtime/device recipes.
 
+TASK-039 supersedes self-asserted release readiness: public-safe release
+readiness must be generated from `docs/qa/reports/report-manifest.json` and
+authoritative `evidence-report-envelope-v2` records. This template remains
+historical/source material for gate names and reviewer expectations, not proof
+that a release can pass without validated artifact provenance.
+
 ## Metadata
 
 | Field | Value |

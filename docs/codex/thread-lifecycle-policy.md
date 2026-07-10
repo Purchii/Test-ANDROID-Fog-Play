@@ -8,6 +8,13 @@ A completed task thread is historical/inactive and must not implement the next i
 
 The fresh-thread rule also applies to autonomous continuation: after one task is integrated and pushed to the remote default/trunk branch, the next independent task starts from a new thread that reads current `main` and source-of-truth docs.
 
+## New thread model
+
+Create every new top-level task or continuation thread with model identifier
+`gpt-5.6-sol` (display name `5.6 Sol`) and reasoning effort `high`. This setting
+applies to the fresh Orchestrator thread; current-task subagent role selection
+remains governed by the multi-agent workflow and available tooling.
+
 ## Thread and branch naming
 
 Thread title:

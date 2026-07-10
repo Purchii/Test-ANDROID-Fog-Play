@@ -613,30 +613,27 @@ verified task branches and merge/push the detected default/trunk branch
 one fresh continuation thread for the next audit task or next-task selection.
 Completed task threads must not implement the next independent task.
 
-TASK-038 is the current audit-chain task in recovery mode:
-`TASK-038 - Evidence schema v2 and authoritative report manifest` on branch
-`qa/task-038-evidence-schema-v2-report-manifest` from detected default branch
-`main@1e38170e4e387bc1f5674c0b59928fad4670719f`. Scope is strictly
-QA-P0-01/F-004/F-005: public-safe evidence envelope v2 and authoritative
-report manifest. It is `PROD_SAFE_OFFLINE_STATIC_ONLY` and does not use ADB,
+TASK-038 completed QA-P0-01/F-004/F-005 and was integrated to detected default
+branch `main` at `07708404073d247d7b4d4585387b693819c4d8f6`. It added
+`evidence-report-envelope-v2`, `report-manifest-v1`,
+`automation/reporting/generate_report_manifest.py` and
+`docs/qa/reports/report-manifest.json`. The manifest currently records existing
+tracked JSON reports as explicit legacy migration blockers until they are
+migrated to v2.
+
+TASK-039 is the current audit-chain task:
+`TASK-039 - Evidence-backed release-readiness generator` on branch
+`qa/task-039-evidence-backed-release-readiness-generator` from detected default
+branch `main@07708404073d247d7b4d4585387b693819c4d8f6`. Planner selected audit
+backlog item `QA-P0-02` because TASK-038 completed its dependency and the
+release-readiness false-pass risk is the next rollback-sized P0 item. Scope is
+strictly `PROD_SAFE_OFFLINE_STATIC_ONLY`: manifest-backed release readiness
+from tracked public-safe report metadata only. TASK-039 does not use ADB,
 device IP, APK read/hash/install/launch, Android runtime, WebView, payment,
 stream/session, live API/backend/network, ignored `.qa_local` raw evidence,
-private endpoints, secrets or raw values. The original same-directory first
-turn for TASK-038 stalled after initial context/audit reading; recovery in the
-Codex worktree preserved partial changes and recorded this as
-`TASK-038-LIFECYCLE-ANOMALY-001`.
-
-Post-TASK-033 continuation selection started from `main@5b0bbf5` after
-TASK-033 was merged and pushed to detected default branch `main`; the task
-commit is `880b5254e9947c22936132e4d535265b9e28246e`. Planner found no
-eligible unfinished bounded task ready for autonomous execution in
-`docs/tasks/backlog.md`. TASK-034 remains only a proposed
-`PROD_CONDITIONAL` candidate and is blocked until explicit approved
-backend/staging environment, synthetic user, budget/rate limits,
-cleanup/rollback, audit trail, redaction, QA review and Security/Prod-safety
-review exist. TASK-035, TASK-036 and TASK-037 are already verified. The next
-allowed action is owner input with TASK-034 approvals or an explicit new
-bounded public-safe task.
+private endpoints, secrets or raw values. The expected current release
+readiness remains `blocked` because there are no authoritative external v2
+product evidence records yet.
 
 ## Evidence status policy
 

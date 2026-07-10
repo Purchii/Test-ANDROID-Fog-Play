@@ -46,6 +46,17 @@ unknown schemas, unsafe artifact refs and raw/private-looking values. It does
 not read ignored `.qa_local` evidence, APKs, Android devices, runtime logs,
 network/API material or private endpoints.
 
+TASK-039 adds `automation/reporting/generate_release_readiness_report.py`, an
+offline/static release-readiness generator backed by the TASK-038 manifest. It
+does not accept free-form gate assertions as release evidence: R0/R1 gates can
+pass only from authoritative v2 manifest records with confirmed evidence,
+reviewer approval, valid hashes and confirmed evidence storage plus
+cleanup/rollback prerequisites. The current repository output is intentionally
+`blocked` while no external authoritative v2 gate evidence exists. Before any
+content read, production use accepts only the exact relative, Git-tracked
+`docs/qa/reports/report-manifest.json`; synthetic temp-repo manifests require
+an in-test mock of the Git-index probe; production code exposes no bypass.
+
 ## Manual Runtime Maps
 
 `automation/manual_runtime_maps/` contains the TASK-004 manual runtime screen/focus map report generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service, WebView, WebRTC session or production environment.

@@ -576,6 +576,38 @@ TASK-038 does not rewrite the release generator and does not approve Android
 runtime, APK/device, WebView/payment, stream/session, live API/backend/network
 or ignored raw-evidence access.
 
+## Evidence-backed release-readiness gates
+
+TASK-039 release-readiness work is `PROD_SAFE_OFFLINE_STATIC_ONLY`. It may read
+the tracked TASK-038 `docs/qa/reports/report-manifest.json`, tracked public-safe
+report summaries and tracked public schemas only.
+
+The release-readiness generator must fail closed when:
+
+- the manifest is missing, malformed, stale, hash-mismatched, invalid or has no
+  records;
+- the manifest path is not the exact tracked public-safe manifest inside the
+  repository root;
+- an authoritative source envelope fails fresh v2 validation, its internal
+  artifact hash drifts, or manifest provenance/mirrored fields disagree with
+  the source envelope;
+- there are no authoritative v2 evidence records for required R0/R1 gates;
+- a candidate record is legacy, non-authoritative, not v2-valid, non-confirmed,
+  blocked, partial/not-run/unknown, has `release_effect` other than
+  `candidate_evidence`, or lacks required reviewer approval;
+- evidence storage or cleanup/rollback prerequisites are absent or not
+  confirmed;
+- public output would include raw/private-like values, ignored local paths,
+  endpoint-like text or absolute local paths.
+
+The current repository release readiness is expected to remain `blocked`
+because no external authoritative v2 gate-evidence record exists. The
+authoritative TASK-039 report cannot satisfy its own release gates, while the
+remaining existing product/task reports are legacy migration blockers.
+TASK-039 does not migrate all historical reports and does not approve Android
+runtime, APK/device, WebView/payment, stream/session, live API/backend/network
+or ignored raw-evidence access.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

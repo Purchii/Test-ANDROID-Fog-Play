@@ -28,6 +28,7 @@ ENVELOPE_SCHEMA_VERSION = "evidence-report-envelope-v2"
 PROD_SAFE_CLASSIFICATION = "PROD_SAFE_OFFLINE_STATIC_ONLY"
 DEFAULT_REPORTS_ROOT = Path("docs/qa/reports")
 DEFAULT_OUTPUT = DEFAULT_REPORTS_ROOT / "report-manifest.json"
+CANONICAL_TEXT_SUFFIXES = {".csv", ".json", ".md", ".py", ".txt", ".yaml", ".yml"}
 
 SCHEMA_VALIDATION_STATUSES = {"v2_valid", "legacy_migration_blocked", "unknown_schema", "invalid"}
 EXECUTION_STATUSES = {
@@ -117,11 +118,10 @@ def _utc_now() -> str:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    content = path.read_bytes()
+    if path.suffix.lower() in CANONICAL_TEXT_SUFFIXES:
+        content = content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(content).hexdigest()
 
 
 def _repo_relative(path: Path, repo_root: Path) -> str:

@@ -1,6 +1,5 @@
 import contextlib
 import copy
-import hashlib
 import io
 import json
 import tempfile
@@ -8,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from automation.reporting.generate_report_manifest import ENVELOPE_SCHEMA_VERSION, build_manifest
+from automation.reporting.generate_report_manifest import ENVELOPE_SCHEMA_VERSION, _sha256, build_manifest
 from automation.reporting.generate_release_gate_report import DEFAULT_RELEASE_GATES
 from automation.reporting.generate_release_readiness_report import build_report, main, validate_report
 
@@ -19,7 +18,7 @@ def _write_json(path: Path, payload: dict) -> None:
 
 
 def _sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return _sha256(path)
 
 
 def _write_task_spec(root: Path) -> None:

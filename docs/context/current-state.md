@@ -621,19 +621,18 @@ branch `main` at `07708404073d247d7b4d4585387b693819c4d8f6`. It added
 tracked JSON reports as explicit legacy migration blockers until they are
 migrated to v2.
 
-TASK-039 is the current audit-chain task:
-`TASK-039 - Evidence-backed release-readiness generator` on branch
-`qa/task-039-evidence-backed-release-readiness-generator` from detected default
-branch `main@07708404073d247d7b4d4585387b693819c4d8f6`. Planner selected audit
-backlog item `QA-P0-02` because TASK-038 completed its dependency and the
-release-readiness false-pass risk is the next rollback-sized P0 item. Scope is
-strictly `PROD_SAFE_OFFLINE_STATIC_ONLY`: manifest-backed release readiness
-from tracked public-safe report metadata only. TASK-039 does not use ADB,
-device IP, APK read/hash/install/launch, Android runtime, WebView, payment,
-stream/session, live API/backend/network, ignored `.qa_local` raw evidence,
-private endpoints, secrets or raw values. The expected current release
-readiness remains `blocked` because there are no authoritative external v2
-product evidence records yet.
+TASK-039 completed audit backlog item QA-P0-02/F-001 and was locally merged to
+detected default branch `main` through merge commit
+`50ef67da175fb09e66135eb8b7139dc82359027d` from task commit
+`1b3f333`. It adds a fail-closed evidence-backed release-readiness generator,
+adversarial tests and a v2 public summary. Post-merge stabilization made text
+artifact SHA-256 independent of LF/CRLF checkout differences; stabilization
+commit and remote default push are pending. Scope remained strictly
+`PROD_SAFE_OFFLINE_STATIC_ONLY`: no ADB, device IP, APK read/hash/install/launch,
+Android runtime, WebView, payment, stream/session, live API/backend/network,
+ignored `.qa_local` raw evidence, private endpoints, secrets or raw values were
+used. Product release readiness remains correctly `blocked` because there are
+no authoritative external v2 product evidence records yet.
 
 ## Evidence status policy
 

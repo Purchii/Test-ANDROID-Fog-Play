@@ -27,7 +27,7 @@
   "coverage_status": "blocked",
   "evidence_status": "confirmed",
   "execution_status": "blocked",
-  "generated_at_utc": "2026-07-10T20:59:41Z",
+  "generated_at_utc": "2026-07-10T21:04:17Z",
   "payload": {
     "excluded_domains": [
       "payment",

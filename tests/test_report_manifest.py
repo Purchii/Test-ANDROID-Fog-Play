@@ -1,5 +1,4 @@
 import contextlib
-import hashlib
 import io
 import json
 import os
@@ -10,6 +9,7 @@ from unittest import mock
 
 from automation.reporting.generate_report_manifest import (
     ENVELOPE_SCHEMA_VERSION,
+    _sha256,
     build_manifest,
     main,
     validate_manifest,
@@ -22,7 +22,7 @@ def _write_json(path: Path, payload: dict) -> None:
 
 
 def _sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return _sha256(path)
 
 
 def _legacy_report(task_id: str = "TASK-900", schema_version: str = "task900-legacy-v1") -> dict:
@@ -93,6 +93,15 @@ def _v2_report(
 
 
 class ReportManifestTests(unittest.TestCase):
+    def test_text_artifact_sha_is_stable_across_lf_and_crlf_checkouts(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            report = Path(temp_dir) / "report.json"
+            report.write_bytes(b'{"status":"pass"}\n')
+            lf_sha = _sha256(report)
+            report.write_bytes(b'{"status":"pass"}\r\n')
+
+            self.assertEqual(_sha256(report), lf_sha)
+
     def test_existing_public_safe_reports_are_v2_or_explicit_legacy(self) -> None:
         manifest = build_manifest(generated_at_utc="2026-07-10T00:00:00Z")
 

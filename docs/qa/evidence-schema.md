@@ -43,6 +43,10 @@ references, unknown schemas, invalid v2 envelopes or unsafe values. Existing
 pre-v2 reports are not ignored and are not authoritative; they are recorded as
 `legacy_migration_blocked` until a later task migrates them.
 
+SHA-256 values for known text artifacts are computed from canonical LF line
+endings so validation is stable across Git worktrees and Windows checkout
+settings. Binary artifact hashes remain byte-for-byte.
+
 ## Status Vocabulary
 
 | Field | Allowed values |

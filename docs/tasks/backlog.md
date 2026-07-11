@@ -49,6 +49,7 @@
 | TASK-037 | Production bounded API/runtime exploratory coverage with read-only/live safe lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_LIVE_READ_ONLY_SAFE_LANE after owner safe-lane passport and reviewer gates | qa/task-037-production-api-runtime-exploratory-coverage | verified partial-blocked; safe-lane preflight and bounded runtime correlation completed, direct live API calls not_run pending public-safe invocation oracle |
 | TASK-038 | Evidence schema v2 and authoritative report manifest | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | qa/task-038-evidence-schema-v2-report-manifest | completed and integrated to detected `main` at `0770840`; QA-P0-01/F-004/F-005 foundation only, adds v2 envelope schema and public-safe report manifest without release-generator rewrite |
 | TASK-039 | Evidence-backed release-readiness generator | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | qa/task-039-evidence-backed-release-readiness-generator | completed; merged via `50ef67d`, stabilized and pushed to `origin/main@0a633eb`; product release readiness remains blocked until authoritative external v2 gate evidence exists |
+| TASK-040 | Docs checker fail-closed hardening | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | qa/task-040-docs-checker-fail-closed-hardening | verified pre-integration; QA A/QA B/Security/Docs-Scribe final GO; integration pending; QA-P0-03 exact archive finding ID remains `unknown` because the archive backlog is not tracked/public-readable |
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

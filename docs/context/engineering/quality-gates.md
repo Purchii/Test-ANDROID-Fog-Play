@@ -608,6 +608,30 @@ TASK-039 does not migrate all historical reports and does not approve Android
 runtime, APK/device, WebView/payment, stream/session, live API/backend/network
 or ignored raw-evidence access.
 
+## Docs checker fail-closed gates
+
+TASK-040 docs-checker work is `PROD_SAFE_OFFLINE_STATIC_ONLY`. It may scan only
+validated repository-contained tracked/public Markdown files and must never
+crawl external links or read ignored local evidence.
+
+The checker must fail closed when:
+
+- Git tracked-file discovery is unavailable, returns nonzero or emits invalid
+  UTF-8 path data;
+- discovery yields zero eligible validated Markdown files;
+- any scan input is absolute, traversal/ambiguous, scheme/query/fragment-like,
+  control-bearing, forbidden-prefix, non-Markdown, missing, nonregular,
+  symlinked or outside the selected root;
+- root/path metadata or Markdown reads fail.
+
+Path sets are validated as a whole before content I/O. `scanned_files` counts
+eligible validated Markdown only. Git stderr, exception text, unsafe input
+values and absolute roots must not appear in output; controlled reason codes
+and fixed placeholders are required. The checker assumes a trusted
+single-writer offline worktree and does not claim an atomic snapshot against
+concurrent path replacement; overlapping scans must be discarded and rerun.
+Passing TASK-040 does not confirm Android/runtime/product/API behavior.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

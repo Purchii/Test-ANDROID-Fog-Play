@@ -1,6 +1,72 @@
 # Active run
 
-## Completed TASK-039 Run
+## Active TASK-040 Run
+
+## Run Metadata
+
+Mode: `BOUNDED_AUTONOMOUS`
+Thread title: `TASK-040 - Docs checker fail-closed hardening`
+Thread status: `verified_pre_integration`
+Fresh thread verified: `accepted continuation from TASK-039; same thread renamed after Planner selection`
+Task ID: `TASK-040`
+Audit item: `QA-P0-03`; exact archive finding ID: `unknown`
+Task branch: `qa/task-040-docs-checker-fail-closed-hardening`
+Default branch: `main`
+Base commit: `7f3dbf099a4554eb23febfb4028b0dcd0a506480`
+Production safety classification: `PROD_SAFE_OFFLINE_STATIC_ONLY`
+Merge/push authority: `BOUNDED_AUTONOMOUS; only after final checks and all reviews pass`
+
+## Goal and Status
+
+Harden the tracked/public Markdown checker so Git discovery failure and zero
+eligible Markdown inputs cannot report PASS. The implementation also validates
+tracked and explicit scan paths before content I/O, blocks symlink/outside-root/
+forbidden/non-Markdown inputs and emits fixed sanitized diagnostics.
+
+The concrete fail-open is `confirmed` by source inspection and adversarial
+tests. The audit archive remediation backlog is not available as tracked
+public-safe input, so no exact finding ID is claimed. TASK-040 remains active
+until final post-document verification, commit, task-branch push, default-branch
+integration/push and remote alignment are complete.
+
+## Multi-agent Status
+
+- Planner: `GO` for TASK-040 / QA-P0-03 before broader QA-P0-04.
+- Security/Prod-safety plan review: `GO` with fail-closed input-trust controls.
+- Builder: implemented the bounded five-file checker/test/contract diff. An
+  intentional turn interruption terminated the first Builder; a replacement
+  preserved and completed the same diff before Orchestrator verification.
+- QA Reviewer A: final `GO`.
+- QA Reviewer B: initial `BLOCKED` on uncaught initial-root `ValueError`;
+  remediation and deterministic regression complete; final `GO`.
+- Security/Prod-safety final: initial `BLOCKED` on second-root exception leakage
+  and non-deterministic symlink coverage; remediation complete; final `GO`.
+- Docs/Scribe: final `GO`; exact metadata, verification counts, reviewer
+  outcomes, lifecycle interruption, residual risk and boundaries are
+  consistent across the bounded TASK-040 documentation set.
+
+## Verification Status
+
+- Focused checker suite: `21 passed` after reviewer remediation.
+- Quality/redaction cluster: `90 passed`.
+- Full suite: `851 passed, 1 skipped`.
+- Production checker: `pass`, `scanned_files=130`, `findings=0`.
+- Compileall, diff check, both hygiene modes and public repository safety passed
+  on the final pre-integration tree; public safety scanned 259 tracked files.
+- Android runtime, ADB, device/IP/APK, WebView/payment, stream/session, live
+  API/backend/network and ignored `.qa_local` raw evidence were not accessed.
+
+## Residual Risk and Stop Conditions
+
+The checker assumes a trusted single-writer offline worktree. Its pathname
+validation/read sequence is not an atomic filesystem snapshot; discard and
+rerun any scan overlapping workspace mutation. Stop if final checks fail,
+reviewers reopen an R0/R1 issue, integration needs destructive Git/force push,
+or any action would require forbidden runtime/network/raw evidence access.
+
+---
+
+## Previous Completed TASK-039 Run
 
 ## Run Metadata
 

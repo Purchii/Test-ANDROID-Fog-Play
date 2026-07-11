@@ -1,18 +1,21 @@
 # Active run
 
-## Active TASK-040 Run
+## Completed TASK-040 Run
 
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-040 - Docs checker fail-closed hardening`
-Thread status: `verified_pre_integration`
+Thread status: `inactive_completed`
 Fresh thread verified: `accepted continuation from TASK-039; same thread renamed after Planner selection`
 Task ID: `TASK-040`
 Audit item: `QA-P0-03`; exact archive finding ID: `unknown`
 Task branch: `qa/task-040-docs-checker-fail-closed-hardening`
 Default branch: `main`
 Base commit: `7f3dbf099a4554eb23febfb4028b0dcd0a506480`
+Task commit: `c1c818924181a430ae44ce4dd0b9c75c9b3e74dd`
+Integration merge commit: `07efc30959bfda1b340b6082f75b19d89b1a5ed3`
+Remote default integration: `origin/main@07efc30959bfda1b340b6082f75b19d89b1a5ed3` confirmed before this docs-only lifecycle closure
 Production safety classification: `PROD_SAFE_OFFLINE_STATIC_ONLY`
 Merge/push authority: `BOUNDED_AUTONOMOUS; only after final checks and all reviews pass`
 
@@ -25,9 +28,10 @@ forbidden/non-Markdown inputs and emits fixed sanitized diagnostics.
 
 The concrete fail-open is `confirmed` by source inspection and adversarial
 tests. The audit archive remediation backlog is not available as tracked
-public-safe input, so no exact finding ID is claimed. TASK-040 remains active
-until final post-document verification, commit, task-branch push, default-branch
-integration/push and remote alignment are complete.
+public-safe input, so no exact finding ID is claimed. TASK-040 implementation,
+verification, task-branch push, default-branch integration/push and remote
+alignment are complete. This thread is inactive and may create exactly one
+fresh continuation thread for the next audit task or selection handoff.
 
 ## Multi-agent Status
 
@@ -53,6 +57,9 @@ integration/push and remote alignment are complete.
 - Production checker: `pass`, `scanned_files=130`, `findings=0`.
 - Compileall, diff check, both hygiene modes and public repository safety passed
   on the final pre-integration tree; public safety scanned 259 tracked files.
+- Post-merge `main` verification passed: 21 focused tests, 851 full pytest
+  tests with 1 skip, checker `scanned_files=131`, public safety
+  `scanned_files=260`, compileall, both hygiene modes and diff check.
 - Android runtime, ADB, device/IP/APK, WebView/payment, stream/session, live
   API/backend/network and ignored `.qa_local` raw evidence were not accessed.
 

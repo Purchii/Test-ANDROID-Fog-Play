@@ -635,7 +635,7 @@ ignored `.qa_local` raw evidence, private endpoints, secrets or raw values were
 used. Product release readiness remains correctly `blocked` because there are
 no authoritative external v2 product evidence records yet.
 
-TASK-040 is active on branch
+TASK-040 completed on branch
 `qa/task-040-docs-checker-fail-closed-hardening` from exact aligned
 `main@7f3dbf099a4554eb23febfb4028b0dcd0a506480`. Planner selected audit item
 QA-P0-03 before the broader QA-P0-04 archive/export scanner. The exact archive
@@ -648,9 +648,11 @@ unsafe/symlink/nonregular inputs and sanitizes discovery/path/read failures.
 QA A, QA B and Security/Prod-safety returned final `GO` after root-resolution
 and deterministic symlink regressions were added. Final pre-integration checks
 passed with 21 focused tests, 90 quality/redaction tests, 851 full pytest tests
-and 1 skip; final Docs/Scribe review returned `GO`, while integration/push
-remain pending. Android runtime, ADB, device/IP/APK, WebView/payment,
-stream/session, live API/backend/network and ignored `.qa_local` evidence
+and 1 skip; final Docs/Scribe review returned `GO`, and integration/push
+completed through task commit `c1c8189` and merge commit `07efc309`. The verified
+merge was pushed and aligned at `origin/main@07efc309`. Android runtime, ADB,
+device/IP/APK, WebView/payment, stream/session, live API/backend/network and
+ignored `.qa_local` evidence
 remain `not_run` or unaccessed.
 
 ## Evidence status policy

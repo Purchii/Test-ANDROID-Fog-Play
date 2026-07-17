@@ -20,6 +20,15 @@ from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from automation.quality.official_export_index import (
+    INDEX_NAME as OFFICIAL_EXPORT_INDEX_NAME,
+    ExportIndexError,
+    validated_portable_paths,
+)
+
 
 TASK_ID = "TASK-038"
 TOOL_NAME = "reporting.report_manifest_generator"
@@ -142,42 +151,84 @@ def _is_safe_reference(reference: str) -> bool:
     return not any(normalized == part or normalized.startswith(part + "/") for part in FORBIDDEN_REFERENCE_PARTS)
 
 
-def _tracked_report_paths(reports_root: Path, repo_root: Path | None = None) -> tuple[list[Path], str, list[str]]:
-    repo_root = (repo_root or Path.cwd()).resolve()
+def _git_toplevel_matches_root(repo_root: Path) -> bool:
     try:
         result = subprocess.run(
-            [
-                "git",
-                "-c",
-                f"safe.directory={repo_root.as_posix()}",
-                "ls-files",
-                "-z",
-                "--",
-                f"{reports_root.as_posix()}/*.json",
-            ],
+            ["git", "-c", f"safe.directory={repo_root.as_posix()}", "rev-parse", "--show-toplevel"],
             check=False,
             capture_output=True,
             text=False,
             cwd=repo_root,
         )
     except OSError:
-        result = None
+        return False
+    if result.returncode != 0:
+        return False
+    try:
+        discovered = Path(result.stdout.decode("utf-8").strip()).resolve()
+    except (UnicodeDecodeError, OSError, RuntimeError, ValueError):
+        return False
+    return discovered == repo_root.resolve()
+
+
+def _tracked_report_paths(reports_root: Path, repo_root: Path | None = None) -> tuple[list[Path], str, list[str]]:
+    repo_root = (repo_root or Path.cwd()).resolve()
+    result = None
+    if _git_toplevel_matches_root(repo_root):
+        try:
+            result = subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    f"safe.directory={repo_root.as_posix()}",
+                    "ls-files",
+                    "-z",
+                    "--",
+                    f"{reports_root.as_posix()}/*.json",
+                ],
+                check=False,
+                capture_output=True,
+                text=False,
+                cwd=repo_root,
+            )
+        except OSError:
+            result = None
     if result is not None and result.returncode == 0:
         paths = [Path(item.decode("utf-8")) for item in result.stdout.split(b"\0") if item]
-        return _filter_report_paths(paths), "git_tracked", []
+        return _filter_report_paths(paths, repo_root), "git_tracked", []
+    official_index = repo_root / OFFICIAL_EXPORT_INDEX_NAME
+    if official_index.is_file():
+        try:
+            governed_paths = validated_portable_paths(repo_root)
+        except (ExportIndexError, OSError, RuntimeError, ValueError) as exc:
+            reason = exc.reason_code if isinstance(exc, ExportIndexError) else "PORTABLE_INDEX_UNAVAILABLE"
+            return [], "portable_official_index_invalid", [f"portable_export_index_invalid:{reason}"]
+        paths = [repo_root / path for path in governed_paths]
+        return _filter_report_paths(paths, repo_root), "portable_official_index", []
     return [], "git_tracked_unavailable", ["tracked_report_index_unavailable"]
 
 
-def _filter_report_paths(paths: Any) -> list[Path]:
+def _filter_report_paths(paths: Any, repo_root: Path | None = None) -> list[Path]:
+    root = (repo_root or Path(".")).resolve()
+    canonical_parts = DEFAULT_REPORTS_ROOT.parts
     filtered = []
     for path in paths:
         path = Path(path)
-        normalized = path.as_posix()
+        try:
+            if path.is_absolute():
+                relative = path.resolve(strict=False).relative_to(root)
+            else:
+                if ".." in path.parts:
+                    continue
+                candidate = (root / path).resolve(strict=False)
+                relative = candidate.relative_to(root)
+        except (OSError, RuntimeError, ValueError):
+            continue
+        if relative.parts[: len(canonical_parts)] != canonical_parts or len(relative.parts) <= len(canonical_parts):
+            continue
         if path.name == DEFAULT_OUTPUT.name:
             continue
         if path.suffix.lower() != ".json":
-            continue
-        if DEFAULT_REPORTS_ROOT.as_posix() not in normalized:
             continue
         filtered.append(path)
     return sorted(filtered, key=lambda item: item.as_posix())
@@ -572,7 +623,7 @@ def build_manifest(
     if report_paths is None:
         report_paths, path_source, path_errors = _tracked_report_paths(DEFAULT_REPORTS_ROOT, repo_root)
     else:
-        report_paths = _filter_report_paths(report_paths)
+        report_paths = _filter_report_paths(report_paths, repo_root)
         path_source = "explicit"
 
     records = [_record_from_report(path, repo_root) for path in report_paths]

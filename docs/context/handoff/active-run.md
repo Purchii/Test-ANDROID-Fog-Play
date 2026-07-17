@@ -1,5 +1,212 @@
 # Active run
 
+## Active TASK-041 Run
+
+## Run Metadata
+
+Mode: `BOUNDED_AUTONOMOUS`
+Thread title: `TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`
+Thread status: `active_in_progress`
+Fresh thread verified: `accepted; current project thread title matches TASK-041`
+Task ID: `TASK-041`
+Task branch: `qa/task-041-qa-only-epic-integration-portable-export`
+Default branch: `main`
+Base commit: `50dca155e5deb5d97e72780e81792c3e8abadffb`
+Production safety classification: `PROD_SAFE` (repository-only static QA scope)
+Merge/push authority: `BOUNDED_AUTONOMOUS; only after all acceptance criteria, verification and independent final reviews pass`
+
+## Goal and Bounded Scope
+
+Integrate only the archive's `PUBLIC_SAFE_QA_OVERLAY/` payload path-for-path,
+preserve the current repository source of truth and the existing five-APK and
+`.qa_local` contracts, add a hash-bound official-export authority that remains
+valid without `.git`, and make all TASK-041…055 specifications and scenario
+catalogs discoverable. TASK-041 does not execute TASK-042 or any later task.
+
+Allowed `PROD_SAFE` repository-only actions:
+
+- read the supplied archive and verify `MANIFEST.json` plus `SHA256SUMS.txt`;
+- stage the archive payload only in a fresh ignored temporary directory after
+  containment and hash checks;
+- copy only `PUBLIC_SAFE_QA_OVERLAY/` into tracked repository-relative paths;
+- merge collisions additively in favor of current repository source of truth;
+- edit QA automation, schemas, validators, tests, public-safe reports, task
+  specifications, scenario catalogs and source-of-truth documentation;
+- run offline static, synthetic, docs, hygiene, public-safety, index and
+  export-portability checks;
+- create an official export in a fresh ignored temporary location and validate
+  the unpacked export without relying on `.git` metadata.
+
+Forbidden `PROD_FORBIDDEN` actions:
+
+- copying `RUN_PACKS/`, the source archive, APKs, raw evidence, machine values
+  or any other archive content outside `PUBLIC_SAFE_QA_OVERLAY/` into tracked
+  repository paths;
+- ADB, Android device/AVD/runtime, APK read/hash/install/launch, app navigation,
+  screenshots, UI trees, logs, videos or network actions in TASK-041;
+- production build/compilation, Gradle reproduction, Android source-level unit,
+  component or instrumentation tests, production source/APK/signature/manifest/
+  binary modification, private dependencies or programmer gates;
+- real payment, purchase, account/profile mutation, stream/session start,
+  external QR traversal, endpoint discovery, TLS/pinning/security bypass,
+  load/destructive operations or publication of local-only values;
+- treating plans, templates, `mapped_only`, `executable_not_run`, any
+  `blocked_*`, AVD/tooling output or evidence from another device/APK family as
+  product/runtime PASS;
+- implementing TASK-042…055, merging/pushing before final gates, force-pushing
+  or starting the next independent task before TASK-041 is integrated and
+  aligned with the remote default branch.
+
+## Archive Integrity Evidence
+
+The archive was inspected in memory without extracting it into the repository.
+Evidence status is `confirmed`:
+
+- 124 archive file entries;
+- 122 manifest-declared payload records and 122 manifest records observed;
+- 123 `SHA256SUMS.txt` entries;
+- zero missing, size-mismatched or hash-mismatched manifest records;
+- zero malformed, missing or hash-mismatched checksum entries;
+- package contract counts: 15 tasks, 15 prompts, 15 integrated prompts,
+  15 scenario catalogs, 307 scenarios and 55 opaque surfaces;
+- package validation report states `PASS` with zero errors and zero warnings;
+  this confirms archive structural integrity only, not repository integration,
+  portable export correctness or product/runtime behavior.
+
+## Strict Multi-agent Status
+
+- Orchestrator: active in the accepted TASK-041 thread.
+- Planner: `CONDITIONAL GO`; requires portable no-`.git` index authority,
+  baseline preservation, future-path docs-checker handling and no product or
+  release PASS claim.
+- Builder: implementation and confirmed pre-review repository/export checks are
+  complete; final independent review remediation remains pending if requested.
+- QA Reviewer A: initial `BLOCKED` (`R1`) on root README collision, missing
+  tracked machine-readable 15-task/run authority and explicit links, ambiguous
+  scenario safety/runtime-shaped screenshot plus UI-tree evidence, and a
+  premature `QA-041-018` continuation claim; final delta re-review is `GO`.
+- QA Reviewer B: initial/follow-up `BLOCKED` reviews found shadow report paths,
+  outer-Git authority, `.git` ZIP/tree entries, Windows-invalid paths, weak
+  epic uniqueness/schema checks and non-atomic index publication; remediation
+  and regressions are staged; final re-review is `GO`.
+- Security/Prod-safety Reviewer: initial `BLOCKED` (`R1/HIGH`) on the README
+  collision, TASK-041 wording that could authorize broad `.qa_local`/APK/ADB/
+  runtime access, ambiguous scenario safety classes and non-static evidence;
+  final security re-review is `GO` after portable boundary remediation.
+- Docs/Scribe: documentation-state R1 issues were remediated; final targeted
+  re-review is `GO`.
+
+Required remediation before final review:
+
+- preserve the existing root README and add only an additive epic link;
+- add a tracked, machine-readable 15-task/run index authority and explicit
+  links to all 15 task specs and all 15 scenario catalogs;
+- classify TASK-041 rows/actions as repository-only static/synthetic evidence;
+  express later runtime lanes as future `PROD_CONDITIONAL` work with exact
+  task-local gates;
+- remove any TASK-041 authorization for broad `.qa_local`, APK, ADB, device or
+  runtime access;
+- do not pre-claim `QA-041-018` or a TASK-042 thread before verified default
+  integration/push and stable fresh-thread acceptance;
+- use only a fresh ignored staging/export location with containment, symlink and
+  hash verification before tracked integration.
+
+The listed initial findings have implementation remediation and confirmed
+pre-review static checks. QA A, QA B, Security/Prod-safety and Docs/Scribe all
+returned final `GO`; the aggregate independent review gate is confirmed.
+
+## Acceptance Criteria and Verification Plan
+
+TASK-041 remains `in_progress`. Completion requires:
+
+- all 15 task specs and 15 scenario catalogs are tracked, indexed and linked;
+- the official export index is hash-bound, complete and fail-closed for a
+  missing, stale or malformed index, extra/missing files, duplicate paths,
+  traversal, absolute paths, forbidden content and unsafe symlinks;
+- a normal Git checkout and an official ZIP unpacked without `.git` pass the
+  same relevant validator, docs, hygiene and public-safety checks;
+- existing five-APK and `.qa_local` contracts remain unchanged;
+- no production source, private binary, raw evidence or machine value enters
+  tracked/public output;
+- QA A, QA B, Security/Prod-safety and Docs/Scribe return final `GO`, with no
+  unresolved R0/R1 blocker.
+
+Verification matrix used for the confirmed pre-review checkpoint:
+
+```text
+git status --short --branch
+git diff --check
+python -m pytest -q tests/test_official_export_index.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The Builder CLI exposes the authority commands below. Their checkout and clean
+official-export outcomes are recorded in the following checkpoint:
+
+```text
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/official_export_index.py check-preservation --root . --base-ref 50dca155e5deb5d97e72780e81792c3e8abadffb
+$task041ExportDir = Join-Path ([IO.Path]::GetTempPath()) ("mtc-fog-play-task041-" + [guid]::NewGuid().ToString("N"))
+New-Item -ItemType Directory -Path $task041ExportDir | Out-Null
+$task041ExportZip = Join-Path $task041ExportDir 'official-export.zip'
+python automation/quality/official_export_index.py create-zip --root . --output $task041ExportZip
+python automation/quality/official_export_index.py validate-zip --zip $task041ExportZip
+```
+
+## Confirmed Pre-review Verification Checkpoint
+
+- Git checkout: 144 focused tests passed and 1 skipped; full suite 938 passed
+  and 2 skipped;
+  compileall passed; docs checker passed with 170 files; default and public
+  hygiene modes passed; public-safety scan passed with 322 files;
+  `validate-epic` passed.
+- Official clean commit alias `qa-task041-final-pre-review`: ZIP and
+  unpacked-tree validation without `.git` passed; full suite 938 passed and 2
+  skipped; docs checker passed with 170 files; public hygiene passed;
+  public-safety scan passed with 323 files;
+  manifest validation passed with 25 records and explicit legacy migration
+  blockers.
+- `TASK041-PROCESS-ANOMALY-001` is `confirmed`: the first unpacked no-`.git`
+  pytest attempt created cache/bytecode in the export tree, and the strict index
+  correctly returned `TREE_EXTRA_FILE`. A fresh export rerun disabled pytest's
+  cache provider and redirected bytecode outside the tree; it passed without
+  weakening the index authority.
+  - public-safe alias: `official_export_tree_extra_after_test_side_effect`;
+  - trigger/action: run pytest in the first unpacked no-`.git` export;
+  - expected: the export tree remains identical to the embedded index;
+  - observed: test side effects added files and strict validation rejected the
+    mutated tree with `TREE_EXTRA_FILE`;
+  - likely cause: pytest cache provider and interpreter bytecode writes inside
+    the tree under verification;
+  - test-design implication: disable cache, redirect bytecode outside the tree
+    and validate the tree after all exported-tree checks.
+- `TASK041-PROCESS-ANOMALY-002` is `confirmed`: parallel focused/full pytest
+  caused one synthetic temporary Git fixture to fail without stderr. The
+  authoritative sequential reruns passed; Git-mutating suites are serialized
+  and the original failure remains separate from PASS.
+- Only fresh task-scoped ignored archive audit/export staging was used after
+  containment/hash validation. No existing `.qa_local` APK/device/evidence/
+  secrets artifact was accessed.
+- Scenario ledger checkpoint: 17 `observed_pass`, 1 `executable_not_run`.
+  `QA-041-018`, final independent reviews, merge/push and accepted TASK-042
+  continuation remain pending.
+
+## Lifecycle Rule
+
+After all gates pass, TASK-041 may be committed, pushed, merged to detected
+default branch `main`, pushed to `origin/main` and post-push verified. Only then
+may this thread become `inactive_completed` and create exactly one fresh
+`TASK-042 — Local APK, launcher, AVD and device runtime preflight` thread using
+`gpt-5.6-sol` with reasoning effort `high`. The completed TASK-041 thread must
+not implement TASK-042, and a pending or failed thread handle is not accepted.
+
+---
+
 ## Completed TASK-040 Run
 
 ## Run Metadata

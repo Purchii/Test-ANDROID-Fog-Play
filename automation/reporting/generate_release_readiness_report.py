@@ -30,6 +30,11 @@ from automation.reporting.generate_report_manifest import (
     validate_manifest,
 )
 from automation.reporting.generate_release_gate_report import DEFAULT_RELEASE_GATES, REQUIRED_REVIEWERS
+from automation.quality.official_export_index import (
+    INDEX_NAME as OFFICIAL_EXPORT_INDEX_NAME,
+    ExportIndexError,
+    validated_portable_paths,
+)
 
 
 TASK_ID = "TASK-039"
@@ -67,24 +72,51 @@ def _load_json_object(path: Path) -> tuple[dict[str, Any], list[str]]:
 
 def _manifest_is_git_tracked(repo_root: Path) -> bool:
     try:
-        result = subprocess.run(
-            [
-                "git",
-                "-c",
-                f"safe.directory={repo_root.as_posix()}",
-                "ls-files",
-                "--error-unmatch",
-                "--",
-                DEFAULT_MANIFEST.as_posix(),
-            ],
+        top_level = subprocess.run(
+            ["git", "-c", f"safe.directory={repo_root.as_posix()}", "rev-parse", "--show-toplevel"],
             cwd=repo_root,
             check=False,
             capture_output=True,
             text=False,
         )
     except OSError:
+        top_level = None
+    exact_git_root = False
+    if top_level is not None and top_level.returncode == 0:
+        try:
+            exact_git_root = Path(top_level.stdout.decode("utf-8").strip()).resolve() == repo_root.resolve()
+        except (UnicodeDecodeError, OSError, RuntimeError, ValueError):
+            exact_git_root = False
+    result = None
+    if exact_git_root:
+        try:
+            result = subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    f"safe.directory={repo_root.as_posix()}",
+                    "ls-files",
+                    "--error-unmatch",
+                    "--",
+                    DEFAULT_MANIFEST.as_posix(),
+                ],
+                cwd=repo_root,
+                check=False,
+                capture_output=True,
+                text=False,
+            )
+        except OSError:
+            result = None
+    if result is not None and result.returncode == 0:
+        return True
+    official_index = repo_root / OFFICIAL_EXPORT_INDEX_NAME
+    if not official_index.is_file():
         return False
-    return result.returncode == 0
+    try:
+        governed_paths = validated_portable_paths(repo_root)
+    except (ExportIndexError, OSError, RuntimeError, ValueError):
+        return False
+    return DEFAULT_MANIFEST in governed_paths
 
 
 def _allowed_manifest_path(
@@ -409,6 +441,14 @@ def build_report(
             continue
         candidates.append({"record": record, "source": source})
 
+    gate_evidence_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate["record"].get("release_effect") in PASSABLE_RELEASE_EFFECTS
+        and candidate["source"].get("release_effect") in PASSABLE_RELEASE_EFFECTS
+        and _source_gate_ids(candidate["source"])
+    ]
+
     release_gates = [_evaluate_gate(gate, candidates) for gate in DEFAULT_RELEASE_GATES]
     gate_blockers = [
         reason
@@ -436,7 +476,7 @@ def build_report(
         blocked_reasons.append("manifest_records_empty")
     if not authoritative_records:
         blocked_reasons.append("authoritative_v2_evidence_records_missing")
-    if not candidates:
+    if not gate_evidence_candidates:
         blocked_reasons.append("authoritative_v2_gate_evidence_records_missing")
 
     release_decision = "pass" if not blocked_reasons and all(gate["decision"] == "pass" for gate in release_gates) else "blocked"

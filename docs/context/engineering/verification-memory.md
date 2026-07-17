@@ -360,3 +360,91 @@ This file records what was actually verified. Do not claim runtime checks passed
 - Confirmed navigation transition scope, screen alias policy, input event policy, fixture policy, resource budget, evidence storage and cleanup/rollback approvals.
 - TASK-005 runtime execution on the TASK-016 inventory devices.
 - Manual review of generated TASK-016 device aliases before using them as approved TASK-005 targets.
+
+## TASK-041 pre-review verification record — 2026-07-17
+
+Status: `in_progress`; confirmed pre-review static results are recorded below.
+Final reviews, merge/push, continuation and product/runtime PASS are not claimed.
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread: accepted fresh `TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`.
+- Branch: `qa/task-041-qa-only-epic-integration-portable-export`.
+- Base: exact `main@50dca155e5deb5d97e72780e81792c3e8abadffb`.
+- Safety: canonical `PROD_SAFE`, repository-only static QA scope; ADB/APK/device/AVD/runtime/network and
+  existing `.qa_local` APK/device/evidence/secrets reads are forbidden. Only
+  fresh task-scoped ignored archive audit/export staging was used after
+  containment/hash validation.
+- Archive integrity evidence: `confirmed`; 124 file entries, 122/122 manifest
+  records matched size and SHA-256, 123/123 checksum entries matched, with 15
+  tasks, 15 prompts, 15 integrated prompts, 15 scenario catalogs, 307 scenarios
+  and 55 opaque surfaces. The package validation report records zero errors and
+  zero warnings. This is archive structural evidence only.
+- Initial review: Planner `CONDITIONAL GO`; QA A `BLOCKED R1`; Security
+  `BLOCKED R1/HIGH`; QA B later found additional portable-authority blockers.
+  Implementation remediation and pre-review checks are complete. QA A, QA B,
+  Security/Prod-safety and Docs/Scribe returned final `GO`.
+
+Confirmed checkout results:
+
+- 144 focused tests passed, 1 skipped;
+- full suite: 938 passed, 2 skipped;
+- compileall passed;
+- docs checker passed with 170 files;
+- full-tree hygiene default and public modes passed;
+- public-safety scan passed with 322 files;
+- canonical `validate-epic` passed.
+
+Confirmed official clean commit alias `qa-task041-final-pre-review` export results:
+
+- ZIP validation and unpacked-tree validation without `.git` passed;
+- full suite: 938 passed, 2 skipped;
+- docs checker passed with 170 files;
+- public hygiene passed;
+- public-safety scan passed with 323 files;
+- report-manifest validation passed with 25 records and explicit legacy
+  migration blockers.
+
+Process anomaly `TASK041-PROCESS-ANOMALY-001` is retained rather than erased by
+the successful rerun. The first unpacked no-`.git` pytest attempt created cache
+and bytecode in the export tree; strict validation correctly returned
+`TREE_EXTRA_FILE`. A fresh export disabled the pytest cache provider and
+redirected bytecode outside the tree, then passed. No index or validation rule
+was weakened. Public-safe alias is
+`official_export_tree_extra_after_test_side_effect`; the likely cause is pytest
+cache/bytecode write side effects. Future exported-tree checks must disable the
+cache provider, externalize bytecode and validate the tree after all checks.
+
+Process anomaly `TASK041-PROCESS-ANOMALY-002` is also `confirmed`. A parallel
+focused/full pytest launch caused one synthetic temporary Git fixture to return
+exit 1 from `git add .` without stderr while the other suite remained active.
+After the concurrent process ended, sequential focused and full reruns passed.
+The failure remains recorded; Git-mutating suites run sequentially on this host.
+
+The public ledger records 17 `observed_pass` and 1 `executable_not_run`.
+`QA-041-018`, QA A/QA B/Security/Docs final reviews, default merge/push and
+accepted TASK-042 continuation remain pending.
+
+Planned verification commands:
+
+```text
+git status --short --branch
+git diff --check
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/official_export_index.py check-preservation --root . --base-ref 50dca155e5deb5d97e72780e81792c3e8abadffb
+python -m pytest -q tests/test_official_export_index.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+$task041ExportDir = Join-Path ([IO.Path]::GetTempPath()) ("mtc-fog-play-task041-" + [guid]::NewGuid().ToString("N"))
+New-Item -ItemType Directory -Path $task041ExportDir | Out-Null
+$task041ExportZip = Join-Path $task041ExportDir 'official-export.zip'
+python automation/quality/official_export_index.py create-zip --root . --output $task041ExportZip
+python automation/quality/official_export_index.py validate-zip --zip $task041ExportZip
+```
+
+The no-`.git` export ran the relevant epic, docs, hygiene, public-safety,
+manifest and full-suite checks after unpacking. Append final reviewer outcomes,
+merge/push SHAs and continuation evidence only after those actions succeed.

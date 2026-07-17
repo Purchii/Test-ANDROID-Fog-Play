@@ -1,14 +1,14 @@
 {
-  "authoritative_record_count": 1,
+  "authoritative_record_count": 2,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-07-10T21:04:18Z",
+  "generated_at_utc": "2026-07-17T10:11:13Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
   "mode": "BOUNDED_AUTONOMOUS",
   "path_source": "git_tracked",
   "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
-  "record_count": 24,
+  "record_count": 25,
   "records": [
     {
       "artifacts": [
@@ -1748,6 +1748,57 @@
           "status": "pass"
         }
       ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task041_epic_integration.summary.json",
+          "sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa"
+        }
+      ],
+      "authoritative": true,
+      "authority_status": "authoritative",
+      "blocked_reasons": [],
+      "build_ref": {
+        "alias": "qa-repository-main-base-50dca155"
+      },
+      "coverage_status": "partial",
+      "evidence_status": "confirmed",
+      "execution_status": "partial",
+      "generated_at_utc": "2026-07-17T00:00:00Z",
+      "production_safety_classification": "PROD_SAFE",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task041_epic_integration.summary.json",
+        "source_sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa"
+      },
+      "record_id": "TASK-041__qa-repository-main-base-50dca155__repository-static-export-lane__task041-static-integration-001__task041_epic_integration.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "v2_valid"
+      },
+      "risks": [],
+      "run_id": "task041-static-integration-001",
+      "schema_validation_status": "v2_valid",
+      "schema_version": "evidence-report-envelope-v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "repository-static-export-lane",
+      "task_id": "TASK-041",
+      "unknowns": [],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task041_epic_integration.summary.json",
+          "sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa",
+          "status": "pass"
+        }
+      ]
     }
   ],
   "reports_root": "docs/qa/reports",
@@ -1755,7 +1806,7 @@
   "task_id": "TASK-038",
   "tool_name": "reporting.report_manifest_generator",
   "unknown_schema_record_count": 0,
-  "v2_record_count": 1,
+  "v2_record_count": 2,
   "verification": [
     {
       "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",

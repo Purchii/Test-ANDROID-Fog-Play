@@ -1,0 +1,16 @@
+new_task,existing_assets,reuse_rule
+041,AGENTS.md; TASK-038 report-manifest; TASK-039 release-readiness; TASK-040 docs checker; current backlog/current-state,extend fail-closed authorities; do not replace historical reports
+042,TASK-005 APK bundle contract; local paths policy; TASK-015A…017C device inventory validators; TASK-016 preflight history,use canonical .qa_local paths and aliases; no machine rediscovery
+043,TASK-003/038/039 evidence/report authorities; TASK-011/012 transition/risk maps; TASK-019…040 reports,index and map; do not promote legacy/template evidence
+044,TASK-005; TASK-019; TASK-020; TASK-023; TASK-024; TASK-025B; TASK-027/027S/027T,recheck known anomalies and reuse stable oracles only with fresh evidence
+045,TASK-022 gamepad inventory; TASK-032 DataChannel/gamepad contracts; existing virtual-gamepad support instruction; TASK-044 reference oracle,build paired black-box lane; no paid gameplay assertion
+046,TASK-044 reference oracle; compatibility matrix/report format TASK-009,execute family-specific evidence; reference is comparator only
+047,TASK-044 reference oracle; compatibility matrix/report format TASK-009,execute Sber-specific evidence; reference is comparator only
+048,TASK-002 exported component guards; TASK-005 local artifact policy; source-informed launcher risk IDs,actual compatible target only; no generic TV substitution
+049,TASK-011 transition map; TASK-020/023/027/027S/027T; TASK-044…048,merge ledgers with provenance; terminal classification is not visual pass
+050,TASK-005 install smoke; TASK-019 session persistence; TASK-024/025 native regression; TASK-049 graph,stateful before/action/after/cleanup evidence
+051,TASK-007 safe network runner; TASK-021 runtime probe; TASK-028…037 API/STOMP contracts,observe runtime symptoms; never publish private transport data
+052,TASK-004 focus templates; TASK-022 gamepad inventory; TASK-032 DataChannel/gamepad contracts; TASK-045 paired lane,"separate physical, virtual and synthetic evidence"
+053,TASK-009 compatibility matrix; TASK-046/047 representative lanes; TASK-052 input matrix,"risk-based deltas, not full blind duplication"
+054,all fresh representative runtime reports; crash/ANR summaries; TASK-051 reconnect and TASK-052 input cycles,bounded budgets and kill switches; no backend load
+055,TASK-003 release gate; TASK-038 manifest; TASK-039 readiness generator; TASK-043 selector; TASK-044…054 evidence,extend authoritative fail-closed gate; no self-asserted pass

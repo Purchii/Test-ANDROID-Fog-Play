@@ -1,19 +1,19 @@
 # Active run
 
-## Active TASK-041 Run
+## Completed TASK-041 Run
 
 ## Run Metadata
 
 Mode: `BOUNDED_AUTONOMOUS`
 Thread title: `TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`
-Thread status: `active_in_progress`
+Thread status: `inactive_completed`
 Fresh thread verified: `accepted; current project thread title matches TASK-041`
 Task ID: `TASK-041`
 Task branch: `qa/task-041-qa-only-epic-integration-portable-export`
 Default branch: `main`
 Base commit: `50dca155e5deb5d97e72780e81792c3e8abadffb`
 Production safety classification: `PROD_SAFE` (repository-only static QA scope)
-Merge/push authority: `BOUNDED_AUTONOMOUS; only after all acceptance criteria, verification and independent final reviews pass`
+Merge/push result: `completed; main and origin/main aligned at a34d075`
 
 ## Goal and Bounded Scope
 
@@ -59,8 +59,8 @@ Forbidden `PROD_FORBIDDEN` actions:
 
 ## Archive Integrity Evidence
 
-The archive was inspected in memory without extracting it into the repository.
-Evidence status is `confirmed`:
+The archive was verified before extraction, then extracted only into fresh
+task-scoped ignored audit staging. Evidence status is `confirmed`:
 
 - 124 archive file entries;
 - 122 manifest-declared payload records and 122 manifest records observed;
@@ -75,12 +75,12 @@ Evidence status is `confirmed`:
 
 ## Strict Multi-agent Status
 
-- Orchestrator: active in the accepted TASK-041 thread.
+- Orchestrator: `inactive_completed` after verified lifecycle closure.
 - Planner: `CONDITIONAL GO`; requires portable no-`.git` index authority,
   baseline preservation, future-path docs-checker handling and no product or
   release PASS claim.
-- Builder: implementation and confirmed pre-review repository/export checks are
-  complete; final independent review remediation remains pending if requested.
+- Builder: implementation, remediation and repository/export checks are
+  complete.
 - QA Reviewer A: initial `BLOCKED` (`R1`) on root README collision, missing
   tracked machine-readable 15-task/run authority and explicit links, ambiguous
   scenario safety/runtime-shaped screenshot plus UI-tree evidence, and a
@@ -96,7 +96,7 @@ Evidence status is `confirmed`:
 - Docs/Scribe: documentation-state R1 issues were remediated; final targeted
   re-review is `GO`.
 
-Required remediation before final review:
+Initial findings remediated before final review:
 
 - preserve the existing root README and add only an additive epic link;
 - add a tracked, machine-readable 15-task/run index authority and explicit
@@ -117,7 +117,7 @@ returned final `GO`; the aggregate independent review gate is confirmed.
 
 ## Acceptance Criteria and Verification Plan
 
-TASK-041 remains `in_progress`. Completion requires:
+TASK-041 completion criteria are satisfied:
 
 - all 15 task specs and 15 scenario catalogs are tracked, indexed and linked;
 - the official export index is hash-bound, complete and fail-closed for a
@@ -192,9 +192,9 @@ python automation/quality/official_export_index.py validate-zip --zip $task041Ex
 - Only fresh task-scoped ignored archive audit/export staging was used after
   containment/hash validation. No existing `.qa_local` APK/device/evidence/
   secrets artifact was accessed.
-- Scenario ledger checkpoint: 17 `observed_pass`, 1 `executable_not_run`.
-  `QA-041-018`, final independent reviews, merge/push and accepted TASK-042
-  continuation remain pending.
+- Scenario ledger closure: 18 `observed_pass`, 0 `executable_not_run`.
+  `QA-041-018` is `observed_pass`; final reviews, merge/push and accepted TASK-042
+  continuation are confirmed.
 
 ## Lifecycle Rule
 

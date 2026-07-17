@@ -1,4 +1,4 @@
-# TASK-041 public-safe pre-review verification record
+# TASK-041 public-safe verification and lifecycle record
 
 Date: `2026-07-17`
 
@@ -6,10 +6,21 @@ Task: `TASK-041`
 
 Safety: canonical `PROD_SAFE`; repository-only static QA qualifier.
 
-Evidence status: `confirmed` for the commands and result counts listed below.
-Final reviews, default-branch merge/push and `QA-041-018` continuation remain
-pending. This record contains no product/runtime or release PASS claim and no
+Evidence status: `confirmed` for the commands, result counts and lifecycle
+evidence listed below. This record contains no product/runtime or release PASS claim and no
 raw path, APK, device, account, secret or private evidence value.
+
+## Lifecycle closure
+
+- QA A, QA B, Security/Prod-safety and Docs/Scribe returned final `GO`;
+- task branch was pushed, merged into `main` as public-safe commit alias
+  `main-a34d075`, and `main` was confirmed aligned with `origin/main`;
+- post-merge focused/full/docs/hygiene/public-safety/epic/preservation/manifest
+  checks passed with the same recorded counts;
+- exactly one fresh thread with public-safe alias `task042-fresh-thread-accepted`
+  and title `TASK-042 — Local APK, launcher, AVD and device runtime preflight`
+  was accepted in an isolated worktree and began source-of-truth preflight;
+- `QA-041-018` is therefore `observed_pass`; TASK-041 does not execute TASK-042.
 
 ## Git checkout verification
 

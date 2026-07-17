@@ -714,15 +714,15 @@ validation correctly returned `TREE_EXTRA_FILE`. A fresh export rerun disabled
 the cache provider and redirected bytecode outside the tree, then passed; index
 authority was not weakened. QA A, QA B, Security/Prod-safety and Docs/Scribe
 returned final `GO` after remediation.
-The scenario ledger is 17 `observed_pass` and 1 `executable_not_run`;
-`QA-041-018`, final GO, merge/push and TASK-042 creation are not claimed.
+The scenario ledger is 18 `observed_pass` and 0 `executable_not_run`;
+`QA-041-018` is `observed_pass`: all final reviews returned `GO`, TASK-041 was
+merged/pushed, `main` aligned with `origin/main` at `a34d075`, and exactly one
+fresh TASK-042 thread was accepted. This completed thread did not execute TASK-042.
 
 Process anomaly `TASK041-PROCESS-ANOMALY-002` is `confirmed`: an improper
 parallel focused/full pytest launch caused one synthetic temporary Git fixture
 to fail without stderr. Authoritative sequential reruns passed; Git-mutating
 suites are serialized on this host and the original failure remains recorded.
 
-TASK-042…055 are now planned in the backlog and blocked by their explicit DAG
-dependencies. After verified TASK-041 integration and remote `main` alignment,
-this thread may create exactly one fresh TASK-042 thread; it must not implement
-TASK-042 itself.
+TASK-042 is active in its accepted fresh worktree thread. TASK-043…055 remain
+planned and governed by their explicit DAG dependencies.

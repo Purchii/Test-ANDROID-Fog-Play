@@ -1,12 +1,12 @@
 {
   "schema_version": "evidence-report-envelope-v2",
   "schema_validation_status": "pass",
-  "execution_status": "partial",
-  "coverage_status": "partial",
+  "execution_status": "pass",
+  "coverage_status": "covered",
   "evidence_status": "confirmed",
   "release_effect": "no_release_claim",
   "production_safety_classification": "PROD_SAFE",
-  "generated_at_utc": "2026-07-17T00:00:00Z",
+  "generated_at_utc": "2026-07-17T10:16:08Z",
   "task_id": "TASK-041",
   "build_ref": {
     "alias": "qa-repository-main-base-50dca155"
@@ -28,41 +28,26 @@
     },
     {
       "reference": "docs/qa/reports/task041_epic_integration.scenario-ledger.csv",
-      "sha256": "a8c81c5af703d2ebd06c1388f48015bd19d00f39167a1fb1f3ab97805466d577",
+      "sha256": "fcc8edfa559efbe988481f540e05bace5f599fde8390be4177f2e34e67cb22f5",
       "kind": "scenario_ledger",
       "evidence_status": "confirmed"
     },
     {
       "reference": "docs/qa/reports/task041_epic_integration.verification.md",
-      "sha256": "79881d7fdcb97a9e5a2ba119721f9e31ab9b7a29fa5987ba49090e6384f8b144",
+      "sha256": "325c1b38a620adc51b7feab8092c2edf69ccd2ad48a56f931c5802cc6bca7a76",
       "kind": "public_safe_runner_log",
       "evidence_status": "confirmed"
     },
     {
       "reference": "tasks/TASK_041_qa_only_epic_integration_portable_export.md",
-      "sha256": "87d9ec9fe082feedd7378e1076e2a1e64ef51d95c22f0d0ddd0dbbcc225e2f18",
+      "sha256": "08b5f1a857b92a3c2f8f16f368e06fbb61891e1be8da3cfb152e86708543eacf",
       "kind": "task_contract",
       "evidence_status": "confirmed"
     }
   ],
-  "blocked_reasons": [
-    "default_branch_merge_push_pending",
-    "single_continuation_requires_verified_default_integration"
-  ],
-  "unknowns": [
-    {
-      "id": "TASK041-UNKNOWN-001",
-      "evidence_status": "unknown",
-      "note": "default integration and accepted continuation are pending"
-    }
-  ],
-  "risks": [
-    {
-      "id": "TASK041-RISK-001",
-      "evidence_status": "likely",
-      "note": "report remains partial because QA-041-018 and lifecycle gates are not complete"
-    }
-  ],
+  "blocked_reasons": [],
+  "unknowns": [],
+  "risks": [],
   "verification": [
     {
       "check": "targeted_official_export_index_tests",
@@ -110,6 +95,13 @@
       "status": "pass_with_legacy_migration_blockers",
       "evidence_status": "confirmed",
       "result_count": 25
+    },
+    {
+      "check": "default_integration_and_single_fresh_continuation",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "default_commit_alias": "main-a34d075",
+      "continuation_alias": "task042-fresh-thread-accepted"
     }
   ],
   "review": {
@@ -128,8 +120,8 @@
     "epic_id": "EPIC-QA-041-055",
     "scenario_summary": {
       "total": 18,
-      "observed_pass": 17,
-      "executable_not_run": 1
+      "observed_pass": 18,
+      "executable_not_run": 0
     },
     "safety_classification": "PROD_SAFE",
     "evidence_type": "static_contract",
@@ -160,6 +152,6 @@
       }
     ],
     "scope_note": "Only fresh task-scoped ignored archive audit/export staging was used after containment and hash validation; no existing local APK, device, evidence or secrets artifact was accessed.",
-    "report_status_note": "No runtime, device, binary, network, account, payment, final-review, merge, push or continuation claim is made."
+    "report_status_note": "Repository-only TASK-041 is complete. No product runtime, device behavior, binary behavior, network, account or payment claim is made."
   }
 }

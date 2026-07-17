@@ -363,8 +363,8 @@ This file records what was actually verified. Do not claim runtime checks passed
 
 ## TASK-041 pre-review verification record — 2026-07-17
 
-Status: `in_progress`; confirmed pre-review static results are recorded below.
-Final reviews, merge/push, continuation and product/runtime PASS are not claimed.
+Status: `completed_integrated`; confirmed static and lifecycle results are recorded below.
+No product/runtime PASS is claimed.
 
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Thread: accepted fresh `TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`.
@@ -420,9 +420,11 @@ exit 1 from `git add .` without stderr while the other suite remained active.
 After the concurrent process ended, sequential focused and full reruns passed.
 The failure remains recorded; Git-mutating suites run sequentially on this host.
 
-The public ledger records 17 `observed_pass` and 1 `executable_not_run`.
-`QA-041-018`, QA A/QA B/Security/Docs final reviews, default merge/push and
-accepted TASK-042 continuation remain pending.
+The public ledger records 18 `observed_pass` and 0 `executable_not_run`.
+`QA-041-018` is `observed_pass`. QA A, QA B, Security/Prod-safety and Docs/Scribe
+returned final `GO`; task branch/default push and `main`/`origin/main` alignment
+at `a34d075` are confirmed. Exactly one fresh TASK-042 thread was accepted and
+started source-of-truth preflight; TASK-041 did not execute TASK-042.
 
 Planned verification commands:
 

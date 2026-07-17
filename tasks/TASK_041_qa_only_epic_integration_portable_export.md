@@ -179,10 +179,10 @@ Codex должен добавить точные validate-only/preflight/execute
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
 
-## Pre-review verification checkpoint — 2026-07-17
+## Completed verification and lifecycle checkpoint — 2026-07-17
 
-Evidence status: `confirmed` for the listed repository-only checks. Final
-review, merge/push and continuation gates remain pending.
+Evidence status: `confirmed` for the listed repository-only checks and lifecycle
+closure.
 
 - current Git checkout: 144 focused tests passed and 1 skipped; full suite 938
   passed and 2 skipped; compileall passed; docs checker passed with 170 files; both
@@ -213,8 +213,10 @@ review, merge/push and continuation gates remain pending.
 - only fresh task-scoped ignored archive audit/export staging was used after
   containment and hash validation; no existing `.qa_local` APK/device/evidence/
   secrets artifact was accessed.
-- `QA-041-018`, final independent reviews, default-branch merge/push and the
-  single fresh TASK-042 continuation remain `executable_not_run` or pending.
+- QA A, QA B, Security/Prod-safety and Docs/Scribe returned final `GO`;
+  task branch and default `main` were pushed, `main`/`origin/main` aligned at
+  public-safe alias `main-a34d075`, and exactly one fresh TASK-042 thread was
+  accepted. `QA-041-018` is `observed_pass`; this thread did not execute TASK-042.
 
 ## Multi-agent acceptance
 

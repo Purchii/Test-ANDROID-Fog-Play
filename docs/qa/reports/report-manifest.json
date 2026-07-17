@@ -1,7 +1,7 @@
 {
   "authoritative_record_count": 2,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-07-17T10:11:13Z",
+  "generated_at_utc": "2026-07-17T10:17:31Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
@@ -1755,7 +1755,7 @@
           "evidence_status": "confirmed",
           "kind": "public_safe_report_summary",
           "reference": "docs/qa/reports/task041_epic_integration.summary.json",
-          "sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa"
+          "sha256": "4315db98a32ff091aa234e1d51039be1e4e104b5e67a0b5dd37acfac0d35fd7d"
         }
       ],
       "authoritative": true,
@@ -1764,16 +1764,16 @@
       "build_ref": {
         "alias": "qa-repository-main-base-50dca155"
       },
-      "coverage_status": "partial",
+      "coverage_status": "covered",
       "evidence_status": "confirmed",
-      "execution_status": "partial",
-      "generated_at_utc": "2026-07-17T00:00:00Z",
+      "execution_status": "pass",
+      "generated_at_utc": "2026-07-17T10:16:08Z",
       "production_safety_classification": "PROD_SAFE",
       "provenance": {
         "indexed_by_task": "TASK-038",
         "source_kind": "tracked_public_safe_report",
         "source_reference": "docs/qa/reports/task041_epic_integration.summary.json",
-        "source_sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa"
+        "source_sha256": "4315db98a32ff091aa234e1d51039be1e4e104b5e67a0b5dd37acfac0d35fd7d"
       },
       "record_id": "TASK-041__qa-repository-main-base-50dca155__repository-static-export-lane__task041-static-integration-001__task041_epic_integration.summary",
       "release_effect": "no_release_claim",
@@ -1795,7 +1795,7 @@
           "evidence_status": "confirmed",
           "name": "report_file_sha256",
           "reference": "docs/qa/reports/task041_epic_integration.summary.json",
-          "sha256": "0503359dc9a62a05a0b4f6bd5516608e9169de530625f6c6fa121b0d6ff075aa",
+          "sha256": "4315db98a32ff091aa234e1d51039be1e4e104b5e67a0b5dd37acfac0d35fd7d",
           "status": "pass"
         }
       ]

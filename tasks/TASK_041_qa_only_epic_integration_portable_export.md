@@ -14,7 +14,7 @@
 
 ## Production safety classification
 
-`PROD_SAFE`
+`PROD_SAFE` — repository-only static QA scope
 
 ## Ветка
 
@@ -40,15 +40,18 @@ QA repository only; no APK/device/runtime actions
 TASK-041 является строго статической repository-only задачей. Разрешены только
 изменения tracked QA-документации, Python-автоматизации, схем, валидаторов,
 public-safe отчётов и synthetic/adversarial тестов внутри repository, а также
-чтение приложенного public-safe epic archive.
+чтение приложенного public-safe epic archive. После проверки containment,
+manifest и checksum разрешена только свежая task-scoped ignored audit staging
+area для содержимого этого archive и portable-export артефактов.
 
-Запрещены любые чтение или действие с `.qa_local`, APK/AAB и другими бинарными
-артефактами, ADB, Android SDK/AVD, физическими устройствами, runtime, WebView,
-WebRTC, сетью/live API, payment/session/account flows, production source/build,
-private dependencies, секретами, endpoints и raw evidence. Эти запреты
-применяются даже если локальные APK или устройство доступны. Все сценарии
-TASK-041 используют точный класс `PROD_SAFE` и только static repository
-evidence; визуальное/runtime evidence для них не требуется и не создаётся.
+Запрещены чтение или действие с любыми существующими `.qa_local` APK/device/
+evidence/secrets artifacts, APK/AAB и другими бинарными артефактами, ADB,
+Android SDK/AVD, физическими устройствами, runtime, WebView, WebRTC, сетью/live
+API, payment/session/account flows, production source/build, private
+dependencies, секретами, endpoints и raw evidence. Эти запреты применяются
+даже если локальные APK или устройство доступны. Все сценарии TASK-041
+используют точный класс `PROD_SAFE` и только static repository evidence;
+визуальное/runtime evidence для них не требуется и не создаётся.
 
 
 ## Что уже переиспользовать
@@ -102,7 +105,9 @@ docs/qa/reports/task041_epic_integration.summary.json
 
 ## Out of scope
 
-- any `.qa_local`, APK, ADB, Android SDK/AVD, device or runtime read/action
+- any existing `.qa_local` APK/device/evidence/secrets artifact, APK, ADB,
+  Android SDK/AVD, device or runtime read/action; only fresh task-scoped ignored
+  archive-audit/export staging is permitted after containment/hash validation
 - production source or build
 - execution of TASK-042 or any later independent task
 
@@ -130,7 +135,8 @@ docs/qa/reports/task041_epic_integration.summary.json
 
 ## Evidence contract
 
-- TASK-041 использует только tracked static evidence: runner log без raw paths,
+- TASK-041 использует только tracked static evidence: public-safe runner log
+  `docs/qa/reports/task041_epic_integration.verification.md` без raw paths,
   canonical task index, hash/size-bound export index, scenario ledger и
   `evidence-report-envelope-v2`-compatible public report.
 - Каждый вывод имеет `confirmed`, `likely`, `hypothesis` или `unknown`.
@@ -138,8 +144,10 @@ docs/qa/reports/task041_epic_integration.summary.json
   исполнения; PASS требует успешного validator/test result.
 - Missing, stale, malformed, extra, normalization-conflicting или unsafe entry
   всегда fail closed и не преобразуется в PASS.
-- Screenshot, UI tree, runtime log, device/APK hash и `.qa_local` artifact не
-  являются TASK-041 evidence и не читаются/не создаются.
+- Screenshot, UI tree, runtime log, device/APK hash и существующие `.qa_local`
+  APK/device/evidence/secrets artifacts не являются TASK-041 evidence и не
+  читаются/не создаются. Свежая task-scoped ignored staging содержит только
+  проверенный archive audit/export material и не расширяет evidence scope.
 
 Visual/runtime evidence rules из общего epic применяются только к будущим
 TASK-042+ в их собственных fresh threads и не расширяют TASK-041.
@@ -170,6 +178,43 @@ python automation/quality/docs_consistency_link_sanity.py
 Codex должен добавить точные validate-only/preflight/execute/report команды
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
+
+## Pre-review verification checkpoint — 2026-07-17
+
+Evidence status: `confirmed` for the listed repository-only checks. Final
+review, merge/push and continuation gates remain pending.
+
+- current Git checkout: 144 focused tests passed and 1 skipped; full suite 938
+  passed and 2 skipped; compileall passed; docs checker passed with 170 files; both
+  hygiene modes passed; public-safety scan passed with 322 files;
+  `validate-epic` passed;
+- official clean commit alias `qa-task041-final-pre-review` export: ZIP
+  validation and unpacked tree validation without `.git` passed; full suite
+  938 passed and 2 skipped; docs checker passed with 170 files; public hygiene
+  passed; public-safety scan passed with 323 files; report-manifest validation
+  passed with 25 records and
+  explicit legacy migration blockers;
+- process anomaly `TASK041-PROCESS-ANOMALY-001`: the first unpacked no-`.git`
+  test attempt allowed pytest cache/bytecode inside the export tree; the strict
+  index correctly rejected those extra files with `TREE_EXTRA_FILE`. A fresh
+  export rerun disabled the cache provider and redirected bytecode outside the
+  tree, then passed. No index rule or authority was weakened.
+  Public-safe alias is `official_export_tree_extra_after_test_side_effect`;
+  expected state was an index-identical tree, the likely cause was pytest/
+  interpreter write side effects, and the test-design implication is to disable
+  cache, externalize bytecode and validate the tree after every exported-tree
+  check.
+- process anomaly `TASK041-PROCESS-ANOMALY-002`: parallel focused/full pytest
+  execution caused one temporary Git preservation fixture to fail `git add .`
+  without stderr while the other suite remained active. Sequential reruns
+  passed; the original failure remains a tooling-process anomaly. Public-safe
+  alias is `parallel_temp_git_fixture_collision`; the likely cause is Windows
+  Git/temp resource contention, and future Git-mutating suites run sequentially.
+- only fresh task-scoped ignored archive audit/export staging was used after
+  containment and hash validation; no existing `.qa_local` APK/device/evidence/
+  secrets artifact was accessed.
+- `QA-041-018`, final independent reviews, default-branch merge/push and the
+  single fresh TASK-042 continuation remain `executable_not_run` or pending.
 
 ## Multi-agent acceptance
 

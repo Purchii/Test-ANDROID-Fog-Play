@@ -72,23 +72,41 @@ def _load_json_object(path: Path) -> tuple[dict[str, Any], list[str]]:
 
 def _manifest_is_git_tracked(repo_root: Path) -> bool:
     try:
-        result = subprocess.run(
-            [
-                "git",
-                "-c",
-                f"safe.directory={repo_root.as_posix()}",
-                "ls-files",
-                "--error-unmatch",
-                "--",
-                DEFAULT_MANIFEST.as_posix(),
-            ],
+        top_level = subprocess.run(
+            ["git", "-c", f"safe.directory={repo_root.as_posix()}", "rev-parse", "--show-toplevel"],
             cwd=repo_root,
             check=False,
             capture_output=True,
             text=False,
         )
     except OSError:
-        result = None
+        top_level = None
+    exact_git_root = False
+    if top_level is not None and top_level.returncode == 0:
+        try:
+            exact_git_root = Path(top_level.stdout.decode("utf-8").strip()).resolve() == repo_root.resolve()
+        except (UnicodeDecodeError, OSError, RuntimeError, ValueError):
+            exact_git_root = False
+    result = None
+    if exact_git_root:
+        try:
+            result = subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    f"safe.directory={repo_root.as_posix()}",
+                    "ls-files",
+                    "--error-unmatch",
+                    "--",
+                    DEFAULT_MANIFEST.as_posix(),
+                ],
+                cwd=repo_root,
+                check=False,
+                capture_output=True,
+                text=False,
+            )
+        except OSError:
+            result = None
     if result is not None and result.returncode == 0:
         return True
     official_index = repo_root / OFFICIAL_EXPORT_INDEX_NAME

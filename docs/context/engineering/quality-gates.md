@@ -634,8 +634,9 @@ Passing TASK-040 does not confirm Android/runtime/product/API behavior.
 
 ## TASK-041 official-export and epic-integration gates
 
-TASK-041 is `PROD_SAFE_REPOSITORY_ONLY`; Android, ADB, APK, device/AVD,
-runtime, network and raw-evidence activity is not part of this gate.
+TASK-041 uses canonical `PROD_SAFE` with a repository-only static QA qualifier;
+Android, ADB, APK, device/AVD, runtime, network and raw-evidence activity is not
+part of this gate.
 
 Archive intake must confirm, before tracked integration:
 

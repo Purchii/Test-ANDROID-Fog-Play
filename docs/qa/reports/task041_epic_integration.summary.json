@@ -3,7 +3,7 @@
   "schema_validation_status": "pass",
   "execution_status": "partial",
   "coverage_status": "partial",
-  "evidence_status": "confirmed_for_recorded_checkpoints",
+  "evidence_status": "confirmed",
   "release_effect": "no_release_claim",
   "production_safety_classification": "PROD_SAFE",
   "generated_at_utc": "2026-07-17T00:00:00Z",
@@ -28,36 +28,39 @@
     },
     {
       "reference": "docs/qa/reports/task041_epic_integration.scenario-ledger.csv",
-      "sha256": "15174b1f9facf4cc80d6a18b15bbccdf72af2c4887d22251ef3c00c03e3841d7",
+      "sha256": "a8c81c5af703d2ebd06c1388f48015bd19d00f39167a1fb1f3ab97805466d577",
       "kind": "scenario_ledger",
       "evidence_status": "confirmed"
     },
     {
+      "reference": "docs/qa/reports/task041_epic_integration.verification.md",
+      "sha256": "79881d7fdcb97a9e5a2ba119721f9e31ab9b7a29fa5987ba49090e6384f8b144",
+      "kind": "public_safe_runner_log",
+      "evidence_status": "confirmed"
+    },
+    {
       "reference": "tasks/TASK_041_qa_only_epic_integration_portable_export.md",
-      "sha256": "d3543ef1d1306821ae88cae4458d4d11d395dda759f0ab74fa73f4dc40d1ef3f",
+      "sha256": "87d9ec9fe082feedd7378e1076e2a1e64ef51d95c22f0d0ddd0dbbcc225e2f18",
       "kind": "task_contract",
       "evidence_status": "confirmed"
     }
   ],
   "blocked_reasons": [
-    "full_suite_final_gate_pending",
-    "official_clean_commit_zip_without_git_pending",
-    "combined_hygiene_public_safety_docs_gate_pending",
-    "active_scope_final_docs_review_pending",
+    "default_branch_merge_push_pending",
     "single_continuation_requires_verified_default_integration"
   ],
   "unknowns": [
     {
       "id": "TASK041-UNKNOWN-001",
       "evidence_status": "unknown",
-      "note": "final integrated checkout and portable archive results are pending"
+      "note": "default integration and accepted continuation are pending"
     }
   ],
   "risks": [
     {
       "id": "TASK041-RISK-001",
       "evidence_status": "likely",
-      "note": "report remains partial until every pending static gate is recorded"
+      "note": "report remains partial because QA-041-018 and lifecycle gates are not complete"
     }
   ],
   "verification": [
@@ -65,7 +68,8 @@
       "check": "targeted_official_export_index_tests",
       "status": "pass",
       "evidence_status": "confirmed",
-      "result_count": 42
+      "result_count": 144,
+      "skipped_count": 1
     },
     {
       "check": "canonical_epic_index_validation",
@@ -78,16 +82,41 @@
       "evidence_status": "confirmed"
     },
     {
-      "check": "full_and_post_commit_portable_verification",
-      "status": "not_run",
-      "evidence_status": "unknown"
+      "check": "git_checkout_full_suite",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "result_count": 938,
+      "skipped_count": 2
+    },
+    {
+      "check": "git_checkout_docs_hygiene_public_safety",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "docs_count": 170,
+      "public_safety_count": 322
+    },
+    {
+      "check": "official_clean_commit_zip_and_tree_without_git",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "commit_ref": "qa-task041-final-pre-review",
+      "result_count": 938,
+      "skipped_count": 2,
+      "docs_count": 170,
+      "public_safety_count": 323
+    },
+    {
+      "check": "official_export_report_manifest_validation",
+      "status": "pass_with_legacy_migration_blockers",
+      "evidence_status": "confirmed",
+      "result_count": 25
     }
   ],
   "review": {
-    "qa_reviewer_a": "pending",
-    "qa_reviewer_b": "pending",
-    "security_prod_safety": "pending",
-    "docs_scribe": "pending"
+    "qa_reviewer_a": "approved",
+    "qa_reviewer_b": "approved",
+    "security_prod_safety_reviewer": "approved",
+    "docs_scribe": "approved"
   },
   "provenance": {
     "source": "public_safe_epic_overlay_and_tracked_repository",
@@ -99,11 +128,38 @@
     "epic_id": "EPIC-QA-041-055",
     "scenario_summary": {
       "total": 18,
-      "observed_pass": 13,
-      "executable_not_run": 5
+      "observed_pass": 17,
+      "executable_not_run": 1
     },
     "safety_classification": "PROD_SAFE",
     "evidence_type": "static_contract",
-    "report_status_note": "No runtime, device, binary, network, account or payment claim is made."
+    "process_anomalies": [
+      {
+        "id": "TASK041-PROCESS-ANOMALY-001",
+        "evidence_status": "confirmed",
+        "public_safe_alias": "official_export_tree_extra_after_test_side_effect",
+        "trigger": "first no-git exported-tree pytest run allowed cache and bytecode creation inside the tree",
+        "expected_result": "exported tree remains identical to its embedded index",
+        "observed_result": "strict tree validation returned TREE_EXTRA_FILE",
+        "classification": "tooling_process_anomaly",
+        "likely_cause": "pytest cache provider and interpreter bytecode writes mutated the tree under verification",
+        "test_design_implication": "run exported-tree tests without cache provider, redirect bytecode outside the tree and validate the tree after all checks",
+        "remediation": "reran on a fresh export with cache provider disabled and bytecode redirected outside the tree; verification passed without weakening index authority"
+      },
+      {
+        "id": "TASK041-PROCESS-ANOMALY-002",
+        "evidence_status": "confirmed",
+        "public_safe_alias": "parallel_temp_git_fixture_collision",
+        "trigger": "focused and full pytest suites were launched in parallel after boundary remediation",
+        "expected_result": "both suites complete independently",
+        "observed_result": "one focused synthetic preservation fixture returned exit 1 from temporary git add with no stderr while the concurrent suite was active",
+        "classification": "tooling_process_anomaly",
+        "likely_cause": "concurrent Windows Git and temporary-repository resource contention",
+        "test_design_implication": "run suites that mutate temporary Git repositories sequentially on this host and preserve the initial failure separately from later PASS",
+        "remediation": "waited for the concurrent process to finish and reran focused and full suites sequentially; both passed with recorded counts"
+      }
+    ],
+    "scope_note": "Only fresh task-scoped ignored archive audit/export staging was used after containment and hash validation; no existing local APK, device, evidence or secrets artifact was accessed.",
+    "report_status_note": "No runtime, device, binary, network, account, payment, final-review, merge, push or continuation claim is made."
   }
 }

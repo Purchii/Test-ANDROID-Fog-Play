@@ -60,7 +60,7 @@ the backlog without replacing TASK-000…040 history.
 
 | ID | Title | Mode default / safety | Dependencies | Branch | Status |
 |---|---|---|---|---|---|
-| TASK-041 | QA-only epic integration, sanitized risk bridge and portable official export | BOUNDED_AUTONOMOUS; PROD_SAFE_REPOSITORY_ONLY | none | qa/task-041-qa-only-epic-integration-portable-export | selected; in_progress; initial QA A and Security R1 blockers under remediation |
+| TASK-041 | QA-only epic integration, sanitized risk bridge and portable official export | BOUNDED_AUTONOMOUS; PROD_SAFE repository-only static QA scope | none | qa/task-041-qa-only-epic-integration-portable-export | selected; pre-review verification confirmed; 17 observed_pass/1 executable_not_run; final reviews, merge/push and continuation pending |
 | TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_SAFE_LOCAL_INVENTORY_WITH_OPTIONAL_AVD_SANDBOX | TASK-041 | qa/task-042-local-runtime-preflight | planned_blocked_by_dependency |
 | TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | planned_blocked_by_dependency |
 | TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | planned_blocked_by_dependency |

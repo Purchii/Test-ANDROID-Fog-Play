@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -193,6 +194,23 @@ def test_docs_sanity_no_git_uses_only_validated_official_index(tmp_path, monkeyp
     assert captured.err == ""
 
 
+def test_docs_sanity_nested_in_outer_git_uses_official_index_not_outer_git(tmp_path, capsys):
+    outer = tmp_path / "outer"
+    outer.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=outer, check=True)
+    export_root = outer / "portable-export"
+    write(export_root / "README.md", "# Root\n[guide](docs/guide.md)\n")
+    write(export_root / "docs/guide.md", "# Guide\n")
+    write_official_index(export_root)
+
+    result = main(["--root", str(export_root), "--mode", "tracked"])
+    captured = capsys.readouterr()
+
+    assert result == 0
+    assert "docs_consistency_link_sanity=pass" in captured.out
+    assert "scanned_files=2" in captured.out
+
+
 def test_docs_sanity_no_git_stale_official_index_blocks(tmp_path, monkeypatch, capsys):
     write(tmp_path / "README.md", "# Root\n")
     write_official_index(tmp_path)
@@ -239,6 +257,7 @@ def test_docs_sanity_blocks_when_git_has_no_eligible_markdown(tmp_path, monkeypa
         stderr = b""
 
     monkeypatch.setattr("automation.quality.docs_consistency_link_sanity.subprocess.run", lambda *a, **k: SuccessfulGit())
+    monkeypatch.setattr("automation.quality.docs_consistency_link_sanity._git_toplevel_matches_root", lambda root: True)
 
     result = main(["--root", str(tmp_path), "--mode", "tracked"])
     output = capsys.readouterr().out
@@ -258,6 +277,7 @@ def test_docs_sanity_scanned_files_counts_only_validated_markdown(tmp_path, monk
         stderr = b""
 
     monkeypatch.setattr("automation.quality.docs_consistency_link_sanity.subprocess.run", lambda *a, **k: SuccessfulGit())
+    monkeypatch.setattr("automation.quality.docs_consistency_link_sanity._git_toplevel_matches_root", lambda root: True)
 
     result = main(["--root", str(tmp_path), "--mode", "tracked"])
     output = capsys.readouterr().out

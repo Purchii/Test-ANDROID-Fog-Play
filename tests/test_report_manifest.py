@@ -2,6 +2,7 @@ import contextlib
 import io
 import json
 import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -400,6 +401,40 @@ class ReportManifestTests(unittest.TestCase):
             self.assertEqual(manifest["path_source"], "portable_official_index")
             self.assertEqual(manifest["record_count"], 1)
             self.assertNotIn("tracked_report_index_unavailable", manifest["blocked_reasons"])
+
+    def test_no_git_official_index_excludes_shadow_report_substring(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            canonical = root / "docs" / "qa" / "reports" / "canonical.summary.json"
+            shadow = root / "shadow" / "docs" / "qa" / "reports" / "evil.summary.json"
+            _write_json(canonical, _legacy_report(task_id="TASK-900"))
+            _write_json(shadow, _legacy_report(task_id="TASK-999"))
+            _write_official_index(root)
+
+            manifest = build_manifest(repo_root=root, generated_at_utc="2026-07-10T00:00:00Z")
+
+            self.assertEqual(manifest["path_source"], "portable_official_index")
+            self.assertEqual(manifest["record_count"], 1)
+            self.assertEqual(
+                manifest["records"][0]["provenance"]["source_reference"],
+                "docs/qa/reports/canonical.summary.json",
+            )
+            self.assertNotIn("shadow/docs/qa/reports/evil.summary.json", json.dumps(manifest))
+
+    def test_portable_export_nested_in_outer_git_uses_official_index(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            outer = Path(temp_dir) / "outer"
+            outer.mkdir()
+            subprocess.run(["git", "init", "-q"], cwd=outer, check=True, capture_output=True)
+            root = outer / "portable-export"
+            report = root / "docs" / "qa" / "reports" / "canonical.summary.json"
+            _write_json(report, _legacy_report())
+            _write_official_index(root)
+
+            manifest = build_manifest(repo_root=root, generated_at_utc="2026-07-10T00:00:00Z")
+
+            self.assertEqual(manifest["path_source"], "portable_official_index")
+            self.assertEqual(manifest["record_count"], 1)
 
     def test_no_git_stale_official_index_blocks_default_generation(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

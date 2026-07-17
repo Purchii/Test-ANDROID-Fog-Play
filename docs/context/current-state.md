@@ -673,32 +673,54 @@ TASK-041 is active in accepted fresh thread
 on branch `qa/task-041-qa-only-epic-integration-portable-export` from exact
 `main@50dca155e5deb5d97e72780e81792c3e8abadffb`. Mode is
 `BOUNDED_AUTONOMOUS`; safety classification is
-`PROD_SAFE_REPOSITORY_ONLY`.
+canonical `PROD_SAFE`, qualified as repository-only static QA work.
 
 Archive integrity is `confirmed` by an independent in-memory check: 124 archive
 file entries, 122 matching manifest records, 123 matching checksum entries,
 15 task specs, 15 prompts, 15 integrated prompts, 15 scenario catalogs, 307
 scenarios and 55 opaque surfaces; no manifest/checksum mismatch was observed.
-This confirms the supplied archive structure only. Repository integration,
-official export portability, test results and product/runtime behavior remain
-`in_progress` or `unknown` until their own evidence exists.
+This confirms the supplied archive structure only; repository/export evidence
+is recorded separately below and does not confirm product/runtime behavior.
 
 TASK-041 integrates only the verified `PUBLIC_SAFE_QA_OVERLAY/`. `RUN_PACKS/`,
 the source archive, APKs, raw/local evidence and machine values remain outside
-the tracked repository. Root README changes are additive, existing five-APK and
-`.qa_local` contracts are preserved, and TASK-041 performs no ADB, APK, device,
-AVD, Android runtime, network, payment, account, stream/session or production
-source/build action.
+the tracked repository. Root README changes are additive and existing five-APK
+and `.qa_local` contracts are preserved. Only fresh task-scoped ignored archive
+audit/export staging was used after containment/hash validation; no existing
+`.qa_local` APK/device/evidence/secrets artifact was accessed. TASK-041 performs
+no ADB, APK, device, AVD, Android runtime, network, payment, account,
+stream/session or production source/build action.
 
 Planner returned `CONDITIONAL GO`. QA Reviewer A and Security/Prod-safety each
 returned initial `BLOCKED` on R1/HIGH issues: README collision, missing
 machine-readable task/run authority and explicit links, ambiguous safety and
 runtime-shaped evidence, overly broad local/runtime wording and premature
-TASK-042 continuation claims. Remediation is in progress through additive
+TASK-042 continuation claims. Implementation remediation uses additive
 README integration, a tracked 15-task index, exact static TASK-041 evidence,
 future task-local conditional gates and fresh ignored containment/hash-verified
-staging. QA Reviewer B and all final reviews remain pending; no final GO, test
-PASS, commit, merge, push or TASK-042 creation is claimed.
+staging. Confirmed pre-review verification passed in the Git checkout with 144
+focused passes and 1 skip, 938 full-suite passes and 2 skips, compileall, a docs
+scan of exactly 170 files, both hygiene modes, a public-safety scan of exactly
+322 files and `validate-epic`.
+The official clean commit alias `qa-task041-final-pre-review` ZIP/unpacked
+no-`.git` lane also passed 938 tests with 2 skips, a docs scan of exactly 170
+files, public hygiene, a public-safety scan of exactly 323 files
+and manifest validation for 25 records with explicit legacy migration
+blockers.
+
+Process anomaly `TASK041-PROCESS-ANOMALY-001` is `confirmed`: the first
+unpacked no-`.git` pytest attempt added cache/bytecode to the tree, and strict
+validation correctly returned `TREE_EXTRA_FILE`. A fresh export rerun disabled
+the cache provider and redirected bytecode outside the tree, then passed; index
+authority was not weakened. QA A, QA B, Security/Prod-safety and Docs/Scribe
+returned final `GO` after remediation.
+The scenario ledger is 17 `observed_pass` and 1 `executable_not_run`;
+`QA-041-018`, final GO, merge/push and TASK-042 creation are not claimed.
+
+Process anomaly `TASK041-PROCESS-ANOMALY-002` is `confirmed`: an improper
+parallel focused/full pytest launch caused one synthetic temporary Git fixture
+to fail without stderr. Authoritative sequential reruns passed; Git-mutating
+suites are serialized on this host and the original failure remains recorded.
 
 TASK-042…055 are now planned in the backlog and blocked by their explicit DAG
 dependencies. After verified TASK-041 integration and remote `main` alignment,

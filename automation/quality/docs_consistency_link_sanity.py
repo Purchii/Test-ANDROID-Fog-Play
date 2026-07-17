@@ -102,39 +102,62 @@ def _normalize_repo_path(path: str | Path) -> str:
     return posixpath.normpath(normalized) if normalized else "."
 
 
-def _tracked_files(root: Path) -> list[Path]:
+def _git_toplevel_matches_root(root: Path) -> bool:
     try:
         completed = subprocess.run(
-            ["git", "-c", f"safe.directory={root.as_posix()}", "ls-files", "-z"],
+            ["git", "-c", f"safe.directory={root.as_posix()}", "rev-parse", "--show-toplevel"],
             cwd=root,
             capture_output=True,
             text=False,
             check=False,
         )
     except OSError as exc:
-        official_index = root / OFFICIAL_EXPORT_INDEX_NAME
-        if official_index.is_file():
-            try:
-                governed_paths = validated_portable_paths(root)
-            except (ExportIndexError, OSError, RuntimeError, ValueError) as portable_exc:
-                reason = portable_exc.reason_code if isinstance(portable_exc, ExportIndexError) else "UNAVAILABLE"
-                raise GitTrackedScanUnavailable(f"DOCS_PORTABLE_INDEX_INVALID_{reason}") from None
-            return governed_paths + [Path(OFFICIAL_EXPORT_INDEX_NAME)]
         raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_UNAVAILABLE") from exc
     if completed.returncode != 0:
-        official_index = root / OFFICIAL_EXPORT_INDEX_NAME
-        if official_index.is_file():
-            try:
-                governed_paths = validated_portable_paths(root)
-            except (ExportIndexError, OSError, RuntimeError, ValueError) as exc:
-                reason = exc.reason_code if isinstance(exc, ExportIndexError) else "UNAVAILABLE"
-                raise GitTrackedScanUnavailable(f"DOCS_PORTABLE_INDEX_INVALID_{reason}") from None
-            return governed_paths + [Path(OFFICIAL_EXPORT_INDEX_NAME)]
         raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_FAILED")
     try:
-        return [Path(raw.decode("utf-8")) for raw in completed.stdout.split(b"\0") if raw]
-    except UnicodeDecodeError as exc:
+        discovered = Path(completed.stdout.decode("utf-8").strip()).resolve()
+    except (UnicodeDecodeError, OSError, RuntimeError, ValueError) as exc:
         raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_INVALID_OUTPUT") from exc
+    return discovered == root.resolve()
+
+
+def _tracked_files(root: Path) -> list[Path]:
+    discovery_error: GitTrackedScanUnavailable | None = None
+    try:
+        exact_git_root = _git_toplevel_matches_root(root)
+    except GitTrackedScanUnavailable as exc:
+        exact_git_root = False
+        discovery_error = exc
+    if exact_git_root:
+        try:
+            completed = subprocess.run(
+                ["git", "-c", f"safe.directory={root.as_posix()}", "ls-files", "-z"],
+                cwd=root,
+                capture_output=True,
+                text=False,
+                check=False,
+            )
+        except OSError as exc:
+            discovery_error = GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_UNAVAILABLE")
+        else:
+            if completed.returncode == 0:
+                try:
+                    return [Path(raw.decode("utf-8")) for raw in completed.stdout.split(b"\0") if raw]
+                except UnicodeDecodeError as exc:
+                    raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_INVALID_OUTPUT") from exc
+            discovery_error = GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_FAILED")
+    elif discovery_error is None:
+        discovery_error = GitTrackedScanUnavailable("DOCS_GIT_ROOT_MISMATCH")
+    official_index = root / OFFICIAL_EXPORT_INDEX_NAME
+    if official_index.is_file():
+        try:
+            governed_paths = validated_portable_paths(root)
+        except (ExportIndexError, OSError, RuntimeError, ValueError) as exc:
+            reason = exc.reason_code if isinstance(exc, ExportIndexError) else "UNAVAILABLE"
+            raise GitTrackedScanUnavailable(f"DOCS_PORTABLE_INDEX_INVALID_{reason}") from None
+        return governed_paths + [Path(OFFICIAL_EXPORT_INDEX_NAME)]
+    raise discovery_error
 
 
 def _line_for_offset(text: str, offset: int) -> int:

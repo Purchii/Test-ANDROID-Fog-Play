@@ -19,6 +19,7 @@ import stat
 import struct
 import subprocess
 import sys
+import tempfile
 import unicodedata
 import zipfile
 from dataclasses import dataclass
@@ -30,6 +31,7 @@ SCHEMA_VERSION = "official-export-index-v1"
 TASK_INDEX_SCHEMA_VERSION = "task041-055-index-v1"
 INDEX_NAME = "official-export-index.json"
 TASK_INDEX_PATH = Path("docs/qa/epics/task041_055_task_index.json")
+OPAQUE_SURFACE_PATH = Path("docs/qa/epics/opaque_surface_task_traceability.csv")
 TASK_RANGE = tuple(f"TASK-{number:03d}" for number in range(41, 56))
 TASK_SCENARIO_TOTAL = 307
 MAX_ZIP_MEMBERS = 10_000
@@ -37,7 +39,6 @@ MAX_ZIP_ENTRY_BYTES = 64 * 1024 * 1024
 MAX_ZIP_TOTAL_BYTES = 512 * 1024 * 1024
 MAX_ZIP_COMPRESSION_RATIO = 200
 HASH_RE = re.compile(r"^[a-f0-9]{64}$")
-DRIVE_OR_SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
 CONTROL_RE = re.compile(r"[\x00-\x1f\x7f]")
 WINDOWS_RESERVED = {
     "con",
@@ -47,6 +48,7 @@ WINDOWS_RESERVED = {
     *(f"com{number}" for number in range(1, 10)),
     *(f"lpt{number}" for number in range(1, 10)),
 }
+WINDOWS_FORBIDDEN_CHARS = frozenset('<>:"|?*')
 INDEX_FIELDS = {"schema_version", "algorithm", "index_path", "file_count", "files"}
 FILE_FIELDS = {"path", "size", "sha256"}
 TASK_INDEX_FIELDS = {"schema_version", "epic_id", "task_count", "scenario_count", "tasks"}
@@ -68,6 +70,53 @@ PRESERVED_EXACT_PATHS = (
     "docs/approvals/device_inventory.public_safe.review.json",
 )
 PRESERVED_HISTORY_PREFIXES = ("tasks/", "docs/qa/reports/")
+SCENARIO_HEADERS = (
+    "scenario_id",
+    "priority",
+    "surface_ids",
+    "lane",
+    "category",
+    "title",
+    "preconditions",
+    "steps",
+    "expected_oracle",
+    "negative_or_boundary",
+    "automation_target",
+    "evidence_required",
+    "safety_class",
+    "blocking_rule",
+)
+STATIC_SCENARIO_EVIDENCE = "runner_log+ledger+hash_bound_static_artifact"
+VISUAL_SCENARIO_EVIDENCE = "screenshot+ui_tree+runner_log+ledger"
+OPAQUE_SURFACE_HEADERS = (
+    "surface_id",
+    "risk",
+    "category",
+    "public_safe_description",
+    "applicable_families",
+    "primary_tasks",
+    "runtime_oracle",
+    "evidence_status",
+    "scenario_ids",
+    "scenario_count",
+)
+CANONICAL_TASK_SPEC_PATHS = {
+    "TASK-041": "tasks/TASK_041_qa_only_epic_integration_portable_export.md",
+    "TASK-042": "tasks/TASK_042_local_runtime_preflight.md",
+    "TASK-043": "tasks/TASK_043_source_informed_runtime_coverage_map.md",
+    "TASK-044": "tasks/TASK_044_tpv13_reference_lane_oracle_closure.md",
+    "TASK-045": "tasks/TASK_045_paired_tv_phone_virtual_gamepad_e2e.md",
+    "TASK-046": "tasks/TASK_046_yandextv_representative_lane.md",
+    "TASK-047": "tasks/TASK_047_sberbox_representative_lane.md",
+    "TASK-048": "tasks/TASK_048_aosp_launcher_system_cluster_runtime.md",
+    "TASK-049": "tasks/TASK_049_cross_family_transition_state_closure.md",
+    "TASK-050": "tasks/TASK_050_install_update_persistence_recovery_matrix.md",
+    "TASK-051": "tasks/TASK_051_network_api_transport_runtime.md",
+    "TASK-052": "tasks/TASK_052_input_gamepad_lifecycle_coverage.md",
+    "TASK-053": "tasks/TASK_053_device_equivalence_compatibility_usability.md",
+    "TASK-054": "tasks/TASK_054_stability_performance_soak.md",
+    "TASK-055": "tasks/TASK_055_unified_multi_apk_release_gate.md",
+}
 
 
 @dataclass(frozen=True)
@@ -100,10 +149,12 @@ def _portable_path(raw_path: Any, *, allow_index: bool = False) -> tuple[str, st
     _fail("\\" in raw_path, "PATH_BACKSLASH")
     _fail("%" in raw_path, "PATH_ENCODED_OR_PERCENT")
     _fail("?" in raw_path or "#" in raw_path, "PATH_QUERY_OR_FRAGMENT")
-    _fail(raw_path.startswith(("/", "//")) or DRIVE_OR_SCHEME_RE.match(raw_path) is not None, "PATH_ABSOLUTE")
+    _fail(raw_path.startswith(("/", "//")) or re.match(r"^[A-Za-z]:/", raw_path) is not None, "PATH_ABSOLUTE")
+    _fail(any(char in WINDOWS_FORBIDDEN_CHARS for char in raw_path), "PATH_WINDOWS_FORBIDDEN_CHARACTER")
     _fail(unicodedata.normalize("NFC", raw_path) != raw_path, "PATH_NOT_NFC")
     parts = raw_path.split("/")
     _fail(any(part in {"", ".", ".."} for part in parts), "PATH_TRAVERSAL_OR_AMBIGUOUS")
+    _fail(any(part.casefold() == ".git" for part in parts), "PATH_VCS_METADATA")
     for part in parts:
         _fail(part != part.rstrip(" ."), "PATH_TRAILING_DOT_OR_SPACE")
         stem = part.split(".", 1)[0].casefold()
@@ -241,6 +292,34 @@ def _regular_file_bytes(root: Path, repo_path: str) -> bytes:
         raise ExportIndexError("TREE_READ_ERROR") from None
 
 
+def _path_is_reparse(path: Path) -> bool:
+    try:
+        if path.is_symlink():
+            return True
+        attributes = getattr(path.lstat(), "st_file_attributes", 0)
+    except OSError:
+        return True
+    reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    return bool(attributes & reparse_flag)
+
+
+def _contained_regular_file(root: Path, repo_path: str | Path, reason: str) -> Path:
+    root = root.resolve(strict=True)
+    normalized, _ = _portable_path(Path(repo_path).as_posix())
+    candidate = root.joinpath(*PurePosixPath(normalized).parts)
+    current = root
+    for part in PurePosixPath(normalized).parts:
+        current = current / part
+        _fail(_path_is_reparse(current), reason)
+    try:
+        resolved = candidate.resolve(strict=True)
+        resolved.relative_to(root)
+    except (OSError, RuntimeError, ValueError):
+        raise ExportIndexError(reason) from None
+    _fail(not resolved.is_file(), reason)
+    return resolved
+
+
 def build_git_index(root: Path) -> tuple[bytes, list[ExportEntry]]:
     root = root.resolve(strict=True)
     _assert_export_worktree_ready(root)
@@ -277,17 +356,18 @@ def _tree_files(root: Path) -> dict[str, Path]:
             path = current / name
             relative = path.relative_to(root).as_posix()
             if relative == ".git":
-                continue
-            _fail(path.is_symlink(), "TREE_SYMLINK_REJECTED")
+                raise ExportIndexError("TREE_VCS_METADATA_PRESENT")
+            _fail(_path_is_reparse(path), "TREE_SYMLINK_REJECTED")
             kept_dirs.append(name)
         dir_names[:] = kept_dirs
         for name in sorted(file_names):
             path = current / name
             relative = path.relative_to(root).as_posix()
+            _fail(relative == ".git", "TREE_VCS_METADATA_PRESENT")
             normalized, key = _portable_path(relative, allow_index=True)
             _fail(key in keys, "TREE_NORMALIZED_PATH_COLLISION")
             keys.add(key)
-            _fail(path.is_symlink(), "TREE_SYMLINK_REJECTED")
+            _fail(_path_is_reparse(path), "TREE_SYMLINK_REJECTED")
             _fail(not path.is_file(), "TREE_NONREGULAR_ENTRY")
             found[normalized] = path
     return found
@@ -332,6 +412,15 @@ def _zip_member_is_symlink(info: zipfile.ZipInfo) -> bool:
     return stat.S_IFMT((info.external_attr >> 16) & 0xFFFF) == stat.S_IFLNK
 
 
+def _zip_member_is_nonregular(info: zipfile.ZipInfo) -> bool:
+    unix_type = stat.S_IFMT((info.external_attr >> 16) & 0xFFFF)
+    return unix_type not in {0, stat.S_IFREG}
+
+
+def _zip_member_has_reparse_metadata(info: zipfile.ZipInfo) -> bool:
+    return bool(info.external_attr & 0x400)
+
+
 def _raw_local_zip_name(archive: zipfile.ZipFile, info: zipfile.ZipInfo) -> str:
     try:
         if archive.fp is None:
@@ -374,6 +463,8 @@ def validate_zip(zip_path: Path) -> None:
             keys.add(key)
             _fail(info.is_dir(), "ZIP_DIRECTORY_ENTRY_UNEXPECTED")
             _fail(_zip_member_is_symlink(info), "ZIP_SYMLINK_REJECTED")
+            _fail(_zip_member_is_nonregular(info), "ZIP_NONREGULAR_ENTRY_REJECTED")
+            _fail(_zip_member_has_reparse_metadata(info), "ZIP_REPARSE_ENTRY_REJECTED")
             _fail(bool(info.flag_bits & 0x1), "ZIP_ENCRYPTED_ENTRY_REJECTED")
             _fail(info.file_size < 0 or info.file_size > MAX_ZIP_ENTRY_BYTES, "ZIP_ENTRY_SIZE_LIMIT_EXCEEDED")
             total_uncompressed += info.file_size
@@ -417,11 +508,21 @@ def create_zip(root: Path, output: Path) -> None:
         raise ExportIndexError("ZIP_OUTPUT_PATH_INVALID") from None
     else:
         raise ExportIndexError("ZIP_OUTPUT_INSIDE_ROOT")
+    _fail(output.exists() or output.is_symlink(), "ZIP_OUTPUT_EXISTS")
     index_content, entries = build_git_index(root)
     tracked_object_ids = dict(_tracked_git_entries(root))
+    temporary_path: Path | None = None
     try:
         output.parent.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        _fail(_path_is_reparse(output.parent), "ZIP_OUTPUT_PATH_INVALID")
+        descriptor, temporary_name = tempfile.mkstemp(
+            prefix=f".{output.name}.",
+            suffix=".task041.tmp",
+            dir=output.parent,
+        )
+        os.close(descriptor)
+        temporary_path = Path(temporary_name)
+        with zipfile.ZipFile(temporary_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
             for entry in entries:
                 object_id = tracked_object_ids[entry.path]
                 content = _git(root, ["cat-file", "blob", object_id])
@@ -435,9 +536,71 @@ def create_zip(root: Path, output: Path) -> None:
             index_info.create_system = 3
             index_info.external_attr = (stat.S_IFREG | 0o644) << 16
             archive.writestr(index_info, index_content)
+        validate_zip(temporary_path)
+        _publish_no_clobber(temporary_path, output, "ZIP_OUTPUT_EXISTS", "ZIP_WRITE_ERROR")
+    except ExportIndexError:
+        raise
     except OSError:
         raise ExportIndexError("ZIP_WRITE_ERROR") from None
-    validate_zip(output)
+    finally:
+        if temporary_path is not None:
+            try:
+                temporary_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+
+
+def _publish_no_clobber(
+    temporary_path: Path,
+    output: Path,
+    exists_reason: str,
+    failure_reason: str,
+) -> None:
+    try:
+        os.link(temporary_path, output)
+    except FileExistsError:
+        raise ExportIndexError(exists_reason) from None
+    except OSError:
+        raise ExportIndexError(failure_reason) from None
+
+
+def write_git_index(root: Path, requested: Path | None = None) -> None:
+    root = root.resolve(strict=True)
+    target = _canonical_index_path(root, requested)
+    _fail(target.exists() or target.is_symlink(), "INDEX_OUTPUT_EXISTS")
+    content, _ = build_git_index(root)
+    temporary_path: Path | None = None
+    descriptor: int | None = None
+    try:
+        descriptor, temporary_name = tempfile.mkstemp(
+            prefix=f".{target.name}.",
+            suffix=".task041.tmp",
+            dir=target.parent,
+        )
+        temporary_path = Path(temporary_name)
+        with os.fdopen(descriptor, "wb") as handle:
+            descriptor = None
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        parsed = _parse_index_bytes(temporary_path.read_bytes())
+        _fail(_index_bytes(parsed) != content, "INDEX_SELF_VALIDATION_FAILED")
+        _publish_no_clobber(temporary_path, target, "INDEX_OUTPUT_EXISTS", "INDEX_WRITE_ERROR")
+    except ExportIndexError:
+        raise
+    except OSError:
+        raise ExportIndexError("INDEX_WRITE_ERROR") from None
+    finally:
+        if descriptor is not None:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        if temporary_path is not None:
+            try:
+                temporary_path.unlink(missing_ok=True)
+            except OSError:
+                pass
 
 
 def check_preservation(root: Path, base_ref: str) -> None:
@@ -479,9 +642,15 @@ def _read_json_object(path: Path, malformed_reason: str) -> dict[str, Any]:
     return value
 
 
+def _canonical_task_index_path(root: Path, requested: Path | None) -> Path:
+    if requested is not None and (requested.is_absolute() or requested.as_posix() != TASK_INDEX_PATH.as_posix()):
+        raise ExportIndexError("TASK_INDEX_PATH_INVALID")
+    return _contained_regular_file(root, TASK_INDEX_PATH, "TASK_INDEX_PATH_INVALID")
+
+
 def validate_epic(root: Path, task_index_path: Path | None = None) -> None:
     root = root.resolve(strict=True)
-    path = task_index_path or (root / TASK_INDEX_PATH)
+    path = _canonical_task_index_path(root, task_index_path)
     payload = _read_json_object(path, "TASK_INDEX_MALFORMED")
     _fail(set(payload) != TASK_INDEX_FIELDS, "TASK_INDEX_SCHEMA_INVALID")
     _fail(payload.get("schema_version") != TASK_INDEX_SCHEMA_VERSION, "TASK_INDEX_VERSION_INVALID")
@@ -490,6 +659,11 @@ def validate_epic(root: Path, task_index_path: Path | None = None) -> None:
     _fail(not isinstance(tasks, list) or len(tasks) != 15 or payload.get("task_count") != 15, "TASK_INDEX_COUNT_INVALID")
     _fail(payload.get("scenario_count") != TASK_SCENARIO_TOTAL, "TASK_INDEX_SCENARIO_TOTAL_INVALID")
     by_id: dict[str, dict[str, Any]] = {}
+    mapped_paths: dict[str, set[str]] = {
+        "task_spec_path": set(),
+        "prompt_path": set(),
+        "scenario_catalog_path": set(),
+    }
     total_scenarios = 0
     for item in tasks:
         _fail(not isinstance(item, dict) or set(item) != TASK_FIELDS, "TASK_INDEX_ENTRY_SCHEMA_INVALID")
@@ -504,25 +678,57 @@ def validate_epic(root: Path, task_index_path: Path | None = None) -> None:
         )
         dependencies = item.get("dependencies")
         _fail(not isinstance(dependencies, list) or any(dep not in TASK_RANGE for dep in dependencies), "TASK_INDEX_DEPENDENCY_INVALID")
+        task_digits = task_id[-3:]
+        expected_paths = {
+            "task_spec_path": CANONICAL_TASK_SPEC_PATHS[task_id],
+            "prompt_path": f"docs/qa/epics/prompts/task{task_digits}_codex_prompt.md",
+            "scenario_catalog_path": f"docs/qa/epics/scenarios/task{task_digits}_scenarios.csv",
+        }
         for field in ("task_spec_path", "prompt_path", "scenario_catalog_path"):
             repo_path, _ = _portable_path(item.get(field))
-            _fail(not (root / PurePosixPath(repo_path)).is_file(), "TASK_INDEX_REFERENCED_FILE_MISSING")
+            _fail(repo_path != expected_paths[field], "TASK_INDEX_CANONICAL_PATH_MISMATCH")
+            _fail(repo_path in mapped_paths[field], "TASK_INDEX_PATH_NOT_UNIQUE")
+            mapped_paths[field].add(repo_path)
+            _contained_regular_file(root, repo_path, "TASK_INDEX_REFERENCED_FILE_UNSAFE")
         _fail(type(item.get("scenario_count")) is not int or item["scenario_count"] <= 0, "TASK_INDEX_SCENARIO_COUNT_INVALID")
         _fail(type(item.get("p0_count")) is not int or item["p0_count"] <= 0, "TASK_INDEX_P0_COUNT_INVALID")
         total_scenarios += item["scenario_count"]
         try:
-            with (root / PurePosixPath(item["scenario_catalog_path"])).open("r", encoding="utf-8", newline="") as handle:
-                rows = list(csv.DictReader(handle))
+            catalog_path = _contained_regular_file(
+                root,
+                item["scenario_catalog_path"],
+                "TASK_INDEX_REFERENCED_FILE_UNSAFE",
+            )
+            with catalog_path.open("r", encoding="utf-8", newline="") as handle:
+                reader = csv.DictReader(handle)
+                _fail(tuple(reader.fieldnames or ()) != SCENARIO_HEADERS, "SCENARIO_CATALOG_HEADERS_INVALID")
+                rows = list(reader)
         except (OSError, UnicodeDecodeError, csv.Error):
             raise ExportIndexError("SCENARIO_CATALOG_UNREADABLE") from None
         _fail(len(rows) != item["scenario_count"], "SCENARIO_CATALOG_COUNT_MISMATCH")
-        expected_prefix = f"QA-{task_id[-3:]}-"
         scenario_ids = [row.get("scenario_id", "") for row in rows]
-        _fail(len(set(scenario_ids)) != len(rows) or any(not value.startswith(expected_prefix) for value in scenario_ids), "SCENARIO_ID_INVALID")
+        expected_ids = [f"QA-{task_digits}-{number:03d}" for number in range(1, len(rows) + 1)]
+        _fail(scenario_ids != expected_ids, "SCENARIO_ID_SEQUENCE_INVALID")
+        _fail(
+            any(any(not isinstance(row.get(field), str) or not row[field].strip() for field in SCENARIO_HEADERS) for row in rows),
+            "SCENARIO_REQUIRED_FIELD_EMPTY",
+        )
         _fail(sum(row.get("priority") == "P0" for row in rows) != item["p0_count"], "SCENARIO_P0_COUNT_MISMATCH")
-        if task_id == "TASK-041":
-            _fail(any(row.get("safety_class") != "PROD_SAFE" for row in rows), "TASK041_SAFETY_NOT_EXACT_PROD_SAFE")
-            _fail(any("static" not in row.get("evidence_required", "") for row in rows), "TASK041_EVIDENCE_NOT_STATIC")
+        if task_number in {41, 43, 55}:
+            _fail(any(row.get("safety_class") != "PROD_SAFE" for row in rows), "STATIC_TASK_SAFETY_INVALID")
+            _fail(
+                any(row.get("evidence_required") != STATIC_SCENARIO_EVIDENCE for row in rows),
+                "STATIC_TASK_EVIDENCE_INVALID",
+            )
+        else:
+            _fail(
+                any(row.get("safety_class") != "PROD_CONDITIONAL" for row in rows),
+                "RUNTIME_TASK_SAFETY_INVALID",
+            )
+            _fail(
+                any(row.get("evidence_required") != VISUAL_SCENARIO_EVIDENCE for row in rows),
+                "RUNTIME_TASK_EVIDENCE_INVALID",
+            )
     _fail(set(by_id) != set(TASK_RANGE) or total_scenarios != TASK_SCENARIO_TOTAL, "TASK_INDEX_TASK_SET_INVALID")
     for number, task_id in enumerate(TASK_RANGE):
         item = by_id[task_id]
@@ -544,15 +750,28 @@ def validate_epic(root: Path, task_index_path: Path | None = None) -> None:
     for task_id in TASK_RANGE:
         visit(task_id)
 
+    opaque_path = _contained_regular_file(root, OPAQUE_SURFACE_PATH, "OPAQUE_SURFACE_REGISTRY_UNSAFE")
+    try:
+        with opaque_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            _fail(tuple(reader.fieldnames or ()) != OPAQUE_SURFACE_HEADERS, "OPAQUE_SURFACE_HEADERS_INVALID")
+            opaque_rows = list(reader)
+    except (OSError, UnicodeDecodeError, csv.Error):
+        raise ExportIndexError("OPAQUE_SURFACE_REGISTRY_UNREADABLE") from None
+    _fail(len(opaque_rows) != 55, "OPAQUE_SURFACE_COUNT_INVALID")
+    _fail(
+        len({row.get("surface_id") for row in opaque_rows}) != 55,
+        "OPAQUE_SURFACE_ID_NOT_UNIQUE",
+    )
+    _fail(
+        any(row.get("evidence_status") != "hypothesis" for row in opaque_rows),
+        "OPAQUE_SURFACE_EVIDENCE_STATUS_INVALID",
+    )
+
 
 def _run(action: str, args: argparse.Namespace) -> None:
     if action == "build-index":
-        content, _ = build_git_index(args.root)
-        target = _canonical_index_path(args.root, args.index)
-        try:
-            target.write_bytes(content)
-        except OSError:
-            raise ExportIndexError("INDEX_WRITE_ERROR") from None
+        write_git_index(args.root, args.index)
     elif action == "validate-tree":
         validate_tree(args.root, args.index)
     elif action == "create-zip":

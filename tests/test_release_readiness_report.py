@@ -2,6 +2,7 @@ import contextlib
 import copy
 import io
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -198,6 +199,25 @@ class ReleaseReadinessReportTests(unittest.TestCase):
 
             self.assertIn("manifest_not_git_tracked", report["blocked_reasons"])
             self.assertEqual(report["payload"]["manifest_reference"], "rejected_manifest_reference")
+
+    def test_portable_export_nested_in_outer_git_uses_index_for_manifest_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            outer = Path(temp_dir) / "outer"
+            outer.mkdir()
+            subprocess.run(["git", "init", "-q"], cwd=outer, check=True, capture_output=True)
+            root = outer / "portable-export"
+            _write_task_spec(root)
+            legacy = root / "docs" / "qa" / "reports" / "legacy.summary.json"
+            _write_json(legacy, {"schema_version": "task900-legacy-v1", "task_id": "TASK-900"})
+            manifest = build_manifest([legacy], repo_root=root, generated_at_utc="2026-07-10T00:00:00Z")
+            manifest_path = root / "docs" / "qa" / "reports" / "report-manifest.json"
+            _write_json(manifest_path, manifest)
+            _write_official_index(root)
+
+            report = build_report(Path("docs/qa/reports/report-manifest.json"), repo_root=root)
+
+            self.assertNotIn("manifest_not_git_tracked", report["blocked_reasons"])
+            self.assertEqual(report["payload"]["manifest_reference"], "docs/qa/reports/report-manifest.json")
 
     def test_legacy_report_with_self_asserted_pass_cannot_satisfy_gate(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

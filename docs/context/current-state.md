@@ -665,3 +665,42 @@ All facts use:
 - `unknown`.
 
 Do not treat static names or guesses as confirmed runtime behavior.
+
+## Active TASK-041 epic integration checkpoint — 2026-07-17
+
+TASK-041 is active in accepted fresh thread
+`TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`
+on branch `qa/task-041-qa-only-epic-integration-portable-export` from exact
+`main@50dca155e5deb5d97e72780e81792c3e8abadffb`. Mode is
+`BOUNDED_AUTONOMOUS`; safety classification is
+`PROD_SAFE_REPOSITORY_ONLY`.
+
+Archive integrity is `confirmed` by an independent in-memory check: 124 archive
+file entries, 122 matching manifest records, 123 matching checksum entries,
+15 task specs, 15 prompts, 15 integrated prompts, 15 scenario catalogs, 307
+scenarios and 55 opaque surfaces; no manifest/checksum mismatch was observed.
+This confirms the supplied archive structure only. Repository integration,
+official export portability, test results and product/runtime behavior remain
+`in_progress` or `unknown` until their own evidence exists.
+
+TASK-041 integrates only the verified `PUBLIC_SAFE_QA_OVERLAY/`. `RUN_PACKS/`,
+the source archive, APKs, raw/local evidence and machine values remain outside
+the tracked repository. Root README changes are additive, existing five-APK and
+`.qa_local` contracts are preserved, and TASK-041 performs no ADB, APK, device,
+AVD, Android runtime, network, payment, account, stream/session or production
+source/build action.
+
+Planner returned `CONDITIONAL GO`. QA Reviewer A and Security/Prod-safety each
+returned initial `BLOCKED` on R1/HIGH issues: README collision, missing
+machine-readable task/run authority and explicit links, ambiguous safety and
+runtime-shaped evidence, overly broad local/runtime wording and premature
+TASK-042 continuation claims. Remediation is in progress through additive
+README integration, a tracked 15-task index, exact static TASK-041 evidence,
+future task-local conditional gates and fresh ignored containment/hash-verified
+staging. QA Reviewer B and all final reviews remain pending; no final GO, test
+PASS, commit, merge, push or TASK-042 creation is claimed.
+
+TASK-042…055 are now planned in the backlog and blocked by their explicit DAG
+dependencies. After verified TASK-041 integration and remote `main` alignment,
+this thread may create exactly one fresh TASK-042 thread; it must not implement
+TASK-042 itself.

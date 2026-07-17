@@ -1,0 +1,109 @@
+{
+  "schema_version": "evidence-report-envelope-v2",
+  "schema_validation_status": "pass",
+  "execution_status": "partial",
+  "coverage_status": "partial",
+  "evidence_status": "confirmed_for_recorded_checkpoints",
+  "release_effect": "no_release_claim",
+  "production_safety_classification": "PROD_SAFE",
+  "generated_at_utc": "2026-07-17T00:00:00Z",
+  "task_id": "TASK-041",
+  "build_ref": {
+    "alias": "qa-repository-main-base-50dca155"
+  },
+  "target_alias": "repository-static-export-lane",
+  "run_id": "task041-static-integration-001",
+  "artifacts": [
+    {
+      "reference": "docs/qa/epics/task041_055_task_index.json",
+      "sha256": "47231d6cdfe6cc4989c800988dcf80bb0972f3d0447be71ae0c43b5251d738c8",
+      "kind": "canonical_task_index",
+      "evidence_status": "confirmed"
+    },
+    {
+      "reference": "docs/qa/epics/scenarios/task041_scenarios.csv",
+      "sha256": "68d35ce7ba6f48521e854818e2d4bdc351549b5a820a63d0061086385942ae07",
+      "kind": "scenario_catalog",
+      "evidence_status": "confirmed"
+    },
+    {
+      "reference": "docs/qa/reports/task041_epic_integration.scenario-ledger.csv",
+      "sha256": "15174b1f9facf4cc80d6a18b15bbccdf72af2c4887d22251ef3c00c03e3841d7",
+      "kind": "scenario_ledger",
+      "evidence_status": "confirmed"
+    },
+    {
+      "reference": "tasks/TASK_041_qa_only_epic_integration_portable_export.md",
+      "sha256": "d3543ef1d1306821ae88cae4458d4d11d395dda759f0ab74fa73f4dc40d1ef3f",
+      "kind": "task_contract",
+      "evidence_status": "confirmed"
+    }
+  ],
+  "blocked_reasons": [
+    "full_suite_final_gate_pending",
+    "official_clean_commit_zip_without_git_pending",
+    "combined_hygiene_public_safety_docs_gate_pending",
+    "active_scope_final_docs_review_pending",
+    "single_continuation_requires_verified_default_integration"
+  ],
+  "unknowns": [
+    {
+      "id": "TASK041-UNKNOWN-001",
+      "evidence_status": "unknown",
+      "note": "final integrated checkout and portable archive results are pending"
+    }
+  ],
+  "risks": [
+    {
+      "id": "TASK041-RISK-001",
+      "evidence_status": "likely",
+      "note": "report remains partial until every pending static gate is recorded"
+    }
+  ],
+  "verification": [
+    {
+      "check": "targeted_official_export_index_tests",
+      "status": "pass",
+      "evidence_status": "confirmed",
+      "result_count": 42
+    },
+    {
+      "check": "canonical_epic_index_validation",
+      "status": "pass",
+      "evidence_status": "confirmed"
+    },
+    {
+      "check": "base_ref_history_and_contract_preservation",
+      "status": "pass",
+      "evidence_status": "confirmed"
+    },
+    {
+      "check": "full_and_post_commit_portable_verification",
+      "status": "not_run",
+      "evidence_status": "unknown"
+    }
+  ],
+  "review": {
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety": "pending",
+    "docs_scribe": "pending"
+  },
+  "provenance": {
+    "source": "public_safe_epic_overlay_and_tracked_repository",
+    "base_ref": "main-50dca155",
+    "authority": "automation/quality/official_export_index.py",
+    "runtime_actions": "not_run"
+  },
+  "payload": {
+    "epic_id": "EPIC-QA-041-055",
+    "scenario_summary": {
+      "total": 18,
+      "observed_pass": 13,
+      "executable_not_run": 5
+    },
+    "safety_classification": "PROD_SAFE",
+    "evidence_type": "static_contract",
+    "report_status_note": "No runtime, device, binary, network, account or payment claim is made."
+  }
+}

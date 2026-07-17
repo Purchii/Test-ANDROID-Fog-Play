@@ -78,11 +78,15 @@ docs/context/governance/risk-register.md
 docs/context/engineering/quality-gates.md
 docs/context/engineering/verification-memory.md
 docs/tasks/backlog.md
+docs/qa/epics/EPIC_QA_TASK_041_055.md
 docs/qa/approval-dependency-map.md
 docs/qa/evidence-schema.md
 docs/qa/synthetic-redaction-policy-test-corpus.md
 docs/approvals/*.md
 ```
+
+The active QA-only execution chain is documented in
+[EPIC-QA-041-055](docs/qa/epics/EPIC_QA_TASK_041_055.md).
 
 ## Safe Commands
 

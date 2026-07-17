@@ -632,6 +632,63 @@ single-writer offline worktree and does not claim an atomic snapshot against
 concurrent path replacement; overlapping scans must be discarded and rerun.
 Passing TASK-040 does not confirm Android/runtime/product/API behavior.
 
+## TASK-041 official-export and epic-integration gates
+
+TASK-041 is `PROD_SAFE_REPOSITORY_ONLY`; Android, ADB, APK, device/AVD,
+runtime, network and raw-evidence activity is not part of this gate.
+
+Archive intake must confirm, before tracked integration:
+
+- the archive root and every member are contained, non-absolute and free of
+  traversal or normalized-path collisions;
+- `MANIFEST.json` file sizes/hashes and `SHA256SUMS.txt` hashes match;
+- only `PUBLIC_SAFE_QA_OVERLAY/` enters tracked paths;
+- staging/export uses a fresh ignored location and rejects unsafe symlinks;
+- existing repository authority wins collisions, with only an additive root
+  README link.
+
+The tracked epic authority must fail closed unless it contains exactly 15 task
+records, 15 scenario catalogs, 307 unique scenario rows, the canonical
+dependency DAG, explicit next-task links and valid repository-relative links to
+every task spec and catalog. TASK-041 scenario rows must use exact `PROD_SAFE`
+classification and static evidence; later tasks keep their own conditional
+runtime classifications and gates.
+
+The official export authority must be a deterministic machine-readable
+`official-export-index-v1` containing normalized repository-relative paths,
+sizes and SHA-256 values. Validation must reject a missing, unreadable,
+malformed or stale index; extra or missing files; unsorted, duplicate or
+normalization-colliding paths; absolute/traversal/control/scheme-like paths;
+index self-entry; forbidden/private content; nonregular entries and unsafe
+symlinks. Archive validation must not depend on `.git`.
+
+Required positive gates:
+
+```text
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/official_export_index.py check-preservation --root . --base-ref 50dca155e5deb5d97e72780e81792c3e8abadffb
+python -m pytest -q tests/test_official_export_index.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+Before completion, create and validate an official ZIP in a fresh ignored
+temporary location, unpack it without `.git`, then rerun the relevant epic,
+docs, hygiene and public-safety checks from that exported tree. Record the exact
+machine-resolved temporary location only in local evidence. The export output
+must be a newly created OS temporary directory outside the repository because
+the official-export CLI rejects an output path inside the indexed root.
+
+`QA-041-018` cannot be `observed_pass` until the verified task is integrated
+and pushed to the detected default branch and exactly one fresh TASK-042 thread
+is visibly accepted with the required title/model/reasoning profile. Pending,
+failed or duplicate handles do not satisfy the gate. No TASK-041 check proves
+product runtime or release readiness.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

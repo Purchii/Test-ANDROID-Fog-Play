@@ -51,6 +51,37 @@
 | TASK-039 | Evidence-backed release-readiness generator | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | qa/task-039-evidence-backed-release-readiness-generator | completed; merged via `50ef67d`, stabilized and pushed to `origin/main@0a633eb`; product release readiness remains blocked until authoritative external v2 gate evidence exists |
 | TASK-040 | Docs checker fail-closed hardening | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | qa/task-040-docs-checker-fail-closed-hardening | completed; task commit `c1c8189`, merged and pushed to `origin/main@07efc30`; QA A/QA B/Security/Docs-Scribe final GO; QA-P0-03 exact archive finding ID remains `unknown` because the archive backlog is not tracked/public-readable |
 
+## P2A - EPIC-QA-041-055 independent QA-only execution chain
+
+TASK-041 is selected in an accepted fresh thread. TASK-042…055 are planned and
+blocked by their explicit dependencies; later runtime work also remains subject
+to each task's own `PROD_CONDITIONAL` lane-readiness gates. These entries extend
+the backlog without replacing TASK-000…040 history.
+
+| ID | Title | Mode default / safety | Dependencies | Branch | Status |
+|---|---|---|---|---|---|
+| TASK-041 | QA-only epic integration, sanitized risk bridge and portable official export | BOUNDED_AUTONOMOUS; PROD_SAFE_REPOSITORY_ONLY | none | qa/task-041-qa-only-epic-integration-portable-export | selected; in_progress; initial QA A and Security R1 blockers under remediation |
+| TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_SAFE_LOCAL_INVENTORY_WITH_OPTIONAL_AVD_SANDBOX | TASK-041 | qa/task-042-local-runtime-preflight | planned_blocked_by_dependency |
+| TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | planned_blocked_by_dependency |
+| TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | planned_blocked_by_dependency |
+| TASK-045 | Paired Television Full plus Phone Full virtual-gamepad E2E | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_PAIRED_RUNTIME | TASK-044 | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | planned_blocked_by_dependency |
+| TASK-046 | Television Steam / YandexTV representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-046-yandextv-representative-lane | planned_blocked_by_dependency |
+| TASK-047 | Television Sber / SberBox representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-047-sberbox-representative-lane | planned_blocked_by_dependency |
+| TASK-048 | AOSP FogPlay Stick and launcher system-cluster runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_SYSTEM_RUNTIME | TASK-042, TASK-043 | qa/task-048-aosp-launcher-system-cluster-runtime | planned_blocked_by_dependency; may later classify lane rows `blocked_by_device` without stopping independent downstream work |
+| TASK-049 | Cross-family non-payment transition and state graph closure | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_MULTI_LANE_RUNTIME | TASK-044, TASK-045, TASK-046, TASK-047 | qa/task-049-cross-family-transition-state-closure | planned_blocked_by_dependency; TASK-048 evidence is optional for non-AOSP subclaims only |
+| TASK-050 | Install, update, persistence, process-death and recovery matrix | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_STATEFUL_RUNTIME | TASK-044, TASK-046, TASK-047 | qa/task-050-install-update-persistence-recovery-matrix | planned_blocked_by_dependency |
+| TASK-051 | Network, offline, cache, API/STOMP reconnect and fault-runtime coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_NETWORK_RUNTIME | TASK-044, TASK-045, TASK-049 | qa/task-051-network-api-transport-runtime | planned_blocked_by_dependency |
+| TASK-052 | Remote, keyboard, physical/virtual gamepad and input lifecycle coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_INPUT_RUNTIME | TASK-044, TASK-045, TASK-049 | qa/task-052-input-gamepad-lifecycle-coverage | planned_blocked_by_dependency |
+| TASK-053 | Device equivalence, OS/OEM/display/localization usability matrix | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_COMPATIBILITY_RUNTIME | TASK-046, TASK-047, TASK-049, TASK-052 | qa/task-053-device-equivalence-compatibility-usability | planned_blocked_by_dependency |
+| TASK-054 | Crash, ANR, startup, resource, performance and soak qualification | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_STABILITY_RUNTIME | TASK-044, TASK-045, TASK-049, TASK-051, TASK-052, TASK-053 | qa/task-054-stability-performance-soak | planned_blocked_by_dependency |
+| TASK-055 | Unified five-APK plus launcher regression selector and QA release gate | BOUNDED_AUTONOMOUS; PROD_SAFE_EVIDENCE_AGGREGATION_WITH_OPTIONAL_LOCAL_SELECTION | TASK-043, TASK-044, TASK-045, TASK-046, TASK-047, TASK-049, TASK-050, TASK-051, TASK-052, TASK-053, TASK-054 | qa/task-055-unified-multi-apk-release-gate | planned_blocked_by_dependency; AOSP/launcher claim remains blocked without TASK-048 physical evidence |
+
+Default continuation is sequential: TASK-041 → TASK-042 → … → TASK-055. Each
+independent task requires a fresh accepted thread, its own branch and strict
+multi-agent cycle. Parallel work is forbidden unless the Orchestrator records
+separate worktrees, no shared mutable device/session/evidence state, no shared
+device control and an explicit merge order.
+
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
 | ID | Title | Mode default | Branch | Status |

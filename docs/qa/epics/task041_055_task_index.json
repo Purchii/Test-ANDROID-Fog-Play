@@ -1,0 +1,246 @@
+{
+  "schema_version": "task041-055-index-v1",
+  "epic_id": "EPIC-QA-041-055",
+  "task_count": 15,
+  "scenario_count": 307,
+  "tasks": [
+    {
+      "task_id": "TASK-041",
+      "title": "QA-only epic integration, sanitized risk bridge and portable official export",
+      "task_spec_path": "tasks/TASK_041_qa_only_epic_integration_portable_export.md",
+      "prompt_path": "docs/qa/epics/prompts/task041_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task041_scenarios.csv",
+      "dependencies": [],
+      "next_task": "TASK-042",
+      "production_safety_classification": "PROD_SAFE",
+      "scenario_count": 18,
+      "p0_count": 16
+    },
+    {
+      "task_id": "TASK-042",
+      "title": "Local APK, launcher, AVD and device runtime preflight",
+      "task_spec_path": "tasks/TASK_042_local_runtime_preflight.md",
+      "prompt_path": "docs/qa/epics/prompts/task042_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task042_scenarios.csv",
+      "dependencies": [
+        "TASK-041"
+      ],
+      "next_task": "TASK-043",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 18,
+      "p0_count": 15
+    },
+    {
+      "task_id": "TASK-043",
+      "title": "Sanitized source-informed runtime surface registry and regression selector",
+      "task_spec_path": "tasks/TASK_043_source_informed_runtime_coverage_map.md",
+      "prompt_path": "docs/qa/epics/prompts/task043_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task043_scenarios.csv",
+      "dependencies": [
+        "TASK-041",
+        "TASK-042"
+      ],
+      "next_task": "TASK-044",
+      "production_safety_classification": "PROD_SAFE",
+      "scenario_count": 18,
+      "p0_count": 16
+    },
+    {
+      "task_id": "TASK-044",
+      "title": "Television Full reference-lane oracle closure on TPV13",
+      "task_spec_path": "tasks/TASK_044_tpv13_reference_lane_oracle_closure.md",
+      "prompt_path": "docs/qa/epics/prompts/task044_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task044_scenarios.csv",
+      "dependencies": [
+        "TASK-042",
+        "TASK-043"
+      ],
+      "next_task": "TASK-045",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 32,
+      "p0_count": 29
+    },
+    {
+      "task_id": "TASK-045",
+      "title": "Paired Television Full plus Phone Full virtual-gamepad E2E",
+      "task_spec_path": "tasks/TASK_045_paired_tv_phone_virtual_gamepad_e2e.md",
+      "prompt_path": "docs/qa/epics/prompts/task045_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task045_scenarios.csv",
+      "dependencies": [
+        "TASK-044"
+      ],
+      "next_task": "TASK-046",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 22,
+      "p0_count": 20
+    },
+    {
+      "task_id": "TASK-046",
+      "title": "Television Steam / YandexTV representative runtime lane",
+      "task_spec_path": "tasks/TASK_046_yandextv_representative_lane.md",
+      "prompt_path": "docs/qa/epics/prompts/task046_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task046_scenarios.csv",
+      "dependencies": [
+        "TASK-044"
+      ],
+      "next_task": "TASK-047",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 17,
+      "p0_count": 15
+    },
+    {
+      "task_id": "TASK-047",
+      "title": "Television Sber / SberBox representative runtime lane",
+      "task_spec_path": "tasks/TASK_047_sberbox_representative_lane.md",
+      "prompt_path": "docs/qa/epics/prompts/task047_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task047_scenarios.csv",
+      "dependencies": [
+        "TASK-044"
+      ],
+      "next_task": "TASK-048",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 17,
+      "p0_count": 15
+    },
+    {
+      "task_id": "TASK-048",
+      "title": "AOSP FogPlay Stick and launcher system-cluster runtime lane",
+      "task_spec_path": "tasks/TASK_048_aosp_launcher_system_cluster_runtime.md",
+      "prompt_path": "docs/qa/epics/prompts/task048_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task048_scenarios.csv",
+      "dependencies": [
+        "TASK-042",
+        "TASK-043"
+      ],
+      "next_task": "TASK-049",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 19,
+      "p0_count": 15
+    },
+    {
+      "task_id": "TASK-049",
+      "title": "Cross-family non-payment transition and state graph closure",
+      "task_spec_path": "tasks/TASK_049_cross_family_transition_state_closure.md",
+      "prompt_path": "docs/qa/epics/prompts/task049_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task049_scenarios.csv",
+      "dependencies": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047"
+      ],
+      "next_task": "TASK-050",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 24,
+      "p0_count": 21
+    },
+    {
+      "task_id": "TASK-050",
+      "title": "Install, update, persistence, process-death and recovery matrix",
+      "task_spec_path": "tasks/TASK_050_install_update_persistence_recovery_matrix.md",
+      "prompt_path": "docs/qa/epics/prompts/task050_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task050_scenarios.csv",
+      "dependencies": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047"
+      ],
+      "next_task": "TASK-051",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 20,
+      "p0_count": 16
+    },
+    {
+      "task_id": "TASK-051",
+      "title": "Network, offline, cache, API/STOMP reconnect and fault-runtime coverage",
+      "task_spec_path": "tasks/TASK_051_network_api_transport_runtime.md",
+      "prompt_path": "docs/qa/epics/prompts/task051_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task051_scenarios.csv",
+      "dependencies": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-049"
+      ],
+      "next_task": "TASK-052",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 20,
+      "p0_count": 17
+    },
+    {
+      "task_id": "TASK-052",
+      "title": "Remote, keyboard, physical/virtual gamepad and input lifecycle coverage",
+      "task_spec_path": "tasks/TASK_052_input_gamepad_lifecycle_coverage.md",
+      "prompt_path": "docs/qa/epics/prompts/task052_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task052_scenarios.csv",
+      "dependencies": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-049"
+      ],
+      "next_task": "TASK-053",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 22,
+      "p0_count": 17
+    },
+    {
+      "task_id": "TASK-053",
+      "title": "Device equivalence, OS/OEM/display/localization usability matrix",
+      "task_spec_path": "tasks/TASK_053_device_equivalence_compatibility_usability.md",
+      "prompt_path": "docs/qa/epics/prompts/task053_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task053_scenarios.csv",
+      "dependencies": [
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-052"
+      ],
+      "next_task": "TASK-054",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 18,
+      "p0_count": 13
+    },
+    {
+      "task_id": "TASK-054",
+      "title": "Crash, ANR, startup, resource, performance and soak qualification",
+      "task_spec_path": "tasks/TASK_054_stability_performance_soak.md",
+      "prompt_path": "docs/qa/epics/prompts/task054_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task054_scenarios.csv",
+      "dependencies": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-049",
+        "TASK-051",
+        "TASK-052",
+        "TASK-053"
+      ],
+      "next_task": "TASK-055",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "scenario_count": 18,
+      "p0_count": 14
+    },
+    {
+      "task_id": "TASK-055",
+      "title": "Unified five-APK plus launcher regression selector and QA release gate",
+      "task_spec_path": "tasks/TASK_055_unified_multi_apk_release_gate.md",
+      "prompt_path": "docs/qa/epics/prompts/task055_codex_prompt.md",
+      "scenario_catalog_path": "docs/qa/epics/scenarios/task055_scenarios.csv",
+      "dependencies": [
+        "TASK-043",
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-050",
+        "TASK-051",
+        "TASK-052",
+        "TASK-053",
+        "TASK-054"
+      ],
+      "next_task": null,
+      "production_safety_classification": "PROD_SAFE",
+      "scenario_count": 24,
+      "p0_count": 23
+    }
+  ]
+}

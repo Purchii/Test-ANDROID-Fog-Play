@@ -360,3 +360,49 @@ This file records what was actually verified. Do not claim runtime checks passed
 - Confirmed navigation transition scope, screen alias policy, input event policy, fixture policy, resource budget, evidence storage and cleanup/rollback approvals.
 - TASK-005 runtime execution on the TASK-016 inventory devices.
 - Manual review of generated TASK-016 device aliases before using them as approved TASK-005 targets.
+
+## TASK-041 preliminary verification record — 2026-07-17
+
+Status: `in_progress`; this record contains no final test result, commit, merge,
+push or product/runtime PASS claim.
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread: accepted fresh `TASK-041 — QA-only epic integration, sanitized risk bridge and portable official export`.
+- Branch: `qa/task-041-qa-only-epic-integration-portable-export`.
+- Base: exact `main@50dca155e5deb5d97e72780e81792c3e8abadffb`.
+- Safety: `PROD_SAFE_REPOSITORY_ONLY`; ADB/APK/device/AVD/runtime/network and
+  ignored raw-evidence reads are forbidden for TASK-041.
+- Archive integrity evidence: `confirmed`; 124 file entries, 122/122 manifest
+  records matched size and SHA-256, 123/123 checksum entries matched, with 15
+  tasks, 15 prompts, 15 integrated prompts, 15 scenario catalogs, 307 scenarios
+  and 55 opaque surfaces. The package validation report records zero errors and
+  zero warnings. This is archive structural evidence only.
+- Initial review: Planner `CONDITIONAL GO`; QA A `BLOCKED R1`; Security
+  `BLOCKED R1/HIGH`; QA B pending. Required remediation is recorded in
+  `docs/context/handoff/active-run.md` and is not yet claimed complete.
+
+Planned verification commands:
+
+```text
+git status --short --branch
+git diff --check
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/official_export_index.py check-preservation --root . --base-ref 50dca155e5deb5d97e72780e81792c3e8abadffb
+python -m pytest -q tests/test_official_export_index.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+$task041ExportDir = Join-Path ([IO.Path]::GetTempPath()) ("mtc-fog-play-task041-" + [guid]::NewGuid().ToString("N"))
+New-Item -ItemType Directory -Path $task041ExportDir | Out-Null
+$task041ExportZip = Join-Path $task041ExportDir 'official-export.zip'
+python automation/quality/official_export_index.py create-zip --root . --output $task041ExportZip
+python automation/quality/official_export_index.py validate-zip --zip $task041ExportZip
+```
+
+The no-`.git` export must also run the relevant epic, docs, hygiene and
+public-safety validations after unpacking. Replace this preliminary record with
+exact command outcomes/counts and final reviewer statuses only after execution;
+record real commit/merge/push SHAs only after those Git actions succeed.

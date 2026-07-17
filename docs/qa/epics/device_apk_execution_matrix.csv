@@ -1,0 +1,14 @@
+order,device_alias,runtime_profile,apk_family,artifact_contract,form_factor,os_api,task_usage,release_evidence_role
+0,existing-local-avd,local-only,selected by AVD capability,existing local APK bundle,AVD,local profile,TASK-042 tooling sandbox,tooling-only; never OEM/product compatibility
+1,tv-tpv-013,tv-tpv-a12-013,television-full,fogplay-tv-television-full-production-release.apk,TV 4K,Android 12 / API31,TASK-044 reference; TASK-045 paired; TASK-049…054,primary control TV
+2,phone-xiaomi-007,phone-xiaomi-a13-007,phone-full,fogplay-tv-phone-full-production-release.apk,phone,Android 13 / API33,TASK-045 paired; TASK-050…054,primary paired phone
+2F,phone-samsung-002,phone-samsung-a13-002,phone-full,fogplay-tv-phone-full-production-release.apk,phone,Android 13 / API33,TASK-045 fallback; TASK-053 equivalence,"fallback/equivalence, not automatic substitute without record"
+3,tv-yandex-012,tv-yandex-a9-012,television-steam,fogplay-tv-television-steam-production-release.apk,TV FHD,Android 9 / API28,TASK-046 representative; TASK-049…054,Yandex flavor + oldest TV OS representative
+4,stb-sberdevices-009,stb-sberdevices-a13-009,television-sber,fogplay-tv-television-sber-production-release.apk,STB FHD,Android 13 / API33,TASK-047 representative; TASK-049…054,Sber flavor STB representative
+5,actual-project-known-fogplay-stick,existing local mapping,aosp-full + separate launcher contour,fogplay-tv-aosp-full-production-release.apk + existing launcher/system artifacts,FogPlay Stick/STB,actual local profile,TASK-048; TASK-049…055 when available,mandatory only for AOSP/launcher scope; device blocker scoped explicitly
+6,tv-tpv-005,tv-tpv-a11-005,television-full,fogplay-tv-television-full-production-release.apk,TV FHD,Android 11 / API30,TASK-053,Philips old/new equivalence
+7,tv-salutetv-011,tv-salutetv-a13-011,television-sber,fogplay-tv-television-sber-production-release.apk,TV,Android 13 / API33,TASK-053,SberTV versus SberBox equivalence
+8,phone-huawei-006,phone-huawei-a10-006,phone-full,fogplay-tv-phone-full-production-release.apk,phone,Android 10 / API29,TASK-053,lower phone OS boundary
+9,phone-realme-001,phone-realme-a16-001,phone-full,fogplay-tv-phone-full-production-release.apk,phone,Android 16 / API36,TASK-053,upper phone OS boundary
+10,phone-infinix-008,phone-infinix-a14-008,phone-full,fogplay-tv-phone-full-production-release.apk,phone,Android 14 / API34,TASK-053,additional OEM/API delta
+11,tv-himedia-010,tv-himedia-a13-010,UNKNOWN until local approved mapping,do not infer,TV,Android 13 / API33,TASK-053 exploratory only after mapping,never compatibility pass by guess

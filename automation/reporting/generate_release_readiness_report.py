@@ -409,6 +409,14 @@ def build_report(
             continue
         candidates.append({"record": record, "source": source})
 
+    gate_evidence_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate["record"].get("release_effect") in PASSABLE_RELEASE_EFFECTS
+        and candidate["source"].get("release_effect") in PASSABLE_RELEASE_EFFECTS
+        and _source_gate_ids(candidate["source"])
+    ]
+
     release_gates = [_evaluate_gate(gate, candidates) for gate in DEFAULT_RELEASE_GATES]
     gate_blockers = [
         reason
@@ -436,7 +444,7 @@ def build_report(
         blocked_reasons.append("manifest_records_empty")
     if not authoritative_records:
         blocked_reasons.append("authoritative_v2_evidence_records_missing")
-    if not candidates:
+    if not gate_evidence_candidates:
         blocked_reasons.append("authoritative_v2_gate_evidence_records_missing")
 
     release_decision = "pass" if not blocked_reasons and all(gate["decision"] == "pass" for gate in release_gates) else "blocked"

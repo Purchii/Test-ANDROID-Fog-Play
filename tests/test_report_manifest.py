@@ -14,11 +14,20 @@ from automation.reporting.generate_report_manifest import (
     main,
     validate_manifest,
 )
+from automation.quality.official_export_index import INDEX_NAME, ExportEntry, _index_bytes, _sha256_bytes
 
 
 def _write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _write_official_index(root: Path) -> None:
+    entries = []
+    for path in sorted(candidate for candidate in root.rglob("*") if candidate.is_file() and candidate.name != INDEX_NAME):
+        content = path.read_bytes()
+        entries.append(ExportEntry(path.relative_to(root).as_posix(), len(content), _sha256_bytes(content)))
+    (root / INDEX_NAME).write_bytes(_index_bytes(entries))
 
 
 def _sha(path: Path) -> str:
@@ -378,6 +387,33 @@ class ReportManifestTests(unittest.TestCase):
 
             self.assertEqual(manifest["manifest_status"], "blocked")
             self.assertIn("tracked_report_index_unavailable", manifest["blocked_reasons"])
+
+    def test_no_git_valid_official_index_is_exact_report_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            report = root / "docs" / "qa" / "reports" / "legacy.summary.json"
+            _write_json(report, _legacy_report())
+            _write_official_index(root)
+
+            manifest = build_manifest(repo_root=root, generated_at_utc="2026-07-10T00:00:00Z")
+
+            self.assertEqual(manifest["path_source"], "portable_official_index")
+            self.assertEqual(manifest["record_count"], 1)
+            self.assertNotIn("tracked_report_index_unavailable", manifest["blocked_reasons"])
+
+    def test_no_git_stale_official_index_blocks_default_generation(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            report = root / "docs" / "qa" / "reports" / "legacy.summary.json"
+            _write_json(report, _legacy_report())
+            _write_official_index(root)
+            _write_json(report, _legacy_report(task_id="TASK-901"))
+
+            manifest = build_manifest(repo_root=root, generated_at_utc="2026-07-10T00:00:00Z")
+
+            self.assertEqual(manifest["path_source"], "portable_official_index_invalid")
+            self.assertEqual(manifest["record_count"], 0)
+            self.assertTrue(any(reason.startswith("portable_export_index_invalid:TREE_") for reason in manifest["blocked_reasons"]))
 
     def test_cli_generates_and_validates_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

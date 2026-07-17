@@ -19,6 +19,15 @@ from pathlib import Path
 from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from automation.quality.official_export_index import (
+    INDEX_NAME as OFFICIAL_EXPORT_INDEX_NAME,
+    ExportIndexError,
+    validated_portable_paths,
+)
+
 
 MARKDOWN_LINK_RE = re.compile(r"!\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)|\[[^\]]+\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 REFERENCE_DEFINITION_RE = re.compile(r"^\s{0,3}\[[^\]]+\]:\s*(\S+)")
@@ -103,8 +112,24 @@ def _tracked_files(root: Path) -> list[Path]:
             check=False,
         )
     except OSError as exc:
+        official_index = root / OFFICIAL_EXPORT_INDEX_NAME
+        if official_index.is_file():
+            try:
+                governed_paths = validated_portable_paths(root)
+            except (ExportIndexError, OSError, RuntimeError, ValueError) as portable_exc:
+                reason = portable_exc.reason_code if isinstance(portable_exc, ExportIndexError) else "UNAVAILABLE"
+                raise GitTrackedScanUnavailable(f"DOCS_PORTABLE_INDEX_INVALID_{reason}") from None
+            return governed_paths + [Path(OFFICIAL_EXPORT_INDEX_NAME)]
         raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_UNAVAILABLE") from exc
     if completed.returncode != 0:
+        official_index = root / OFFICIAL_EXPORT_INDEX_NAME
+        if official_index.is_file():
+            try:
+                governed_paths = validated_portable_paths(root)
+            except (ExportIndexError, OSError, RuntimeError, ValueError) as exc:
+                reason = exc.reason_code if isinstance(exc, ExportIndexError) else "UNAVAILABLE"
+                raise GitTrackedScanUnavailable(f"DOCS_PORTABLE_INDEX_INVALID_{reason}") from None
+            return governed_paths + [Path(OFFICIAL_EXPORT_INDEX_NAME)]
         raise GitTrackedScanUnavailable("DOCS_GIT_DISCOVERY_FAILED")
     try:
         return [Path(raw.decode("utf-8")) for raw in completed.stdout.split(b"\0") if raw]

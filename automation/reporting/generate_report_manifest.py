@@ -20,6 +20,15 @@ from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from automation.quality.official_export_index import (
+    INDEX_NAME as OFFICIAL_EXPORT_INDEX_NAME,
+    ExportIndexError,
+    validated_portable_paths,
+)
+
 
 TASK_ID = "TASK-038"
 TOOL_NAME = "reporting.report_manifest_generator"
@@ -165,6 +174,15 @@ def _tracked_report_paths(reports_root: Path, repo_root: Path | None = None) -> 
     if result is not None and result.returncode == 0:
         paths = [Path(item.decode("utf-8")) for item in result.stdout.split(b"\0") if item]
         return _filter_report_paths(paths), "git_tracked", []
+    official_index = repo_root / OFFICIAL_EXPORT_INDEX_NAME
+    if official_index.is_file():
+        try:
+            governed_paths = validated_portable_paths(repo_root)
+        except (ExportIndexError, OSError, RuntimeError, ValueError) as exc:
+            reason = exc.reason_code if isinstance(exc, ExportIndexError) else "PORTABLE_INDEX_UNAVAILABLE"
+            return [], "portable_official_index_invalid", [f"portable_export_index_invalid:{reason}"]
+        paths = [repo_root / path for path in governed_paths]
+        return _filter_report_paths(paths), "portable_official_index", []
     return [], "git_tracked_unavailable", ["tracked_report_index_unavailable"]
 
 

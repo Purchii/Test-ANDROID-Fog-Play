@@ -293,7 +293,7 @@ def _tree_files(root: Path) -> dict[str, Path]:
     return found
 
 
-def validate_tree(root: Path, index_path: Path | None = None) -> None:
+def validate_tree(root: Path, index_path: Path | None = None) -> list[ExportEntry]:
     root = root.resolve(strict=True)
     index_path = _canonical_index_path(root, index_path)
     _fail(not index_path.exists() or not index_path.is_file() or index_path.is_symlink(), "INDEX_MISSING")
@@ -313,6 +313,19 @@ def validate_tree(root: Path, index_path: Path | None = None) -> None:
             raise ExportIndexError("TREE_READ_ERROR") from None
         _fail(len(content) != entry.size, "TREE_SIZE_MISMATCH")
         _fail(_sha256_bytes(content) != entry.sha256, "TREE_HASH_MISMATCH")
+    return entries
+
+
+def validated_portable_paths(root: Path) -> list[Path]:
+    """Return exact index-governed paths only after full portable validation.
+
+    This is the sole no-Git discovery authority for other repository tools.
+    It intentionally performs no permissive directory fallback.
+    """
+
+    root = root.resolve(strict=True)
+    entries = validate_tree(root, root / INDEX_NAME)
+    return [Path(entry.path) for entry in entries]
 
 
 def _zip_member_is_symlink(info: zipfile.ZipInfo) -> bool:

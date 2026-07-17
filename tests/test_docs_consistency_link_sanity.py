@@ -3,11 +3,20 @@ from pathlib import Path
 import pytest
 
 from automation.quality.docs_consistency_link_sanity import main, scan_markdown_paths
+from automation.quality.official_export_index import INDEX_NAME, ExportEntry, _index_bytes, _sha256_bytes
 
 
 def write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def write_official_index(root: Path) -> None:
+    entries = []
+    for path in sorted(candidate for candidate in root.rglob("*") if candidate.is_file() and candidate.name != INDEX_NAME):
+        content = path.read_bytes()
+        entries.append(ExportEntry(path.relative_to(root).as_posix(), len(content), _sha256_bytes(content)))
+    (root / INDEX_NAME).write_bytes(_index_bytes(entries))
 
 
 def test_docs_sanity_accepts_valid_internal_links_and_duplicate_anchors(tmp_path):
@@ -161,6 +170,46 @@ def test_docs_sanity_auto_git_exception_is_sanitized_blocked(tmp_path, monkeypat
     assert result == 2
     assert "reason=DOCS_GIT_DISCOVERY_UNAVAILABLE" in captured.out
     assert "private absolute root" not in captured.out
+    assert captured.err == ""
+
+
+def test_docs_sanity_no_git_uses_only_validated_official_index(tmp_path, monkeypatch, capsys):
+    write(tmp_path / "README.md", "# Root\n[guide](docs/guide.md)\n")
+    write(tmp_path / "docs/guide.md", "# Guide\n")
+    write_official_index(tmp_path)
+
+    class FailedGit:
+        returncode = 128
+        stdout = b""
+        stderr = b"not a git repository"
+
+    monkeypatch.setattr("automation.quality.docs_consistency_link_sanity.subprocess.run", lambda *a, **k: FailedGit())
+    result = main(["--root", str(tmp_path), "--mode", "tracked"])
+    captured = capsys.readouterr()
+
+    assert result == 0
+    assert "docs_consistency_link_sanity=pass" in captured.out
+    assert "scanned_files=2" in captured.out
+    assert captured.err == ""
+
+
+def test_docs_sanity_no_git_stale_official_index_blocks(tmp_path, monkeypatch, capsys):
+    write(tmp_path / "README.md", "# Root\n")
+    write_official_index(tmp_path)
+    write(tmp_path / "README.md", "# Changed root\n")
+
+    class FailedGit:
+        returncode = 128
+        stdout = b""
+        stderr = b"not a git repository"
+
+    monkeypatch.setattr("automation.quality.docs_consistency_link_sanity.subprocess.run", lambda *a, **k: FailedGit())
+    result = main(["--root", str(tmp_path), "--mode", "auto"])
+    captured = capsys.readouterr()
+
+    assert result == 2
+    assert "reason=DOCS_PORTABLE_INDEX_INVALID_TREE_" in captured.out
+    assert "=pass" not in captured.out
     assert captured.err == ""
 
 

@@ -30,6 +30,11 @@ from automation.reporting.generate_report_manifest import (
     validate_manifest,
 )
 from automation.reporting.generate_release_gate_report import DEFAULT_RELEASE_GATES, REQUIRED_REVIEWERS
+from automation.quality.official_export_index import (
+    INDEX_NAME as OFFICIAL_EXPORT_INDEX_NAME,
+    ExportIndexError,
+    validated_portable_paths,
+)
 
 
 TASK_ID = "TASK-039"
@@ -83,8 +88,17 @@ def _manifest_is_git_tracked(repo_root: Path) -> bool:
             text=False,
         )
     except OSError:
+        result = None
+    if result is not None and result.returncode == 0:
+        return True
+    official_index = repo_root / OFFICIAL_EXPORT_INDEX_NAME
+    if not official_index.is_file():
         return False
-    return result.returncode == 0
+    try:
+        governed_paths = validated_portable_paths(repo_root)
+    except (ExportIndexError, OSError, RuntimeError, ValueError):
+        return False
+    return DEFAULT_MANIFEST in governed_paths
 
 
 def _allowed_manifest_path(

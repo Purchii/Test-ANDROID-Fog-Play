@@ -774,3 +774,51 @@ passed on `main`.
 TASK-042 is now `inactive_completed`. Fresh TASK-043 thread
 `019fadbd-22ba-7ac1-8fa5-84bca075c6d7` is accepted and active. TASK-043 was not
 implemented here and must base itself on the lifecycle-closure default commit.
+
+## TASK-043 local verified checkpoint — 2026-07-29
+
+TASK-043 is implemented on
+`qa/task-043-source-informed-runtime-coverage-map` from exact lifecycle baseline
+`origin/main@f92e527260a96460eaccfdb8b17632bc47896414`. Mode is
+`BOUNDED_AUTONOMOUS`; scope is `PROD_SAFE_OFFLINE_STATIC_ONLY`. The owner has
+temporarily deferred Git pushes because of service limits. This changes the
+workflow order but is not a stop condition: lifecycle remains
+`local_verified_pending_remote_integration`, not `inactive_completed` or
+`blocked`.
+
+The generated static authority reconciles 55 opaque surfaces (33 R0, 22 R1),
+all 307 epic scenarios and all 18 TASK-043 scenarios as `observed_pass` with
+`static_contract` evidence. It projects 28 prior-evidence records across the
+22-task TASK-019…040 range; TASK-019, TASK-034, TASK-038 and TASK-040 are
+explicitly missing, and prior evidence is historical/stale by default rather
+than current runtime authority. The 14-row gap matrix contains 13 device/tooling
+lanes and a separate launcher contour mapping 24 surfaces (15 R0, 9 R1). The
+TASK-044 selector contains 32 selection-only rows (29 P0, 3 P1), all `not_run`.
+
+The report manifest validates 27 records: 4 authoritative v2 and 23 legacy
+non-authoritative. TASK-043 is an authoritative `v2_valid` record with
+`no_release_claim`; its generated `pending` review fields remain part of the
+deterministic report contract, while final external QA A, QA B,
+Security/Prod-safety and Docs/Scribe outcomes are recorded in run documentation.
+
+Four confirmed process anomalies remain visible after remediation:
+`TASK043-PROCESS-ANOMALY-001` corrected a stale 12-vs-13 device-lane assumption
+and moved full bundle validation before publication;
+`TASK043-PROCESS-ANOMALY-002` closed canonical-validation and transactional
+publication gaps found in review; `TASK043-PROCESS-ANOMALY-003` removed
+forbidden hidden status keys found during manifest staging; and
+`TASK043-PROCESS-ANOMALY-004` replaced product-shaped synthetic identifiers in
+an adversarial test with explicit neutral synthetic markers after final
+Security review. Targeted and full tests, CLI/report validation, manifest,
+docs, hygiene and public-safety checks pass after remediation. No runtime, APK,
+ADB, network, `.qa_local` or machine/raw value action occurred.
+
+Strict multi-agent roles were Orchestrator, Planner, Builder, QA Reviewer A,
+QA Reviewer B, Security/Prod-safety and Docs/Scribe. Initial QA/Security
+`BLOCK` findings were remediated; final QA A and QA B reviews are `GO` with no
+open R0/R1. Final Security/Prod-safety and Docs/Scribe reviews of the completed
+documentation/diff are also `GO` with no open R0/R1/P2.
+Accepted verification includes 102 targeted passes with 1 skip, 1095 full
+passes with 3 skips, docs scan 170/0, public-safety scan 337/0 and manifest
+27/4/23. Task-branch push, default integration/push, post-integration checks
+and a TASK-044 continuation thread are not done under the current owner order.

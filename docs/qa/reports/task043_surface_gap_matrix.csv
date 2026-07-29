@@ -1,0 +1,15 @@
+lane_alias,family,surface_count,r0_count,r1_count,coverage_status,evidence_status,reason_code
+existing-local-avd,avd-tooling-only,0,0,0,mapped_only,unknown,avd_is_tooling_only
+tv-tpv-013,television-full,49,30,19,mapped_only,hypothesis,fresh_runtime_evidence_required
+phone-xiaomi-007,phone-full,35,21,14,mapped_only,hypothesis,fresh_runtime_evidence_required
+phone-samsung-002,phone-full,35,21,14,mapped_only,hypothesis,fresh_runtime_evidence_required
+tv-yandex-012,television-steam,49,30,19,mapped_only,hypothesis,fresh_runtime_evidence_required
+stb-sberdevices-009,television-sber,49,30,19,mapped_only,hypothesis,fresh_runtime_evidence_required
+actual-project-known-fogplay-stick,aosp-full,55,33,22,mapped_only,hypothesis,actual_stick_mapping_missing
+tv-tpv-005,television-full,49,30,19,mapped_only,hypothesis,fresh_runtime_evidence_required
+tv-salutetv-011,television-sber,49,30,19,mapped_only,hypothesis,fresh_runtime_evidence_required
+phone-huawei-006,phone-full,35,21,14,mapped_only,hypothesis,fresh_runtime_evidence_required
+phone-realme-001,phone-full,35,21,14,mapped_only,hypothesis,fresh_runtime_evidence_required
+phone-infinix-008,phone-full,35,21,14,mapped_only,hypothesis,fresh_runtime_evidence_required
+tv-himedia-010,unknown-family,0,0,0,mapped_only,unknown,family_mapping_unknown
+launcher-system-contour,launcher-system,24,15,9,mapped_only,hypothesis,separate_launcher_runtime_evidence_required

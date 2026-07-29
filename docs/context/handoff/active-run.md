@@ -1,15 +1,88 @@
 # Active run
 
-## TASK-043 accepted fresh continuation
+## TASK-043 active local verification checkpoint
 
 - Thread title: `TASK-043 — Sanitized source-informed runtime surface registry and regression selector`.
 - Thread id: `019fadbd-22ba-7ac1-8fa5-84bca075c6d7`.
-- Lifecycle status: `active_waiting_for_task042_closure_baseline`.
-- Required branch: `qa/task-043-source-informed-runtime-coverage-map` from the
-  updated remote default after this lifecycle closure.
-- TASK-043 was not implemented in the TASK-042 thread. The fresh thread was
-  told to preserve read-only planning, fetch the closure commit and only then
-  create or rebase its task branch.
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Production safety: `PROD_SAFE_OFFLINE_STATIC_ONLY`.
+- Lifecycle status: `local_verified_pending_remote_integration`.
+- Task branch: `qa/task-043-source-informed-runtime-coverage-map`.
+- Default branch: `main`.
+- Exact baseline: `origin/main@f92e527260a96460eaccfdb8b17632bc47896414`,
+  which records TASK-042 as `inactive_completed` and TASK-043 as active.
+- Current owner workflow temporarily defers every Git push. This is not a task
+  blocker: local implementation and verification continue, but task-branch
+  push, default integration/push, post-integration verification and TASK-044
+  thread creation remain explicitly not done.
+
+TASK-043 produced a deterministic public-safe registry and selector bundle from
+tracked contracts only. The current verified bundle contains:
+
+- 55 opaque surfaces: 33 R0 and 22 R1;
+- all 307 epic scenarios reconciled against the reverse surface map;
+- 18 TASK-043 scenarios, all `observed_pass` with `static_contract` evidence;
+- 28 prior-evidence projection rows across the 22-task TASK-019…040 range,
+  including explicit missing records for TASK-019, TASK-034, TASK-038 and
+  TASK-040; all available prior reports remain historical/stale by default;
+- a 14-row gap matrix: 13 device/tooling lanes plus one separate launcher
+  contour with 24 mapped surfaces, 15 R0 and 9 R1;
+- a TASK-044 selection-only set of 32 rows: 29 P0 and 3 P1, all `not_run`.
+
+The report manifest currently validates 27 records: 4 authoritative v2 records
+and 23 legacy non-authoritative records. TASK-043 is an authoritative `v2_valid`
+record with `no_release_claim`. Its deterministic summary retains generated
+`pending` review fields by contract; actual reviewer decisions are recorded
+here and do not turn static selector success into runtime or release evidence.
+
+Strict real multi-agent execution is satisfied: Orchestrator coordinated the
+run; Planner mapped scenarios to deliverables; Builder implemented the runner,
+schema, outputs and tests; QA Reviewer A and QA Reviewer B independently
+reviewed false-pass and evidence integrity; Security/Prod-safety reviewed the
+offline/public-safety boundary; Docs/Scribe reconciled source-of-truth. QA and
+Security initially returned `BLOCK` findings, remediation was completed, and
+final QA A and QA B reviews returned `GO` with no open R0/R1 finding. Final
+Security/Prod-safety and Docs/Scribe reviews of the completed documentation/diff
+also returned `GO` with no open R0/R1/P2.
+
+No runtime, APK, ADB, device, network, `.qa_local`, raw endpoint, secret,
+payment, account or production action was performed. Static execution did not
+read or publish machine/raw values.
+
+Process anomalies were recorded and remediated:
+
+- `TASK043-PROCESS-ANOMALY-001` (`confirmed`, alias
+  `device_lane_count_reconciliation_mismatch`): the first offline `--execute`
+  expected the generated gap matrix to reconcile and PASS, but the canonical
+  matrix had 13 device lanes while the validator retained a stale count of 12;
+  the complete bundle was published before validation returned
+  `GAP_RECONCILIATION_INVALID`. The count is now 13, the separate launcher row
+  makes 14 gap rows, complete in-memory cross-output validation runs before
+  publication, and targeted plus CLI reruns pass.
+- `TASK043-PROCESS-ANOMALY-002` (`confirmed`): independent review expected
+  canonical inputs and the whole output bundle to be validated before
+  publication, but found canonical-validation and transactional-publication
+  gaps. Pinned contract validation, adversarial cases and pre-publication
+  in-memory bundle validation now fail closed before atomic publication.
+- `TASK043-PROCESS-ANOMALY-003` (`confirmed`): manifest staging expected the v2
+  payload to satisfy the public envelope but found forbidden hidden execution
+  status keys. The canonical envelope now omits those duplicate hidden keys,
+  manifest validation and regression checks pass, and no runtime claim was
+  inferred from their removal.
+- `TASK043-PROCESS-ANOMALY-004` (`confirmed`, alias
+  `product_shaped_synthetic_identifier`): final Security review expected
+  clearly synthetic privacy-guard fixtures but found a product-shaped package
+  and class value in an adversarial test. The observed values were test inputs,
+  not confirmed source identifiers; likely cause was an over-specific negative
+  fixture. They were replaced by explicit neutral synthetic markers, and the
+  test-design implication is that public redaction tests must exercise the same
+  pattern with non-product-shaped examples.
+
+Latest accepted verification evidence includes 102 targeted passes with 1
+skip, 1095 full-suite passes with 3 skips, docs scan 170/0, public-safety scan
+337/0 and manifest validation 27/4/23. No commit, push, merge or post-merge
+verification is claimed at this checkpoint. Do not start TASK-044 in this
+thread.
 
 ## Completed TASK-042 — local runtime preflight
 

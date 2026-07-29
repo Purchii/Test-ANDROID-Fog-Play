@@ -14,7 +14,7 @@
 
 ## Production safety classification
 
-`PROD_SAFE`
+`PROD_SAFE_OFFLINE_STATIC_ONLY`
 
 ## Ветка
 
@@ -36,6 +36,13 @@ All five APK families plus separate launcher contour; no runtime required
 
 
 ## Неизменяемые границы активного этапа
+
+Для фактической реализации TASK-043 широкие epic-разрешения ниже сужены до
+tracked/public-safe offline static inputs. TASK-043 не читает `.qa_local`, APK,
+SDK, ADB/AVD или device/runtime evidence и не запускает Android или network
+subprocess. Такие действия остаются `PROD_FORBIDDEN_BY_TASK_SCOPE`; они могут
+появиться только в отдельной последующей runtime-задаче с её собственными
+gate'ами.
 
 Работа ведётся полностью внутри независимого QA-контура по уже доступным APK,
 локальным Android-инструментам, AVD, физическим устройствам, QA-автоматизации,
@@ -188,6 +195,46 @@ python automation/quality/docs_consistency_link_sanity.py
 Codex должен добавить точные validate-only/preflight/execute/report команды
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
+
+### Реализованные offline static команды TASK-043
+
+Все четыре режима используют только фиксированные tracked/public-safe paths;
+CLI не принимает `--root`, `--input` или `--output` overrides.
+
+Проверка immutable constants без content I/O:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --validate-only
+```
+
+Read-only проверка канонических tracked contracts без записи outputs:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --preflight
+```
+
+Детерминированная offline static генерация registry, scenario ledger,
+migration map, gap matrix, TASK-044 selection-only списка и v2 summary:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --execute
+```
+
+Read-only cross-file/hash validation фиксированного public-safe bundle:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --validate-report
+```
+
+После изменения summary канонический report manifest обновляется и проверяется:
+
+```text
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+```
+
+`--execute` в TASK-043 означает только static selector execution. Он не является
+Android/runtime исполнением и не подтверждает product или release readiness.
 
 ## Multi-agent acceptance
 

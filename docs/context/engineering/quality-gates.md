@@ -752,6 +752,59 @@ evidence. The post-integration pytest repeat was attempted and is explicitly
 `blocked_by_tooling` because the sandbox denied the ignored pytest bundle;
 post-integration report/manifest/hygiene/public-safety/docs/export gates passed.
 
+## TASK-043 sanitized surface registry and selector gates
+
+TASK-043 is `PROD_SAFE_OFFLINE_STATIC_ONLY`. Its fixed CLI modes may read only
+tracked public-safe contracts; Android runtime, APK, ADB, device/network access,
+ignored `.qa_local` evidence and raw or machine values are outside scope.
+
+The TASK-043 bundle fails closed unless:
+
+- exactly 55 opaque surfaces reconcile in both directions with 33 R0 and 22 R1;
+- all 307 epic scenarios have valid surface mappings and every surface has
+  downstream scenario traceability;
+- all 18 TASK-043 rows are `observed_pass` only from `static_contract` evidence;
+- prior TASK-019…040 evidence is projected from the validated manifest without
+  upgrading missing, legacy or build-compatibility-unproven records to current
+  runtime authority;
+- the gap matrix has 13 device/tooling lanes plus a distinct launcher contour,
+  and the launcher row maps exactly 24 surfaces, 15 R0 and 9 R1;
+- the TASK-044 selection contains 32 `selected_not_run` rows, 29 P0 and 3 P1;
+- all outputs validate together in memory before atomic publication and then
+  pass cross-file/hash validation from their fixed tracked paths;
+- the v2 report makes no product-runtime or release-readiness claim and the
+  report manifest remains valid.
+
+Required commands:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --validate-only
+python automation/regression/task043_surface_registry_selector.py --preflight
+python automation/regression/task043_surface_registry_selector.py --execute
+python automation/regression/task043_surface_registry_selector.py --validate-report
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python -m pytest -q tests/test_task043_surface_registry_selector.py tests/test_report_manifest.py
+python -m pytest -q
+python -m compileall -q automation tests
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+Current pre-integration evidence is 102 targeted passes with 1 skip, 1095 full
+passes with 3 skips, docs scan 170/0, public-safety scan 337/0 and a valid
+27-record manifest with 4 authoritative v2 and 23 legacy non-authoritative
+records. Initial QA/Security R0/R1 blockers were remediated and final QA A and
+QA B reviews are `GO`; final Security/Prod-safety and Docs/Scribe reviews of the
+completed documentation/diff are also `GO` with no open R0/R1/P2.
+
+The owner currently requires local completion without Git push. Therefore the
+quality state is `local_verified_pending_remote_integration`. Task-branch push,
+merge/default push, post-integration verification and TASK-044 thread creation
+remain required lifecycle gates and must not be claimed or bypassed.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

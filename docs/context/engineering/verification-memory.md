@@ -543,3 +543,83 @@ ACL failure and policy-blocked reinstall. The integrated commit is identical to
 the independently tested commit; post-integration report, manifest, hygiene,
 public-safety, docs and official-export checks all passed. The unavailable
 pytest repeat remains explicitly `blocked_by_tooling`, not reported as PASS.
+
+## TASK-043 offline surface registry and selector verification record — 2026-07-29
+
+Status: `local_verified_pending_remote_integration`. No product-runtime or
+release-readiness PASS is claimed.
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread: accepted fresh `TASK-043 — Sanitized source-informed runtime surface
+  registry and regression selector`.
+- Branch: `qa/task-043-source-informed-runtime-coverage-map`.
+- Baseline: exact
+  `origin/main@f92e527260a96460eaccfdb8b17632bc47896414`, including the TASK-042
+  lifecycle closure.
+- Safety: `PROD_SAFE_OFFLINE_STATIC_ONLY`; no Android runtime, APK, ADB, device,
+  network, ignored `.qa_local` evidence or machine/raw value action ran.
+
+Confirmed static evidence:
+
+- 55 opaque surfaces reconcile with 33 R0 and 22 R1 across all 307 epic
+  scenarios;
+- all 18 TASK-043 scenarios are `observed_pass` from `static_contract`
+  evidence;
+- 28 historical prior-evidence rows cover the 22-task TASK-019…040 range, with
+  TASK-019, TASK-034, TASK-038 and TASK-040 explicitly missing;
+- the 14-row gap matrix contains 13 device/tooling lanes and one separate
+  launcher contour mapping 24 surfaces, 15 R0 and 9 R1;
+- the TASK-044 selector contains 32 selection-only rows, 29 P0 and 3 P1, all
+  `selected_not_run`/`not_run` rather than runtime evidence;
+- the report manifest validates 27 records: 4 authoritative v2 and 23 legacy
+  non-authoritative; TASK-043 is `v2_valid`, authoritative and
+  `no_release_claim`.
+
+Exact verification commands:
+
+```text
+python automation/regression/task043_surface_registry_selector.py --validate-only
+python automation/regression/task043_surface_registry_selector.py --preflight
+python automation/regression/task043_surface_registry_selector.py --execute
+python automation/regression/task043_surface_registry_selector.py --validate-report
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python -m pytest -q tests/test_task043_surface_registry_selector.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The accepted pre-documentation results were 102 targeted passes with 1 skip,
+1095 full-suite passes with 3 skips, docs scan 170/0, public-safety scan 337/0
+and manifest validation PASS. Final QA A and QA B reviews returned `GO` with no
+open R0/R1. Final Security/Prod-safety and Docs/Scribe reviews of the completed
+documentation/diff also returned `GO` with no open R0/R1/P2.
+
+Four confirmed process anomalies were recorded and remediated:
+
+- `TASK043-PROCESS-ANOMALY-001`, alias
+  `device_lane_count_reconciliation_mismatch`, corrected a stale 12-vs-13
+  device-lane assumption and moved complete in-memory bundle validation before
+  publication;
+- `TASK043-PROCESS-ANOMALY-002` closed canonical-validation, semantic-tamper and
+  transactional-publication gaps found by independent review;
+- `TASK043-PROCESS-ANOMALY-003` removed five forbidden hidden execution-status
+  keys found during manifest staging while retaining explicit public no-claim
+  fields.
+- `TASK043-PROCESS-ANOMALY-004`, alias
+  `product_shaped_synthetic_identifier`, records final Security review finding
+  a product-shaped package/class pair in a staged adversarial test where
+  clearly neutral synthetic fixtures were expected. The values were test
+  inputs, not confirmed source identifiers; they were replaced with explicit
+  neutral synthetic markers so the privacy guard remains covered without
+  publishing product-shaped examples.
+
+The owner currently requires local completion without Git push. Task-branch
+push, default integration/push, post-integration verification and creation of a
+fresh TASK-044 continuation thread remain not done and must not be claimed in
+this task.

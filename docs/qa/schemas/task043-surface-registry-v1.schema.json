@@ -1,0 +1,55 @@
+{
+  "$id": "docs/qa/schemas/task043-surface-registry-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_status": {"const": "confirmed"},
+    "families": {
+      "items": {"enum": ["television-full", "phone-full", "television-steam", "television-sber", "aosp-full", "launcher-system"]},
+      "maxItems": 6,
+      "minItems": 6,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "family_count": {"const": 6},
+    "product_runtime_evidence_status": {"const": "unknown"},
+    "production_safety_classification": {"const": "PROD_SAFE_OFFLINE_STATIC_ONLY"},
+    "risk_summary": {
+      "additionalProperties": false,
+      "properties": {"R0": {"const": 33}, "R1": {"const": 22}},
+      "required": ["R0", "R1"],
+      "type": "object"
+    },
+    "scenario_catalog_count": {"const": 15},
+    "scenario_count": {"const": 307},
+    "schema_version": {"const": "task043-surface-registry-v1"},
+    "surface_count": {"const": 55},
+    "surfaces": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "applicable_families": {"items": {"type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true},
+          "category": {"minLength": 1, "type": "string"},
+          "evidence_status": {"const": "hypothesis"},
+          "family_scope": {"minLength": 1, "type": "string"},
+          "primary_tasks": {"items": {"pattern": "^TASK-[0-9]{3}$", "type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true},
+          "public_safe_description": {"minLength": 1, "type": "string"},
+          "risk": {"enum": ["R0", "R1"]},
+          "runtime_oracle_category": {"minLength": 1, "type": "string"},
+          "scenario_count": {"minimum": 1, "type": "integer"},
+          "scenario_ids": {"items": {"pattern": "^QA-[0-9]{3}-[0-9]{3}$", "type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true},
+          "surface_id": {"pattern": "^SURF-[A-Z]+-[0-9]{3}$", "type": "string"}
+        },
+        "required": ["surface_id", "risk", "category", "public_safe_description", "family_scope", "applicable_families", "primary_tasks", "runtime_oracle_category", "evidence_status", "scenario_ids", "scenario_count"],
+        "type": "object"
+      },
+      "maxItems": 55,
+      "minItems": 55,
+      "type": "array"
+    },
+    "task_id": {"const": "TASK-043"}
+  },
+  "required": ["schema_version", "task_id", "production_safety_classification", "evidence_status", "product_runtime_evidence_status", "surface_count", "risk_summary", "family_count", "families", "scenario_catalog_count", "scenario_count", "surfaces"],
+  "title": "TASK-043 sanitized opaque surface registry",
+  "type": "object"
+}

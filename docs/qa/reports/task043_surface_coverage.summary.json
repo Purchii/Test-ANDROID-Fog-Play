@@ -1,0 +1,180 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "canonical_static_input",
+      "reference": "docs/qa/schemas/task043-surface-registry-v1.schema.json",
+      "sha256": "1f63aab0bf8ade5f021937b34e229a4c609ec148ce3500e9652b012d6ab00f66"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "canonical_static_input",
+      "reference": "docs/qa/epics/opaque_surface_task_traceability.csv",
+      "sha256": "53bce754865923987991efad671cbe0988a1bd67016e17a478af16ed8b176db1"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "canonical_static_input",
+      "reference": "docs/qa/epics/device_apk_execution_matrix.csv",
+      "sha256": "1c25e7c54935764b5e110bf59e85ab4e2cdf6b3c354556a2fb0af473a3aa8190"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "canonical_static_input",
+      "reference": "docs/qa/epics/scenarios/task043_scenarios.csv",
+      "sha256": "5833cfd6842487ebb7c88ef36a49b22e0524ac11b3e54709cda8c9862ea1833a"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "canonical_static_input",
+      "reference": "docs/qa/reports/task042_local_runtime_preflight.summary.json",
+      "sha256": "5add995c14615163e41710482589d73368778792f217221f3afc8c7fed8a61e1"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "generated_static_artifact",
+      "reference": "docs/qa/epics/task043_surface_registry.json",
+      "sha256": "a7762b9a8d0e30e1bdbe6ad4f4c07e437a4084cfd7ea333e3b746d3deb3b51a9"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "generated_static_artifact",
+      "reference": "docs/qa/reports/task043_surface_coverage.scenario-ledger.csv",
+      "sha256": "2d822126e56845c9800cfc71eead6490812f2c5709311e635bc6589b1a460eb9"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "generated_static_artifact",
+      "reference": "docs/qa/reports/task043_prior_evidence_migration.csv",
+      "sha256": "0886fd710dcf64bbbfd73d1e4b07b7e764cc5e670c5eab71473be4134fc2bf92"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "generated_static_artifact",
+      "reference": "docs/qa/reports/task043_surface_gap_matrix.csv",
+      "sha256": "109fbd352613e86deab669523434cdc4bdb2698cd5ed6947f23228b3e60871f9"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "generated_static_artifact",
+      "reference": "docs/qa/reports/task043_task044_selection.csv",
+      "sha256": "572ff36957c8d3f9e81328031785214e6c40ebc4807414b8f7b24206a9032c37"
+    }
+  ],
+  "blocked_reasons": [],
+  "build_ref": {
+    "alias": "qa-repository-task043-static-snapshot"
+  },
+  "coverage_status": "partial",
+  "evidence_status": "confirmed",
+  "execution_status": "pass",
+  "generated_at_utc": "2026-07-29T00:00:00Z",
+  "payload": {
+    "contract_execution_scope": "offline_static_only",
+    "gap_summary": {
+      "coverage_status": "mapped_only",
+      "device_lane_count": 13,
+      "evidence_status": "unknown",
+      "lane_count": 14,
+      "launcher_contour_count": 1
+    },
+    "prior_evidence_summary": {
+      "missing_task_count": 4,
+      "record_count": 28,
+      "reuse_policy": "historical_context_only_stale_by_default",
+      "task_range_count": 22
+    },
+    "process_anomalies": [
+      {
+        "evidence_status": "confirmed",
+        "id": "TASK043-PROCESS-ANOMALY-002",
+        "status": "remediated",
+        "summary": "Review found canonical validation and transactional publication gaps; adversarial controls now cover them."
+      },
+      {
+        "evidence_status": "confirmed",
+        "id": "TASK043-PROCESS-ANOMALY-003",
+        "status": "remediated",
+        "summary": "Manifest staging found forbidden hidden status keys in payload; the canonical envelope now omits them."
+      }
+    ],
+    "product_runtime_coverage_claim": false,
+    "release_readiness_claim": false,
+    "scenario_summary": {
+      "non_pass": 0,
+      "observed_pass": 18,
+      "total": 18
+    },
+    "surface_summary": {
+      "R0": 33,
+      "R1": 22,
+      "total": 55
+    },
+    "task044_selection_summary": {
+      "P0": 29,
+      "P1": 3,
+      "execution_status": "not_run",
+      "total": 32
+    }
+  },
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+  "provenance": {
+    "authority": "automation/regression/task043_surface_registry_selector.py",
+    "manifest_policy": "validated_projection_without_circular_hash_binding",
+    "runtime_actions": "not_run",
+    "source": "tracked_public_safe_contracts_only"
+  },
+  "release_effect": "no_release_claim",
+  "review": {
+    "docs_scribe": "pending",
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety_reviewer": "pending"
+  },
+  "risks": [
+    {
+      "id": "RISK-T043-001",
+      "level": "High",
+      "status": "active",
+      "summary": "Static selector success must not be interpreted as product runtime or release readiness."
+    }
+  ],
+  "run_id": "task043-offline-static-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "all-families-plus-launcher-static-selector",
+  "task_id": "TASK-043",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "U-T043-RUNTIME",
+      "question": "Product runtime coverage remains unverified by this offline static task."
+    }
+  ],
+  "verification": [
+    {
+      "check": "surface_registry_reverse_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 55,
+      "status": "pass"
+    },
+    {
+      "check": "epic_scenario_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 307,
+      "status": "pass"
+    },
+    {
+      "check": "task043_static_scenario_execution",
+      "evidence_status": "confirmed",
+      "result_count": 18,
+      "status": "pass"
+    },
+    {
+      "check": "task044_selection_only",
+      "evidence_status": "confirmed",
+      "result_count": 32,
+      "status": "pass"
+    }
+  ]
+}

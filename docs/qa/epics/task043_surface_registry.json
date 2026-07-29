@@ -1,0 +1,1753 @@
+{
+  "evidence_status": "confirmed",
+  "families": [
+    "television-full",
+    "phone-full",
+    "television-steam",
+    "television-sber",
+    "aosp-full",
+    "launcher-system"
+  ],
+  "family_count": 6,
+  "product_runtime_evidence_status": "unknown",
+  "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
+  "risk_summary": {
+    "R0": 33,
+    "R1": 22
+  },
+  "scenario_catalog_count": 15,
+  "scenario_count": 307,
+  "schema_version": "task043-surface-registry-v1",
+  "surface_count": 55,
+  "surfaces": [
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "auth",
+      "evidence_status": "hypothesis",
+      "family_scope": "all app families",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-051"
+      ],
+      "public_safe_description": "Authentication guard and post-auth entry",
+      "risk": "R0",
+      "runtime_oracle_category": "screen/state category; no raw credentials",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "QA-044-005",
+        "QA-046-003",
+        "QA-047-003"
+      ],
+      "surface_id": "SURF-AUTH-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "session",
+      "evidence_status": "hypothesis",
+      "family_scope": "all app families",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-050"
+      ],
+      "public_safe_description": "Session persistence and invalidation",
+      "risk": "R0",
+      "runtime_oracle_category": "observed auth/session state after lifecycle",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-006",
+        "QA-044-007"
+      ],
+      "surface_id": "SURF-AUTH-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "pair_auth",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV+phone",
+      "primary_tasks": [
+        "TASK-045"
+      ],
+      "public_safe_description": "Cross-device same-account/session gating",
+      "risk": "R0",
+      "runtime_oracle_category": "paired success/denial state on both devices",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-045-005"
+      ],
+      "surface_id": "SURF-AUTH-003"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "auth_edges",
+      "evidence_status": "hypothesis",
+      "family_scope": "applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-049",
+        "TASK-051"
+      ],
+      "public_safe_description": "OTP/captcha/legal/error/retry boundaries",
+      "risk": "R1",
+      "runtime_oracle_category": "counter/error/recurrence state without mutation",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-049-014"
+      ],
+      "surface_id": "SURF-AUTH-004"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "payment_session_boundary",
+      "evidence_status": "hypothesis",
+      "family_scope": "all applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Payment or game-session safe stop",
+      "risk": "R0",
+      "runtime_oracle_category": "boundary evidence; no payment/start",
+      "scenario_count": 5,
+      "scenario_ids": [
+        "QA-044-021",
+        "QA-045-020",
+        "QA-046-009",
+        "QA-047-009",
+        "QA-049-011"
+      ],
+      "surface_id": "SURF-BOUNDARY-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "qr_boundary",
+      "evidence_status": "hypothesis",
+      "family_scope": "all applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-049"
+      ],
+      "public_safe_description": "QR capture/decoding category and no traversal",
+      "risk": "R1",
+      "runtime_oracle_category": "local-only target; public category",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-022",
+        "QA-049-011"
+      ],
+      "surface_id": "SURF-BOUNDARY-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "catalog",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Actionable catalog readiness versus loader",
+      "risk": "R0",
+      "runtime_oracle_category": "actionable content/focus",
+      "scenario_count": 5,
+      "scenario_ids": [
+        "QA-044-004",
+        "QA-044-008",
+        "QA-046-004",
+        "QA-047-004",
+        "QA-049-012"
+      ],
+      "surface_id": "SURF-CATALOG-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "catalog_lists",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Rails, grids, lazy loading and boundaries",
+      "risk": "R1",
+      "runtime_oracle_category": "focus/scroll/category sampling",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "QA-044-009",
+        "QA-049-006",
+        "QA-049-007"
+      ],
+      "surface_id": "SURF-CATALOG-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "device_equivalence",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-042",
+        "TASK-046",
+        "TASK-047",
+        "TASK-053"
+      ],
+      "public_safe_description": "TV/STB representative and equivalence devices",
+      "risk": "R0",
+      "runtime_oracle_category": "selected delta evidence",
+      "scenario_count": 14,
+      "scenario_ids": [
+        "QA-042-010",
+        "QA-042-011",
+        "QA-042-013",
+        "QA-042-014",
+        "QA-042-016",
+        "QA-046-014",
+        "QA-047-014",
+        "QA-053-001",
+        "QA-053-002",
+        "QA-053-003",
+        "QA-053-004",
+        "QA-053-009",
+        "QA-053-010",
+        "QA-053-015"
+      ],
+      "surface_id": "SURF-COMPAT-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "os_oem",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-046",
+        "TASK-047",
+        "TASK-053"
+      ],
+      "public_safe_description": "OS/OEM compatibility boundaries",
+      "risk": "R1",
+      "runtime_oracle_category": "risk-based selected results",
+      "scenario_count": 7,
+      "scenario_ids": [
+        "QA-046-013",
+        "QA-047-013",
+        "QA-053-005",
+        "QA-053-006",
+        "QA-053-007",
+        "QA-053-008",
+        "QA-053-014"
+      ],
+      "surface_id": "SURF-COMPAT-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "game_detail",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Game card to detail transition",
+      "risk": "R0",
+      "runtime_oracle_category": "detail family and Back edge",
+      "scenario_count": 4,
+      "scenario_ids": [
+        "QA-044-019",
+        "QA-046-008",
+        "QA-047-008",
+        "QA-049-010"
+      ],
+      "surface_id": "SURF-DETAIL-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "server_list",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-051"
+      ],
+      "public_safe_description": "Detail to server-list structure",
+      "risk": "R0",
+      "runtime_oracle_category": "dynamic structure without fixed rows",
+      "scenario_count": 4,
+      "scenario_ids": [
+        "QA-044-020",
+        "QA-046-008",
+        "QA-047-008",
+        "QA-049-010"
+      ],
+      "surface_id": "SURF-DETAIL-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "focus",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB/system",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-049",
+        "TASK-052",
+        "TASK-054"
+      ],
+      "public_safe_description": "Visible focus acquisition and traversal",
+      "risk": "R0",
+      "runtime_oracle_category": "visual focus category before/after",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-010",
+        "QA-046-012",
+        "QA-047-012",
+        "QA-048-006",
+        "QA-049-015",
+        "QA-054-004"
+      ],
+      "surface_id": "SURF-FOCUS-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "focus_loss",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB/system",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-049",
+        "TASK-052"
+      ],
+      "public_safe_description": "No-op, hidden focus, loss and recovery",
+      "risk": "R0",
+      "runtime_oracle_category": "visual+tree mismatch aware",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-011",
+        "QA-044-026",
+        "QA-046-012",
+        "QA-047-012",
+        "QA-049-015",
+        "QA-052-018"
+      ],
+      "surface_id": "SURF-FOCUS-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "remote_input",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-052",
+        "TASK-054"
+      ],
+      "public_safe_description": "D-pad/remote navigation and action mapping",
+      "risk": "R0",
+      "runtime_oracle_category": "physical/synthetic evidence labelled",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-017",
+        "QA-052-001",
+        "QA-052-002",
+        "QA-052-003",
+        "QA-052-004",
+        "QA-052-019"
+      ],
+      "surface_id": "SURF-INPUT-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "keyboard_input",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-052"
+      ],
+      "public_safe_description": "TV/external keyboard mapping and escape",
+      "risk": "R1",
+      "runtime_oracle_category": "input mapping and focus recovery",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-052-005",
+        "QA-052-006"
+      ],
+      "surface_id": "SURF-INPUT-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "physical_gamepad",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-052"
+      ],
+      "public_safe_description": "Physical controller classify/hotplug/reconnect",
+      "risk": "R1",
+      "runtime_oracle_category": "physical device category and lifecycle",
+      "scenario_count": 11,
+      "scenario_ids": [
+        "QA-045-009",
+        "QA-045-010",
+        "QA-052-007",
+        "QA-052-008",
+        "QA-052-009",
+        "QA-052-010",
+        "QA-052-011",
+        "QA-052-012",
+        "QA-052-013",
+        "QA-052-019",
+        "QA-052-020"
+      ],
+      "surface_id": "SURF-INPUT-003"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "virtual_gamepad",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV+phone",
+      "primary_tasks": [
+        "TASK-045",
+        "TASK-052",
+        "TASK-054"
+      ],
+      "public_safe_description": "Phone virtual gamepad enable/input/cleanup",
+      "risk": "R0",
+      "runtime_oracle_category": "paired control state and visible response",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-045-011",
+        "QA-052-014",
+        "QA-052-015",
+        "QA-052-016",
+        "QA-052-017",
+        "QA-052-020"
+      ],
+      "surface_id": "SURF-INPUT-004"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "install",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-041",
+        "TASK-042",
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-050",
+        "TASK-055"
+      ],
+      "public_safe_description": "APK intake/install/reinstall/package integrity",
+      "risk": "R0",
+      "runtime_oracle_category": "local metadata and launch",
+      "scenario_count": 12,
+      "scenario_ids": [
+        "QA-041-016",
+        "QA-042-001",
+        "QA-042-002",
+        "QA-042-003",
+        "QA-042-004",
+        "QA-044-001",
+        "QA-046-001",
+        "QA-047-001",
+        "QA-048-003",
+        "QA-050-001",
+        "QA-050-002",
+        "QA-050-003"
+      ],
+      "surface_id": "SURF-INSTALL-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "update",
+      "evidence_status": "hypothesis",
+      "family_scope": "all applicable",
+      "primary_tasks": [
+        "TASK-050"
+      ],
+      "public_safe_description": "Update/conflict/previous-bundle behavior",
+      "risk": "R1",
+      "runtime_oracle_category": "before/after state; no bypass",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "QA-050-004",
+        "QA-050-005",
+        "QA-050-006"
+      ],
+      "surface_id": "SURF-INSTALL-002"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "system_service",
+      "evidence_status": "hypothesis",
+      "family_scope": "FogPlay Stick",
+      "primary_tasks": [
+        "TASK-048"
+      ],
+      "public_safe_description": "Observable service/provider availability",
+      "risk": "R1",
+      "runtime_oracle_category": "category-level package/system state",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-048-013"
+      ],
+      "surface_id": "SURF-IPC-001"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "component_guard",
+      "evidence_status": "hypothesis",
+      "family_scope": "approved public components only",
+      "primary_tasks": [
+        "TASK-048"
+      ],
+      "public_safe_description": "Safe malformed/unauthorized component rejection",
+      "risk": "R1",
+      "runtime_oracle_category": "deny/no crash; boundary otherwise",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-048-014"
+      ],
+      "surface_id": "SURF-IPC-002"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "launcher_inventory",
+      "evidence_status": "hypothesis",
+      "family_scope": "FogPlay Stick",
+      "primary_tasks": [
+        "TASK-042",
+        "TASK-048",
+        "TASK-055"
+      ],
+      "public_safe_description": "Launcher/system cluster and target compatibility",
+      "risk": "R0",
+      "runtime_oracle_category": "separate contour and actual target",
+      "scenario_count": 5,
+      "scenario_ids": [
+        "QA-042-005",
+        "QA-042-006",
+        "QA-042-015",
+        "QA-048-001",
+        "QA-048-002"
+      ],
+      "surface_id": "SURF-LAUNCHER-001"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "launcher_boot",
+      "evidence_status": "hypothesis",
+      "family_scope": "FogPlay Stick",
+      "primary_tasks": [
+        "TASK-048"
+      ],
+      "public_safe_description": "Boot/direct-boot/HOME ownership",
+      "risk": "R0",
+      "runtime_oracle_category": "boot timeline and foreground state",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-048-004",
+        "QA-048-005"
+      ],
+      "surface_id": "SURF-LAUNCHER-002"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "launcher_windows",
+      "evidence_status": "hypothesis",
+      "family_scope": "FogPlay Stick",
+      "primary_tasks": [
+        "TASK-048"
+      ],
+      "public_safe_description": "Launcher windows/focus/app launch-return",
+      "risk": "R0",
+      "runtime_oracle_category": "window/state/focus ledger",
+      "scenario_count": 4,
+      "scenario_ids": [
+        "QA-048-006",
+        "QA-048-007",
+        "QA-048-008",
+        "QA-048-009"
+      ],
+      "surface_id": "SURF-LAUNCHER-003"
+    },
+    {
+      "applicable_families": [
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "launcher_setup_services",
+      "evidence_status": "hypothesis",
+      "family_scope": "FogPlay Stick",
+      "primary_tasks": [
+        "TASK-048",
+        "TASK-050",
+        "TASK-051",
+        "TASK-054"
+      ],
+      "public_safe_description": "Setup/service/recovery/system overlays",
+      "risk": "R1",
+      "runtime_oracle_category": "safe observable state",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-048-010",
+        "QA-048-011",
+        "QA-048-012",
+        "QA-048-015",
+        "QA-050-016",
+        "QA-051-016"
+      ],
+      "surface_id": "SURF-LAUNCHER-004"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "localization",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/phone",
+      "primary_tasks": [
+        "TASK-053"
+      ],
+      "public_safe_description": "Locale/fallback/text behavior",
+      "risk": "R1",
+      "runtime_oracle_category": "selected screens and reset",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-053-011"
+      ],
+      "surface_id": "SURF-LOC-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "privacy_logging",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-041",
+        "TASK-042",
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-050",
+        "TASK-051",
+        "TASK-052",
+        "TASK-053",
+        "TASK-054",
+        "TASK-055"
+      ],
+      "public_safe_description": "Evidence/log redaction",
+      "risk": "R0",
+      "runtime_oracle_category": "public-safe category summary",
+      "scenario_count": 14,
+      "scenario_ids": [
+        "QA-041-010",
+        "QA-042-017",
+        "QA-043-016",
+        "QA-044-028",
+        "QA-045-021",
+        "QA-046-016",
+        "QA-047-016",
+        "QA-048-017",
+        "QA-050-018",
+        "QA-051-017",
+        "QA-052-021",
+        "QA-053-017",
+        "QA-054-017",
+        "QA-055-023"
+      ],
+      "surface_id": "SURF-LOG-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "back_navigation",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Back edges and safe exit behavior",
+      "risk": "R0",
+      "runtime_oracle_category": "parent/dialog/exit edge",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-023",
+        "QA-046-010",
+        "QA-047-010",
+        "QA-049-001",
+        "QA-049-002",
+        "QA-049-003"
+      ],
+      "surface_id": "SURF-NAV-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "home_foreground",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-049"
+      ],
+      "public_safe_description": "HOME/background/foreground edges",
+      "risk": "R0",
+      "runtime_oracle_category": "state/focus/session restore",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-024",
+        "QA-046-010",
+        "QA-047-010",
+        "QA-048-009",
+        "QA-049-003",
+        "QA-049-004"
+      ],
+      "surface_id": "SURF-NAV-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "system_overlay",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/system",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-048",
+        "TASK-049"
+      ],
+      "public_safe_description": "Ambient/screensaver/system overlay recovery",
+      "risk": "R1",
+      "runtime_oracle_category": "system/app distinction and wake recovery",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-026",
+        "QA-049-017"
+      ],
+      "surface_id": "SURF-NAV-003"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "network_states",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-049",
+        "TASK-051"
+      ],
+      "public_safe_description": "Offline/error/retry/cache state",
+      "risk": "R0",
+      "runtime_oracle_category": "distinct observable categories",
+      "scenario_count": 9,
+      "scenario_ids": [
+        "QA-049-013",
+        "QA-051-001",
+        "QA-051-002",
+        "QA-051-003",
+        "QA-051-005",
+        "QA-051-006",
+        "QA-051-007",
+        "QA-051-015",
+        "QA-051-016"
+      ],
+      "surface_id": "SURF-NET-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "reconnect",
+      "evidence_status": "hypothesis",
+      "family_scope": "all/paired",
+      "primary_tasks": [
+        "TASK-045",
+        "TASK-051",
+        "TASK-054"
+      ],
+      "public_safe_description": "Network reconnect and cross-device asymmetry",
+      "risk": "R0",
+      "runtime_oracle_category": "first failure+recovery+duplicate check",
+      "scenario_count": 9,
+      "scenario_ids": [
+        "QA-045-016",
+        "QA-045-017",
+        "QA-045-018",
+        "QA-051-008",
+        "QA-051-009",
+        "QA-051-012",
+        "QA-051-013",
+        "QA-051-014",
+        "QA-054-007"
+      ],
+      "surface_id": "SURF-NET-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "cache_stale",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-050",
+        "TASK-051"
+      ],
+      "public_safe_description": "Cache/stale data behavior",
+      "risk": "R1",
+      "runtime_oracle_category": "cache/stale/error separation",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-050-012",
+        "QA-051-004"
+      ],
+      "surface_id": "SURF-NET-003"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "pairing",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV+phone",
+      "primary_tasks": [
+        "TASK-045"
+      ],
+      "public_safe_description": "TV discovery and pair handshake preconditions",
+      "risk": "R0",
+      "runtime_oracle_category": "consistent discovered/waiting/denied state",
+      "scenario_count": 7,
+      "scenario_ids": [
+        "QA-042-012",
+        "QA-045-001",
+        "QA-045-002",
+        "QA-045-003",
+        "QA-045-004",
+        "QA-045-005",
+        "QA-045-006"
+      ],
+      "surface_id": "SURF-PAIR-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "pair_lifecycle",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV+phone",
+      "primary_tasks": [
+        "TASK-045",
+        "TASK-050",
+        "TASK-051",
+        "TASK-052",
+        "TASK-054"
+      ],
+      "public_safe_description": "Pair lifecycle, reconnect and cleanup",
+      "risk": "R0",
+      "runtime_oracle_category": "cross-device state timeline",
+      "scenario_count": 16,
+      "scenario_ids": [
+        "QA-045-007",
+        "QA-045-008",
+        "QA-045-012",
+        "QA-045-013",
+        "QA-045-014",
+        "QA-045-015",
+        "QA-045-016",
+        "QA-045-017",
+        "QA-045-018",
+        "QA-045-019",
+        "QA-050-014",
+        "QA-050-015",
+        "QA-051-012",
+        "QA-051-013",
+        "QA-051-014",
+        "QA-052-014"
+      ],
+      "surface_id": "SURF-PAIR-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "stability",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-054"
+      ],
+      "public_safe_description": "Startup responsiveness, crash and ANR",
+      "risk": "R0",
+      "runtime_oracle_category": "bounded timing and signals",
+      "scenario_count": 10,
+      "scenario_ids": [
+        "QA-044-029",
+        "QA-046-016",
+        "QA-047-016",
+        "QA-048-018",
+        "QA-054-001",
+        "QA-054-002",
+        "QA-054-003",
+        "QA-054-004",
+        "QA-054-013",
+        "QA-054-014"
+      ],
+      "surface_id": "SURF-PERF-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "soak_resources",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-051",
+        "TASK-054"
+      ],
+      "public_safe_description": "Repeated cycles, resources and bounded soak",
+      "risk": "R1",
+      "runtime_oracle_category": "budgeted cycle ledger",
+      "scenario_count": 11,
+      "scenario_ids": [
+        "QA-051-018",
+        "QA-054-005",
+        "QA-054-006",
+        "QA-054-007",
+        "QA-054-008",
+        "QA-054-009",
+        "QA-054-010",
+        "QA-054-011",
+        "QA-054-012",
+        "QA-054-015",
+        "QA-054-016"
+      ],
+      "surface_id": "SURF-PERF-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "persistence",
+      "evidence_status": "hypothesis",
+      "family_scope": "all app families",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-050"
+      ],
+      "public_safe_description": "Session/preferences/cache retention and reset",
+      "risk": "R0",
+      "runtime_oracle_category": "before/action/after state",
+      "scenario_count": 12,
+      "scenario_ids": [
+        "QA-044-006",
+        "QA-044-007",
+        "QA-044-031",
+        "QA-045-012",
+        "QA-050-007",
+        "QA-050-008",
+        "QA-050-011",
+        "QA-050-012",
+        "QA-050-013",
+        "QA-050-014",
+        "QA-050-015",
+        "QA-050-017"
+      ],
+      "surface_id": "SURF-PERSIST-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "process_recovery",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-049",
+        "TASK-050"
+      ],
+      "public_safe_description": "Force-stop/process death/reboot recovery",
+      "risk": "R0",
+      "runtime_oracle_category": "restored/new state explicitly observed",
+      "scenario_count": 11,
+      "scenario_ids": [
+        "QA-044-025",
+        "QA-045-013",
+        "QA-045-014",
+        "QA-046-011",
+        "QA-047-011",
+        "QA-048-010",
+        "QA-048-016",
+        "QA-049-005",
+        "QA-050-009",
+        "QA-050-010",
+        "QA-050-016"
+      ],
+      "surface_id": "SURF-PERSIST-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "protocol_reconnect",
+      "evidence_status": "hypothesis",
+      "family_scope": "connected app lanes",
+      "primary_tasks": [
+        "TASK-051"
+      ],
+      "public_safe_description": "Observable subscription/reconnect lifecycle",
+      "risk": "R1",
+      "runtime_oracle_category": "UI/event behavior; no private payloads",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "QA-051-008",
+        "QA-051-009",
+        "QA-051-011"
+      ],
+      "surface_id": "SURF-PROTO-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "duplicates",
+      "evidence_status": "hypothesis",
+      "family_scope": "connected app lanes",
+      "primary_tasks": [
+        "TASK-051"
+      ],
+      "public_safe_description": "Duplicate visible event/notification detection",
+      "risk": "R1",
+      "runtime_oracle_category": "event recurrence count and trigger",
+      "scenario_count": 1,
+      "scenario_ids": [
+        "QA-051-010"
+      ],
+      "surface_id": "SURF-PROTO-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "release_gate",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-041",
+        "TASK-043",
+        "TASK-044",
+        "TASK-045",
+        "TASK-048",
+        "TASK-049",
+        "TASK-050",
+        "TASK-051",
+        "TASK-052",
+        "TASK-053",
+        "TASK-054",
+        "TASK-055"
+      ],
+      "public_safe_description": "Evidence freshness/integrity and fail-closed release status",
+      "risk": "R0",
+      "runtime_oracle_category": "authoritative evidence only",
+      "scenario_count": 52,
+      "scenario_ids": [
+        "QA-041-001",
+        "QA-041-002",
+        "QA-041-003",
+        "QA-041-004",
+        "QA-041-005",
+        "QA-041-006",
+        "QA-041-007",
+        "QA-041-008",
+        "QA-041-009",
+        "QA-041-010",
+        "QA-041-017",
+        "QA-042-004",
+        "QA-043-005",
+        "QA-043-006",
+        "QA-043-007",
+        "QA-043-008",
+        "QA-043-009",
+        "QA-043-010",
+        "QA-043-011",
+        "QA-044-032",
+        "QA-045-022",
+        "QA-046-017",
+        "QA-047-017",
+        "QA-048-019",
+        "QA-049-023",
+        "QA-050-019",
+        "QA-050-020",
+        "QA-051-019",
+        "QA-051-020",
+        "QA-052-022",
+        "QA-053-016",
+        "QA-053-018",
+        "QA-054-018",
+        "QA-055-001",
+        "QA-055-002",
+        "QA-055-006",
+        "QA-055-007",
+        "QA-055-008",
+        "QA-055-009",
+        "QA-055-010",
+        "QA-055-011",
+        "QA-055-012",
+        "QA-055-013",
+        "QA-055-014",
+        "QA-055-015",
+        "QA-055-016",
+        "QA-055-017",
+        "QA-055-018",
+        "QA-055-019",
+        "QA-055-020",
+        "QA-055-021",
+        "QA-055-024"
+      ],
+      "surface_id": "SURF-RELEASE-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "coverage_selector",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-041",
+        "TASK-042",
+        "TASK-043",
+        "TASK-049",
+        "TASK-055"
+      ],
+      "public_safe_description": "Risk/family/device/scenario traceability and selection",
+      "risk": "R0",
+      "runtime_oracle_category": "machine-readable selector and gap report",
+      "scenario_count": 27,
+      "scenario_ids": [
+        "QA-041-011",
+        "QA-041-012",
+        "QA-041-013",
+        "QA-041-014",
+        "QA-041-015",
+        "QA-041-018",
+        "QA-042-018",
+        "QA-043-001",
+        "QA-043-002",
+        "QA-043-003",
+        "QA-043-004",
+        "QA-043-012",
+        "QA-043-013",
+        "QA-043-014",
+        "QA-043-015",
+        "QA-043-017",
+        "QA-043-018",
+        "QA-049-001",
+        "QA-049-019",
+        "QA-049-020",
+        "QA-049-021",
+        "QA-049-022",
+        "QA-049-024",
+        "QA-055-003",
+        "QA-055-004",
+        "QA-055-005",
+        "QA-055-022"
+      ],
+      "surface_id": "SURF-RELEASE-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "route",
+      "evidence_status": "hypothesis",
+      "family_scope": "applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-049"
+      ],
+      "public_safe_description": "Encoded route/search parameter handling",
+      "risk": "R1",
+      "runtime_oracle_category": "target or safe rejection; no crash",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-013",
+        "QA-049-018"
+      ],
+      "surface_id": "SURF-ROUTE-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "deeplink",
+      "evidence_status": "hypothesis",
+      "family_scope": "applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-049"
+      ],
+      "public_safe_description": "Deep-link/component entry boundary",
+      "risk": "R1",
+      "runtime_oracle_category": "safe route or explicit denial",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-027",
+        "QA-049-018"
+      ],
+      "surface_id": "SURF-ROUTE-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "search",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/phone applicable",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-051"
+      ],
+      "public_safe_description": "Search entry, query and result states",
+      "risk": "R0",
+      "runtime_oracle_category": "screen/query/result/error state",
+      "scenario_count": 5,
+      "scenario_ids": [
+        "QA-044-012",
+        "QA-044-013",
+        "QA-046-005",
+        "QA-047-005",
+        "QA-049-008"
+      ],
+      "surface_id": "SURF-SEARCH-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "search_keyboard",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-052"
+      ],
+      "public_safe_description": "TV keyboard and Back/Escape recovery",
+      "risk": "R0",
+      "runtime_oracle_category": "keyboard closes; focus returns or defect",
+      "scenario_count": 6,
+      "scenario_ids": [
+        "QA-044-014",
+        "QA-044-015",
+        "QA-046-006",
+        "QA-047-006",
+        "QA-049-008",
+        "QA-052-005"
+      ],
+      "surface_id": "SURF-SEARCH-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "settings",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Settings root and safe navigation",
+      "risk": "R1",
+      "runtime_oracle_category": "correct destination and focus",
+      "scenario_count": 4,
+      "scenario_ids": [
+        "QA-044-016",
+        "QA-046-007",
+        "QA-047-007",
+        "QA-049-009"
+      ],
+      "surface_id": "SURF-SETTINGS-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "settings_mutation_boundary",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV/STB",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Gamepad path versus logout/account mutation",
+      "risk": "R0",
+      "runtime_oracle_category": "Gamepad reached or logout cancel anomaly",
+      "scenario_count": 5,
+      "scenario_ids": [
+        "QA-044-017",
+        "QA-044-018",
+        "QA-046-007",
+        "QA-047-007",
+        "QA-049-009"
+      ],
+      "surface_id": "SURF-SETTINGS-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "startup",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-042",
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-048",
+        "TASK-054"
+      ],
+      "public_safe_description": "Cold/process start and first actionable state",
+      "risk": "R0",
+      "runtime_oracle_category": "ready-state visual+focus oracle; loader timeout",
+      "scenario_count": 9,
+      "scenario_ids": [
+        "QA-042-007",
+        "QA-042-008",
+        "QA-042-009",
+        "QA-044-002",
+        "QA-044-004",
+        "QA-046-002",
+        "QA-047-002",
+        "QA-049-012",
+        "QA-054-001"
+      ],
+      "surface_id": "SURF-START-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "startup",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-050",
+        "TASK-054"
+      ],
+      "public_safe_description": "Warm foreground and state restoration",
+      "risk": "R1",
+      "runtime_oracle_category": "foreground ready state and focus",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "QA-044-003",
+        "QA-044-031",
+        "QA-054-002"
+      ],
+      "surface_id": "SURF-START-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "session_entry",
+      "evidence_status": "hypothesis",
+      "family_scope": "TV+phone",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-045",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049"
+      ],
+      "public_safe_description": "Pre-stream/session entry boundary",
+      "risk": "R0",
+      "runtime_oracle_category": "safe stop before paid/active session",
+      "scenario_count": 2,
+      "scenario_ids": [
+        "QA-044-021",
+        "QA-045-020"
+      ],
+      "surface_id": "SURF-STREAM-001"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full"
+      ],
+      "category": "session_lifecycle",
+      "evidence_status": "hypothesis",
+      "family_scope": "approved non-paid fixtures only",
+      "primary_tasks": [
+        "TASK-045",
+        "TASK-051",
+        "TASK-052"
+      ],
+      "public_safe_description": "Session/DataChannel lifecycle observable cleanup",
+      "risk": "R1",
+      "runtime_oracle_category": "enter/leave/reconnect cleanup if safely observable",
+      "scenario_count": 11,
+      "scenario_ids": [
+        "QA-045-013",
+        "QA-045-014",
+        "QA-045-016",
+        "QA-045-017",
+        "QA-045-018",
+        "QA-045-019",
+        "QA-051-008",
+        "QA-051-009",
+        "QA-051-012",
+        "QA-051-013",
+        "QA-051-014"
+      ],
+      "surface_id": "SURF-STREAM-002"
+    },
+    {
+      "applicable_families": [
+        "television-full",
+        "phone-full",
+        "television-steam",
+        "television-sber",
+        "aosp-full",
+        "launcher-system"
+      ],
+      "category": "visual_usability",
+      "evidence_status": "hypothesis",
+      "family_scope": "all",
+      "primary_tasks": [
+        "TASK-044",
+        "TASK-046",
+        "TASK-047",
+        "TASK-049",
+        "TASK-053"
+      ],
+      "public_safe_description": "Layout, FHD/4K, font scale, screenshot/tree mismatches",
+      "risk": "R1",
+      "runtime_oracle_category": "visual evidence and critical action visibility",
+      "scenario_count": 7,
+      "scenario_ids": [
+        "QA-044-030",
+        "QA-046-015",
+        "QA-047-015",
+        "QA-049-016",
+        "QA-053-009",
+        "QA-053-012",
+        "QA-053-013"
+      ],
+      "surface_id": "SURF-USABILITY-001"
+    }
+  ],
+  "task_id": "TASK-043"
+}

@@ -251,6 +251,25 @@ access prevented fresh APK content-integrity, ADB and AVD evidence, so the exact
 five-entry bundle is presence-confirmed but integrity-blocked. No release or
 product-runtime claim is made.
 
+## Offline Regression Surface Selector
+
+`automation/regression/task043_surface_registry_selector.py` implements the
+TASK-043 fail-closed surface registry and selector. It reads only a fixed set of
+tracked public-safe epic catalogs, matrices and report-manifest projections.
+Its production CLI has no path overrides and never reads `.qa_local`, APKs,
+SDK/ADB/AVD, devices or runtime evidence, and never starts a child process or
+network action.
+
+The four modes are `--validate-only` (constants only), `--preflight` (fixed
+read-only contracts), `--execute` (deterministic offline static output
+generation) and `--validate-report` (fixed hash/count reconciliation). Legacy
+TASK-019…040 records remain historical, stale and non-authoritative. The
+selector distinguishes physical, paired physical, AVD, synthetic, static and
+mapped-only evidence, rejects cross-family substitution, preserves an initial
+failure after retry/recovery and emits TASK-044 rows as selection-only
+`not_run` work. A passing TASK-043 static contract does not claim product
+runtime coverage or release readiness.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

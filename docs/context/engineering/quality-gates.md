@@ -801,9 +801,12 @@ QA B reviews are `GO`; final Security/Prod-safety and Docs/Scribe reviews of the
 completed documentation/diff are also `GO` with no open R0/R1/P2.
 
 The owner currently requires local completion without Git push. Therefore the
-quality state is `local_verified_pending_remote_integration`. Task-branch push,
-merge/default push, post-integration verification and TASK-044 thread creation
-remain required lifecycle gates and must not be claimed or bypassed.
+quality state is `local_integrated_pending_remote_push`. Task commit `9e12a13`
+was fast-forwarded into clean local `main`; post-integration TASK-043 CLI,
+targeted/full pytest, manifest, compile, epic, docs, hygiene and public-safety
+gates passed. Task-branch push, default push/remote alignment and TASK-044
+thread creation remain required lifecycle gates and must not be claimed or
+bypassed.
 
 ## Merge gates
 

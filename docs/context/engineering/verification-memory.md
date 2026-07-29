@@ -546,7 +546,7 @@ pytest repeat remains explicitly `blocked_by_tooling`, not reported as PASS.
 
 ## TASK-043 offline surface registry and selector verification record — 2026-07-29
 
-Status: `local_verified_pending_remote_integration`. No product-runtime or
+Status: `local_integrated_pending_remote_push`. No product-runtime or
 release-readiness PASS is claimed.
 
 - Mode: `BOUNDED_AUTONOMOUS`.
@@ -619,7 +619,11 @@ Four confirmed process anomalies were recorded and remediated:
   neutral synthetic markers so the privacy guard remains covered without
   publishing product-shaped examples.
 
-The owner currently requires local completion without Git push. Task-branch
-push, default integration/push, post-integration verification and creation of a
-fresh TASK-044 continuation thread remain not done and must not be claimed in
-this task.
+Task commit `9e12a13` was fast-forwarded into clean local `main`. Post-integration
+verification repeated all four TASK-043 CLI modes, targeted pytest (102 passed,
+1 skipped), full pytest (1095 passed, 3 skipped), manifest validation (27/4/23),
+compileall, epic validation, docs (170/0), public safety (337/0), both hygiene
+modes and diff/status checks; all passed. The owner currently requires local
+completion without Git push. Task-branch push, default push/remote alignment and
+creation of a fresh TASK-044 continuation thread remain not done and must not
+be claimed in this task.

@@ -6,14 +6,14 @@
 - Thread id: `019fadbd-22ba-7ac1-8fa5-84bca075c6d7`.
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Production safety: `PROD_SAFE_OFFLINE_STATIC_ONLY`.
-- Lifecycle status: `local_verified_pending_remote_integration`.
+- Lifecycle status: `local_integrated_pending_remote_push`.
 - Task branch: `qa/task-043-source-informed-runtime-coverage-map`.
 - Default branch: `main`.
 - Exact baseline: `origin/main@f92e527260a96460eaccfdb8b17632bc47896414`,
   which records TASK-042 as `inactive_completed` and TASK-043 as active.
 - Current owner workflow temporarily defers every Git push. This is not a task
-  blocker: local implementation and verification continue, but task-branch
-  push, default integration/push, post-integration verification and TASK-044
+  blocker: task commit `9e12a13` has been fast-forwarded into clean local
+  `main`, but task-branch push, default push/remote alignment and TASK-044
   thread creation remain explicitly not done.
 
 TASK-043 produced a deterministic public-safe registry and selector bundle from
@@ -80,9 +80,10 @@ Process anomalies were recorded and remediated:
 
 Latest accepted verification evidence includes 102 targeted passes with 1
 skip, 1095 full-suite passes with 3 skips, docs scan 170/0, public-safety scan
-337/0 and manifest validation 27/4/23. No commit, push, merge or post-merge
-verification is claimed at this checkpoint. Do not start TASK-044 in this
-thread.
+337/0 and manifest validation 27/4/23. The same gates passed after the local
+fast-forward integration of task commit `9e12a13` into `main`. No task-branch
+push, default push/remote alignment or TASK-044 start is claimed at this
+checkpoint. Do not start TASK-044 in this thread.
 
 ## Completed TASK-042 — local runtime preflight
 

@@ -1,0 +1,496 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task042_local_runtime_preflight.scenario-ledger.csv",
+      "sha256": "dd126549967548e15eba13f0a59f7bffbe22d2117ae1123d03152ad02fc81e77"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness_matrix",
+      "reference": "docs/qa/reports/task042_local_runtime_preflight.readiness-matrix.csv",
+      "sha256": "f0898d70fdf29c7c961c58cb2166ca8066a8cebb46fbdabcdf15277e9f536652"
+    }
+  ],
+  "blocked_reasons": [
+    "actual_stick_mapping_missing",
+    "canonical_apk_integrity_not_verified",
+    "compatible_avd_fixture_not_verified",
+    "configured_android_sdk_root_inaccessible",
+    "configured_sdk_emulator_missing",
+    "current_device_status_unknown",
+    "launcher_component_mapping_missing",
+    "paired_phone_primary_and_fallback_not_ready"
+  ],
+  "build_ref": {
+    "alias": "qa-repository-task042"
+  },
+  "coverage_status": "partial_blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "partial",
+  "generated_at_utc": "2026-07-29T11:36:56Z",
+  "payload": {
+    "alias_map_audit": {
+      "connected_alias_requires_tracked_review": true,
+      "ignored_aliases_are_authoritative": false,
+      "ignored_unreviewed_alias_count": 2
+    },
+    "apk_readiness": {
+      "bundle_status": "BLOCKED",
+      "canonical_contract_key": "task005_apk_bundle_contract",
+      "canonical_directory_status": "PRESENT",
+      "contract_entry_count": 5,
+      "entries": [
+        {
+          "apk_alias": "main-apk-01",
+          "contract_filename": "fogplay-tv-television-steam-production-release.apk",
+          "evidence_status": "unknown",
+          "presence_status": "PRESENT",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "apk_alias": "main-apk-02",
+          "contract_filename": "fogplay-tv-television-sber-production-release.apk",
+          "evidence_status": "unknown",
+          "presence_status": "PRESENT",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "apk_alias": "main-apk-03",
+          "contract_filename": "fogplay-tv-phone-full-production-release.apk",
+          "evidence_status": "unknown",
+          "presence_status": "PRESENT",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "apk_alias": "main-apk-04",
+          "contract_filename": "fogplay-tv-aosp-full-production-release.apk",
+          "evidence_status": "unknown",
+          "presence_status": "PRESENT",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "apk_alias": "main-apk-05",
+          "contract_filename": "fogplay-tv-television-full-production-release.apk",
+          "evidence_status": "unknown",
+          "presence_status": "PRESENT",
+          "scenario_status": "blocked_by_oracle"
+        }
+      ],
+      "metadata_capture_status": "LOCAL_ONLY_TOOLING_DEFECT",
+      "missing_expected_count": 0,
+      "unexpected_apk_count": 0,
+      "unexpected_entries_are_main_bundle_members": false
+    },
+    "device_readiness": [
+      {
+        "blocker": "current_device_status_unknown",
+        "current_status": "UNKNOWN",
+        "device_alias": "tv-tpv-013",
+        "evidence_status": "unknown",
+        "historical_public_profile_is_runtime_evidence": false,
+        "scenario_status": "blocked_by_device"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "current_status": "UNKNOWN",
+        "device_alias": "phone-xiaomi-007",
+        "evidence_status": "unknown",
+        "historical_public_profile_is_runtime_evidence": false,
+        "scenario_status": "blocked_by_device"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "current_status": "UNKNOWN",
+        "device_alias": "tv-yandex-012",
+        "evidence_status": "unknown",
+        "historical_public_profile_is_runtime_evidence": false,
+        "scenario_status": "blocked_by_device"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "current_status": "UNKNOWN",
+        "device_alias": "stb-sberdevices-009",
+        "evidence_status": "unknown",
+        "historical_public_profile_is_runtime_evidence": false,
+        "scenario_status": "blocked_by_device"
+      }
+    ],
+    "fogplay_stick_actual_target": {
+      "actual_alias_status": "unknown",
+      "blocker": "actual_stick_mapping_missing",
+      "current_status": "MISSING",
+      "evidence_status": "unknown",
+      "generic_substitution_allowed": false,
+      "scenario_status": "blocked_by_device",
+      "selected_device_alias": null,
+      "selector_key": "fogplay_stick_actual_target"
+    },
+    "launcher_contour": {
+      "blocker": "launcher_component_mapping_missing",
+      "canonical_local_contract_status": "UNAVAILABLE",
+      "contour_key": "launcher_system_cluster",
+      "counted_as_main_apk_entry": false,
+      "current_status": "BLOCKED",
+      "evidence_status": "unknown",
+      "scenario_status": "blocked_by_fixture",
+      "separate_from_main_apk_bundle": true
+    },
+    "paired_phone_fallback": {
+      "automatically_substituted": false,
+      "current_status": "UNKNOWN",
+      "device_alias": "phone-samsung-002",
+      "evidence_status": "unknown",
+      "selection_allowed_only_if_primary_unavailable": true
+    },
+    "process_anomalies": [
+      {
+        "cause_evidence_status": "likely",
+        "classification": "preflight_gate_anomaly",
+        "evidence_status": "confirmed",
+        "expected_result": "Only tracked-reviewed mappings influence connected-device authority.",
+        "id": "TASK042-PROCESS-ANOMALY-001",
+        "likely_cause": "Historical local mappings remained after the tracked review set changed.",
+        "observed_result": "Initial strict validation stopped on stale unreviewed mappings.",
+        "public_safe_alias": "initial_alias_scope_fail_closed",
+        "remediation": "Only the approved one-or-two connected tracked-reviewed aliases may receive per-device calls.",
+        "test_design_implication": "Classify stale mappings as non-authoritative while still requiring every listed serial to map.",
+        "trigger_action": "Validate every local alias-map entry as authoritative."
+      },
+      {
+        "cause_evidence_status": "likely",
+        "classification": "tooling_access_anomaly",
+        "evidence_status": "confirmed",
+        "expected_result": "Resolve configured SDK tooling and classify one or two mapped reviewed connected targets.",
+        "id": "TASK042-PROCESS-ANOMALY-003",
+        "likely_cause": "The resumed execution environment uses a more restrictive filesystem identity than the earlier approved run.",
+        "observed_result": "The execution sandbox could not access the configured SDK root; no Android tooling or device command executed.",
+        "public_safe_alias": "configured_sdk_access_interruption",
+        "remediation": "The runner recorded a public-safe tooling defect and preserved all device aliases as UNKNOWN.",
+        "test_design_implication": "SDK permission errors must become terminal tooling blockers instead of aborting report generation.",
+        "trigger_action": "Repeat bounded APK/ADB/AVD inventory after the owner changed the connected-device set."
+      }
+    ],
+    "public_safety": {
+      "absolute_paths_included": false,
+      "local_identity_values_included": false,
+      "raw_apk_metadata_included": false,
+      "raw_machine_values_included": false,
+      "validation_status": "pass"
+    },
+    "scenario_ledger": [
+      {
+        "blocker": "canonical_apk_integrity_not_verified",
+        "evidence_status": "unknown",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Exact canonical APK presence passed, but content integrity was not read in the current run.",
+        "lane": "local bundle",
+        "priority": "P0",
+        "scenario_id": "QA-042-001",
+        "scenario_status": "blocked_by_fixture",
+        "surface_ids": "SURF-INSTALL-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "synthetic_offline",
+        "justification": "Synthetic missing-entry classifier returns a blocked bundle.",
+        "lane": "local bundle",
+        "priority": "P0",
+        "scenario_id": "QA-042-002",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-INSTALL-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "synthetic_offline",
+        "justification": "Synthetic extra entry remains outside the five-entry main bundle.",
+        "lane": "local bundle",
+        "priority": "P0",
+        "scenario_id": "QA-042-003",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-INSTALL-001"
+      },
+      {
+        "blocker": "apk_signature_verification_tooling_failed",
+        "evidence_status": "confirmed",
+        "evidence_type": "local_preflight_gate",
+        "justification": "A required SDK metadata/signature step failed; diagnostics remain local-only.",
+        "lane": "local bundle",
+        "priority": "P0",
+        "scenario_id": "QA-042-004",
+        "scenario_status": "tooling_defect",
+        "surface_ids": "SURF-INSTALL-001;SURF-RELEASE-001"
+      },
+      {
+        "blocker": "launcher_component_mapping_missing",
+        "evidence_status": "unknown",
+        "evidence_type": "static_contract",
+        "justification": "Launcher/system contour remains separate; no approved local component mapping is available.",
+        "lane": "launcher contour",
+        "priority": "P0",
+        "scenario_id": "QA-042-005",
+        "scenario_status": "blocked_by_fixture",
+        "surface_ids": "SURF-LAUNCHER-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "synthetic_offline",
+        "justification": "Missing launcher component blocks only the launcher/system contour.",
+        "lane": "launcher contour",
+        "priority": "P1",
+        "scenario_id": "QA-042-006",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-LAUNCHER-001"
+      },
+      {
+        "blocker": "configured_adb_version_not_ready",
+        "evidence_status": "confirmed",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Configured SDK ADB version failed or returned empty output.",
+        "lane": "local tools",
+        "priority": "P0",
+        "scenario_id": "QA-042-007",
+        "scenario_status": "tooling_defect",
+        "surface_ids": "SURF-START-001"
+      },
+      {
+        "blocker": "configured_avd_tooling_not_ready",
+        "evidence_status": "confirmed",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Configured emulator tool was missing or inventory query failed.",
+        "lane": "local tools",
+        "priority": "P0",
+        "scenario_id": "QA-042-008",
+        "scenario_status": "tooling_defect",
+        "surface_ids": "SURF-START-001"
+      },
+      {
+        "blocker": "compatible_avd_fixture_not_verified",
+        "evidence_status": "unknown",
+        "evidence_type": "static_contract",
+        "justification": "No compatible approved AVD fixture was established; no compatibility claim is made.",
+        "lane": "AVD",
+        "priority": "P1",
+        "scenario_id": "QA-042-009",
+        "scenario_status": "blocked_by_fixture",
+        "surface_ids": "SURF-START-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "local_preflight_gate",
+        "justification": "ADB inventory or connected-device mapping gate did not complete authoritatively.",
+        "lane": "devices",
+        "priority": "P0",
+        "scenario_id": "QA-042-010",
+        "scenario_status": "tooling_defect",
+        "surface_ids": "SURF-COMPAT-001"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "evidence_status": "unknown",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Read-only ADB inventory classified the approved alias as UNKNOWN.",
+        "lane": "tv-tpv-013",
+        "priority": "P0",
+        "scenario_id": "QA-042-011",
+        "scenario_status": "blocked_by_device",
+        "surface_ids": "SURF-COMPAT-001"
+      },
+      {
+        "blocker": "paired_phone_primary_and_fallback_not_ready",
+        "evidence_status": "unknown",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Neither reviewed primary nor explicit fallback is READY.",
+        "lane": "phone-xiaomi-007",
+        "priority": "P0",
+        "scenario_id": "QA-042-012",
+        "scenario_status": "blocked_by_device",
+        "surface_ids": "SURF-PAIR-001"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "evidence_status": "unknown",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Read-only ADB inventory classified the approved alias as UNKNOWN.",
+        "lane": "tv-yandex-012",
+        "priority": "P0",
+        "scenario_id": "QA-042-013",
+        "scenario_status": "blocked_by_device",
+        "surface_ids": "SURF-COMPAT-001"
+      },
+      {
+        "blocker": "current_device_status_unknown",
+        "evidence_status": "unknown",
+        "evidence_type": "local_preflight_gate",
+        "justification": "Read-only ADB inventory classified the approved alias as UNKNOWN.",
+        "lane": "stb-sberdevices-009",
+        "priority": "P0",
+        "scenario_id": "QA-042-014",
+        "scenario_status": "blocked_by_device",
+        "surface_ids": "SURF-COMPAT-001"
+      },
+      {
+        "blocker": "actual_stick_mapping_missing",
+        "evidence_status": "unknown",
+        "evidence_type": "static_contract",
+        "justification": "No approved actual FogPlay Stick alias is present; generic substitution is forbidden.",
+        "lane": "actual FogPlay Stick alias",
+        "priority": "P0",
+        "scenario_id": "QA-042-015",
+        "scenario_status": "blocked_by_device",
+        "surface_ids": "SURF-LAUNCHER-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "synthetic_offline",
+        "justification": "An unmapped Himedia alias remains UNKNOWN and requires manual mapping.",
+        "lane": "tv-himedia-010",
+        "priority": "P1",
+        "scenario_id": "QA-042-016",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-COMPAT-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "static_contract",
+        "justification": "Generated public report is validated against forbidden identity/value rules.",
+        "lane": "all",
+        "priority": "P0",
+        "scenario_id": "QA-042-017",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-LOG-001"
+      },
+      {
+        "evidence_status": "confirmed",
+        "evidence_type": "static_contract",
+        "justification": "TASK-043 proceeds while later runtime blockers remain lane-scoped.",
+        "lane": "all",
+        "priority": "P0",
+        "scenario_id": "QA-042-018",
+        "scenario_status": "observed_pass",
+        "surface_ids": "SURF-RELEASE-002"
+      }
+    ],
+    "scenario_summary": {
+      "blocked": 8,
+      "non_closing": 0,
+      "observed_pass": 6,
+      "p0": 15,
+      "tooling_defect": 4,
+      "total": 18
+    },
+    "selected_lanes": {
+      "TASK-043": {
+        "basis": "static_registry_task_not_blocked_by_runtime_lane",
+        "decision": "proceed"
+      },
+      "TASK-044": {
+        "decision": "blocked_by_device",
+        "device_alias": "tv-tpv-013"
+      },
+      "TASK-045": {
+        "decision": "blocked_by_device",
+        "device_alias": "phone-xiaomi-007",
+        "fallback_alias": "phone-samsung-002"
+      },
+      "TASK-046": {
+        "decision": "blocked_by_device",
+        "device_alias": "tv-yandex-012"
+      },
+      "TASK-047": {
+        "decision": "blocked_by_device",
+        "device_alias": "stb-sberdevices-009"
+      },
+      "TASK-048": {
+        "decision": "blocked_by_device",
+        "selector_key": "fogplay_stick_actual_target"
+      }
+    },
+    "tooling": {
+      "adb": {
+        "invoked": false,
+        "readiness": "TOOLING_DEFECT",
+        "reason": "configured_sdk_not_ready"
+      },
+      "avd": {
+        "claim_scope": "tooling_only",
+        "invoked": false,
+        "product_compatibility_claim": false,
+        "public_avd_count": null,
+        "raw_avd_names_publicly_included": false,
+        "reason": "configured_sdk_not_ready",
+        "status": "TOOLING_DEFECT"
+      }
+    }
+  },
+  "production_safety_classification": "PROD_CONDITIONAL",
+  "provenance": {
+    "apk_contents_read": false,
+    "local_identity_values_read": false,
+    "raw_values_publicly_included": false,
+    "runtime_actions": "local_contract_only_tooling_blocked",
+    "source": "tracked_contracts_and_approved_local_read_only_execution",
+    "subprocesses": "not_run"
+  },
+  "release_effect": "no_release_claim",
+  "review": {
+    "docs_scribe": "approved",
+    "qa_reviewer_a": "approved",
+    "qa_reviewer_b": "approved",
+    "security_prod_safety_reviewer": "approved"
+  },
+  "risks": [
+    {
+      "id": "RISK-T042-FALSE-PASS",
+      "level": "R0",
+      "status": "controlled",
+      "summary": "Presence, historical inventory, synthetic and AVD tooling evidence cannot assert physical product readiness."
+    }
+  ],
+  "run_id": "task042-approved-read-only-execution-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "local-runtime-preflight-public-safe",
+  "task_id": "TASK-042",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "U-T042-LAUNCHER-STICK",
+      "question": "Where are the approved launcher checkout contract and actual FogPlay Stick alias mapping?"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "U-T042-APK-METADATA-TOOLING",
+      "question": "Which bounded metadata/signature tooling step prevented complete local APK metadata capture?"
+    }
+  ],
+  "verification": [
+    {
+      "check": "tracked_static_contract_validation",
+      "evidence_status": "confirmed",
+      "status": "pass"
+    },
+    {
+      "check": "canonical_apk_integrity_and_local_metadata",
+      "evidence_status": "confirmed",
+      "status": "blocked"
+    },
+    {
+      "check": "task016_bounded_adb_inventory",
+      "evidence_status": "confirmed",
+      "status": "blocked"
+    },
+    {
+      "check": "bounded_avd_inventory",
+      "evidence_status": "confirmed",
+      "status": "blocked"
+    },
+    {
+      "check": "scenario_terminal_classification",
+      "evidence_status": "confirmed",
+      "scenario_count": 18,
+      "status": "pass"
+    }
+  ]
+}

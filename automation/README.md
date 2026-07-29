@@ -219,6 +219,38 @@ decompilation, smali inspection, live backend/API/network, payment, stream or
 account actions. Runtime text visibility and translation/accessibility behavior
 remain `not_run` or `unknown` until a separate approved runtime task.
 
+## Local Runtime Preflight
+
+`automation/runtime_preflight/` contains the TASK-042 fail-closed local APK,
+launcher, Android SDK/ADB/AVD and device readiness preflight. Its
+`--validate-only` lane is tracked/static and does not read `.qa_local` or start
+subprocesses. `--preflight` is canonical presence-only. `--execute` requires all
+explicit allow flags and a repo-relative ignored evidence root before it may
+perform the Security-approved read-only metadata and inventory actions.
+
+The conditional lane is deliberately bounded:
+
+- exactly five APK contract entries are classified; extra entries never join
+  the main bundle;
+- raw hashes, package/version/signature output and machine identities remain
+  local-only;
+- ADB permits one or two simultaneously connected targets only when every
+  identity has a unique canonical reviewed public-safe mapping; otherwise it
+  stops before all per-device calls;
+- AVD discovery is tooling-only and cannot assert product compatibility;
+- the launcher contour and actual FogPlay Stick selector remain separate and
+  fail closed when their mappings are absent;
+- APK install/launch, UI input, logs, screenshots, payment, account, network
+  mutation and production actions are outside this runner.
+
+The tracked public-safe authority is the v2 summary plus scenario ledger and
+readiness matrix under `docs/qa/reports/`. After the owner changed the connected
+device set, the current tooling-restricted rerun terminally classifies all 18
+scenarios as 6 `observed_pass`, 8 blocked and 4 `tooling_defect`; configured SDK
+access prevented fresh APK content-integrity, ADB and AVD evidence, so the exact
+five-entry bundle is presence-confirmed but integrity-blocked. No release or
+product-runtime claim is made.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

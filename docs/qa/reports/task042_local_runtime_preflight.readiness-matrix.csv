@@ -1,0 +1,14 @@
+kind,selector,status,scenario_status,evidence_status,claim_scope
+apk,main-apk-01,PRESENT,blocked_by_oracle,unknown,presence_only
+apk,main-apk-02,PRESENT,blocked_by_oracle,unknown,presence_only
+apk,main-apk-03,PRESENT,blocked_by_oracle,unknown,presence_only
+apk,main-apk-04,PRESENT,blocked_by_oracle,unknown,presence_only
+apk,main-apk-05,PRESENT,blocked_by_oracle,unknown,presence_only
+device,tv-tpv-013,UNKNOWN,blocked_by_device,unknown,authorization_profile_only
+device,phone-xiaomi-007,UNKNOWN,blocked_by_device,unknown,authorization_profile_only
+device,tv-yandex-012,UNKNOWN,blocked_by_device,unknown,authorization_profile_only
+device,stb-sberdevices-009,UNKNOWN,blocked_by_device,unknown,authorization_profile_only
+device_fallback,phone-samsung-002,UNKNOWN,blocked_by_device,unknown,explicit_paired_phone_fallback
+device_selector,fogplay_stick_actual_target,MISSING,blocked_by_device,unknown,actual_alias_required
+launcher_contour,launcher_system_cluster,BLOCKED,blocked_by_fixture,unknown,separate_contour
+avd,configured_avd_inventory,TOOLING_DEFECT,blocked_by_fixture,unknown,tooling_only

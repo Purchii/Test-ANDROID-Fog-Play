@@ -726,3 +726,43 @@ suites are serialized on this host and the original failure remains recorded.
 
 TASK-042 is active in its accepted fresh worktree thread. TASK-043…055 remain
 planned and governed by their explicit DAG dependencies.
+
+## TASK-042 local runtime preflight closure candidate — 2026-07-17
+
+TASK-042 runs in the accepted fresh thread and branch
+`qa/task-042-local-runtime-preflight`, rebased/fast-forwarded from the
+TASK-041 lifecycle baseline `main@a8dde33`. Mode is `BOUNDED_AUTONOMOUS`; the
+bounded local metadata/inventory actions are `PROD_CONDITIONAL` and were
+approved by Security/Prod-safety before execution.
+
+After the owner changed the connected-device set, the current public-safe v2
+result terminally classifies all 18 scenarios: 6 `observed_pass`, 8 explicit
+blocked rows and 4 `tooling_defect`. The exact five canonical APK entries remain
+present, but fresh content-integrity was not read and therefore stays blocked. The resumed sandbox
+cannot access the configured Android SDK root, so fresh metadata/signature,
+ADB and AVD inventory did not run and cannot inherit the earlier tooling-ready
+claim.
+
+The hardened runner now supports one or two connected targets only when every
+identity is mapped to a unique tracked-reviewed alias and the second snapshot
+matches the first. The current restricted rerun made no Android subprocess or
+per-device call, so readiness for `tv-tpv-013`, `phone-xiaomi-007`,
+`tv-yandex-012`, `stb-sberdevices-009` and the explicit phone fallback remains
+`UNKNOWN`/`blocked_by_device`. Two stale ignored aliases remain
+non-authoritative. The
+launcher/system contour is `blocked_by_fixture`, and the actual FogPlay Stick
+selector stays `unknown`/`blocked_by_device`; no generic alias substitution is
+allowed.
+
+No APK install or launch, UI interaction, app runtime, logcat, screenshot,
+payment, account, stream/session, network mutation or production action was
+performed. No raw machine-specific value is tracked. Explicit execution facts
+prevent false invocation/read provenance for every unresolved SDK branch, and
+the validator recomputes summary and matrix content from the payload. The latest
+remediation has 55 targeted passes. The first full rerun exposed a stale report-manifest hash;
+after regeneration and the anomaly regression the final sequential rerun passed
+993 tests with 2 skips. An independent clean verification context repeated the
+same 55 targeted and 993/2 full results after the final Security R1 fix. Final
+QA A, QA B, Security/Prod-safety and Docs/Scribe re-reviews returned `GO`;
+integration is the only remaining TASK-042 lifecycle step.
+TASK-043 remains planned and is not implemented here.

@@ -1,5 +1,90 @@
 # Active run
 
+## TASK-042 closure candidate — local runtime preflight
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread title: `TASK-042 — Local APK, launcher, AVD and device runtime preflight`.
+- Task branch: `qa/task-042-local-runtime-preflight`.
+- Default branch: `main`.
+- Baseline: `a8dde33` (TASK-041 lifecycle closure included).
+- Production safety classification: `PROD_CONDITIONAL`.
+- Lifecycle status: `ready_for_integration`.
+
+Security/Prod-safety approved a bounded read-only contour before execution.
+The run used only canonical repo-relative local contracts and public-safe
+aliases. Machine paths, serials, raw hashes, package/version/signature values
+and raw tooling output remain ignored/local-only. APK install/launch, UI input,
+logcat, screenshots, app navigation, payment, account changes and network or
+production mutation were not performed.
+
+Current authoritative preflight result after the owner changed the connected
+device set:
+
+- all 18 scenario-catalog rows have terminal classifications: 6
+  `observed_pass`, 8 lane-scoped `blocked_*` and 4 `tooling_defect`;
+- the exact five-entry APK bundle is present with no missing or extra main
+  member, but fresh APK content-integrity was not read, so bundle readiness and
+  `QA-042-001` remain blocked rather than inheriting stale evidence;
+- the resumed sandbox cannot access the configured Android SDK root, so fresh
+  APK metadata/signature, ADB and AVD inventory are terminal tooling defects;
+- the runner now supports one or two simultaneously connected targets only
+  when every identity is canonical-mapped, unique and tracked-reviewed;
+- no current ADB snapshot or per-device call ran in the restricted rerun; all
+  named physical lanes remain `UNKNOWN`/`blocked_by_device`;
+- two stale ignored aliases are explicitly non-authoritative and do not select
+  a device;
+- launcher/component mapping and the actual FogPlay Stick alias are absent.
+  Generic alias substitution is forbidden, so these lanes remain blocked;
+- `TASK042-PROCESS-ANOMALY-001` records the initial stale alias-scope failure
+  and the fail-closed remediation.
+
+Public-safe evidence authority:
+
+- `docs/qa/reports/task042_local_runtime_preflight.summary.json`;
+- `docs/qa/reports/task042_local_runtime_preflight.scenario-ledger.csv`;
+- `docs/qa/reports/task042_local_runtime_preflight.readiness-matrix.csv`;
+- ignored raw/local evidence under the canonical TASK-042 evidence contract.
+
+The final one-to-two-device/provenance/validator remediation has 55 targeted
+passes. Invocation and read provenance now comes from explicit execution facts,
+and validation independently recomputes the scenario summary and readiness
+matrix from authoritative payload rows. A first full rerun
+correctly failed one release-readiness test because the regenerated report made
+the manifest stale; after manifest regeneration the sequential full rerun
+passed 993 tests with 2 skips. Final QA A, QA B, Security/Prod-safety and
+Docs/Scribe re-reviews returned `GO`; no R0/R1 finding remains open.
+
+Process anomalies were recorded immediately:
+
+- `TASK042-PROCESS-ANOMALY-003`: the owner-updated device inventory rerun could
+  not access the configured SDK under the resumed sandbox identity; the runner
+  now converts this into a terminal public-safe tooling defect instead of
+  aborting or reusing stale device evidence;
+- `TASK042-PROCESS-ANOMALY-004`: the first full suite after report regeneration
+  detected the intentionally stale manifest hash; regeneration followed by a
+  sequential rerun passed and the original failure remains recorded.
+- `TASK042-PROCESS-ANOMALY-005` (`confirmed`, public-safe alias
+  `invalid_sdk_fixture_path_mismatch`): the trigger was the first new
+  invalid-SDK regression; expected was a terminal no-invocation report, while
+  observed was a fixture cleanup failure before the gate ran. The likely cause
+  was a hard-coded synthetic directory that differed from the fixture-returned
+  SDK parent. Test-design implication: destructive synthetic cleanup must derive
+  its target from the fixture contract. The path was corrected and targeted plus
+  full suites then passed.
+- `TASK042-PROCESS-ANOMALY-006` (`confirmed`, public-safe alias
+  `parent_pytest_bundle_access_interruption`): after the Security R1 correction,
+  the parent sandbox unexpectedly lost read access to its previously working
+  ignored pytest bundle. Expected was the standard targeted rerun; observed was
+  an import failure before collection. The likely cause is sandbox-local ACL
+  drift, not product behavior. Test-design implication: obtain an independent
+  clean verification context rather than weaken or skip the gate. A read-only
+  verification agent then confirmed 55 targeted and 993 full passes with 2 skips.
+
+TASK-043 is the next planned independent task because its static registry lane
+does not require the blocked physical runtime lanes. It must not be implemented
+in this TASK-042 thread. Task/default push SHAs and accepted fresh TASK-043
+continuation remain pending until integration succeeds.
+
 ## Completed TASK-041 Run
 
 ## Run Metadata

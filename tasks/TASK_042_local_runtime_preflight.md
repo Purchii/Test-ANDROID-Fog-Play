@@ -202,6 +202,47 @@ Codex должен добавить точные validate-only/preflight/execute
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
 
+### Реализованные команды TASK-042
+
+Статическая валидация не читает `.qa_local` и не запускает subprocess:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-only
+```
+
+Presence-only preflight читает только канонические repo-relative имена и не
+читает APK contents, не вызывает Android tooling и не обращается к устройствам:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --preflight
+```
+
+Условный read-only execute разрешён только после Security gate. Он использует
+ровно пять APK из канонического bundle contract, локальное metadata evidence и
+inventory-only ADB/AVD; install, launch, UI input, logcat, screenshot и другие
+app/runtime actions не входят в TASK-042:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --execute --allow-local-apk-metadata --allow-adb-inventory --local-evidence-root .qa_local/evidence/task-042 --write-report docs/qa/reports/task042_local_runtime_preflight.summary.json
+```
+
+Публичный отчёт валидируется отдельно:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-report docs/qa/reports/task042_local_runtime_preflight.summary.json
+```
+
+После изменения owner'ом connected-device set текущий bounded rerun
+классифицировал все 18 строк каталога: 6 `observed_pass`, 8 точных `blocked_*`
+и 4 `tooling_defect`. Ровно пять APK проходят canonical presence gate, но
+fresh content-integrity остаётся blocked. Возобновлённый sandbox не имеет доступа к configured Android SDK, поэтому
+fresh APK metadata, ADB version/device inventory и AVD inventory получили
+терминальный tooling blocker без Android subprocess. Runner поддерживает один
+или два mapped/reviewed connected targets, но не угадывает alias и не выполняет
+per-device calls, пока current snapshot нельзя проверить. Launcher mapping и
+actual FogPlay Stick alias остаются неизвестными и не подменяются generic
+aliases.
+
 ## Multi-agent acceptance
 
 Обязательны реальные роли:

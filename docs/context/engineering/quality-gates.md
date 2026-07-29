@@ -690,6 +690,63 @@ is visibly accepted with the required title/model/reasoning profile. Pending,
 failed or duplicate handles do not satisfy the gate. No TASK-041 check proves
 product runtime or release readiness.
 
+## TASK-042 local runtime preflight gates
+
+TASK-042 is `PROD_CONDITIONAL`. The static `--validate-only` lane must not read
+`.qa_local` or launch subprocesses. The `--preflight` lane may classify only
+canonical repo-relative presence. `--execute` is allowed only after the
+Security/Prod-safety gate and requires explicit APK-metadata, ADB-inventory and
+ignored evidence-root flags.
+
+The execute lane must fail closed unless:
+
+- exactly the five APK contract entries are direct regular, non-reparse,
+  non-empty files; missing/extra entries are separate classifications;
+- raw hashes and APK metadata stay local-only;
+- Android tools resolve only from configured deterministic SDK authority;
+- one or two connected ADB identities are allowed only when every identity has
+  a unique canonical tracked-reviewed public-safe alias before any per-device
+  call;
+- stale ignored aliases are non-authoritative;
+- AVD results are labelled tooling-only and cannot assert compatibility;
+- the launcher contour and actual FogPlay Stick selector remain separate from
+  the five APK bundle and cannot use a generic substitute.
+
+A signature parser/tool failure is `tooling_defect`, never PASS. An unmapped
+connected identity blocks device inventory without blocking independent static
+and tooling lanes. APK install/launch, AVD runtime, UI input, logs, screenshots,
+app navigation, payment, account, network mutation and production actions are
+outside TASK-042.
+
+Required checks:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-only
+python automation/runtime_preflight/task042_local_runtime_preflight.py --preflight
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-report docs/qa/reports/task042_local_runtime_preflight.summary.json
+python -m pytest -q tests/test_task042_local_runtime_preflight.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+Completion accepts lane-scoped blockers only when all 18 scenario rows are
+terminal, every PASS has the required evidence, the report/ledger/matrix agree,
+and no reviewer leaves an R0/R1 finding unresolved. The current public-safe
+candidate is 6 `observed_pass`, 8 blocked and 4 `tooling_defect`; configured SDK
+access blocks fresh APK content-integrity plus Android tooling evidence and makes
+no release or product-runtime claim. TASK-043 may start only in a fresh thread
+after verified TASK-042 default-branch integration/push.
+
+The final one-to-two-device, explicit-provenance and report-consistency
+remediation passed 55 targeted
+tests. A stale-manifest fail-closed full-suite result was recorded immediately;
+after regeneration the final sequential suite passed 993 tests with 2 skips.
+Final QA A, QA B, Security/Prod-safety and Docs/Scribe re-reviews returned `GO`.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

@@ -1,0 +1,19 @@
+scenario_id,priority,surface_ids,lane,scenario_status,evidence_type,evidence_status,blocker,justification
+QA-042-001,P0,SURF-INSTALL-001,local bundle,blocked_by_fixture,local_preflight_gate,unknown,canonical_apk_integrity_not_verified,"Exact canonical APK presence passed, but content integrity was not read in the current run."
+QA-042-002,P0,SURF-INSTALL-001,local bundle,observed_pass,synthetic_offline,confirmed,,Synthetic missing-entry classifier returns a blocked bundle.
+QA-042-003,P0,SURF-INSTALL-001,local bundle,observed_pass,synthetic_offline,confirmed,,Synthetic extra entry remains outside the five-entry main bundle.
+QA-042-004,P0,SURF-INSTALL-001;SURF-RELEASE-001,local bundle,tooling_defect,local_preflight_gate,confirmed,apk_signature_verification_tooling_failed,A required SDK metadata/signature step failed; diagnostics remain local-only.
+QA-042-005,P0,SURF-LAUNCHER-001,launcher contour,blocked_by_fixture,static_contract,unknown,launcher_component_mapping_missing,Launcher/system contour remains separate; no approved local component mapping is available.
+QA-042-006,P1,SURF-LAUNCHER-001,launcher contour,observed_pass,synthetic_offline,confirmed,,Missing launcher component blocks only the launcher/system contour.
+QA-042-007,P0,SURF-START-001,local tools,tooling_defect,local_preflight_gate,confirmed,configured_adb_version_not_ready,Configured SDK ADB version failed or returned empty output.
+QA-042-008,P0,SURF-START-001,local tools,tooling_defect,local_preflight_gate,confirmed,configured_avd_tooling_not_ready,Configured emulator tool was missing or inventory query failed.
+QA-042-009,P1,SURF-START-001,AVD,blocked_by_fixture,static_contract,unknown,compatible_avd_fixture_not_verified,No compatible approved AVD fixture was established; no compatibility claim is made.
+QA-042-010,P0,SURF-COMPAT-001,devices,tooling_defect,local_preflight_gate,confirmed,,ADB inventory or connected-device mapping gate did not complete authoritatively.
+QA-042-011,P0,SURF-COMPAT-001,tv-tpv-013,blocked_by_device,local_preflight_gate,unknown,current_device_status_unknown,Read-only ADB inventory classified the approved alias as UNKNOWN.
+QA-042-012,P0,SURF-PAIR-001,phone-xiaomi-007,blocked_by_device,local_preflight_gate,unknown,paired_phone_primary_and_fallback_not_ready,Neither reviewed primary nor explicit fallback is READY.
+QA-042-013,P0,SURF-COMPAT-001,tv-yandex-012,blocked_by_device,local_preflight_gate,unknown,current_device_status_unknown,Read-only ADB inventory classified the approved alias as UNKNOWN.
+QA-042-014,P0,SURF-COMPAT-001,stb-sberdevices-009,blocked_by_device,local_preflight_gate,unknown,current_device_status_unknown,Read-only ADB inventory classified the approved alias as UNKNOWN.
+QA-042-015,P0,SURF-LAUNCHER-001,actual FogPlay Stick alias,blocked_by_device,static_contract,unknown,actual_stick_mapping_missing,No approved actual FogPlay Stick alias is present; generic substitution is forbidden.
+QA-042-016,P1,SURF-COMPAT-001,tv-himedia-010,observed_pass,synthetic_offline,confirmed,,An unmapped Himedia alias remains UNKNOWN and requires manual mapping.
+QA-042-017,P0,SURF-LOG-001,all,observed_pass,static_contract,confirmed,,Generated public report is validated against forbidden identity/value rules.
+QA-042-018,P0,SURF-RELEASE-002,all,observed_pass,static_contract,confirmed,,TASK-043 proceeds while later runtime blockers remain lane-scoped.

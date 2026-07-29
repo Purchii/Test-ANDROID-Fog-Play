@@ -450,3 +450,87 @@ python automation/quality/official_export_index.py validate-zip --zip $task041Ex
 The no-`.git` export ran the relevant epic, docs, hygiene, public-safety,
 manifest and full-suite checks after unpacking. Append final reviewer outcomes,
 merge/push SHAs and continuation evidence only after those actions succeed.
+
+## TASK-042 local runtime preflight verification record — 2026-07-17
+
+Status: `ready_for_integration`. No product-runtime or release
+PASS is claimed.
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread: accepted fresh `TASK-042 — Local APK, launcher, AVD and device runtime preflight`.
+- Branch: `qa/task-042-local-runtime-preflight`.
+- Baseline: `main@a8dde33`, including the TASK-041 lifecycle closure.
+- Safety: `PROD_CONDITIONAL`; Security/Prod-safety approved read-only APK
+  metadata plus ADB/AVD inventory before execution. Install, launch, UI, logcat,
+  screenshots and app/runtime actions remained forbidden.
+- Current public-safe result: 18 terminal rows, comprising 6 `observed_pass`, 8
+  lane-scoped blockers and 4 `tooling_defect`.
+
+Confirmed bounded-execution evidence:
+
+- exact five-entry APK bundle presence confirmed with no missing/extra entry;
+  fresh content-integrity was not read, so bundle readiness and `QA-042-001`
+  remain blocked;
+- a prior bounded run captured local-only APK metadata and inventoried ADB/AVD,
+  but that evidence does not describe the owner-updated connected-device set;
+- the latest resumed sandbox cannot access the configured Android SDK root, so
+  metadata/signature, ADB and AVD rows are terminal tooling defects;
+- the runner accepts one or two connected targets only when every serial has a
+  unique mapped/reviewed alias and pass2 exactly matches pass1;
+- no current Android subprocess or per-device call executed;
+- two stale ignored aliases were classified non-authoritative;
+- named physical device lanes, launcher mapping and actual FogPlay Stick alias
+  remain explicitly blocked/unknown without generic substitution;
+- local-only values remained under canonical ignored contracts, and the public
+  v2 report contains no machine path, serial, raw hash or raw APK metadata.
+
+Exact runner commands:
+
+```text
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-only
+python automation/runtime_preflight/task042_local_runtime_preflight.py --preflight
+python automation/runtime_preflight/task042_local_runtime_preflight.py --execute --allow-local-apk-metadata --allow-adb-inventory --local-evidence-root .qa_local/evidence/task-042 --write-report docs/qa/reports/task042_local_runtime_preflight.summary.json
+python automation/runtime_preflight/task042_local_runtime_preflight.py --validate-report docs/qa/reports/task042_local_runtime_preflight.summary.json
+```
+
+Final pre-integration verification must also run sequentially:
+
+```text
+git status --short --branch
+git diff --check
+python -m pytest -q tests/test_task042_local_runtime_preflight.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The final targeted suite passed 55 tests. Explicit APK-read, APK-tool, ADB,
+AVD and ADB-snapshot facts now drive provenance for every SDK resolution path;
+the report validator independently recomputes scenario-summary counters and
+the readiness-matrix rows from payload authority. A first full rerun returned 987
+passes, 2 skips and one expected fail-closed release-readiness failure because
+the regenerated TASK-042 report made the manifest stale. After manifest
+regeneration, the sequential full rerun passed 988 tests with 2 skips; after the
+SDK-access and final provenance/validator regressions, the final suite passed
+993 tests with 2 skips. After the Security R1 integrity correction, an
+independent clean verification context again passed 55 targeted and 993 full
+tests with 2 skips. Final QA A, QA B, Security/Prod-safety and Docs/Scribe
+re-reviews returned `GO` with no open R0/R1. Integration/push SHAs and fresh
+TASK-043 continuation evidence remain pending. TASK-043 was not implemented by TASK-042.
+
+`TASK042-PROCESS-ANOMALY-003` records the SDK access interruption after the
+owner changed the connected-device set: expected fresh 1–2 device inventory,
+observed a restricted sandbox identity that could not access configured SDK
+tooling, likely environment-permission cause, no Android subprocess/per-device
+action, and a new terminal blocker regression. `TASK042-PROCESS-ANOMALY-004`
+records the stale-manifest full-suite failure and the successful regenerate plus
+sequential-rerun remediation. `TASK042-PROCESS-ANOMALY-005` records the initial
+invalid-SDK regression's wrong synthetic fixture-directory assumption; the
+fixture path was corrected before the targeted and full suites passed.
+`TASK042-PROCESS-ANOMALY-006` records that the parent sandbox lost access to its
+ignored pytest package before the final rerun; an independent read-only
+verification context ran the same canonical commands successfully, so no test
+gate was waived.

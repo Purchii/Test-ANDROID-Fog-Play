@@ -1,14 +1,14 @@
 {
-  "authoritative_record_count": 2,
+  "authoritative_record_count": 3,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-07-17T10:17:31Z",
+  "generated_at_utc": "2026-07-29T11:47:51Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
   "mode": "BOUNDED_AUTONOMOUS",
   "path_source": "git_tracked",
   "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
-  "record_count": 25,
+  "record_count": 26,
   "records": [
     {
       "artifacts": [
@@ -1799,6 +1799,57 @@
           "status": "pass"
         }
       ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task042_local_runtime_preflight.summary.json",
+          "sha256": "5add995c14615163e41710482589d73368778792f217221f3afc8c7fed8a61e1"
+        }
+      ],
+      "authoritative": true,
+      "authority_status": "authoritative",
+      "blocked_reasons": [],
+      "build_ref": {
+        "alias": "qa-repository-task042"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "confirmed",
+      "execution_status": "partial",
+      "generated_at_utc": "2026-07-29T11:36:56Z",
+      "production_safety_classification": "PROD_CONDITIONAL",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task042_local_runtime_preflight.summary.json",
+        "source_sha256": "5add995c14615163e41710482589d73368778792f217221f3afc8c7fed8a61e1"
+      },
+      "record_id": "TASK-042__qa-repository-task042__local-runtime-preflight-public-safe__task042-approved-read-only-execution-001__task042_local_runtime_preflight.summary",
+      "release_effect": "no_release_claim",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "v2_valid"
+      },
+      "risks": [],
+      "run_id": "task042-approved-read-only-execution-001",
+      "schema_validation_status": "v2_valid",
+      "schema_version": "evidence-report-envelope-v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "local-runtime-preflight-public-safe",
+      "task_id": "TASK-042",
+      "unknowns": [],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task042_local_runtime_preflight.summary.json",
+          "sha256": "5add995c14615163e41710482589d73368778792f217221f3afc8c7fed8a61e1",
+          "status": "pass"
+        }
+      ]
     }
   ],
   "reports_root": "docs/qa/reports",
@@ -1806,7 +1857,7 @@
   "task_id": "TASK-038",
   "tool_name": "reporting.report_manifest_generator",
   "unknown_schema_record_count": 0,
-  "v2_record_count": 2,
+  "v2_record_count": 3,
   "verification": [
     {
       "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",

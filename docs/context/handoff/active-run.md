@@ -1,6 +1,17 @@
 # Active run
 
-## TASK-042 closure candidate — local runtime preflight
+## TASK-043 accepted fresh continuation
+
+- Thread title: `TASK-043 — Sanitized source-informed runtime surface registry and regression selector`.
+- Thread id: `019fadbd-22ba-7ac1-8fa5-84bca075c6d7`.
+- Lifecycle status: `active_waiting_for_task042_closure_baseline`.
+- Required branch: `qa/task-043-source-informed-runtime-coverage-map` from the
+  updated remote default after this lifecycle closure.
+- TASK-043 was not implemented in the TASK-042 thread. The fresh thread was
+  told to preserve read-only planning, fetch the closure commit and only then
+  create or rebase its task branch.
+
+## Completed TASK-042 — local runtime preflight
 
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Thread title: `TASK-042 — Local APK, launcher, AVD and device runtime preflight`.
@@ -8,7 +19,11 @@
 - Default branch: `main`.
 - Baseline: `a8dde33` (TASK-041 lifecycle closure included).
 - Production safety classification: `PROD_CONDITIONAL`.
-- Lifecycle status: `ready_for_integration`.
+- Lifecycle status: `inactive_completed`.
+- Task integration commit: `76faacc75beeb2cbc91ceae2ffe159b004b29aeb`.
+- Task branch push: completed.
+- Default integration: clean fast-forward of local `main`; first remote-default
+  push and SHA alignment completed at the task integration commit.
 
 Security/Prod-safety approved a bounded read-only contour before execution.
 The run used only canonical repo-relative local contracts and public-safe
@@ -79,11 +94,19 @@ Process anomalies were recorded immediately:
   drift, not product behavior. Test-design implication: obtain an independent
   clean verification context rather than weaken or skip the gate. A read-only
   verification agent then confirmed 55 targeted and 993 full passes with 2 skips.
+- `TASK042-PROCESS-ANOMALY-007` (`confirmed`, public-safe alias
+  `post_integration_pytest_bundle_blocked`): the trigger was the required
+  default-branch pytest repeat. Expected was targeted/full collection on clean
+  local `main`; observed was the same sandbox denial while importing the ignored
+  pytest bundle, while network reinstall was policy-blocked. The likely cause is
+  the ACL drift from anomaly 006. Test-design implication: do not claim a rerun
+  that did not collect. The exact integrated commit already had independent
+  55-targeted and 993/2 full evidence; all post-integration report, manifest,
+  hygiene, public-safety, docs and official-export checks passed on `main`.
 
-TASK-043 is the next planned independent task because its static registry lane
-does not require the blocked physical runtime lanes. It must not be implemented
-in this TASK-042 thread. Task/default push SHAs and accepted fresh TASK-043
-continuation remain pending until integration succeeds.
+TASK-043 is the active independent continuation because its static registry lane
+does not require the blocked physical runtime lanes. It was not implemented in
+this TASK-042 thread.
 
 ## Completed TASK-041 Run
 

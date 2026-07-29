@@ -746,6 +746,11 @@ remediation passed 55 targeted
 tests. A stale-manifest fail-closed full-suite result was recorded immediately;
 after regeneration the final sequential suite passed 993 tests with 2 skips.
 Final QA A, QA B, Security/Prod-safety and Docs/Scribe re-reviews returned `GO`.
+Task commit `76faacc` was fast-forwarded to `main` and pushed with remote SHA
+alignment. The same commit has independent 55-targeted and 993/2 full pytest
+evidence. The post-integration pytest repeat was attempted and is explicitly
+`blocked_by_tooling` because the sandbox denied the ignored pytest bundle;
+post-integration report/manifest/hygiene/public-safety/docs/export gates passed.
 
 ## Merge gates
 

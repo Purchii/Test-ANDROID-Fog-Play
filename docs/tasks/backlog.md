@@ -53,9 +53,8 @@
 
 ## P2A - EPIC-QA-041-055 independent QA-only execution chain
 
-TASK-041 is completed and integrated. TASK-042 has a terminal public-safe
-preflight result, all final reviews are `GO`, and it is ready for integration; TASK-043 is the
-next planned fresh-thread task. TASK-043…055 remain governed by their explicit
+TASK-041 and TASK-042 are completed and integrated. TASK-043 is active in its
+accepted fresh thread. TASK-043…055 remain governed by their explicit
 dependencies; later runtime work also remains subject
 to each task's own `PROD_CONDITIONAL` lane-readiness gates. These entries extend
 the backlog without replacing TASK-000…040 history.
@@ -63,8 +62,8 @@ the backlog without replacing TASK-000…040 history.
 | ID | Title | Mode default / safety | Dependencies | Branch | Status |
 |---|---|---|---|---|---|
 | TASK-041 | QA-only epic integration, sanitized risk bridge and portable official export | BOUNDED_AUTONOMOUS; PROD_SAFE repository-only static QA scope | none | qa/task-041-qa-only-epic-integration-portable-export | completed_integrated; 18 observed_pass; main/origin aligned at a34d075; fresh TASK-042 accepted |
-| TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL bounded read-only metadata/inventory | TASK-041 | qa/task-042-local-runtime-preflight | ready_for_integration; final QA A/QA B/Security/Docs GO; 18 terminal rows: 6 observed_pass, 8 blocked, 4 tooling_defect; current SDK/content-integrity access blocker; no product-runtime claim |
-| TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | planned_next_after_task042_verified_integration |
+| TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL bounded read-only metadata/inventory | TASK-041 | qa/task-042-local-runtime-preflight | completed_integrated at task commit `76faacc`; final QA A/QA B/Security/Docs GO; 18 terminal rows: 6 observed_pass, 8 blocked, 4 tooling_defect; current SDK/content-integrity access blocker; no product-runtime claim |
+| TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | active in accepted fresh thread `019fadbd-22ba-7ac1-8fa5-84bca075c6d7`; must base on TASK-042 lifecycle-closure default commit |
 | TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | planned_blocked_by_dependency |
 | TASK-045 | Paired Television Full plus Phone Full virtual-gamepad E2E | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_PAIRED_RUNTIME | TASK-044 | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | planned_blocked_by_dependency |
 | TASK-046 | Television Steam / YandexTV representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-046-yandextv-representative-lane | planned_blocked_by_dependency |

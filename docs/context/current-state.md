@@ -727,9 +727,9 @@ suites are serialized on this host and the original failure remains recorded.
 TASK-042 is active in its accepted fresh worktree thread. TASK-043…055 remain
 planned and governed by their explicit DAG dependencies.
 
-## TASK-042 local runtime preflight closure candidate — 2026-07-17
+## TASK-042 local runtime preflight completed integration — 2026-07-17
 
-TASK-042 runs in the accepted fresh thread and branch
+TASK-042 completed in its accepted fresh thread and branch
 `qa/task-042-local-runtime-preflight`, rebased/fast-forwarded from the
 TASK-041 lifecycle baseline `main@a8dde33`. Mode is `BOUNDED_AUTONOMOUS`; the
 bounded local metadata/inventory actions are `PROD_CONDITIONAL` and were
@@ -763,6 +763,14 @@ remediation has 55 targeted passes. The first full rerun exposed a stale report-
 after regeneration and the anomaly regression the final sequential rerun passed
 993 tests with 2 skips. An independent clean verification context repeated the
 same 55 targeted and 993/2 full results after the final Security R1 fix. Final
-QA A, QA B, Security/Prod-safety and Docs/Scribe re-reviews returned `GO`;
-integration is the only remaining TASK-042 lifecycle step.
-TASK-043 remains planned and is not implemented here.
+QA A, QA B, Security/Prod-safety and Docs/Scribe re-reviews returned `GO`.
+Task commit `76faacc` was pushed on the task branch, fast-forwarded into clean
+`main` and pushed with remote SHA alignment. The required post-integration
+pytest repeat was attempted but blocked before collection by sandbox access to
+the ignored pytest bundle; the exact commit already had independent 55-targeted
+and 993/2 full evidence, and every post-integration static/report/safety check
+passed on `main`.
+
+TASK-042 is now `inactive_completed`. Fresh TASK-043 thread
+`019fadbd-22ba-7ac1-8fa5-84bca075c6d7` is accepted and active. TASK-043 was not
+implemented here and must base itself on the lifecycle-closure default commit.

@@ -453,7 +453,7 @@ merge/push SHAs and continuation evidence only after those actions succeed.
 
 ## TASK-042 local runtime preflight verification record — 2026-07-17
 
-Status: `ready_for_integration`. No product-runtime or release
+Status: `inactive_completed`. No product-runtime or release
 PASS is claimed.
 
 - Mode: `BOUNDED_AUTONOMOUS`.
@@ -518,8 +518,11 @@ SDK-access and final provenance/validator regressions, the final suite passed
 993 tests with 2 skips. After the Security R1 integrity correction, an
 independent clean verification context again passed 55 targeted and 993 full
 tests with 2 skips. Final QA A, QA B, Security/Prod-safety and Docs/Scribe
-re-reviews returned `GO` with no open R0/R1. Integration/push SHAs and fresh
-TASK-043 continuation evidence remain pending. TASK-043 was not implemented by TASK-042.
+re-reviews returned `GO` with no open R0/R1. Task commit `76faacc` was published
+on the task branch, fast-forwarded into clean `main`, pushed and verified aligned
+with `origin/main`. Fresh TASK-043 continuation
+`019fadbd-22ba-7ac1-8fa5-84bca075c6d7` was accepted after that push. TASK-043 was
+not implemented by TASK-042.
 
 `TASK042-PROCESS-ANOMALY-003` records the SDK access interruption after the
 owner changed the connected-device set: expected fresh 1–2 device inventory,
@@ -534,3 +537,9 @@ fixture path was corrected before the targeted and full suites passed.
 ignored pytest package before the final rerun; an independent read-only
 verification context ran the same canonical commands successfully, so no test
 gate was waived.
+`TASK042-PROCESS-ANOMALY-007` records that the required post-integration pytest
+retry on local `main` was blocked before collection by the same ignored-bundle
+ACL failure and policy-blocked reinstall. The integrated commit is identical to
+the independently tested commit; post-integration report, manifest, hygiene,
+public-safety, docs and official-export checks all passed. The unavailable
+pytest repeat remains explicitly `blocked_by_tooling`, not reported as PASS.

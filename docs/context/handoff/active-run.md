@@ -1,19 +1,62 @@
 # Active run
 
-## TASK-044 accepted fresh continuation
+## Active TASK-044 — TPV13 reference-lane runtime closed, release blocked
 
 - Thread title: `TASK-044 — Television Full reference-lane oracle closure on TPV13`.
 - Thread id: `01a0007d-5738-7960-9f14-0dedd5d9a9a1`.
-- Lifecycle status: `active_waiting_for_task043_closure_baseline` until this
-  docs-only closure is visible on `origin/main`, then `active`.
-- Required branch: `qa/task-044-tpv13-reference-lane-oracle-closure` from the
-  updated remote default containing this closure; do not work on `main`.
-- The owner reports a connected physical phone and a connected new physical
-  television. This is category-level input only, not validated lane identity or
-  runtime evidence. TASK-044 must run its approved redacted preflight before
-  selecting a television lane; the phone must not substitute for that lane.
-- TASK-044 must use strict real Orchestrator, Planner, Builder, QA A, QA B,
-  Security/Prod-safety and Docs/Scribe roles. TASK-045 is not started.
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Lifecycle status: `active_ready_for_integration_release_blocked`.
+- Branch: `qa/task-044-tpv13-reference-lane-oracle-closure`, based exactly on
+  the published TASK-043 lifecycle closure `origin/main@92896f61c37a682c74998c54fef46fc9a921e3b5`.
+- Production safety: `PROD_CONDITIONAL_BOUNDED_RUNTIME`; the phone was used for
+  inventory only and never substituted for the approved television lane.
+
+The hardened public-safe bundle terminally classifies all 32 selected scenarios
+(29 P0 and 3 P1): 16 `observed_pass`, 2 `confirmed_defect`, 11
+`observed_fail` and 3 `blocked_by_oracle`. Overall execution is `fail`, coverage
+is `partial_blocked`, and release effect is `blocks_release`. The earlier QA R1
+report/checkpoint/anomaly/blocker semantics were remediated before this final
+bundle. A successful force-stop/relaunch recovery never erased the first
+failure.
+
+Confirmed defects and retained observed failures:
+
+- cold launch failed to reach the actionable catalog and the bounded loader
+  oracle also timed out after ambient recovery; QA-044-002 and QA-044-004 are
+  both linked to `TASK044-DEFECT-LOADER-001`, and target-app force-stop plus
+  approved relaunch restored the catalog without erasing either failure;
+- Search `Back` left the on-screen keyboard open; recovery required a
+  target-app force-stop and the row remains `observed_fail`;
+- selecting the visually focused Gamepad item routed to logout confirmation;
+  only Cancel was used, with no account/session mutation, and the row remains
+  `observed_fail`;
+- `Back` on a payment-boundary screen was a no-op; no payment or external
+  navigation occurred, target-app force-stop restored a safe state, and the row
+  remains `observed_fail`;
+- a connection-error surface recurred as QA-044-032 and was retained as
+  `observed_fail`, not promoted to a confirmed defect.
+
+Every published runtime checkpoint is backed by local-only screenshot, UI-tree
+and runner-log evidence. Visible QR data was decoded only through the established
+local `jsqr` path, classified at category level, and never followed. Raw device,
+build, package, hash, account, QR, screenshot, UI-tree and log values remain
+ignored/local-only. Final cleanup is `confirmed`: target app force-stopped and
+Home restored, with the session preserved.
+
+Strict multi-agent roles are Orchestrator, Planner, Builder, QA Reviewer A, QA
+Reviewer B, Security/Prod-safety and Docs/Scribe. The physical television is no
+longer available, so any additional or repeat TV runtime is currently
+`blocked_by_device`; existing TV evidence remains authoritative for this run.
+Only the phone-full physical phone remains connected, and it is inventory-only,
+out of TASK-044 scope and received no runtime action. Builder, QA Reviewer A,
+QA Reviewer B, Security/Prod-safety and Docs/Scribe returned final `GO` with no
+open R0/R1; Planner's baseline/plan gate was satisfied. The evidence bundle is
+ready for integration as a release-blocking result, not as release approval.
+TASK-045 has not started; a phone task may begin only in a fresh thread after
+TASK-044 closure and default integration.
+Docs/Scribe final audit is `GO`: hardened counts, defect/failure
+classifications, current device availability, redaction boundaries, cleanup and
+fresh-task lifecycle wording reconcile with the tracked authority.
 
 ## Completed TASK-043 — sanitized runtime surface registry and selector
 

@@ -1,0 +1,89 @@
+{
+  "$id": "docs/qa/schemas/task044-reference-lane-oracle-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Authoritative shape for the local-only TASK-044 runtime adapter. Python semantic validation additionally enforces exact scenario oracles, evidence freshness and cross-record relations.",
+  "$defs": {
+    "safeId": {"pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$", "type": "string"},
+    "evidenceStatus": {"enum": ["confirmed", "likely", "hypothesis", "unknown"]},
+    "defect": {
+      "additionalProperties": false,
+      "properties": {"defect_alias": {"$ref": "#/$defs/safeId"}, "reference": {"pattern": "^docs/qa/defects/task044_[a-z0-9_]+\\.md$", "type": "string"}, "reproduction_attempt_ids": {"items": {"$ref": "#/$defs/safeId"}, "minItems": 1, "type": "array"}, "sha256": {"pattern": "^[a-f0-9]{64}$", "type": "string"}},
+      "required": ["defect_alias", "reference", "sha256", "reproduction_attempt_ids"],
+      "type": ["object", "null"]
+    },
+    "blocker": {
+      "additionalProperties": false,
+      "properties": {
+        "reason_code": {"$ref": "#/$defs/safeId"},
+        "status": {"enum": ["blocked_by_device", "blocked_by_fixture", "blocked_by_oracle", "blocked_by_product_boundary", "blocked_by_external_state"]}
+      },
+      "required": ["status", "reason_code"],
+      "type": ["object", "null"]
+    },
+    "modality": {
+      "additionalProperties": false,
+      "properties": {"captured_at_utc": {"type": "string"}, "evidence_id": {"$ref": "#/$defs/safeId"}, "visual_inspection": {"type": "boolean"}},
+      "required": ["evidence_id", "captured_at_utc"],
+      "type": "object"
+    },
+    "attempt": {
+      "additionalProperties": false,
+      "properties": {
+        "action_category": {"$ref": "#/$defs/safeId"},
+        "attempt_id": {"$ref": "#/$defs/safeId"},
+        "boundary": {"additionalProperties": false, "properties": {"applicable": {"type": "boolean"}, "external_action_performed": {"const": false}, "fallback_recovery_method": {"enum": ["none", "force_stop_relaunch"]}, "fallback_recovery_outcome": {"enum": ["not_required", "pass", "fail"]}, "observed": {"type": "boolean"}, "primary_back_recovery_outcome": {"enum": ["not_applicable", "pass", "fail"]}}, "required": ["applicable", "observed", "external_action_performed", "primary_back_recovery_outcome", "fallback_recovery_method", "fallback_recovery_outcome"], "type": "object"},
+        "cleanup_result": {"enum": ["pass", "fail", "not_required"]},
+        "completed_at_utc": {"type": "string"},
+        "crash_anr": {"additionalProperties": false, "properties": {"applicable": {"type": "boolean"}, "result": {"enum": ["clear", "signal_classified", "not_required"]}, "scan_performed": {"type": "boolean"}}, "required": ["applicable", "scan_performed", "result"], "type": "object"},
+        "dynamic_assertion_policy": {"const": "structure_and_category_only"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_type": {"enum": ["physical_runtime", "paired_physical_runtime", "avd_tooling_runtime", "synthetic_offline", "static_contract", "manual_observation", "mapped_only"]},
+        "fixed_dynamic_values_used": {"const": false},
+        "inventory_event": {"additionalProperties": false, "properties": {"focus_category": {"$ref": "#/$defs/safeId"}, "prior_screen_alias": {"$ref": "#/$defs/safeId"}, "recurrence_match": {"enum": ["not_applicable", "matched", "changed"]}, "recurrence_status": {"enum": ["first_observation", "recurrence"]}, "risk_note_code": {"$ref": "#/$defs/safeId"}, "screen_alias": {"$ref": "#/$defs/safeId"}, "state_category": {"$ref": "#/$defs/safeId"}}, "required": ["screen_alias", "state_category", "focus_category", "risk_note_code", "recurrence_status", "prior_screen_alias", "recurrence_match"], "type": "object"},
+        "modalities": {"additionalProperties": false, "properties": {"runner_log": {"$ref": "#/$defs/modality"}, "screenshot": {"allOf": [{"$ref": "#/$defs/modality"}, {"properties": {"visual_inspection": {"const": true}}, "required": ["visual_inspection"]}]}, "ui_tree": {"$ref": "#/$defs/modality"}}, "required": ["screenshot", "ui_tree", "runner_log"], "type": "object"},
+        "observed_state_alias": {"$ref": "#/$defs/safeId"},
+        "oracle_result": {"enum": ["pass", "fail", "blocked", "not_observed"]},
+        "pre_state_alias": {"$ref": "#/$defs/safeId"},
+        "privacy": {"additionalProperties": false, "properties": {"applicable": {"type": "boolean"}, "bounded_log_summary_present": {"type": "boolean"}, "public_output_scan": {"enum": ["pass", "fail", "not_required"]}, "raw_sensitive_values_present": {"const": false}}, "required": ["applicable", "bounded_log_summary_present", "public_output_scan", "raw_sensitive_values_present"], "type": "object"},
+        "recovery_attempt": {"type": "boolean"},
+        "recovery_of_attempt_id": {"$ref": "#/$defs/safeId"},
+        "started_at_utc": {"type": "string"}
+      },
+      "required": ["attempt_id", "started_at_utc", "completed_at_utc", "pre_state_alias", "action_category", "observed_state_alias", "oracle_result", "evidence_type", "evidence_status", "modalities", "cleanup_result", "recovery_attempt", "recovery_of_attempt_id", "dynamic_assertion_policy", "fixed_dynamic_values_used", "boundary", "privacy", "crash_anr", "inventory_event"],
+      "type": "object"
+    },
+    "anomaly": {
+      "additionalProperties": false,
+      "properties": {
+        "anomaly_alias": {"$ref": "#/$defs/safeId"}, "anomaly_id": {"$ref": "#/$defs/safeId"}, "attempt_id": {"$ref": "#/$defs/safeId"}, "category": {"$ref": "#/$defs/safeId"}, "cause_category": {"$ref": "#/$defs/safeId"}, "cause_evidence_status": {"enum": ["likely", "hypothesis", "unknown"]}, "classification": {"enum": ["resolved", "observed_fail", "confirmed_defect", "tooling_defect", "blocked_by_oracle", "blocked_by_external_state", "not_run"]}, "evidence_status": {"$ref": "#/$defs/evidenceStatus"}, "expected_result_category": {"$ref": "#/$defs/safeId"}, "first_failure_retained": {"type": "boolean"}, "observed_result_category": {"$ref": "#/$defs/safeId"}, "public_safe_screen_alias": {"$ref": "#/$defs/safeId"}, "reason_code": {"$ref": "#/$defs/safeId"}, "scenario_id": {"pattern": "^QA-044-[0-9]{3}$", "type": "string"}, "test_design_implication": {"$ref": "#/$defs/safeId"}, "trigger_category": {"$ref": "#/$defs/safeId"}
+      },
+      "required": ["anomaly_alias", "category", "classification", "evidence_status", "scenario_id", "trigger_category", "expected_result_category", "observed_result_category", "public_safe_screen_alias", "cause_evidence_status", "cause_category", "test_design_implication", "first_failure_retained", "reason_code"],
+      "type": "object"
+    },
+    "runtimeAnomaly": {
+      "allOf": [{"$ref": "#/$defs/anomaly"}, {"properties": {"anomaly_id": {"$ref": "#/$defs/safeId"}, "attempt_id": {"$ref": "#/$defs/safeId"}, "classification": {"enum": ["observed_fail", "confirmed_defect", "tooling_defect"]}, "evidence_status": {"const": "confirmed"}, "first_failure_retained": {"const": true}}, "required": ["anomaly_id", "attempt_id"]}]
+    },
+    "scenario": {
+      "additionalProperties": false,
+      "properties": {"attempts": {"items": {"$ref": "#/$defs/attempt"}, "type": "array"}, "blocker": {"$ref": "#/$defs/blocker"}, "defect": {"$ref": "#/$defs/defect"}, "scenario_id": {"pattern": "^QA-044-[0-9]{3}$", "type": "string"}},
+      "required": ["scenario_id", "attempts", "blocker", "defect"],
+      "type": "object"
+    }
+  },
+  "properties": {
+    "build_ref": {"additionalProperties": false, "properties": {"alias": {"$ref": "#/$defs/safeId"}, "apk_family": {"const": "television-full"}}, "required": ["alias", "apk_family"], "type": "object"},
+    "generated_at_utc": {"type": "string"},
+    "known_anomaly_rechecks": {"items": {"$ref": "#/$defs/anomaly"}, "maxItems": 3, "minItems": 3, "type": "array"},
+    "run_id": {"$ref": "#/$defs/safeId"},
+    "runtime_anomalies": {"items": {"$ref": "#/$defs/runtimeAnomaly"}, "type": "array"},
+    "runtime_preflight": {"additionalProperties": false, "properties": {"adb_authorized": {"type": "boolean"}, "artifact_present": {"type": "boolean"}, "authority_report_reference": {"const": "docs/qa/reports/task042_local_runtime_preflight.summary.json"}, "authority_report_sha256": {"pattern": "^[a-f0-9]{64}$", "type": "string"}, "authority_task_id": {"const": "TASK-042"}, "cleanup_rollback_ready": {"type": "boolean"}, "device_review_reference": {"const": "docs/approvals/device_inventory.public_safe.review.json"}, "device_review_sha256": {"pattern": "^[a-f0-9]{64}$", "type": "string"}, "ignored_evidence_storage_ready": {"type": "boolean"}, "reviewer_gate": {"type": "boolean"}, "status": {"enum": ["READY", "BLOCKED"]}, "synthetic_fixture_ready": {"type": "boolean"}}, "required": ["status", "adb_authorized", "artifact_present", "synthetic_fixture_ready", "ignored_evidence_storage_ready", "cleanup_rollback_ready", "reviewer_gate", "authority_task_id", "authority_report_reference", "authority_report_sha256", "device_review_reference", "device_review_sha256"], "type": "object"},
+    "scenario_contract_version": {"const": "task044-scenarios-v1"},
+    "scenarios": {"items": {"$ref": "#/$defs/scenario"}, "maxItems": 32, "minItems": 32, "type": "array"},
+    "schema_version": {"const": "task044-runtime-adapter-v1"},
+    "target": {"additionalProperties": false, "properties": {"form_factor": {"const": "tv"}, "lane_alias": {"const": "tv-tpv-013"}, "physical": {"const": true}, "profile_alias": {"const": "tv-tpv-a12-013"}}, "required": ["lane_alias", "profile_alias", "form_factor", "physical"], "type": "object"}
+  },
+  "required": ["schema_version", "run_id", "generated_at_utc", "build_ref", "target", "scenario_contract_version", "runtime_preflight", "known_anomaly_rechecks", "runtime_anomalies", "scenarios"],
+  "title": "TASK-044 TPV13 reference-lane runtime adapter",
+  "type": "object"
+}

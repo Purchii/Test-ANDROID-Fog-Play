@@ -87,3 +87,32 @@ Approval metadata for TASK-005 must use exact local path patterns:
 Cross-family paths are blocked. For example, APK paths under
 `.qa_local/secrets/`, evidence under `.qa_local/apks/`, synthetic secrets under
 `.qa_local/devices/`, absolute user paths and `..` traversal are invalid.
+
+## Fresh Worktree Local-Artifact Gate
+
+`.qa_local` is ignored and checkout-local. A fresh Codex worktree does not
+automatically inherit APKs, device mappings, synthetic fixtures, evidence or
+tools that are present in another checkout of the same repository. Therefore a
+missing `.qa_local` path in the active worktree is not evidence that the owner
+or project has not supplied the artifact.
+
+Before classifying a canonical APK, ADB lane or synthetic fixture as missing in
+a fresh worktree, the task must:
+
+1. verify the canonical repo-relative contract in the active task worktree;
+2. inspect only bounded Git worktrees for this repository, without a global
+   filesystem search, and identify a clean source checkout with the required
+   ignored contract;
+3. copy only the task-approved ignored subtrees into the active task worktree,
+   preserving raw values locally and validating exact filenames, counts,
+   regular-file/reparse rules and the current task's freshness gates;
+4. quarantine recoverably, rather than silently accepting, non-canonical or
+   duplicate local copies;
+5. rerun the canonical fail-closed preflight before any app/device action.
+
+The source checkout's Git commit identifies repository-contract compatibility;
+it does not make copied APK evidence fresh and does not approve runtime. Raw
+hashes, serial mappings, credentials and machine paths remain local-only. If no
+bounded same-repository source satisfies the contract, stop the affected lane
+and request an explicit owner-approved alternate local root. Never silently
+fall back to an arbitrary absolute path or publish that path.

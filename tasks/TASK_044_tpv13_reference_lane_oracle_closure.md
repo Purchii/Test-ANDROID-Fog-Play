@@ -204,6 +204,80 @@ Codex должен добавить точные validate-only/preflight/execute
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
 
+## Фактическое выполнение и команды runner'а
+
+TASK-044 выполняется в принятом fresh thread на физической reference lane
+`tv-tpv-013` / `tv-tpv-a12-013`. Телефон участвовал только в public-safe
+inventory и не использовался для установки, запуска, ввода, screenshot/UI-tree,
+логов или подмены телевизионного evidence. Runtime adapter остаётся в
+игнорируемом task-scoped каталоге; его содержимое и фактический machine path не
+публикуются.
+
+Точные безопасные режимы runner'а:
+
+```text
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-only
+python automation/native_regression/task044_tpv13_reference_lane.py --preflight --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json
+python automation/native_regression/task044_tpv13_reference_lane.py --execute --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json --allow-prod-conditional-ingest
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-report
+```
+
+`--validate-only` не читает файлы и не выполняет process/network/device I/O.
+`--preflight` проверяет tracked contracts и типизированный local-only adapter,
+но не управляет устройством и ничего не публикует. `--execute` разрешает только
+fail-closed ingest уже собранного adapter evidence и атомарную публикацию
+public-safe bundle; флаг не разрешает device control. `--validate-report`
+повторно проверяет фиксированный tracked bundle без записи и runtime-действий.
+
+Hardened runtime bundle закрывает все 32 строки (29 P0 и 3 P1): 16
+`observed_pass`, 2 `confirmed_defect`, 11 `observed_fail` и 3
+`blocked_by_oracle`. Итог — `fail` / `partial_blocked` / `blocks_release`.
+Независимые QA R1 замечания по schema/ledger semantics устранены до финальной
+регенерации authority bundle.
+
+Подтверждённые public-safe runtime результаты:
+
+- cold launch не достиг actionable catalog, а loader после ambient recovery не
+  стал actionable catalog за 120 секунд; QA-044-002 и QA-044-004 оба связаны с
+  `TASK044-DEFECT-LOADER-001`; target-app-only force-stop и повторный approved
+  launch восстановили catalog, но не превратили исходные defect rows в PASS;
+- Search `Back` не закрыл экранную клавиатуру; восстановление выполнено через
+  target-app force-stop с сохранением первого `observed_fail`;
+- визуально выбранный Settings→Gamepad привёл к logout confirmation; выбран
+  только Cancel, account/session mutation не выполнялась, строка остаётся
+  `observed_fail`;
+- `Back` на payment boundary был no-op; оплата и внешняя навигация не
+  выполнялись, recovery выполнен target-app force-stop, строка остаётся
+  `observed_fail`;
+- connection-error recurrence относится к QA-044-032 `observed_fail`, а не к
+  `confirmed_defect`.
+
+Public-safe defect/observed-failure records (only QA-044-002 and QA-044-004 are final
+`confirmed_defect`; QA-044-014, QA-044-018, QA-044-023 and QA-044-032 are
+`observed_fail`):
+
+- `docs/qa/defects/task044_loader_timeout_after_ambient_recovery.md`;
+- `docs/qa/defects/task044_search_back_keyboard_trap.md`;
+- `docs/qa/defects/task044_settings_gamepad_logout_route.md`;
+- `docs/qa/defects/task044_payment_boundary_back_noop.md`;
+- `docs/qa/defects/task044_connection_error_recurrence.md`.
+
+Каждый checkpoint имеет local-only screenshot, UI tree и runner log. QR
+декодировался только локально через установленный `jsqr`-контур, raw target не
+публиковался и не открывался. Финальный cleanup подтверждён: target app
+force-stopped, Home восстановлен, session сохранена. TASK-045 не запускался.
+После завершения evidence collection физический телевизор стал недоступен,
+поэтому дополнительный или повторный TV runtime сейчас `blocked_by_device`;
+уже собранное TV evidence сохраняется. Подключён только phone-full телефон, но
+он inventory-only, находится вне scope TASK-044 и не получал runtime actions.
+Переход к phone runtime допускается только в fresh task после closure и
+integration TASK-044, не в этом thread.
+
+Final Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety and
+Docs/Scribe reviews returned `GO` with no open R0/R1. This permits integration
+of the release-blocking evidence bundle only; it is not release approval and
+does not authorize phone or TASK-045 runtime in this thread.
+
 ## Multi-agent acceptance
 
 Обязательны реальные роли:

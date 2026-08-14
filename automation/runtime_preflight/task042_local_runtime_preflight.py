@@ -127,6 +127,8 @@ class SdkTools:
     apkanalyzer: Path | None
     aapt: Path | None
     apksigner: Path | None
+    apksigner_jar: Path | None
+    java: Path | None
     cmd_exe: Path | None
 
 
@@ -326,12 +328,35 @@ def resolve_sdk_tools(env: Mapping[str, str] | None = None) -> tuple[SdkTools | 
     signer_names = ("apksigner.exe", "apksigner", "apksigner.bat")
     signer_candidates = _bounded_tool_candidates(sdk_root, Path("build-tools"), signer_names)
     apksigner = signer_candidates[0] if signer_candidates else None
+    apksigner_jar = None
+    if apksigner is not None:
+        jar_candidate = apksigner.parent / "lib" / "apksigner.jar"
+        if _is_regular_non_reparse(jar_candidate):
+            apksigner_jar = jar_candidate
+    java_candidates: list[Path] = []
+    java_home = environment.get("JAVA_HOME", "").strip()
+    if java_home:
+        java_candidates.append(Path(java_home).resolve(strict=False) / "bin" / "java.exe")
+    program_files = environment.get("ProgramFiles", "").strip()
+    if program_files:
+        java_candidates.append(Path(program_files) / "Android" / "Android Studio" / "jbr" / "bin" / "java.exe")
+    java = next((path for path in java_candidates if _is_regular_non_reparse(path)), None)
     emulator = next((sdk_root / "emulator" / name for name in ("emulator.exe", "emulator") if _is_regular_non_reparse(sdk_root / "emulator" / name)), None)
     system_root = environment.get("SystemRoot", environment.get("WINDIR", "")).strip()
     cmd_exe = Path(system_root) / "System32" / "cmd.exe" if system_root else None
     if cmd_exe is not None and not _is_regular_non_reparse(cmd_exe):
         cmd_exe = None
-    return SdkTools(sdk_root=sdk_root, adb=adb, emulator=emulator, apkanalyzer=apkanalyzer, aapt=aapt, apksigner=apksigner, cmd_exe=cmd_exe), []
+    return SdkTools(
+        sdk_root=sdk_root,
+        adb=adb,
+        emulator=emulator,
+        apkanalyzer=apkanalyzer,
+        aapt=aapt,
+        apksigner=apksigner,
+        apksigner_jar=apksigner_jar,
+        java=java,
+        cmd_exe=cmd_exe,
+    ), []
 
 
 def validate_canonical_apks(repo_root: Path) -> tuple[CanonicalPresence, list[Path], list[str]]:
@@ -434,7 +459,14 @@ def capture_apk_metadata(
                         errors.append(f"apk_metadata_parse_failed:{record['apk_alias']}:aapt")
                     else:
                         record["package_id"], record["version_code"], record["version_name"] = match.groups()
-        if tools.apksigner is not None:
+        if tools.apksigner_jar is not None and tools.java is not None:
+            commands.append(
+                (
+                    "signature_output",
+                    [str(tools.java), "-jar", str(tools.apksigner_jar), "verify", "--print-certs", str(path)],
+                )
+            )
+        elif tools.apksigner is not None:
             commands.append(("signature_output", _sdk_tool_argv(tools.apksigner, ["verify", "--print-certs", str(path)], tools.cmd_exe)))
         for field, argv in commands:
             if argv is None:

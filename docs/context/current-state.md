@@ -832,3 +832,51 @@ identifier was requested, recorded or published in TASK-043. TASK-044 must
 fetch the lifecycle-closure `origin/main`, create its own task branch, perform
 public-safe lane preflight and apply its `PROD_CONDITIONAL_BOUNDED_RUNTIME`
 gates before any device action.
+
+## Active TASK-044 runtime result — 2026-08-14
+
+TASK-044 is active in fresh thread
+`01a0007d-5738-7960-9f14-0dedd5d9a9a1` on branch
+`qa/task-044-tpv13-reference-lane-oracle-closure`, based exactly on the
+published TASK-043 lifecycle closure
+`origin/main@92896f61c37a682c74998c54fef46fc9a921e3b5`. Mode is
+`BOUNDED_AUTONOMOUS`; physical execution is
+`PROD_CONDITIONAL_BOUNDED_RUNTIME`.
+
+Public-safe preflight confirmed the exact Television Full TPV13 reference lane
+and kept the connected phone inventory-only. The phone did not receive app
+installation, launch, input, screenshots, UI-tree collection or log calls and
+does not substitute for television evidence. The tracked runner is an ingest
+adapter only; device control and raw evidence collection remain outside its
+CLI.
+
+The final hardened bundle terminally classifies all 32 TASK-044 rows (29 P0 and
+3 P1): 16 `observed_pass`, 2 `confirmed_defect`, 11 `observed_fail` and 3
+`blocked_by_oracle`. Execution is `fail`, coverage is `partial_blocked`, and
+the release gate is `blocks_release`. Independent QA R1 schema/ledger findings
+were remediated before regeneration. No partial or recovered attempt is treated
+as a clean PASS.
+
+Runtime confirmed two defect rows, QA-044-002 and QA-044-004, both linked to
+`TASK044-DEFECT-LOADER-001`: cold-launch loader failure and bounded
+loader-not-catalog timeout after ambient recovery, with separate target-app
+force-stop/relaunch recovery. Search keyboard remaining open after `Back`, the
+visually focused Settings Gamepad item routing to logout confirmation where only
+Cancel was used, and payment-boundary `Back` being a no-op with force-stop
+recovery are retained as `observed_fail`, not promoted to confirmed defects.
+Connection-error recurrence is QA-044-032 `observed_fail`, not a confirmed
+defect.
+Final cleanup is confirmed: the target app was force-stopped, Home restored and
+the existing session preserved.
+
+All screenshots, UI trees, runner logs, device/build/package/hash/account data
+and raw QR targets remain ignored/local-only. QR classification reused the
+established local `jsqr` decoder and no target was opened. The physical TV is
+now unavailable, so any additional/repeat TV run is `blocked_by_device`; the
+existing TV evidence is retained. Only the phone-full phone remains connected,
+but it is inventory-only and out of TASK-044 scope, and no phone runtime or
+substitution occurred. TASK-045 has not started and may begin only in a fresh
+task after TASK-044 closure/default integration. Final task-branch integration
+and remote-default alignment are still pending. Builder, QA Reviewer A, QA
+Reviewer B, Security/Prod-safety and Docs/Scribe returned final `GO` with no
+open R0/R1 for integration of this release-blocking evidence result.

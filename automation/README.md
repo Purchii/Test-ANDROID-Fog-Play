@@ -270,6 +270,43 @@ failure after retry/recovery and emits TASK-044 rows as selection-only
 `not_run` work. A passing TASK-043 static contract does not claim product
 runtime coverage or release readiness.
 
+## TASK-044 TPV13 Reference-lane Evidence Adapter
+
+`automation/native_regression/task044_tpv13_reference_lane.py` is a fail-closed
+adapter for the Television Full physical reference lane. It never controls a
+device. Instead, it validates and ingests a typed, ignored local-only runtime
+adapter whose evidence was collected under the separately approved bounded
+runtime procedure.
+
+Run the four modes in this order:
+
+```text
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-only
+python automation/native_regression/task044_tpv13_reference_lane.py --preflight --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json
+python automation/native_regression/task044_tpv13_reference_lane.py --execute --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json --allow-prod-conditional-ingest
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-report
+```
+
+The adapter path must resolve to a regular, non-link JSON file under the exact
+ignored `.qa_local/evidence/task-044/` root. External, symlinked/reparse or
+non-canonical paths fail closed. `--allow-prod-conditional-ingest` authorizes
+ingest only; it does not authorize ADB, APK install/launch, UI input, logs,
+screenshots, network activity or any other device action.
+
+The public bundle consists of the v2 summary plus scenario, checkpoint and
+anomaly ledgers under `docs/qa/reports/`. Every scenario is terminally
+classified, every runtime attempt carries screenshot, UI-tree and runner-log
+references, and retry/recovery cannot erase an initial failure. The phone is
+inventory-only and cannot satisfy the TV lane. Payment/session start,
+QR/browser traversal, logout/account mutation and raw device/build/account/QR
+publication are forbidden. The current runtime result blocks release pending
+oracle closure: 32 terminal rows (29 P0/3 P1), comprising 16
+`observed_pass`, 2 `confirmed_defect`, 11 `observed_fail` and 3
+`blocked_by_oracle`; execution is `fail` and coverage is `partial_blocked`.
+The physical TV is no longer available for a repeat run, so additional TV
+runtime is `blocked_by_device`. The remaining phone-full phone is out of this
+runner's scope and received no TASK-044 runtime action.
+
 ## Safety Rules
 
 Automation in this repository must not request or store:

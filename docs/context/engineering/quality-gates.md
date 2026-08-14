@@ -808,6 +808,70 @@ was pushed and local/remote default alignment was confirmed before the final
 docs-only lifecycle closure. These static gates do not authorize TASK-044
 runtime; its separate conditional preflight and review gates still apply.
 
+## TASK-044 TPV13 physical reference-lane gates
+
+TASK-044 physical runtime is `PROD_CONDITIONAL_BOUNDED_RUNTIME` and is accepted
+only for the exact `tv-tpv-013` / `tv-tpv-a12-013` Television Full lane. A
+connected phone is inventory-only and cannot satisfy, corroborate or recover a
+television result.
+
+The TASK-044 bundle fails closed unless:
+
+- all 32 catalog rows have a terminal canonical status and reconcile by
+  scenario id, priority and opaque surface mapping;
+- each physical attempt has a visually inspected screenshot, UI tree and
+  runner-log reference, with screenshot/tree mismatches retained explicitly;
+- checkpoint rows are attempt-scoped and cannot collapse first failure,
+  retry, recovery or recurrence into one clean observation;
+- loader timeout, Search keyboard trap, Settings→logout accidental route,
+  payment-boundary Back no-op and connection-error recurrence remain visible in
+  scenario/anomaly evidence with their recovery recorded separately;
+- payment/session start, QR/browser traversal, logout/account/profile mutation,
+  network shaping, destructive actions, APK modification and security bypass
+  remain unexecuted;
+- QR targets, screenshots, UI trees, logs, machine/device/build/package/hash and
+  account-like values remain local-only; tracked output is category-level;
+- final cleanup confirms target-app force-stop, Home restoration and preserved
+  session;
+- `fail`, any `blocked_*`, any unresolved oracle, retry/recovery or stale/cross-
+  lane evidence prevents product/release PASS;
+- QA A, QA B, Security/Prod-safety and Docs/Scribe leave no R0/R1 finding open.
+
+Required public-safe runner and repository checks:
+
+```text
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-only
+python automation/native_regression/task044_tpv13_reference_lane.py --preflight --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json
+python automation/native_regression/task044_tpv13_reference_lane.py --execute --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json --allow-prod-conditional-ingest
+python automation/native_regression/task044_tpv13_reference_lane.py --validate-report
+python -m pytest -q tests/test_task044_tpv13_reference_lane.py tests/test_task042_local_runtime_preflight.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+git diff --check
+git status --short --branch
+```
+
+The hardened bundle is terminal and release-blocking: 32 rows (29 P0/3 P1), 16
+`observed_pass`, 2 `confirmed_defect`, 11 `observed_fail` and 3
+`blocked_by_oracle`; execution is `fail`, coverage is `partial_blocked`, and
+the release gate is `blocks_release`. Independent QA R1 findings on
+report/checkpoint/anomaly/blocker semantics were remediated before regeneration.
+The physical TV is no longer available, so any repeat/additional reference-lane
+runtime is `blocked_by_device`. The remaining phone-full phone is inventory-only
+and cannot be used by TASK-044. Phone runtime requires a fresh task after
+TASK-044 closure and integration.
+
+Final Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety and
+Docs/Scribe reviews returned `GO` with no open R0/R1. This permits integration
+of the `blocks_release` evidence bundle only; it is not a release approval and
+does not authorize phone or TASK-045 runtime in this thread.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

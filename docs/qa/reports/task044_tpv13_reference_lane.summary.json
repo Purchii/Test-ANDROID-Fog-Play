@@ -1,0 +1,564 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task044_tpv13_reference_lane.scenario-ledger.csv",
+      "sha256": "69ef7f8eaf460a3d9ac9852c99bb85ff4f148b589ead487cde0882c3a1fb8d5b"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "checkpoint_ledger",
+      "reference": "docs/qa/reports/task044_tpv13_reference_lane.checkpoint-ledger.csv",
+      "sha256": "ac1da6515093d55e64cbcc344714167449e3f7fb8ccd0367fdf30c82361643cf"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "anomaly_ledger",
+      "reference": "docs/qa/reports/task044_tpv13_reference_lane.anomaly-ledger.csv",
+      "sha256": "c85a1c6f923cd184f56e1f85fc37ee8081b7df1705e06518136278b9ad26e184"
+    }
+  ],
+  "blocked_reasons": [
+    "partial_family_home_return_not_executed",
+    "qa044_027_runtime_prerequisite_unavailable",
+    "tooling_input_unsupported"
+  ],
+  "build_ref": {
+    "alias": "television-full-local-build"
+  },
+  "coverage_status": "partial_blocked",
+  "evidence_status": "unknown",
+  "execution_status": "fail",
+  "generated_at_utc": "2026-08-14T21:57:11Z",
+  "payload": {
+    "known_anomaly_rechecks": [
+      {
+        "anomaly_alias": "loader_not_catalog",
+        "category": "loader",
+        "cause_category": "startup_state_or_external_dependency",
+        "cause_evidence_status": "hypothesis",
+        "classification": "confirmed_defect",
+        "evidence_status": "confirmed",
+        "expected_result_category": "actionable_catalog_within_120s",
+        "first_failure_retained": true,
+        "observed_result_category": "non_actionable_loader_timeout",
+        "public_safe_screen_alias": "app_loader_timeout",
+        "reason_code": "reproduced_then_recovered",
+        "scenario_id": "QA-044-004",
+        "test_design_implication": "retain_timeout_and_force_stop_recovery",
+        "trigger_category": "launch_after_ambient_recovery"
+      },
+      {
+        "anomaly_alias": "search_keyboard_trap",
+        "category": "search",
+        "cause_category": "focus_or_back_routing",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "keyboard_close_and_focus_return",
+        "first_failure_retained": true,
+        "observed_result_category": "keyboard_remained_open",
+        "public_safe_screen_alias": "search_keyboard_trap",
+        "reason_code": "reproduced_force_stop_recovery",
+        "scenario_id": "QA-044-014",
+        "test_design_implication": "force_stop_fallback_with_first_failure_retained",
+        "trigger_category": "search_back_sequence"
+      },
+      {
+        "anomaly_alias": "settings_logout_route",
+        "category": "settings",
+        "cause_category": "visual_semantic_focus_mismatch",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "gamepad_destination",
+        "first_failure_retained": true,
+        "observed_result_category": "logout_confirmation",
+        "public_safe_screen_alias": "logout_confirmation_accidental_route",
+        "reason_code": "reproduced_cancelled_without_mutation",
+        "scenario_id": "QA-044-018",
+        "test_design_implication": "cancel_only_and_validate_route_before_select",
+        "trigger_category": "visual_gamepad_focus_select"
+      }
+    ],
+    "mandatory_oracles": {
+      "boundary": true,
+      "crash_anr": true,
+      "dynamic_data_category_only": true,
+      "log_privacy": true,
+      "screenshot_and_ui_tree": true
+    },
+    "outcome_aggregates": {
+      "blockers": [
+        {
+          "evidence_status": "confirmed",
+          "reason_code": "tooling_input_unsupported",
+          "scenario_id": "QA-044-013",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "evidence_status": "unknown",
+          "reason_code": "partial_family_home_return_not_executed",
+          "scenario_id": "QA-044-024",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "evidence_status": "unknown",
+          "reason_code": "qa044_027_runtime_prerequisite_unavailable",
+          "scenario_id": "QA-044-027",
+          "scenario_status": "blocked_by_oracle"
+        }
+      ],
+      "confirmed_failures": [
+        {
+          "defect_alias": "TASK044-DEFECT-LOADER-001",
+          "defect_reference": "docs/qa/defects/task044_loader_timeout_after_ambient_recovery.md",
+          "evidence_status": "confirmed",
+          "reason_code": "confirmed_runtime_defect",
+          "scenario_id": "QA-044-002",
+          "scenario_status": "confirmed_defect"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-003",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "TASK044-DEFECT-LOADER-001",
+          "defect_reference": "docs/qa/defects/task044_loader_timeout_after_ambient_recovery.md",
+          "evidence_status": "confirmed",
+          "reason_code": "confirmed_runtime_defect",
+          "scenario_id": "QA-044-004",
+          "scenario_status": "confirmed_defect"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-009",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-014",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-015",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-017",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-018",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-021",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-022",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-023",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-026",
+          "scenario_status": "observed_fail"
+        },
+        {
+          "defect_alias": "none",
+          "defect_reference": "none",
+          "evidence_status": "confirmed",
+          "reason_code": "retry_recovery_stale_or_oracle_failure_retained",
+          "scenario_id": "QA-044-032",
+          "scenario_status": "observed_fail"
+        }
+      ],
+      "unknowns": [
+        {
+          "evidence_status": "unknown",
+          "reason_code": "partial_family_home_return_not_executed",
+          "scenario_id": "QA-044-024",
+          "scenario_status": "blocked_by_oracle"
+        },
+        {
+          "evidence_status": "unknown",
+          "reason_code": "qa044_027_runtime_prerequisite_unavailable",
+          "scenario_id": "QA-044-027",
+          "scenario_status": "blocked_by_oracle"
+        }
+      ]
+    },
+    "phone_never_substitutes_tv": true,
+    "product_runtime_coverage_claim": false,
+    "runtime_actions_not_run": false,
+    "runtime_anomalies": [
+      {
+        "anomaly_alias": "qa-044-002-first-failure-1",
+        "anomaly_id": "runtime-qa-044-002-1",
+        "attempt_id": "attempt-qa044-002-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "confirmed_defect",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "loader_timeout",
+        "public_safe_screen_alias": "app_loader_timeout",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-002",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "cold_launch"
+      },
+      {
+        "anomaly_alias": "qa-044-003-first-failure-1",
+        "anomaly_id": "runtime-qa-044-003-1",
+        "attempt_id": "attempt-qa044-003-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "loader_recurrence",
+        "public_safe_screen_alias": "app_loader",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-003",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "warm_foreground"
+      },
+      {
+        "anomaly_alias": "qa-044-004-first-failure-1",
+        "anomaly_id": "runtime-qa-044-004-1",
+        "attempt_id": "attempt-qa044-004-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "confirmed_defect",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "non_actionable_timeout",
+        "public_safe_screen_alias": "app_loader_timeout",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-004",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "bounded_loader_wait"
+      },
+      {
+        "anomaly_alias": "qa-044-009-first-failure-1",
+        "anomaly_id": "runtime-qa-044-009-1",
+        "attempt_id": "attempt-qa044-009-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "loader_after_navigation",
+        "public_safe_screen_alias": "app_loader",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-009",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "bounded_grid_traversal"
+      },
+      {
+        "anomaly_alias": "qa-044-014-first-failure-1",
+        "anomaly_id": "runtime-qa-044-014-1",
+        "attempt_id": "attempt-qa044-014-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "keyboard_trap_recurrence",
+        "public_safe_screen_alias": "search_keyboard_trap",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-014",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "back_escape_sequence"
+      },
+      {
+        "anomaly_alias": "qa-044-015-first-failure-1",
+        "anomaly_id": "runtime-qa-044-015-1",
+        "attempt_id": "attempt-qa044-015-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "keyboard_trap_recurrence",
+        "public_safe_screen_alias": "search_keyboard_trap",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-015",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "search_back_failure"
+      },
+      {
+        "anomaly_alias": "qa-044-017-first-failure-1",
+        "anomaly_id": "runtime-qa-044-017-1",
+        "attempt_id": "attempt-qa044-017-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "settings_no_navigation",
+        "public_safe_screen_alias": "settings_gamepad_select_noop",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-017",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "select_gamepad_visual_focus"
+      },
+      {
+        "anomaly_alias": "qa-044-018-first-failure-1",
+        "anomaly_id": "runtime-qa-044-018-1",
+        "attempt_id": "attempt-qa044-018-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "logout_confirmation",
+        "public_safe_screen_alias": "logout_confirmation_accidental_route",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-018",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "semantic_refocus_and_select"
+      },
+      {
+        "anomaly_alias": "qa-044-021-first-failure-1",
+        "anomaly_id": "runtime-qa-044-021-1",
+        "attempt_id": "attempt-qa044-021-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "payment_qr_boundary",
+        "public_safe_screen_alias": "payment_qr_boundary",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-021",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "open_approved_boundary"
+      },
+      {
+        "anomaly_alias": "qa-044-022-first-failure-1",
+        "anomaly_id": "runtime-qa-044-022-1",
+        "attempt_id": "attempt-qa044-022-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "payment_target_category_recorded",
+        "public_safe_screen_alias": "payment_qr_boundary",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-022",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "local_jsqr_decode_no_traversal"
+      },
+      {
+        "anomaly_alias": "qa-044-023-first-failure-1",
+        "anomaly_id": "runtime-qa-044-023-1",
+        "attempt_id": "attempt-qa044-023-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "payment_boundary_unchanged",
+        "public_safe_screen_alias": "payment_qr_boundary",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-023",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "back_navigation"
+      },
+      {
+        "anomaly_alias": "qa-044-026-first-failure-1",
+        "anomaly_id": "runtime-qa-044-026-1",
+        "attempt_id": "attempt-qa044-026-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "ambient_external",
+        "public_safe_screen_alias": "ambient_screensaver_external",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-026",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "observe_ambient_interruption"
+      },
+      {
+        "anomaly_alias": "qa-044-032-first-failure-1",
+        "anomaly_id": "runtime-qa-044-032-1",
+        "attempt_id": "attempt-qa044-032-1",
+        "category": "runtime_oracle_mismatch",
+        "cause_category": "product_or_runtime_state",
+        "cause_evidence_status": "hypothesis",
+        "classification": "observed_fail",
+        "evidence_status": "confirmed",
+        "expected_result_category": "scenario_oracle_satisfied",
+        "first_failure_retained": true,
+        "observed_result_category": "connection_error",
+        "public_safe_screen_alias": "app_connection_error",
+        "reason_code": "fresh_physical_oracle_failure",
+        "scenario_id": "QA-044-032",
+        "test_design_implication": "retain_first_failure_and_recheck_on_tv",
+        "trigger_category": "closure_checkpoint"
+      }
+    ],
+    "scenario_summary": {
+      "P0": 29,
+      "P1": 3,
+      "status_counts": {
+        "blocked_by_oracle": 3,
+        "confirmed_defect": 2,
+        "observed_fail": 11,
+        "observed_pass": 16
+      },
+      "total": 32
+    },
+    "task_status": "failed"
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_BOUNDED_RUNTIME",
+  "provenance": {
+    "adapter_input_published": false,
+    "oracle_schema_validation_status": "pass",
+    "oracle_schema_version": "task044-reference-lane-oracle-v1",
+    "preflight_authority": {
+      "artifacts": [
+        {
+          "kind": "task042_report",
+          "reference": "docs/qa/reports/task042_local_runtime_preflight.summary.json",
+          "sha256": "5add995c14615163e41710482589d73368778792f217221f3afc8c7fed8a61e1"
+        },
+        {
+          "kind": "device_review",
+          "reference": "docs/approvals/device_inventory.public_safe.review.json",
+          "sha256": "96a19e042ccd88145fbe6b5543f48004d2b9e6804c0d834324931396be787d44"
+        }
+      ],
+      "task_id": "TASK-042"
+    },
+    "runtime_actions": "reported_by_local_only_adapter",
+    "scenario_contract_version": "task044-scenarios-v1"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending",
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety_reviewer": "pending"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK044-RISK-001",
+      "summary": "Phone, stale, retry, recovery, blocked, mapped, and cross-family evidence cannot produce PASS."
+    }
+  ],
+  "run_id": "task044-20260814T140741Z",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "tv-tpv-013",
+  "task_id": "TASK-044",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "TASK044-UNKNOWN-024",
+      "reason_code": "partial_family_home_return_not_executed",
+      "scenario_id": "QA-044-024",
+      "scenario_status": "blocked_by_oracle"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK044-UNKNOWN-027",
+      "reason_code": "qa044_027_runtime_prerequisite_unavailable",
+      "scenario_id": "QA-044-027",
+      "scenario_status": "blocked_by_oracle"
+    }
+  ],
+  "verification": [
+    {
+      "check": "catalog_selector_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 32,
+      "status": "pass"
+    },
+    {
+      "check": "p0_p1_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": "29/3",
+      "status": "pass"
+    },
+    {
+      "check": "atomic_bundle_validation",
+      "evidence_status": "confirmed",
+      "result_count": 4,
+      "status": "pass"
+    }
+  ]
+}

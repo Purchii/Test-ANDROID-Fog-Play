@@ -386,6 +386,60 @@ def test_execute_mapped_device_uses_only_metadata_and_task016_allowlist(tmp_path
     assert (tmp_path / preflight.CANONICAL_GENERATED_INVENTORY).is_file()
 
 
+def test_sdk_resolution_supports_deterministic_apksigner_jar_fallback(tmp_path: Path) -> None:
+    env = _execution_fixture(tmp_path)
+    sdk = Path(env["LOCALAPPDATA"]) / "Android" / "Sdk"
+    signer = sdk / "build-tools" / "1.0" / "apksigner.exe"
+    signer.rename(signer.with_suffix(".bat"))
+    signer_jar = sdk / "build-tools" / "1.0" / "lib" / "apksigner.jar"
+    signer_jar.parent.mkdir(parents=True)
+    signer_jar.write_bytes(b"synthetic-apksigner-jar")
+    program_files = tmp_path / "program-files"
+    java = program_files / "Android" / "Android Studio" / "jbr" / "bin" / "java.exe"
+    java.parent.mkdir(parents=True)
+    java.write_text("synthetic java", encoding="utf-8")
+    env["ProgramFiles"] = str(program_files)
+
+    tools, errors = preflight.resolve_sdk_tools(env)
+
+    assert errors == []
+    assert tools is not None
+    assert tools.apksigner_jar == signer_jar
+    assert tools.java == java
+
+
+def test_apk_metadata_prefers_deterministic_apksigner_jar(tmp_path: Path) -> None:
+    env = _execution_fixture(tmp_path)
+    sdk = Path(env["LOCALAPPDATA"]) / "Android" / "Sdk"
+    signer = sdk / "build-tools" / "1.0" / "apksigner.exe"
+    signer.rename(signer.with_suffix(".bat"))
+    signer_jar = sdk / "build-tools" / "1.0" / "lib" / "apksigner.jar"
+    signer_jar.parent.mkdir(parents=True)
+    signer_jar.write_bytes(b"synthetic-apksigner-jar")
+    program_files = tmp_path / "program-files"
+    java = program_files / "Android" / "Android Studio" / "jbr" / "bin" / "java.exe"
+    java.parent.mkdir(parents=True)
+    java.write_text("synthetic java", encoding="utf-8")
+    env["ProgramFiles"] = str(program_files)
+    tools, errors = preflight.resolve_sdk_tools(env)
+    assert errors == [] and tools is not None
+    apk = tmp_path / "synthetic.apk"
+    apk.write_bytes(b"synthetic-apk-fixture")
+    fake = ApprovedFakeRunner()
+
+    def jar_aware_runner(argv, **kwargs):  # type: ignore[no-untyped-def]
+        if "-jar" in argv:
+            fake.calls.append(list(argv))
+            return subprocess.CompletedProcess(argv, 0, stdout="Signer certificate synthetic metadata", stderr="")
+        return fake(argv, **kwargs)
+
+    records, metadata_errors = preflight.capture_apk_metadata([apk], tools, jar_aware_runner)
+
+    assert metadata_errors == []
+    assert records[0]["signature_output"] == "Signer certificate synthetic metadata"
+    assert any("-jar" in call for call in fake.calls)
+
+
 def test_execute_unmapped_authorized_device_stops_before_per_device_calls(tmp_path: Path) -> None:
     env = _execution_fixture(tmp_path, mapped_serial="OTHER_SERIAL")
     fake = ApprovedFakeRunner(serial="UNMAPPED_SERIAL")

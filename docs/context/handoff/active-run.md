@@ -1,11 +1,25 @@
 # Active run
 
-## Active TASK-044 — TPV13 reference-lane runtime closed, release blocked
+## Accepted TASK-045 — paired TV plus phone virtual-gamepad E2E
+
+- Lifecycle status: `accepted_pending_fresh_thread`.
+- Required mode: `BOUNDED_AUTONOMOUS`.
+- Required branch: `qa/task-045-paired-tv-phone-virtual-gamepad-e2e` from the
+  remote-default lifecycle closure containing this handoff.
+- Current availability: only the physical phone with the `phone-full` family is
+  reported connected; the required TV member of the paired lane is unavailable.
+
+The fresh TASK-045 thread must read its task/prompt/scenario catalog, run strict
+multi-agent planning and classify the paired-lane preflight before any device
+action. The phone cannot substitute for the missing TV, and phone-only runtime
+must not be inferred from the paired task without an explicit in-scope oracle.
+
+## Completed TASK-044 — TPV13 reference-lane runtime closed, release blocked
 
 - Thread title: `TASK-044 — Television Full reference-lane oracle closure on TPV13`.
 - Thread id: `01a0007d-5738-7960-9f14-0dedd5d9a9a1`.
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Lifecycle status: `active_ready_for_integration_release_blocked`.
+- Lifecycle status: `inactive_completed`.
 - Branch: `qa/task-044-tpv13-reference-lane-oracle-closure`, based exactly on
   the published TASK-043 lifecycle closure `origin/main@92896f61c37a682c74998c54fef46fc9a921e3b5`.
 - Production safety: `PROD_CONDITIONAL_BOUNDED_RUNTIME`; the phone was used for
@@ -51,9 +65,9 @@ Only the phone-full physical phone remains connected, and it is inventory-only,
 out of TASK-044 scope and received no runtime action. Builder, QA Reviewer A,
 QA Reviewer B, Security/Prod-safety and Docs/Scribe returned final `GO` with no
 open R0/R1; Planner's baseline/plan gate was satisfied. The evidence bundle is
-ready for integration as a release-blocking result, not as release approval.
-TASK-045 has not started; a phone task may begin only in a fresh thread after
-TASK-044 closure and default integration.
+integrated as a release-blocking result, not as release approval. Task commit
+`bcf1f375eba65f32f65c85804b4cd0831a294e23` is published on the task branch
+and remote default. TASK-045 execution did not start in this thread.
 Docs/Scribe final audit is `GO`: hardened counts, defect/failure
 classifications, current device availability, redaction boundaries, cleanup and
 fresh-task lifecycle wording reconcile with the tracked authority.

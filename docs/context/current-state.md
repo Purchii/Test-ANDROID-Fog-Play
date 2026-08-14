@@ -875,8 +875,10 @@ established local `jsqr` decoder and no target was opened. The physical TV is
 now unavailable, so any additional/repeat TV run is `blocked_by_device`; the
 existing TV evidence is retained. Only the phone-full phone remains connected,
 but it is inventory-only and out of TASK-044 scope, and no phone runtime or
-substitution occurred. TASK-045 has not started and may begin only in a fresh
-task after TASK-044 closure/default integration. Final task-branch integration
-and remote-default alignment are still pending. Builder, QA Reviewer A, QA
-Reviewer B, Security/Prod-safety and Docs/Scribe returned final `GO` with no
-open R0/R1 for integration of this release-blocking evidence result.
+substitution occurred. TASK-044 is `inactive_completed`; task commit
+`bcf1f375eba65f32f65c85804b4cd0831a294e23` is published on its task branch
+and remote default. Builder, QA Reviewer A, QA Reviewer B,
+Security/Prod-safety and Docs/Scribe returned final `GO` with no open R0/R1 for
+integration of this release-blocking evidence result. TASK-045 is accepted for
+one fresh thread, but its paired runtime begins with the TV-unavailable
+preflight blocker and must not treat the connected phone as a TV substitute.

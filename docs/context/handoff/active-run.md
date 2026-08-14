@@ -1,20 +1,34 @@
 # Active run
 
-## TASK-043 active local verification checkpoint
+## TASK-044 accepted fresh continuation
+
+- Thread title: `TASK-044 — Television Full reference-lane oracle closure on TPV13`.
+- Thread id: `01a0007d-5738-7960-9f14-0dedd5d9a9a1`.
+- Lifecycle status: `active_waiting_for_task043_closure_baseline` until this
+  docs-only closure is visible on `origin/main`, then `active`.
+- Required branch: `qa/task-044-tpv13-reference-lane-oracle-closure` from the
+  updated remote default containing this closure; do not work on `main`.
+- The owner reports a connected physical phone and a connected new physical
+  television. This is category-level input only, not validated lane identity or
+  runtime evidence. TASK-044 must run its approved redacted preflight before
+  selecting a television lane; the phone must not substitute for that lane.
+- TASK-044 must use strict real Orchestrator, Planner, Builder, QA A, QA B,
+  Security/Prod-safety and Docs/Scribe roles. TASK-045 is not started.
+
+## Completed TASK-043 — sanitized runtime surface registry and selector
 
 - Thread title: `TASK-043 — Sanitized source-informed runtime surface registry and regression selector`.
 - Thread id: `019fadbd-22ba-7ac1-8fa5-84bca075c6d7`.
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Production safety: `PROD_SAFE_OFFLINE_STATIC_ONLY`.
-- Lifecycle status: `local_integrated_pending_remote_push`.
+- Lifecycle status: `inactive_completed`.
 - Task branch: `qa/task-043-source-informed-runtime-coverage-map`.
 - Default branch: `main`.
 - Exact baseline: `origin/main@f92e527260a96460eaccfdb8b17632bc47896414`,
   which records TASK-042 as `inactive_completed` and TASK-043 as active.
-- Current owner workflow temporarily defers every Git push. This is not a task
-  blocker: task commit `9e12a13` has been fast-forwarded into clean local
-  `main`, but task-branch push, default push/remote alignment and TASK-044
-  thread creation remain explicitly not done.
+- Task commit `9e12a13` was pushed on the task branch and fast-forwarded into
+  clean `main`; local `main` and `origin/main` were verified aligned at
+  integration checkpoint `b4a6d82` before this final docs-only closure.
 
 TASK-043 produced a deterministic public-safe registry and selector bundle from
 tracked contracts only. The current verified bundle contains:
@@ -80,10 +94,10 @@ Process anomalies were recorded and remediated:
 
 Latest accepted verification evidence includes 102 targeted passes with 1
 skip, 1095 full-suite passes with 3 skips, docs scan 170/0, public-safety scan
-337/0 and manifest validation 27/4/23. The same gates passed after the local
-fast-forward integration of task commit `9e12a13` into `main`. No task-branch
-push, default push/remote alignment or TASK-044 start is claimed at this
-checkpoint. Do not start TASK-044 in this thread.
+337/0 and manifest validation 27/4/23. The same gates passed after integration
+and push alignment. Fresh TASK-044 continuation
+`01a0007d-5738-7960-9f14-0dedd5d9a9a1` is accepted, but no TASK-044 device or
+runtime action was performed in this completed thread.
 
 ## Completed TASK-042 — local runtime preflight
 

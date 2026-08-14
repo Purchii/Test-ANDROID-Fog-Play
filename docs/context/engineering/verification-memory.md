@@ -546,7 +546,7 @@ pytest repeat remains explicitly `blocked_by_tooling`, not reported as PASS.
 
 ## TASK-043 offline surface registry and selector verification record — 2026-07-29
 
-Status: `local_integrated_pending_remote_push`. No product-runtime or
+Status: `inactive_completed`. No product-runtime or
 release-readiness PASS is claimed.
 
 - Mode: `BOUNDED_AUTONOMOUS`.
@@ -623,7 +623,9 @@ Task commit `9e12a13` was fast-forwarded into clean local `main`. Post-integrati
 verification repeated all four TASK-043 CLI modes, targeted pytest (102 passed,
 1 skipped), full pytest (1095 passed, 3 skipped), manifest validation (27/4/23),
 compileall, epic validation, docs (170/0), public safety (337/0), both hygiene
-modes and diff/status checks; all passed. The owner currently requires local
-completion without Git push. Task-branch push, default push/remote alignment and
-creation of a fresh TASK-044 continuation thread remain not done and must not
-be claimed in this task.
+modes and diff/status checks; all passed. The task branch and integration
+checkpoint `b4a6d82` were pushed, and local `main`/`origin/main` alignment was
+confirmed before the final docs-only lifecycle closure. Fresh TASK-044 thread
+`01a0007d-5738-7960-9f14-0dedd5d9a9a1` was accepted; the owner reports a
+connected physical phone and new physical television, but no device identity or
+runtime action was inspected by TASK-043.

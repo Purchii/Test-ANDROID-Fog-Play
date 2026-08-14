@@ -53,10 +53,10 @@
 
 ## P2A - EPIC-QA-041-055 independent QA-only execution chain
 
-TASK-041 and TASK-042 are completed and integrated. TASK-043 is implemented,
-verified and integrated into local `main`; task-branch/default pushes and remote
-alignment are deferred by the current owner workflow without classifying the
-task as blocked. TASK-043…055 remain governed by their explicit
+TASK-041, TASK-042 and TASK-043 are completed and integrated. TASK-044 is
+accepted in its fresh thread and waits for the TASK-043 lifecycle closure to be
+published before becoming active or starting device preflight. TASK-044…055
+remain governed by their explicit
 dependencies; later runtime work also remains subject
 to each task's own `PROD_CONDITIONAL` lane-readiness gates. These entries extend
 the backlog without replacing TASK-000…040 history.
@@ -65,8 +65,8 @@ the backlog without replacing TASK-000…040 history.
 |---|---|---|---|---|---|
 | TASK-041 | QA-only epic integration, sanitized risk bridge and portable official export | BOUNDED_AUTONOMOUS; PROD_SAFE repository-only static QA scope | none | qa/task-041-qa-only-epic-integration-portable-export | completed_integrated; 18 observed_pass; main/origin aligned at a34d075; fresh TASK-042 accepted |
 | TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL bounded read-only metadata/inventory | TASK-041 | qa/task-042-local-runtime-preflight | completed_integrated at task commit `76faacc`; final QA A/QA B/Security/Docs GO; 18 terminal rows: 6 observed_pass, 8 blocked, 4 tooling_defect; current SDK/content-integrity access blocker; no product-runtime claim |
-| TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | local_integrated_pending_remote_push; task commit `9e12a13` fast-forwarded into local `main`; post-integration gates passed; 18/18 static scenarios observed_pass; manifest v2 authoritative/no release claim; task/default push and TASK-044 handoff deferred by current owner workflow |
-| TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | planned_blocked_by_dependency |
+| TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | completed_integrated; task commit `9e12a13`; integration checkpoint `b4a6d82` pushed and aligned; 18/18 static scenarios observed_pass; manifest v2 authoritative/no release claim; fresh TASK-044 accepted |
+| TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | accepted_waiting_for_task043_closure in fresh thread `01a0007d-5738-7960-9f14-0dedd5d9a9a1`; becomes active only after fetching lifecycle-closure remote default, before edits/runtime preflight |
 | TASK-045 | Paired Television Full plus Phone Full virtual-gamepad E2E | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_PAIRED_RUNTIME | TASK-044 | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | planned_blocked_by_dependency |
 | TASK-046 | Television Steam / YandexTV representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-046-yandextv-representative-lane | planned_blocked_by_dependency |
 | TASK-047 | Television Sber / SberBox representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-047-sberbox-representative-lane | planned_blocked_by_dependency |

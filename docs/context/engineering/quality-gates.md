@@ -800,13 +800,13 @@ records. Initial QA/Security R0/R1 blockers were remediated and final QA A and
 QA B reviews are `GO`; final Security/Prod-safety and Docs/Scribe reviews of the
 completed documentation/diff are also `GO` with no open R0/R1/P2.
 
-The owner currently requires local completion without Git push. Therefore the
-quality state is `local_integrated_pending_remote_push`. Task commit `9e12a13`
-was fast-forwarded into clean local `main`; post-integration TASK-043 CLI,
-targeted/full pytest, manifest, compile, epic, docs, hygiene and public-safety
-gates passed. Task-branch push, default push/remote alignment and TASK-044
-thread creation remain required lifecycle gates and must not be claimed or
-bypassed.
+TASK-043 quality state is `completed_integrated`. Task commit `9e12a13` was
+pushed on the task branch and fast-forwarded into clean `main`;
+post-integration TASK-043 CLI, targeted/full pytest, manifest, compile, epic,
+docs, hygiene and public-safety gates passed. Integration checkpoint `b4a6d82`
+was pushed and local/remote default alignment was confirmed before the final
+docs-only lifecycle closure. These static gates do not authorize TASK-044
+runtime; its separate conditional preflight and review gates still apply.
 
 ## Merge gates
 

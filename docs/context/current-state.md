@@ -775,16 +775,15 @@ TASK-042 is now `inactive_completed`. Fresh TASK-043 thread
 `019fadbd-22ba-7ac1-8fa5-84bca075c6d7` is accepted and active. TASK-043 was not
 implemented here and must base itself on the lifecycle-closure default commit.
 
-## TASK-043 local integration checkpoint — 2026-07-29
+## TASK-043 completed integration and TASK-044 continuation — 2026-08-14
 
 TASK-043 is implemented on
 `qa/task-043-source-informed-runtime-coverage-map` from exact lifecycle baseline
 `origin/main@f92e527260a96460eaccfdb8b17632bc47896414`. Mode is
-`BOUNDED_AUTONOMOUS`; scope is `PROD_SAFE_OFFLINE_STATIC_ONLY`. The owner has
-temporarily deferred Git pushes because of service limits. This changes the
-workflow order but is not a stop condition: lifecycle remains
-`local_integrated_pending_remote_push`, not `inactive_completed` or
-`blocked`.
+`BOUNDED_AUTONOMOUS`; scope is `PROD_SAFE_OFFLINE_STATIC_ONLY`. Task commit
+`9e12a13` and the local-integration checkpoint `b4a6d82` are published. The task
+branch exists on `origin`, and local `main`/`origin/main` were verified aligned
+at `b4a6d82` before this final lifecycle closure.
 
 The generated static authority reconciles 55 opaque surfaces (33 R0, 22 R1),
 all 307 epic scenarios and all 18 TASK-043 scenarios as `observed_pass` with
@@ -822,6 +821,14 @@ Accepted verification includes 102 targeted passes with 1 skip, 1095 full
 passes with 3 skips, docs scan 170/0, public-safety scan 337/0 and manifest
 27/4/23. Task commit `9e12a13` was fast-forwarded into clean local `main`, and
 the same TASK-043 CLI, targeted/full pytest, manifest, docs, hygiene,
-public-safety, compile and epic gates passed post-integration. Task-branch push,
-default push/remote alignment and a TASK-044 continuation thread are not done
-under the current owner order.
+public-safety, compile and epic gates passed post-integration and after push
+alignment. TASK-043 is now `inactive_completed`.
+
+Fresh TASK-044 thread `01a0007d-5738-7960-9f14-0dedd5d9a9a1` is accepted and
+waiting for this lifecycle-closure baseline; it becomes the only active
+continuation after the closure is visible on `origin/main`. The owner reports
+one physical phone and one new physical television connected; no raw device
+identifier was requested, recorded or published in TASK-043. TASK-044 must
+fetch the lifecycle-closure `origin/main`, create its own task branch, perform
+public-safe lane preflight and apply its `PROD_CONDITIONAL_BOUNDED_RUNTIME`
+gates before any device action.

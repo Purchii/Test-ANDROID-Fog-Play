@@ -113,6 +113,55 @@ inventory is non-authoritative. TASK-049 depends on both tasks, and TASK-050
 through TASK-055 are transitively blocked. TASK-034 remains approval-blocked.
 No existing task row status is changed by this selection checkpoint.
 
+## P2B - owner-prioritized Phone Full end-to-end program
+
+Owner resource policy dated 2026-08-15 supersedes the blocked next-task
+selection for prioritization only. The single available physical phone is now
+the exclusive near-term program lane. This policy does not alter the historical
+status of TASK-041 through TASK-055 and does not make any runtime evidence
+fresh.
+
+While this overlay is active, the old sequential TASK-041→055 continuation
+selector is historical and suspended. Fresh task selection is restricted to
+TASK-057→063 in dependency order; no deferred TASK-046→055 runtime task may be
+selected until the owner explicitly restores its exact resources and lifts the
+overlay.
+
+TASK-046 through TASK-055 remain exactly as recorded above and additionally
+carry the overlay `deferred_by_owner_resource_policy_2026-08-15` wherever their
+claim requires YandexTV, SberBox, AOSP FogPlay Stick, generic TV, Television
+Full, another APK/device family or cross-family/five-APK evidence. They are
+deferred, not completed. Phone evidence cannot satisfy or unblock those claims.
+
+| ID | Title | Mode default / safety | Dependencies | Branch | Status |
+|---|---|---|---|---|---|
+| TASK-056 | Phone-only end-to-end QA roadmap reprioritization | BOUNDED_AUTONOMOUS; PROD_SAFE_DOCS_ONLY; runtime BLOCK_RUNTIME | owner direction; TASK-042/TASK-045/TASK-045A authority | qa/task-056-phone-only-e2e-roadmap-reprioritization | active; docs-only roadmap; no runtime authorized |
+| TASK-057 | Phone Full runtime authority and fixture readiness gate | BOUNDED_AUTONOMOUS; repository PROD_SAFE; bounded metadata PROD_CONDITIONAL after Security GO | TASK-056; TASK-042/TASK-045/TASK-045A public authority | qa/task-057-phone-full-runtime-authority-gate | planned_blocked_by_authority; next planned task; BLOCK_RUNTIME |
+| TASK-058 | Phone Full first-launch and pre-auth coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-057 GO_RUNTIME and approved non-destructive first-launch fixture | qa/task-058-phone-first-launch-pre-auth-coverage | planned_blocked_by_dependency |
+| TASK-059 | Phone Full synthetic-session and core navigation coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-058 PASS/zero release blockers/cleanup plus current TASK-057/Security and session passport | qa/task-059-phone-synthetic-session-core-navigation | planned_blocked_by_dependency |
+| TASK-060 | Phone Full exhaustive screen, state and transition inventory | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-059 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-060-phone-exhaustive-screen-transition-inventory | planned_blocked_by_dependency |
+| TASK-061 | Phone Full input, lifecycle and safe recovery coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-061-phone-input-lifecycle-recovery | planned_blocked_by_dependency |
+| TASK-062 | Phone Full boundary classification and safe recovery | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 and TASK-061 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-062-phone-boundary-classification-recovery | planned_blocked_by_dependency |
+| TASK-063 | Phone-only evidence aggregation and QA release gate | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-057 through TASK-062; blocked terminal inputs aggregate only to blocks_release | qa/task-063-phone-only-release-gate | planned_blocked_by_dependency |
+
+The authoritative decomposition and common gates are in
+`tasks/TASK_056_phone_only_e2e_roadmap_reprioritization.md`; each future task
+also has its own task specification. TASK-057 is not runtime-eligible today:
+neutral current-phone selector binding to a freshly mapped/authorized
+public-safe alias, canonical Phone Full build
+integrity and compatibility, synthetic-session passport, non-destructive clean
+first-launch fixture, evidence/cleanup authority and Security `GO_RUNTIME` are
+not jointly confirmed. The owner must approve those items through public-safe
+aliases and ignored local contracts before a fresh TASK-057 thread performs any
+device action.
+
+The lossless authority crosswalk is
+`docs/qa/phone/phone_only_roadmap_crosswalk.csv`: all 26 TASK-045 phone coverage
+rows and all 17 TASK-045A branch rows remain separately owned and append-only.
+TASK-063 rejects missing, duplicate or merged required rows. Approved and
+reachable phone rows cannot use `not_run_out_of_scope`; they are either freshly
+`covered` or release-blocking `blocked_*`.
+
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 
 | ID | Title | Mode default | Branch | Status |

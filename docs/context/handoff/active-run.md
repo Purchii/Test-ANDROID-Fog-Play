@@ -1,6 +1,119 @@
 # Active run
 
-No independent implementation task is active in this blocked selection thread.
+## Active TASK-056 — Phone-only end-to-end QA roadmap reprioritization
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread title: `TASK-056 — Phone-only end-to-end QA roadmap reprioritization`.
+- Thread status: `verified_ready_for_integration_docs_only`.
+- Fresh independent task: `yes`.
+- Task branch: `qa/task-056-phone-only-e2e-roadmap-reprioritization`.
+- Default branch: `main`.
+- Exact base: `origin/main@e00d7763bcbe0fde9646fa46772af928fd11581a`.
+- Remote drift gate: `confirmed_pass` after fetch; task started from the exact
+  remote default.
+- Production safety: `PROD_SAFE_DOCS_ONLY`; every physical runtime action is
+  `PROD_CONDITIONAL` and currently `BLOCK_RUNTIME`.
+
+### Goal and resource decision
+
+Create one bounded phone-only end-to-end roadmap for the owner's sole available
+physical phone. TASK-057…063 must cover first launch through every safely
+reachable approved Phone Full screen/state/transition/boundary with explicit
+row-level coverage ledgers. Repository/static readiness, historical audit
+evidence and fresh physical runtime remain distinct.
+
+The owner-policy overlay is
+`deferred_by_owner_resource_policy_2026-08-15` for YandexTV, SberBox, AOSP
+FogPlay Stick, generic TV, Television Full and other APK/device-family or
+cross-family work. Existing TASK-041…055 statuses, blockers and release effects
+are unchanged. Phone evidence cannot satisfy any TV/Stick/five-APK claim.
+
+### Current eligibility and blocker
+
+TASK-057 is the next planned task but no phone runtime execution task is
+eligible now. Before the first device action, a fresh task must jointly confirm:
+
+- neutral `current-phone-selector` bound to a freshly mapped/authorized
+  public-safe current-phone alias;
+- canonical Phone Full build provenance/integrity and installed compatibility;
+- approved synthetic-session passport;
+- pre-provisioned non-destructive first-launch fixture;
+- evidence retention, action budget, cleanup/rollback, kill switch and Security
+  `GO_RUNTIME`.
+
+The owner has confirmed phone availability only; all other items remain
+`unknown`. Historical installed-newer presence, TASK-045 ledger closure and
+TASK-045A audit material do not satisfy this gate. The ordinary downgrade
+rejection must not be bypassed.
+
+Exact authority rows are: canonical `main-apk-03` presence-only with integrity
+unknown; distinct installed-newer compatibility unknown; `phone-realme-001`
+as a historical candidate reusable only after a fresh exact match; rejected
+ordinary downgrade with no bypass; public
+synthetic policy without a task passport; unknown clean-first-launch fixture;
+and unknown evidence/cleanup passport. TASK-057 must revalidate all seven
+separately.
+
+Owner action: approve the exact phone/build/synthetic-fixture/clean-state and
+evidence-cleanup contracts using public-safe aliases and ignored local material.
+If an item is unavailable, TASK-057 must publish only a blocked readiness record
+and stop before runtime.
+
+### Forbidden actions and evidence boundary
+
+TASK-056 performs no `.qa_local`, ADB, APK, app, device, credential, session,
+payment, account, network, QR/browser or raw-evidence action. It does not read,
+restore or rerun the Security-forbidden local TASK-045 source. No raw serial,
+IP, path, full hash, account, package, QR target or media value may enter tracked
+output.
+
+Future phone runtime also forbids real/unknown credentials or sessions, real
+payment, account mutation, clear data, uninstall, downgrade bypass, APK
+modification/decompile/patch, network shaping and external QR/browser traversal.
+
+The tracked lossless crosswalk
+`docs/qa/phone/phone_only_roadmap_crosswalk.csv` preserves 26 TASK-045 plus 17
+TASK-045A rows, one owner each, with A001 audit-only and paired/TV-only rows
+deferred. Runtime discoveries append only; TASK-063 rejects missing, duplicate
+or merged rows. Approved reachable rows cannot be `not_run_out_of_scope`.
+
+Every future covered screen/transition needs a fresh visually inspected
+screenshot, UI tree and bounded target-app log/marker. Checkpoint-before-action,
+focus/action categories and immediate anomaly recording are mandatory. Visible
+QR must use or reference the established ignored `jsqr` decode path; decode
+failure is a tooling/process blocker, and target follow/publication is forbidden.
+
+### Multi-agent status
+
+- Orchestrator: active through integration.
+- Planner: completed the phone-gap/dependency/authority audit and selected
+  TASK-056.
+- Security/Prod-safety plan review: `GO` for docs-only work and `NO-GO` for
+  runtime before Builder changes.
+- Builder: completed the roadmap, eight task specs, crosswalk and context/
+  governance updates without runtime or local-raw access.
+- QA Reviewer A: final `GO`, R0/R1/P2 `0/0/0` after remediation.
+- QA Reviewer B: final `GO`, R0/R1/P2 `0/0/0` after remediation.
+- Security/Prod-safety final: `GO_REPOSITORY_ONLY_CLOSURE / BLOCK_RUNTIME`,
+  R0/R1 `0/0`.
+- Docs/Scribe: final `GO`, R0/R1 `0/0`.
+
+### Verification and lifecycle
+
+Pre-integration checks passed: Git status and staged diff checks; epic index;
+both hygiene modes; public repository safety `387/0`; docs/link sanity `184/0`;
+and the crosswalk check `43` rows (`26` TASK-045 plus `17` TASK-045A), zero
+duplicates or invalid owner-task values. An unfiltered suite was not required
+or run and the forbidden TASK-045 source was not read/restored. TASK-056 is
+ready to integrate after a final remote-drift check. It closes after task-branch
+push and fast-forward of actual remote default `main`; no second independent
+runtime task runs in this thread.
+
+## Superseded post-TASK-048 blocked selection record
+
+The following selection checkpoint remains historical. Owner direction dated
+2026-08-15 supersedes its prioritization result but does not change any task
+status or runtime authority.
 
 ## Post-TASK-048 next-task selection checkpoint — 2026-08-15
 

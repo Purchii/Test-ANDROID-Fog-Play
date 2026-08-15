@@ -39,6 +39,62 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Active TASK-056 phone-only roadmap reprioritization — 2026-08-15
+
+TASK-056 runs in a fresh `BOUNDED_AUTONOMOUS` thread on
+`qa/task-056-phone-only-e2e-roadmap-reprioritization` from confirmed aligned
+`origin/main@e00d7763bcbe0fde9646fa46772af928fd11581a`. Its scope is
+`PROD_SAFE_DOCS_ONLY`; all phone/device/APK/application actions remain
+`PROD_CONDITIONAL` and `BLOCK_RUNTIME`.
+
+The owner's current resource policy makes the one available physical phone the
+exclusive near-term QA lane. The active roadmap is TASK-057 through TASK-063:
+fresh runtime authority, non-destructive first launch/pre-auth, approved
+synthetic-session/core navigation, exhaustive screen/state/transition
+inventory, input/lifecycle/recovery, boundary classification/recovery, and a
+phone-only release gate. Each is an independent bounded task with an explicit
+coverage ledger and task-local device/build/fixture/Security/evidence/cleanup
+gates.
+
+All TASK-041 through TASK-055 history remains authoritative and unchanged.
+YandexTV, SberBox, AOSP FogPlay Stick, generic TV, Television Full and other
+APK/device-family or cross-family work carries the additional overlay
+`deferred_by_owner_resource_policy_2026-08-15`; it is not complete. The phone
+must never substitute for TV/Stick or five-APK evidence.
+
+The first execution task is not currently eligible. TASK-057 is next planned
+but `planned_blocked_by_authority`: neutral `current-phone-selector` binding to
+a fresh public-safe current-phone alias and authorization, canonical Phone Full
+build integrity/compatibility, synthetic
+session passport, pre-provisioned non-destructive first-launch state,
+evidence/cleanup authority and Security `GO_RUNTIME` are not jointly confirmed.
+Historical TASK-045/TASK-045A evidence stays historical/audit-only and cannot
+be promoted to fresh runtime. The Security-forbidden local TASK-045 source is
+not read, restored or rerun.
+
+The exact current authority is lossless: canonical `main-apk-03` is
+presence-only with integrity/compatibility unknown; the installed-newer build
+is distinct; `phone-realme-001` is only a TASK-045 historical candidate and may
+be reused only after an exact fresh match; the ordinary
+downgrade attempt was rejected and cannot be bypassed; a public synthetic-user
+policy exists but no current task passport does; clean-first-launch and
+evidence/cleanup authority are unknown. TASK-057 revalidates each item as a
+separate row.
+
+`docs/qa/phone/phone_only_roadmap_crosswalk.csv` owns all 26 TASK-045 and 17
+TASK-045A rows without merge or deletion. New runtime discoveries append. For
+approved reachable rows, `not_run_out_of_scope` is invalid; missing screenshot,
+UI tree or bounded target-app log/marker is `blocked_by_tooling` and
+release-blocking. Visible QR uses/references the established local-only `jsqr`
+decoder path; failure is a tooling/process blocker, never permission to follow
+or publish a target.
+
+Owner action is to approve the exact phone/build/synthetic-fixture/clean-state
+and evidence-cleanup contracts through public-safe aliases plus ignored local
+material. No real credentials/session, account/payment mutation, clear data,
+uninstall, downgrade bypass, network shaping or external QR/browser traversal
+is permitted.
+
 ## Post-TASK-048 next-task selection blocked — 2026-08-15
 
 The fresh `BOUNDED_AUTONOMOUS` continuation

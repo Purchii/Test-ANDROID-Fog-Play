@@ -1,0 +1,23 @@
+scenario_id,priority,surface_ids,lane,category,scenario_status,evidence_type,evidence_status,attempt_count,reason_code,automation_target,phone_independent_allowed,paired_evidence_present,first_failure_retained,cleanup_status,boundary_status
+QA-045-001,P0,SURF-PAIR-001,tv-tpv-013 + phone-xiaomi-007,preflight,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-002,P0,SURF-PAIR-001,pair,connect,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-003,P0,SURF-PAIR-001,pair,connect,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-004,P0,SURF-PAIR-001,pair,connect,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-005,P0,SURF-AUTH-003;SURF-PAIR-001,pair,negative,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-006,P0,SURF-PAIR-001,pair,negative,blocked_by_oracle,static_contract,confirmed,0,no_explicit_no_tv_state_or_safe_connection_route,automated_adapter,true,false,false,not_run,not_run
+QA-045-007,P0,SURF-PAIR-002,pair,connect,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-008,P0,SURF-PAIR-002,pair,negative,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-009,P0,SURF-INPUT-003,phone,gamepad_ui,blocked_by_oracle,static_contract,confirmed,0,no_safe_preconnection_gamepad_route,automated_adapter,true,false,false,not_run,not_run
+QA-045-010,P0,SURF-INPUT-003,phone,gamepad_ui,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-011,P0,SURF-INPUT-004,pair,input,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-012,P0,SURF-PERSIST-001;SURF-PAIR-002,phone,lifecycle,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-013,P0,SURF-PERSIST-002;SURF-PAIR-002;SURF-STREAM-002,phone,lifecycle,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-014,P0,SURF-PERSIST-002;SURF-PAIR-002;SURF-STREAM-002,TV,lifecycle,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-015,P1,SURF-PAIR-002,phone,lifecycle,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-016,P0,SURF-NET-002;SURF-PAIR-002;SURF-STREAM-002,phone,network,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-017,P0,SURF-NET-002;SURF-PAIR-002;SURF-STREAM-002,TV,network,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-018,P1,SURF-NET-002;SURF-PAIR-002;SURF-STREAM-002,pair,network,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-019,P0,SURF-PAIR-002;SURF-STREAM-002,pair,disconnect,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-020,P0,SURF-BOUNDARY-001;SURF-STREAM-001,pair,boundary,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-021,P0,SURF-LOG-001,pair,privacy,blocked_by_device,static_contract,confirmed,0,paired_tv_unavailable,automated_adapter,false,false,false,not_run,not_run
+QA-045-022,P0,SURF-RELEASE-001,pair,closure,observed_pass,static_contract,confirmed,0,all_prior_rows_phone_inventory_and_cleanup_terminal_static_closure,automated_adapter,false,false,false,not_run,not_run

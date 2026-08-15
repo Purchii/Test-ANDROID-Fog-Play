@@ -1,0 +1,2 @@
+cleanup_id,record_scope,scenario_id,attempt_id,action_category,result,kill_switch_ready,rollback_verified,evidence_status,target_app_force_stopped,home_restored,external_browser_opened,payment_or_session_started,account_mutated,network_changed,paired_state_observed,existing_session_preserved
+task045-phone-inventory-final-cleanup,phone_inventory_run,none,none,final_force_stop_and_home_restore,pass,true,true,confirmed,true,true,false,false,false,false,false,true

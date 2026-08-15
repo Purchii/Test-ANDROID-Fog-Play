@@ -203,6 +203,28 @@ Codex должен добавить точные validate-only/preflight/execute
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
 
+### Точные команды TASK-045 runner
+
+Все команды ниже выполняются из корня репозитория. Runner только валидирует или
+поглощает typed local-only adapter; он не выполняет ADB/APK/device actions.
+
+```text
+python automation/gamepad/task045_paired_virtual_gamepad.py --validate-only
+python automation/gamepad/task045_paired_virtual_gamepad.py --preflight --adapter-input .qa_local/evidence/task-045/runtime-adapter.local.json
+python automation/gamepad/task045_paired_virtual_gamepad.py --execute --adapter-input .qa_local/evidence/task-045/runtime-adapter.local.json --allow-prod-conditional-ingest
+python automation/gamepad/task045_paired_virtual_gamepad.py --publish-runtime-coverage --allow-prod-conditional-ingest
+python automation/gamepad/task045_paired_virtual_gamepad.py --publish-blocked-baseline
+python automation/gamepad/task045_paired_virtual_gamepad.py --validate-report
+```
+
+`--publish-blocked-baseline` — только `PROD_SAFE` repository-only публикация:
+она фиксирует отсутствующий TV как `blocked_by_device`, не читает `.qa_local` и
+не подменяет paired evidence телефонным. `--preflight` и `--execute` принимают
+adapter только из канонического ignored TASK-045 evidence root. Разрешённая
+task-local deviation `phone-realme-001` может подтверждать только независимые
+`QA-045-006` и `QA-045-009`; paired/connected rows требуют свежий
+`paired_physical_runtime` с обеих сторон.
+
 ## Multi-agent acceptance
 
 Обязательны реальные роли:

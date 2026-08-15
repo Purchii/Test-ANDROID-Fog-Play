@@ -882,3 +882,78 @@ Security/Prod-safety and Docs/Scribe returned final `GO` with no open R0/R1 for
 integration of this release-blocking evidence result. TASK-045 is accepted for
 one fresh thread, but its paired runtime begins with the TV-unavailable
 preflight blocker and must not treat the connected phone as a TV substitute.
+
+## TASK-045 integration-ready phone-independent runtime checkpoint — 2026-08-15
+
+TASK-045 is active in accepted fresh thread
+`01a00260-3925-7fd3-8bf8-aeee9f3bb3c5` on branch
+`qa/task-045-paired-tv-phone-virtual-gamepad-e2e`, based exactly on the
+published TASK-044 lifecycle closure
+`origin/main@db57491562daa440c2ae14c280a1d3c46d198fbd`. Mode is
+`BOUNDED_AUTONOMOUS`; repository work is `PROD_SAFE` and the approved physical
+phone contour is `PROD_CONDITIONAL`.
+
+Two stable sanitized device snapshots confirmed one authorized mapped phone
+and no television. The owner-selected public alias `phone-realme-001` is
+authorized only for TASK-045-independent phone evidence. It remains distinct
+from the primary and fallback task lanes and cannot satisfy a paired,
+connected-TV or cross-device row. The owner confirmed the existing app family
+as `phone-full`; the single ordinary canonical install/update attempt was
+rejected as a version downgrade. No uninstall, data clear, downgrade override
+or bypass was used. Read-only metadata established only that the installed
+candidate is newer; compatibility with the canonical TASK-045 build remains
+`unknown_not_verified`.
+
+The phone inventory now terminally classifies 26 screen/state/navigation rows:
+23 are approved-scope and 21 are approved plus declared reachable/discovered.
+Only the external keyboard privacy-consent overlay and final cleanup remain
+`covered`. Ten session-dependent rows covering cold launch,
+catalog/filter/history/recurrence,
+background/foreground and partial-render observations are retained locally but
+are `blocked_by_external_state` with reason
+`synthetic_session_fixture_not_verified`, because the preserved session was not
+proven synthetic and their content is ineligible for product coverage. Search input is
+`blocked_by_boundary`; account/profile/settings/help/legal navigation is
+blocked because the preserved session was not proven synthetic; game/promo,
+payment/session and pre-connection virtual-gamepad routes remain guarded
+boundaries; no-TV discovery is `blocked_by_external_state`; force-stop/relaunch
+is `blocked_by_tooling` because the force-stop log marker helper failed even
+though relaunch was observed; paired, connected-gamepad and disconnect rows are
+blocked by the missing TV; network and lock/unlock work is terminally out of
+scope for the current zero-budget/disconnected contour.
+
+The two independently eligible catalog scenarios, QA-045-006 and QA-045-009,
+remain `blocked_by_oracle`, not PASS. Sanitized UI-tree category inspection of
+the cold-launch, history-tab and post-force-stop relaunch checkpoints found no
+explicit connected-success label, no explicit no-device/retry surface and no
+explicit virtual-gamepad label. This confirms that no visible phantom connected
+success was observed, but it does not prove the required negative screen or a
+safe pre-connection gamepad route. All physical paired rows retain
+`blocked_by_device`; no paired evidence or TV/phone time-correlation is claimed.
+
+All runtime checkpoints in the approved sequence have non-empty local-only
+screenshot, UI-tree and runner-log modalities. The force-stop checkpoint log is
+an immediate sanitized helper-gap marker, and the bounded target-app log review
+found no FATAL/ANR signal. Sixteen first-class anomalies remain linked to their
+original failure and separate recovery evidence: eleven process/tooling anomalies
+and five runtime anomalies, including the canonical downgrade rejection,
+partial-render screenshot/XML mismatches, the keyboard consent overlay, the
+post-foreground partial-render recurrence, the hardened-fixture migration
+failure, the fail-closed ingest-gate recovery and its stale-count test
+remediation, the unproven-session evidence-eligibility breach and the
+freshness/core fixture migration and the build-provenance alias-separation
+false-pass. Dynamic titles, prices and counts
+are not public oracles.
+
+Final cleanup is `confirmed`: target app force-stopped, Home restored, existing
+session preserved, and no browser, payment/session start, account mutation,
+network mutation or paired state occurred. Current overall result is
+`partial_blocked` with `blocks_release`.
+
+Final pre-commit verification passed: 50 focused tests; 1194 full-suite tests
+with 3 skipped; all runner/report, compile, docs, hygiene, public-safety, epic,
+manifest and diff gates. The v2 report manifest validates 29 records, including
+6 authoritative records. QA Reviewer A, QA Reviewer B and
+Security/Prod-safety returned final `GO` with no open R0/R1; Docs/Scribe source
+reconciliation is complete. TASK-045 is `integration_ready`, not yet
+`inactive_completed` or integrated. TASK-046 has not started.

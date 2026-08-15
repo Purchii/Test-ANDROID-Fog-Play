@@ -1,14 +1,14 @@
 {
-  "authoritative_record_count": 5,
+  "authoritative_record_count": 6,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-08-14T22:00:17Z",
+  "generated_at_utc": "2026-08-15T00:03:23Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
   "mode": "BOUNDED_AUTONOMOUS",
   "path_source": "git_tracked",
   "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
-  "record_count": 28,
+  "record_count": 29,
   "records": [
     {
       "artifacts": [
@@ -1952,6 +1952,57 @@
           "status": "pass"
         }
       ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed_for_recorded_checkpoints",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task045_paired_virtual_gamepad.summary.json",
+          "sha256": "b6e1e4e73e2f97203f5c3f59991f8abddb694a975dc6f9b6366c9e3f56e6c88f"
+        }
+      ],
+      "authoritative": true,
+      "authority_status": "authoritative",
+      "blocked_reasons": [],
+      "build_ref": {
+        "alias": "task045-phone-full-installed-newer-001"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "confirmed_for_recorded_checkpoints",
+      "execution_status": "partial_blocked",
+      "generated_at_utc": "2026-08-15T00:03:13Z",
+      "production_safety_classification": "PROD_CONDITIONAL_PHONE_INDEPENDENT",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task045_paired_virtual_gamepad.summary.json",
+        "source_sha256": "b6e1e4e73e2f97203f5c3f59991f8abddb694a975dc6f9b6366c9e3f56e6c88f"
+      },
+      "record_id": "TASK-045__task045-phone-full-installed-newer-001__paired-tv-phone-lane__task045-phone-inventory-runtime__task045_paired_virtual_gamepad.summary",
+      "release_effect": "blocks_release",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "v2_valid"
+      },
+      "risks": [],
+      "run_id": "task045-phone-inventory-runtime",
+      "schema_validation_status": "v2_valid",
+      "schema_version": "evidence-report-envelope-v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "paired-tv-phone-lane",
+      "task_id": "TASK-045",
+      "unknowns": [],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task045_paired_virtual_gamepad.summary.json",
+          "sha256": "b6e1e4e73e2f97203f5c3f59991f8abddb694a975dc6f9b6366c9e3f56e6c88f",
+          "status": "pass"
+        }
+      ]
     }
   ],
   "reports_root": "docs/qa/reports",
@@ -1959,7 +2010,7 @@
   "task_id": "TASK-038",
   "tool_name": "reporting.report_manifest_generator",
   "unknown_schema_record_count": 0,
-  "v2_record_count": 5,
+  "v2_record_count": 6,
   "verification": [
     {
       "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",

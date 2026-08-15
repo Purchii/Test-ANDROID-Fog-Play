@@ -1,0 +1,333 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task045_paired_virtual_gamepad.scenario-ledger.csv",
+      "sha256": "9173ed0398648a6e3f63e163a2761a2a62223ed639e4b7fdd65113825df22c11"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "phone_coverage_ledger",
+      "reference": "docs/qa/reports/task045_paired_virtual_gamepad.phone-coverage-ledger.csv",
+      "sha256": "0fcdebf045b7a623942965865a15311ef62695acf33ad1ac7346ef2fd2fdb89d"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "paired_timeline_ledger",
+      "reference": "docs/qa/reports/task045_paired_virtual_gamepad.timeline-ledger.csv",
+      "sha256": "59153269df061ceb155ae115df26e7e51a0725837c0b01af226860d47dd711f1"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "anomaly_ledger",
+      "reference": "docs/qa/reports/task045_paired_virtual_gamepad.anomaly-ledger.csv",
+      "sha256": "b009bcc4192b14cad2623eda723dd6c956add24f9a880a828402c658636bd06b"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup_ledger",
+      "reference": "docs/qa/reports/task045_paired_virtual_gamepad.cleanup-ledger.csv",
+      "sha256": "a7ab57559a9632651439e53cefc1af2f751b8d74e5a33ea0ad7bbe39d6857022"
+    }
+  ],
+  "blocked_reasons": [
+    "connected_precondition_and_safe_unlock_not_met",
+    "connection_surface_not_exposed",
+    "existing_session_identity_not_proven_synthetic",
+    "existing_session_preserved_no_logout",
+    "external_keyboard_privacy_consent",
+    "external_or_session_boundary",
+    "force_stop_log_helper_gap_relaunch_observed",
+    "no_explicit_no_tv_state_or_safe_connection_route",
+    "no_payment_or_session_start",
+    "no_safe_preconnection_gamepad_route",
+    "no_safe_route_without_game_session",
+    "no_visible_qr_and_no_external_traversal",
+    "paired_oracle_required_zero_network_budget",
+    "paired_tv_unavailable",
+    "payment_or_session_start_boundary",
+    "synthetic_session_fixture_not_verified"
+  ],
+  "build_ref": {
+    "alias": "task045-phone-full-installed-newer-001"
+  },
+  "coverage_status": "partial_blocked",
+  "evidence_status": "confirmed_for_recorded_checkpoints",
+  "execution_status": "partial_blocked",
+  "generated_at_utc": "2026-08-15T00:03:13Z",
+  "payload": {
+    "artifact_row_counts": {
+      "anomaly_ledger": 16,
+      "cleanup_ledger": 1,
+      "paired_timeline_ledger": 0,
+      "phone_coverage_ledger": 26,
+      "scenario_ledger": 22
+    },
+    "boundary_guards": {
+      "account_mutation_performed": false,
+      "network_changed": false,
+      "paid_session_started": false,
+      "qr_or_browser_traversal_performed": false,
+      "real_payment_performed": false
+    },
+    "build_provenance": {
+      "canonical_bundle_alias": "task045-phone-full-canonical-candidate",
+      "canonical_execution_outcome": "not_run",
+      "canonical_install_outcome": "blocked_version_downgrade",
+      "compatibility_evidence_status": "unknown",
+      "installed_lane_alias": "task045-phone-full-installed-newer-001",
+      "raw_hash_published": false
+    },
+    "inventory_anomaly_count": 16,
+    "inventory_cleanup_confirmed": true,
+    "lane_preflight": {
+      "outcome": "PARTIAL_BLOCKED",
+      "phone": {
+        "alias": "phone-realme-001",
+        "apk_family": "phone-full",
+        "outcome": "READY",
+        "reason_code": "installed_newer_phone_full_lane_ready"
+      },
+      "session_dependent_evidence_eligible": false,
+      "session_provenance": "unknown_not_verified",
+      "tv": {
+        "alias": "tv-tpv-013",
+        "apk_family": "television-full",
+        "outcome": "BLOCKED",
+        "reason_code": "paired_tv_unavailable"
+      }
+    },
+    "paired_claim": "not_established",
+    "paired_tv_available": false,
+    "phone_inventory": {
+      "approved_reachable_branch_count": 21,
+      "branch_count": 26,
+      "closure": true,
+      "discovered_branch_count": 21
+    },
+    "scenario_summary": {
+      "P0": 20,
+      "P1": 2,
+      "status_counts": {
+        "blocked_by_device": 19,
+        "blocked_by_oracle": 2,
+        "observed_pass": 1
+      },
+      "total": 22
+    }
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_PHONE_INDEPENDENT",
+  "provenance": {
+    "adapter_input_published": false,
+    "adapter_schema": "docs/qa/schemas/task045-paired-virtual-gamepad-adapter-v1.schema.json",
+    "adapter_schema_sha256": "522f2cf10dbd9792ef96db83f9f6d562815a22680eea7b17c4c27a63ed5a1c96",
+    "adapter_schema_validation": "applied_full_instance",
+    "scenario_contract": "docs/qa/epics/scenarios/task045_scenarios.csv",
+    "scenario_contract_version": "task045-scenarios-v1"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending",
+    "qa_reviewer_a": "pending",
+    "qa_reviewer_b": "pending",
+    "security_prod_safety_reviewer": "pending"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK045-RISK-001",
+      "summary": "Missing TV blocks paired and connected-state claims; disconnected phone evidence cannot substitute."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK045-RISK-002",
+      "summary": "Unknown preserved-session provenance makes session-dependent phone checkpoints ineligible for product coverage."
+    }
+  ],
+  "run_id": "task045-phone-inventory-runtime",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "paired-tv-phone-lane",
+  "task_id": "TASK-045",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-001",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-001",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-002",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-002",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-003",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-003",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-004",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-004",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-005",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-005",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-006",
+      "reason_code": "no_explicit_no_tv_state_or_safe_connection_route",
+      "scenario_id": "QA-045-006",
+      "scenario_status": "blocked_by_oracle"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-007",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-007",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-008",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-008",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-009",
+      "reason_code": "no_safe_preconnection_gamepad_route",
+      "scenario_id": "QA-045-009",
+      "scenario_status": "blocked_by_oracle"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-010",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-010",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-011",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-011",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-012",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-012",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-013",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-013",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-014",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-014",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-015",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-015",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-016",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-016",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-017",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-017",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-018",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-018",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-019",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-019",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-020",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-020",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-021",
+      "reason_code": "paired_tv_unavailable",
+      "scenario_id": "QA-045-021",
+      "scenario_status": "blocked_by_device"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045-UNKNOWN-BUILD-COMPAT",
+      "reason_code": "installed_newer_compatibility_with_canonical_unknown"
+    }
+  ],
+  "verification": [
+    {
+      "check": "catalog_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 22,
+      "status": "pass"
+    },
+    {
+      "check": "p0_p1_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": "20/2",
+      "status": "pass"
+    },
+    {
+      "check": "phone_coverage_terminal_ledger",
+      "evidence_status": "confirmed",
+      "result_count": 26,
+      "status": "pass"
+    },
+    {
+      "check": "atomic_bundle_validation",
+      "evidence_status": "confirmed",
+      "result_count": 6,
+      "status": "pass"
+    }
+  ]
+}

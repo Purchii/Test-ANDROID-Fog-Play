@@ -1,18 +1,251 @@
 # Active run
 
-## Accepted TASK-045 — paired TV plus phone virtual-gamepad E2E
+## Active TASK-045 — paired TV plus phone virtual-gamepad E2E
 
-- Lifecycle status: `accepted_pending_fresh_thread`.
-- Required mode: `BOUNDED_AUTONOMOUS`.
-- Required branch: `qa/task-045-paired-tv-phone-virtual-gamepad-e2e` from the
-  remote-default lifecycle closure containing this handoff.
+- Lifecycle status: `integration_ready`.
+- Thread id: `01a00260-3925-7fd3-8bf8-aeee9f3bb3c5`.
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Branch: `qa/task-045-paired-tv-phone-virtual-gamepad-e2e`.
+- Default branch: `main`.
+- Exact base: `origin/main@db57491562daa440c2ae14c280a1d3c46d198fbd`.
+- Production safety: repository work is `PROD_SAFE`; physical phone work is
+  `PROD_CONDITIONAL` after the task-local Security/Prod-safety gate.
 - Current availability: only the physical phone with the `phone-full` family is
   reported connected; the required TV member of the paired lane is unavailable.
 
-The fresh TASK-045 thread must read its task/prompt/scenario catalog, run strict
-multi-agent planning and classify the paired-lane preflight before any device
-action. The phone cannot substitute for the missing TV, and phone-only runtime
-must not be inferred from the paired task without an explicit in-scope oracle.
+The source-of-truth, TASK-045 task/prompt/scenario catalog and remote-default
+lifecycle closure were read and verified before branch creation. Strict real
+multi-agent planning, implementation and final independent reviews are
+complete. The paired TV
+half is `blocked_by_device`; the phone cannot substitute for it and no paired
+evidence may be inferred. The owner authorizes autonomous execution of every
+TASK-045-independent phone-full scenario and full approved phone screen/state/
+navigation inventory until every reachable approved branch is terminally
+classified. Payment/session/account mutation, external QR/browser traversal,
+unsafe actions and TASK-046 remain outside scope. Any anomaly is recorded at
+first observation, and a recovery never erases the first failure.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-001` is `confirmed`: the first local
+alias-map schema introspection expected sanitized counts and public aliases but
+emitted raw mapping keys into ephemeral local tool output. No raw key was
+written to a tracked artifact or accepted as report evidence. The likely cause
+is an incorrect assumption that the ignored map used a nested `mappings`
+object. All subsequent device preflight must parse the map in memory and emit
+only counts, approved aliases and boolean classifications; the test-design
+implication is to reject any diagnostic projection of map keys before device
+inventory proceeds.
+
+The task-local conditional preflight selected `phone-realme-001` as the sole
+current phone after two stable sanitized ADB snapshots reported exactly one
+authorized mapped phone, zero TV, zero unmapped/offline targets and an unchanged
+identity set. Owner confirmation that the sole connected phone uses the
+`phone-full` family plus Planner and Security follow-up review authorizes this
+public alias only as `owner_selected_unique_current_phone` for independent
+phone evidence in TASK-045. This does not alter the tracked historical
+`manual_review_required` inventory record, does not make the device equivalent
+to primary `phone-xiaomi-007` or fallback `phone-samsung-002`, and does not
+satisfy any paired/connected-TV scenario.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-002` is `confirmed`: the first focused
+Builder suite after a final false-pass hardening edit expected all TASK-045
+contract tests to pass but returned 13 passes and 12 failures. No runtime or
+product conclusion was involved. The likely causes are a derived coverage flag
+inserted in the wrong validation scope and one synthetic recovery fixture with
+timeline/evidence mismatch. Both were corrected in the same task; the original
+failure remains recorded, and the final focused suite passed all 50 tests.
+
+Runtime anomaly `TASK045-RUNTIME-ANOMALY-001` is `confirmed`: the single
+owner-approved ordinary phone-full install/update attempt expected success but
+the device returned the sanitized category `INSTALL_FAILED_VERSION_DOWNGRADE`.
+No uninstall, data clear, downgrade flag or bypass was attempted. The likely
+cause is a newer installed package version on the owner-selected phone; this is
+not yet proof that the installed build is compatible with the canonical
+TASK-045 build set. Test-design implication: retain the first install failure,
+do not infer exact build identity from package presence, and require an explicit
+metadata/build gate before any app launch or phone runtime evidence.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-003` is `confirmed`: the first
+read-only installed-build comparison script expected a sanitized metadata
+classification but stopped before ADB package inspection because the local
+PowerShell runtime does not implement the requested JSON hashtable conversion
+option. No device or app state changed and no raw identity was emitted. The
+likely cause is a local shell-version compatibility gap; the recovery replaces
+only the ignored local parser with property-based lookup, and the first tooling
+failure remains recorded.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-004` is `confirmed`: the first normal
+installed-newer launch succeeded and its screenshot was stored locally, but the
+ignored capture helper then stopped because the local PowerShell runtime
+promoted `adb pull` progress written to stderr into a terminating error. The
+incomplete checkpoint is excluded from runtime conclusions because it lacks the
+required UI-tree and bounded target-app log. No second launch is performed;
+recovery captures the already visible state after changing only local stderr
+handling and explicit native exit-code checks.
+
+The first recovery capture for `TASK045-PROCESS-ANOMALY-004` recurred with the
+same shell stderr promotion even though the screenshot file was stored. The
+recovery is not promoted to a complete checkpoint. The helper therefore stops
+repeating screenshot capture for this state, completes only the missing
+UI-tree/log against the already stored recovery screenshot, and uses a bounded
+native-error preference with explicit exit-code checks for later checkpoints.
+
+Runtime anomaly `TASK045-RUNTIME-ANOMALY-002` is `confirmed`: one approved
+catalog scroll expected a stable later list segment, but the first complete
+post-scroll screenshot showed a mostly blank/partially rendered content area
+with only isolated card-color fragments and persistent bottom navigation. The
+screen is classified as `phone-catalog-partial-render-after-scroll`, not as a
+bottom-of-list or successful inventory result. A delayed render or capture/UI
+composition timing gap is `likely`; the matching UI tree remained nontrivial
+and text-bearing while the screenshot lacked that content, so the screenshot/
+XML mismatch is itself `confirmed`. One no-action recovery capture is allowed,
+and the first visual failure remains first-class even if recovery succeeds.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-005` is `confirmed`: the first catalog
+and history list scroll probes expected visible focus/list movement but remained
+at their initial segments. Review of the ignored helper found fixed coordinates
+outside this phone's display height, so the gestures are classified as local
+tooling no-ops rather than product behavior. The helper now derives bounded
+coordinates from the current display size without publishing dimensions; each
+list branch receives at most one corrected recovery gesture.
+
+Runtime anomaly `TASK045-RUNTIME-ANOMALY-003` is `confirmed`: focusing the empty
+catalog search field expected an ordinary keyboard-only state, but a system
+keyboard telemetry/statistics consent dialog appeared over the target app. It
+is classified as `external-keyboard-privacy-consent-overlay`, not as a Fog Play
+screen or product defect. No consent choice or text entry is performed; the
+safe recovery is `Back`, and the search-input branch is terminally
+`blocked_by_boundary` for this run.
+
+Runtime anomaly `TASK045-RUNTIME-ANOMALY-004` is `confirmed`: the single
+approved disconnected background/foreground cycle expected the catalog to be
+fully rendered on return, but the first post-foreground screenshot again showed
+only isolated card fragments and navigation against a blank content region.
+This is retained as `phone-catalog-partial-render-after-foreground`; a render
+timing/composition issue is `likely`; the corresponding UI tree remained
+nontrivial and text-bearing, making the screenshot/XML mismatch `confirmed`.
+One no-action recovery capture is allowed, but a later stable frame cannot erase
+this first lifecycle observation or pass the connected-pair QA-045-012 row.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-006` is `confirmed`: the one approved
+target-app force-stop completed and its screenshot/UI-tree were stored, but the
+ignored helper then attempted to trim a null `pidof` result and did not create
+the bounded log marker. The missing process is the expected post-force-stop
+condition, while the helper failure makes that checkpoint incomplete. The one
+allowed relaunch was still captured completely; no second force-stop/relaunch
+cycle is permitted, and connected-pair QA-045-013 remains blocked by the absent
+TV regardless.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-007` is `confirmed`: the first focused
+suite against the hardened dynamic-coverage/relational validator returned 21
+passes and 4 failures. Every failure stopped on a missing `attempt_id` field in
+legacy synthetic boundary fixtures before a product conclusion could be
+derived. This is a validator/test-fixture migration gap, not runtime evidence.
+The fixtures were migrated, the final focused suite passed all 50 tests and the
+first failing run remains recorded.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-008` is `confirmed`: the first direct
+publication attempt for the sanitized runtime coverage source expected a
+repository-only ingest but omitted the runner's mandatory explicit ingest
+authorization flag, so the fail-closed `EXECUTE_GATE_REQUIRED` guard blocked
+the write. No device or runtime action occurred. A single recovery with the
+documented authorization flag published and validated the same sanitized
+source; the successful recovery does not erase the first guard result.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-009` is `confirmed`: the focused suite
+after adding the retained ingest-gate event returned 37 passes and one failure
+because an anomaly-ledger test still asserted the prior literal row count. No
+runtime or product conclusion changed. The recovery binds the count assertion
+to the typed runtime source so future explicitly recorded anomalies cannot make
+the integrity test stale; the final focused rerun passed.
+
+The first recovery for `TASK045-PROCESS-ANOMALY-009` recurred with the same
+single failing assertion because it compared the ledger to scenario anomalies
+instead of the adapter's dedicated inventory-anomaly collection. The second
+fixture-only correction binds to `inventory_anomalies`; no additional runtime
+action or product conclusion occurred, and the recurrence remains attached to
+the original anomaly id.
+
+Runtime safety anomaly `TASK045-RUNTIME-ANOMALY-005` is `confirmed`: final
+Security review found that the preserved installed-newer app session was never
+proven to be the approved synthetic fixture, while the pre-review bundle marked
+session-dependent catalog/history/filter/lifecycle branches as confirmed
+`covered`. No account-like value was published and no account mutation occurred,
+but unknown session provenance makes those checkpoints ineligible for product
+coverage. The cause is an evidence-eligibility gate omission, not a product
+defect. Raw local artifacts remain quarantined in ignored storage; every
+session-dependent coverage row must become `blocked_by_external_state` with
+reason `synthetic_session_fixture_not_verified` (the exact global inventory
+status set has no fixture-specific member), while the safety anomaly remains
+classified `blocked_by_fixture`; the public adapter must
+state `session_provenance=unknown_not_verified` and
+`session_dependent_evidence_eligible=false`, and regression tests must reject
+future confirmed coverage under an unproven session.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-010` is `confirmed`: the first focused
+suite after adding run/evidence freshness and required core-branch declaration
+guards returned 35 passes and three failures. Two synthetic lifecycle fixtures
+retained timestamps outside the newly enforced run window, and one assertion
+expected the previous later static-closure error instead of the new earlier
+core-declaration guard. No runtime or product conclusion changed. The fixtures
+were migrated and the final focused suite passed all 50 tests.
+
+Process anomaly `TASK045-PROCESS-ANOMALY-011` is `confirmed`: final QA-A
+adversarial review expected the installed-newer and canonical candidate build
+identities to remain distinct, but the pre-fix validator accepted a mutated
+adapter that keyed the report to the canonical alias and could collapse both
+aliases. The actual published runtime source remained correctly separated, so
+no runtime conclusion changed. Pinned current-path aliases, equality between
+top-level and installed-lane aliases, inequality from the canonical candidate,
+adversarial regressions and clean bundle regeneration now pass.
+
+The physical inventory contour is now terminal by explicit 26-row coverage
+ledger: 23 rows are approved-scope and 21 are approved plus declared
+reachable/discovered. Only the external keyboard-consent overlay and final
+cleanup remain `covered`. Ten session-dependent rows covering cold launch,
+catalog/filter/history/recurrence,
+disconnected background/foreground and partial-render observations are retained
+locally but are `blocked_by_external_state` with reason
+`synthetic_session_fixture_not_verified`; they are not product coverage. Search is
+`blocked_by_boundary`; profile/settings/help/legal
+is blocked because the preserved account state was not proven synthetic;
+game/promo/payment/session and pre-connection virtual-gamepad paths remain
+guarded boundaries; no-TV discovery is `blocked_by_external_state`;
+force-stop/relaunch is `blocked_by_tooling`; paired/connected/disconnect rows
+are blocked by the absent TV; network and lock/unlock are
+`not_run_out_of_scope` under the zero-budget disconnected contour. No reachable
+approved phone branch remains without a terminal classification.
+
+QA-045-006 and QA-045-009 remain `blocked_by_oracle`, not PASS. A sanitized
+category-only inspection of the cold-launch, history-tab and post-force-stop
+relaunch UI trees found no explicit connected-success marker, no explicit
+no-device/retry surface and no explicit virtual-gamepad label. The absence of a
+visible phantom connected success is confirmed, but it is insufficient to prove
+the required no-TV oracle or a safe pre-connection virtual-gamepad route.
+Nineteen paired/connected scenarios retain `blocked_by_device`; QA-045-022 is
+only a static terminal-ledger closure row and cannot establish a paired claim.
+Current aggregate remains `partial_blocked` and `blocks_release`.
+
+Every checkpoint from the approved runtime sequence has non-empty local-only
+screenshot, UI-tree and runner-log modalities. The force-stop checkpoint uses
+an immediate sanitized helper-gap marker rather than a target-app log, and no
+target-log FATAL/ANR signal was observed in the bounded review. Dynamic titles,
+prices, quantities and account-like content are excluded from public oracles.
+Final cleanup is `confirmed`: target app force-stopped, Home restored, existing
+session preserved, no browser opened, no payment/session started, no account or
+network mutation occurred and no paired state was observed.
+
+Strict multi-agent acceptance is complete. QA Reviewer A, QA Reviewer B and
+Security/Prod-safety returned final `GO` with no open R0/R1; Docs/Scribe source
+reconciliation is complete. The regenerated terminal bundle passed 50 focused
+tests and 1194 full-suite tests with 3 skipped. All runner/report, compile,
+manifest, epic, docs, hygiene, public-safety and diff gates passed. The v2
+manifest validates 29 records, including 6 authoritative records.
+
+TASK-045 is `integration_ready` with `partial_blocked` coverage and
+`blocks_release`; this authorizes integration of the honest blocked evidence
+bundle only, not a paired or release PASS. The task remains active until commit,
+task-branch push, default integration/push and alignment verification complete;
+it must not yet be marked `inactive_completed`. TASK-046 has not started.
 
 ## Completed TASK-044 — TPV13 reference-lane runtime closed, release blocked
 

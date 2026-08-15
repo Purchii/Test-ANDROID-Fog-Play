@@ -872,6 +872,89 @@ Docs/Scribe reviews returned `GO` with no open R0/R1. This permits integration
 of the `blocks_release` evidence bundle only; it is not a release approval and
 does not authorize phone or TASK-045 runtime in this thread.
 
+## TASK-045 paired TV plus phone virtual-gamepad gates
+
+TASK-045 paired physical runtime is `PROD_CONDITIONAL_PAIRED_RUNTIME`. A
+task-local owner-selected mapped phone may execute only independently
+authorized disconnected phone inventory when the TV is absent; it cannot
+substitute for the Television Full member, primary/fallback phone lane, paired
+timeline or canonical-build compatibility evidence.
+
+The TASK-045 bundle must fail closed unless:
+
+- all 22 catalog scenarios reconcile by id, priority, surface and terminal
+  status, with all paired/connected/cross-device rows blocked when the TV is
+  unavailable;
+- every currently reachable approved phone screen/state/navigation branch is
+  terminally classified as `covered`, `blocked_by_boundary`,
+  `blocked_by_tooling`, `blocked_by_external_state` or
+  `not_run_out_of_scope`, with evidence ids for every observed row;
+- every runtime checkpoint has a visually inspected screenshot, UI tree and
+  runner-log modality; a sanitized helper-gap marker may document the immediate
+  force-stop state but must classify that branch as tooling-blocked rather than
+  PASS;
+- screenshot/UI-tree mismatches, first failures, retries, recoveries and
+  recurrences remain separate; recovery never rewrites the first failure;
+- a category scan that finds no connected-success label is not enough to pass
+  the no-TV row, and a history/gamepad-shaped tab is not a virtual-gamepad
+  oracle; QA-045-006 and QA-045-009 remain blocked without their explicit safe
+  product state;
+- ordinary install/update downgrade rejection remains an external-state
+  blocker; uninstall, data clear, downgrade override, APK modification or
+  bypass is not used, and an owner-confirmed installed-newer build keeps
+  canonical compatibility `unknown_not_verified`;
+- payment/session start, account/profile mutation, external QR/browser
+  traversal, network mutation outside an approved budget and unsafe lock/unlock
+  actions remain unexecuted;
+- dynamic titles, prices, quantities, machine/device/build/package/hash/account
+  values, raw QR targets, screenshots, UI trees and logs remain local-only;
+- cleanup confirms target-app force-stop, Home restoration, preserved existing
+  session, no external browser, no payment/session start, no account/network
+  mutation and no paired state;
+- any `blocked_*`, tooling gap, missing oracle, missing TV, unknown build
+  compatibility or paired claim not established keeps coverage
+  `partial_blocked` and release effect `blocks_release`;
+- QA Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe leave no
+  R0/R1 finding open before integration.
+
+Required public-safe runner and repository checks:
+
+```text
+python automation/gamepad/task045_paired_virtual_gamepad.py --validate-only
+python automation/gamepad/task045_paired_virtual_gamepad.py --preflight --adapter-input .qa_local/evidence/task-045/runtime-adapter.local.json
+python automation/gamepad/task045_paired_virtual_gamepad.py --execute --adapter-input .qa_local/evidence/task-045/runtime-adapter.local.json --allow-prod-conditional-ingest
+python automation/gamepad/task045_paired_virtual_gamepad.py --publish-runtime-coverage --allow-prod-conditional-ingest
+python automation/gamepad/task045_paired_virtual_gamepad.py --publish-blocked-baseline
+python automation/gamepad/task045_paired_virtual_gamepad.py --validate-report
+python -m pytest -q tests/test_task045_paired_virtual_gamepad.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+git diff --check
+git status --short --branch
+```
+
+The final bundle has 26 terminal phone-ledger rows: 23 approved-scope and 21
+approved plus declared reachable/discovered. Only 2 rows are `covered`; 10
+session-dependent rows are `blocked_by_external_state` because synthetic
+session provenance was not verified. QA-045-006 and QA-045-009 are
+`blocked_by_oracle`; paired runtime is `blocked_by_device`. The bundle retains
+16 anomalies: 11 process/tooling and 5 runtime.
+
+Final acceptance gates passed with 50 focused tests and 1194 full-suite tests
+with 3 skipped. Runner/report, compile, manifest, epic, docs, both hygiene
+modes, public-safety and diff checks passed; the v2 manifest validates 29
+records, including 6 authoritative records. QA Reviewer A, QA Reviewer B and
+Security/Prod-safety returned final `GO` with no open R0/R1; Docs/Scribe source
+reconciliation is complete. Overall remains `partial_blocked` /
+`blocks_release`. TASK-045 is `integration_ready`, not yet lifecycle-complete;
+TASK-046 has not started.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

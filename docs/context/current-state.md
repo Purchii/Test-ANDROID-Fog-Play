@@ -39,6 +39,41 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Completed TASK-058 blocked first-launch/pre-auth closure — 2026-08-16
+
+TASK-058 runs in a fresh `BOUNDED_AUTONOMOUS` thread on
+`qa/task-058-phone-first-launch-pre-auth-coverage` from exact aligned
+`origin/main@809fd11fc47bde30871bc414d057128aef3918b2`. The owner-selected exact
+local candidate is public only as `task058-selected-phone-full-001` and
+supersedes `main-apk-03` only for this task's one-shot package action.
+
+Security approved read-only preflight and conditionally approved exactly one
+target uninstall plus one ordinary install with zero retries, but returned
+`NO_GO_RUNTIME / BLOCK_RUNTIME`. Fresh preflight passed. One uninstall, target
+absence and one ordinary install succeeded; installed package presence was
+confirmed. Post-install equivalence collection then hit a raw-path stderr
+spill and hard-stopped before hash/signing equivalence, unrelated-package-delta
+and final selector snapshots. The raw value remained outside tracked files,
+the local temporary APK was removed, and no retry, alternate artifact, launch,
+navigation or authentication action occurred.
+
+The seven readiness rows close 2 pass/5 blocking: selected-candidate preflight
+and ordinary-install safety pass; installed equivalence and final selector
+state are `blocked_by_tooling`; synthetic-session, clean-first-launch and
+runtime evidence/cleanup passports are `blocked_by_fixture`. The three exact
+inherited scenarios are terminal: `phone-coverage-001` and
+`phone-coverage-017` are blocked screen/state rows, while `A002` is a blocked
+transition row with distinct unobserved from/to checkpoint aliases. Fresh
+product checkpoints and covered rows are zero. TASK-058 is
+`inactive_completed_blocked_runtime`, release effect is `blocks_release`, and
+TASK-059 remains blocked.
+
+Continuation requires two owner actions: first, fresh authority and a
+Security-reviewed launch-free plan to finish installed equivalence,
+unrelated-package delta and final selector validation without reinstall;
+second, three independent current synthetic-session, clean-first-launch and
+runtime evidence/cleanup passports followed by a new Security `GO_RUNTIME`.
+
 ## Completed TASK-057R authorized reinstall readiness revalidation — 2026-08-16
 
 TASK-057R runs in a fresh `BOUNDED_AUTONOMOUS` thread on

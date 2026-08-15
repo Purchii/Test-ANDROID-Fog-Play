@@ -1,0 +1,8 @@
+row_id,subject_alias,evidence_status,terminal_status,evidence_ids,reviewer_gate,reason_code,release_effect
+task057-authority-01-canonical-phone-full,task058-selected-phone-full-001,confirmed,observed_pass,task058-candidate-integrity;task058-candidate-provenance;task058-candidate-signing;task058-candidate-version;task058-candidate-min-sdk;task058-candidate-target-sdk;task058-candidate-abi;task058-candidate-install-compatibility,GO_PACKAGE_ACTION_CONDITIONAL,candidate_full_preflight_confirmed,candidate_evidence
+task057-authority-02-installed-compatibility,installed-phone-full-build,unknown,blocked_by_tooling,task058-install-presence,BLOCK_RUNTIME,postinstall_equivalence_interrupted_by_raw_spill,blocks_release
+task057-authority-03-current-phone-selector,phone-current-001,unknown,blocked_by_tooling,task058-selector-preaction,BLOCK_RUNTIME,postaction_and_cleanup_selector_snapshots_not_completed,blocks_release
+task057-authority-04-downgrade-safety,ordinary-downgrade-guard,confirmed,observed_pass,task058-package-action-ledger,GO_PACKAGE_ACTION_CONDITIONAL,one_target_uninstall_one_ordinary_install_zero_retry,package_evidence
+task057-authority-05-synthetic-session,synthetic-session-passport,unknown,blocked_by_fixture,none,BLOCK_RUNTIME,synthetic_session_passport_absent,blocks_release
+task057-authority-06-clean-first-launch,clean-first-launch-fixture,unknown,blocked_by_fixture,none,BLOCK_RUNTIME,clean_first_launch_fixture_passport_absent,blocks_release
+task057-authority-07-evidence-cleanup-security,evidence-cleanup-passport,unknown,blocked_by_fixture,none,BLOCK_RUNTIME,runtime_evidence_cleanup_passport_absent,blocks_release

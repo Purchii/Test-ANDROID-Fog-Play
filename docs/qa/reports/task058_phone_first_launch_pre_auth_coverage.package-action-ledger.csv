@@ -1,0 +1,11 @@
+row_id,phase_order,phase,action_alias,intended_count,observed_count,evidence_status,terminal_status,reason_code
+task058-action-01,10,pre_action,security_package_action_gate,1,1,confirmed,observed_pass,conditional_go_before_mutation
+task058-action-02,20,pre_action,candidate_and_selector_preflight,1,1,confirmed,observed_pass,exact_preflight_passed
+task058-action-03,30,package_action,target_uninstall,1,1,confirmed,observed_pass,authorized_target_uninstall_succeeded
+task058-action-04,40,package_action,target_absence,1,1,confirmed,observed_pass,target_absent_after_uninstall
+task058-action-05,50,package_action,ordinary_install,1,1,confirmed,observed_pass,selected_candidate_install_succeeded
+task058-action-06,60,post_action,package_presence,1,1,confirmed,observed_pass,installed_package_path_present
+task058-action-07,70,post_action,installed_candidate_equivalence,1,0,unknown,blocked_by_tooling,raw_spill_stopped_hash_and_signing_comparison
+task058-action-08,80,post_action,unrelated_package_delta,1,0,unknown,blocked_by_tooling,raw_spill_stopped_delta_verification
+task058-action-09,90,scope_closure,retry,0,0,confirmed,observed_pass,no_retry_or_alternate_artifact
+task058-action-10,100,scope_closure,launch_navigation,0,0,confirmed,observed_pass,security_block_runtime_no_launch

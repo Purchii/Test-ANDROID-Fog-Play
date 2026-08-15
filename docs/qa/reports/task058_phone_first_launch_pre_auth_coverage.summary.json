@@ -1,0 +1,191 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.readiness-ledger.csv",
+      "sha256": "4a156202745d9bc548c09b8c4b3d6b5df36c217369cecc421a642a3d54b1f0b8"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "package_action",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.package-action-ledger.csv",
+      "sha256": "e915c456d0a26e64bfaa2aa87613222cfd09903ac3bdab5b3be3a7d9571cba4f"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.scenario-ledger.csv",
+      "sha256": "45ee6de7913f9192925dc87c7543011b2c17f6f86a18aaeab0f0f6a92fc3ff5c"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "screen_state",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.screen-state-ledger.csv",
+      "sha256": "f182c761405ae472f7a9dd55bf78eda192bea0043c5441d5709d74074e4c153b"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "transition",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.transition-ledger.csv",
+      "sha256": "55be44831d32fc96b41f486fb5ec2e9f471e0df664a68cdeb41f912f6f54452d"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "overlay_recurrence",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.overlay-recurrence-ledger.csv",
+      "sha256": "d7d2566210ecbddcd768bad49bcc4e06ac61488046bec35e8a3a2b5ee835ef10"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "anomaly",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.anomaly-ledger.csv",
+      "sha256": "dd2d8c5e18656873f0d507af3a3b2f41fbf596ab14d56942e6f07ea61738f148"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "boundary",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.boundary-ledger.csv",
+      "sha256": "d7d2566210ecbddcd768bad49bcc4e06ac61488046bec35e8a3a2b5ee835ef10"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup",
+      "reference": "docs/qa/reports/task058_phone_first_launch_pre_auth_coverage.cleanup-ledger.csv",
+      "sha256": "80f1aff4c9470a5f7beab65aecec3581edc9c55f986c7d53a55cfefe9b6f239b"
+    }
+  ],
+  "blocked_reasons": [
+    "postinstall_equivalence_interrupted_by_raw_spill",
+    "postaction_and_cleanup_selector_snapshots_not_completed",
+    "synthetic_session_passport_absent",
+    "clean_first_launch_fixture_passport_absent",
+    "runtime_evidence_cleanup_passport_absent"
+  ],
+  "build_ref": {
+    "alias": "task058-selected-phone-full-001"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-08-16T15:00:00Z",
+  "payload": {
+    "anomaly_count": 11,
+    "approved_reachable_scenario_count": 3,
+    "blocked_scenario_count": 3,
+    "covered_scenario_count": 0,
+    "go_runtime": false,
+    "launch_count": 0,
+    "local_temp_cleanup_confirmed": true,
+    "navigation_count": 0,
+    "ordinary_install_count": 1,
+    "postinstall_equivalence_confirmed": false,
+    "readiness_blocked_count": 5,
+    "readiness_observed_pass_count": 2,
+    "readiness_row_count": 7,
+    "retry_count": 0,
+    "runtime_checkpoint_count": 0,
+    "runtime_screen_transition_count": 0,
+    "security_gate": "BLOCK_RUNTIME",
+    "target_absence_count": 1,
+    "uninstall_count": 1,
+    "unrelated_package_delta_confirmed": false
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_BOUNDED_PACKAGE_ACTION_BLOCKED_RUNTIME",
+  "provenance": {
+    "local_only_input_read": true,
+    "package_mutation_by_orchestrator": true,
+    "product_launch": false,
+    "product_navigation": false,
+    "runner_device_action": false,
+    "runner_package_action": false,
+    "source": "sanitized_task058_orchestrator_projection"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety_reviewer": "block_runtime"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058-RISK-FALSE-FIRST-LAUNCH",
+      "summary": "Package install success cannot substitute for independent runtime passports or fresh product coverage."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058-RISK-RAW-SPILL",
+      "summary": "A local command channel exposed a raw device-side path; the run stopped and no raw value entered tracked artifacts."
+    }
+  ],
+  "run_id": "task058-phone-first-launch-pre-auth-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-current-001",
+  "task_id": "TASK-058",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-02-installed-compatibility",
+      "reason_code": "postinstall_equivalence_interrupted_by_raw_spill"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-03-current-phone-selector",
+      "reason_code": "postaction_and_cleanup_selector_snapshots_not_completed"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-05-synthetic-session",
+      "reason_code": "synthetic_session_passport_absent"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-06-clean-first-launch",
+      "reason_code": "clean_first_launch_fixture_passport_absent"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-07-evidence-cleanup-security",
+      "reason_code": "runtime_evidence_cleanup_passport_absent"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task058-owner-action-01",
+      "reason_code": "fresh_launch_free_postinstall_validation_authority_and_security_plan_required_without_reinstall"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task058-owner-action-02",
+      "reason_code": "three_runtime_passports_and_new_security_go_runtime_required"
+    }
+  ],
+  "verification": [
+    {
+      "check": "exact_seven_readiness_rows",
+      "evidence_status": "confirmed",
+      "result_count": 7,
+      "status": "pass"
+    },
+    {
+      "check": "package_action",
+      "evidence_status": "confirmed",
+      "result_count": 6,
+      "status": "blocked"
+    },
+    {
+      "check": "task058_runtime",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "not_run"
+    },
+    {
+      "check": "terminal_scenario_ledger",
+      "evidence_status": "confirmed",
+      "result_count": 3,
+      "status": "blocked"
+    }
+  ]
+}

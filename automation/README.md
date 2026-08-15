@@ -28,6 +28,17 @@ clean-first-launch and runtime evidence/cleanup passports are independently
 absent. Successful reinstall cannot infer any of those rows or Security
 `GO_RUNTIME`.
 
+## TASK-058 Phone Full first-launch and pre-auth coverage
+
+`automation/phone/task058_phone_first_launch_pre_auth_coverage.py` is the
+repository-only generator and validator for the public-safe blocked TASK-058
+closure. It preserves the exact seven TASK-057 readiness authorities, the
+one-shot package-action ledger, the three inherited screen/transition rows and
+all process anomalies. It never reads ignored local evidence, invokes Android
+tools or ADB, controls a device, launches the app or performs runtime coverage.
+Its baseline remains `BLOCK_RUNTIME`, `blocks_release`, with product runtime
+`not_run` until all independent passports and Security `GO_RUNTIME` exist.
+
 ## TASK-048 AOSP/launcher system-lane authority
 
 `automation/system_lane/task048_aosp_launcher_runtime.py` implements the

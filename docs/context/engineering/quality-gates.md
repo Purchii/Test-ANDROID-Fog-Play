@@ -1135,6 +1135,72 @@ git diff --check
 git status --short --branch
 ```
 
+## TASK-058 selected-artifact package action and pre-auth gates
+
+The owner's exact ignored/local-only selection is represented only as
+`task058-selected-phone-full-001` and supersedes `main-apk-03` for TASK-058's
+package action. Repository work is `PROD_SAFE`; package action and runtime are
+separate `PROD_CONDITIONAL` phases.
+
+Before mutation require fresh remote/base alignment; exactly one authorized
+selector, target and regular non-reparse same-repository APK; exact package/
+family mapping; complete integrity, provenance, signing, version,
+min/target-SDK, ABI and compatibility oracles; ignored evidence sink; bounded
+budget; one-shot stop/no-retry contingency; failure recovery; cleanup; and
+Security GO for the exact plan. The budget is one target uninstall, one
+ordinary install, zero retries and zero alternate artifacts. Stop on drift,
+ambiguity, incomplete oracle, NO_GO, raw spill, unexpected state, failure or
+scope expansion.
+
+Launch remains forbidden until the exact seven TASK-057 rows are freshly and
+independently `observed_pass` and Security issues `GO_RUNTIME`. Install success,
+empty state or accepted target-local data/session loss cannot infer synthetic-
+session, clean-first-launch or runtime evidence/cleanup passports, budget, kill
+switch or rollback. If only package action is approved, close safely with
+runtime `not_run`.
+
+After `GO_RUNTIME`, continue until every approved reachable TASK-058 row has
+fresh screenshot visual inspection, UI tree and bounded target-app marker/log
+and is terminally classified, or a genuine hard blocker occurs. Credential
+entry/authentication, account/payment mutation, paid/media start, network
+shaping, external QR/browser traversal, destructive UI and TASK-059+ remain
+forbidden.
+
+`TASK058-PROCESS-ANOMALY-001` through `TASK058-PROCESS-ANOMALY-011` remain
+confirmed process evidence only. The first three occurred before package
+mutation. The fourth stopped the run after one successful uninstall, one
+successful ordinary install and package-presence confirmation because native
+stderr exposed a raw device-side path; equivalence, unrelated-package delta and
+final selector snapshots therefore remain blocked. The fifth and sixth record
+corrected repository validator/CLI assumptions. The seventh records an
+independent reviewer mistakenly rewriting only the deterministic public-safe
+bundle during read-only review; Orchestrator regeneration supersedes it. The
+eighth records a guessed nonexistent docs-checker path that failed before
+execution and was replaced by the passing canonical checker. The ninth records
+a malformed quoted QA search expression rejected before the read-only search
+ran. The tenth records a coordination wait after an explicit reviewer stop;
+it performed no repository or product action. The eleventh records a rejected
+v2 top-level owner-action field, blocked manifest and three focused failures;
+owner actions moved to allowed unknown records before the passing rerun. None
+supplies product evidence or relaxes any gate, and all have product impact
+`none`.
+
+The exact non-inferential readiness authority remains, in order,
+`task057-authority-01-canonical-phone-full`,
+`task057-authority-02-installed-compatibility`,
+`task057-authority-03-current-phone-selector`,
+`task057-authority-04-downgrade-safety`,
+`task057-authority-05-synthetic-session`,
+`task057-authority-06-clean-first-launch` and
+`task057-authority-07-evidence-cleanup-security`. The terminal result is two
+`observed_pass` and five blocking rows with Security `BLOCK_RUNTIME`.
+
+The inherited crosswalk is losslessly terminal: `phone-coverage-001` and
+`phone-coverage-017` are screen/state rows, while `A002` is a transition with
+distinct public-safe unobserved from/to checkpoint aliases. All three are
+`blocked_by_external_state`; fresh runtime screenshots, UI trees, bounded logs,
+covered checkpoints and product transitions remain zero.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

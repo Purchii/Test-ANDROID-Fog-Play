@@ -1,5 +1,148 @@
 # Active run
 
+## Completed TASK-058 — Phone Full first-launch and pre-auth blocked closure
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread status: `inactive_completed_blocked_runtime`.
+- Task branch: `qa/task-058-phone-first-launch-pre-auth-coverage`.
+- Default branch: `main`.
+- Exact base: `origin/main@809fd11fc47bde30871bc414d057128aef3918b2`.
+- Production safety: repository framing is `PROD_SAFE`; the exact target-only
+  uninstall, one ordinary install and bounded pre-auth runtime are separate
+  `PROD_CONDITIONAL` phases.
+- Public artifact alias: `task058-selected-phone-full-001`. It represents the
+  owner's exact ignored/local-only selection dated 2026-08-16 and supersedes
+  `main-apk-03` for this task's package action only.
+
+Owner authority accepts loss of only the freshly mapped Phone Full target
+application's local data/session and permits exactly one target uninstall plus
+exactly one ordinary install of the selected candidate. Retry and alternate-
+artifact budgets are zero. This does not permit separate clear-data, device
+reset, other-package changes, downgrade/test/grant/bypass flags, APK
+modification/re-sign/decompile, real credential/session use, authentication,
+account/payment mutation, paid session/media start, network shaping, external
+QR/browser traversal, destructive UI actions or TASK-059+ coverage.
+
+Before package action, fresh evidence must establish remote/base alignment,
+one unambiguous selector and target mapping, one regular non-reparse same-
+repository artifact, complete integrity/signing/version/min+target-SDK/ABI/
+compatibility oracles, ignored evidence sink, bounded budget, one-shot stop/no-
+retry contingency, failure recovery, cleanup and Security GO for the exact
+plan. Stop on drift, ambiguity, oracle gap, Security NO_GO, raw spill,
+unexpected state, failure or scope expansion.
+
+Install success is not launch authority. After package action, all exact seven
+TASK-057 rows must be freshly and independently revalidated. Launch requires
+all seven `observed_pass` plus Security `GO_RUNTIME`; absent-session, clean-
+first-launch, evidence/cleanup, runtime-budget, kill-switch or rollback facts
+cannot be inferred from reinstall. Package-only approval closes safely with
+runtime `not_run`. Full GO requires continued TASK-058 work until every
+approved reachable row is terminal or a genuine hard blocker occurs.
+
+Actual package result: the fresh category-only preflight passed. Exactly one
+target uninstall succeeded, target absence was confirmed, exactly one ordinary
+install succeeded, installed package presence was confirmed, and retry,
+launch and navigation counts remained zero. The post-install equivalence pull
+then exposed a raw device-side path on native stderr and triggered the hard
+stop before hash/signing equivalence, unrelated-package-delta and final
+selector snapshots. The value did not enter tracked artifacts; the temporary
+local APK was removed and no retry, alternate artifact or launch followed.
+
+The exact seven-row readiness ledger closes with two `observed_pass`, two
+`blocked_by_tooling` and three `blocked_by_fixture` rows. Security remains
+`BLOCK_RUNTIME`. The exact three inherited crosswalk rows are terminal:
+`phone-coverage-001` and `phone-coverage-017` in the screen/state ledger, and
+transition `A002` with distinct unobserved from/to checkpoint aliases. All are
+`blocked_by_external_state`; fresh runtime screenshots, UI trees, log markers,
+product checkpoints and covered transitions are zero. Execution/coverage are
+`blocked`, release effect is `blocks_release`, and TASK-059 stays blocked.
+
+Immediate confirmed process anomalies, with no product impact:
+
+- `TASK058-PROCESS-ANOMALY-001`, alias
+  `preflight_result_object_syntax_failure`: a corrected bounded preflight
+  expected a category-only result but hit a PowerShell parser error before
+  execution. No APK/ADB/device action occurred; no output was accepted. Likely
+  cause is an inline command expression inside a result hashtable; precompute
+  values before result construction.
+- `TASK058-PROCESS-ANOMALY-002`, alias `sdk_root_scalar_indexing_failure`: a
+  corrected read-only preflight expected Android tool resolution, but a single
+  SDK-root string was indexed as its first character and path resolution failed
+  closed. Only candidate file attributes were read; no Android tooling, ADB,
+  device or package mutation occurred and no output was accepted. Wrap pipeline
+  results in an array before indexing.
+- `TASK058-PROCESS-ANOMALY-003`, alias
+  `combined_package_action_command_policy_rejection`: one combined preflight
+  plus action PowerShell command expected the exact one-shot sequence but was
+  rejected by execution policy before process start. No command executed;
+  uninstall/install counts are `0/0`; no device, package or product impact
+  occurred and no output was accepted. Likely cause is overlong or compound-
+  command policy. Use short, separately verified action-boundary steps while
+  retaining the total budget of one uninstall, one ordinary install and zero
+  retries.
+- `TASK058-PROCESS-ANOMALY-004`, alias
+  `postinstall_pull_stderr_raw_path_spill`: native stderr exposed a raw path and
+  interrupted equivalence/delta/final-selector validation after the package
+  action. Tracked output stayed public-safe, the local temp was removed, launch
+  stayed zero and no retry occurred.
+- `TASK058-PROCESS-ANOMALY-005`, alias
+  `schema_validator_invocation_and_spec_marker_mismatch`: the first focused
+  repository run stopped on an incomplete task marker and validator call
+  signature; two tests failed and thirteen passed. The corrected rerun passes.
+- `TASK058-PROCESS-ANOMALY-006`, alias
+  `report_manifest_unsupported_write_flag`: an unsupported manifest write flag
+  returned usage only and changed no output; the supported default write mode
+  is used for final regeneration.
+- `TASK058-PROCESS-ANOMALY-007`, alias
+  `qa_reviewer_read_only_baseline_rewrite`: independent QA mistakenly invoked
+  deterministic baseline generation during a read-only review and rewrote only
+  the derived TASK-058 public-safe bundle. The Orchestrator regenerated and
+  revalidated that bundle from the fixed runner. No device, APK, local-only
+  evidence or product action occurred.
+- `TASK058-PROCESS-ANOMALY-008`, alias
+  `guessed_docs_checker_path_failure`: independent QA invoked a guessed
+  nonexistent docs-checker path, which failed before checker execution. The
+  canonical docs consistency/link checker was then located and passed; no
+  device, APK, local-only evidence or product action occurred.
+- `TASK058-PROCESS-ANOMALY-009`, alias
+  `qa_source_marker_regex_syntax_failure`: a malformed quoted regular
+  expression in final QA review was rejected before its read-only search ran.
+  No output was accepted and no file, device, APK, local-only evidence or
+  product state changed.
+- `TASK058-PROCESS-ANOMALY-010`, alias
+  `qa_stop_instruction_coordination_wait`: after an explicit stop-tools
+  instruction, independent QA invoked only a coordination wait. It performed
+  no shell, filesystem, device, APK, local-evidence or product action and
+  changed no state.
+- `TASK058-PROCESS-ANOMALY-011`, alias
+  `owner_action_top_level_schema_mismatch`: a new owner-action top-level field
+  was not allowed by the v2 envelope, so summary/manifest validation blocked
+  and three of 111 focused tests failed. Owner actions were moved into allowed
+  public-safe unknown records and source-of-truth; product impact is none.
+
+Tracked authority is the fixed `task058_phone_first_launch_pre_auth_coverage`
+summary and its readiness, package-action, scenario, screen-state, transition,
+overlay-recurrence, anomaly, boundary and cleanup ledgers. The repository
+runner is fixed-path and never reads local evidence or controls a device.
+
+Owner actions required before any continuation:
+
+1. Supply fresh authority plus a Security-reviewed launch-free plan to finish
+   installed/candidate equivalence, unrelated-package-delta and final-selector
+   validation without another uninstall/install or alternate artifact.
+2. Supply three independent current passports: synthetic-session,
+   clean-first-launch fixture, and runtime evidence/cleanup with explicit
+   retention/redaction, runtime budget, kill switch, recovery and cleanup; then
+   obtain a new Security `GO_RUNTIME` before launch.
+
+Final repository checks on the stable staged snapshot: all three TASK-058
+runner modes pass; focused TASK-058/TASK-057R/TASK-057/manifest pytest is
+`111 passed`; compile passes; report manifest validates `34` records / `11`
+authoritative; epic validation and both hygiene modes pass; public safety is
+`413/0`; docs consistency/link sanity is `185/0`; worktree and cached diff
+checks pass. Final integration identity and push alignment are appended only
+after successful integration.
+
 ## Completed TASK-057R — Phone Full authorized reinstall and readiness revalidation
 
 - Mode: `BOUNDED_AUTONOMOUS`.

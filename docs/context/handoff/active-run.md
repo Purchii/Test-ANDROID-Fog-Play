@@ -1,10 +1,12 @@
 # Active run
 
-## Active TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane
+No independent implementation task is active in this completed thread.
+
+## Completed TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane
 
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Thread title: `TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane`.
-- Thread status: `verified_pre_commit_repository_only_blocked_runtime`.
+- Thread status: `inactive_completed_blocked_runtime`.
 - Fresh thread verified: `yes`; continuation thread id
   `01a00468-0338-7a81-b73a-b7bbc7d7cbc5` was accepted and renamed after
   Planner selection.
@@ -24,8 +26,10 @@
   `GO_REPOSITORY_ONLY_CLOSURE` with no open R0/R1 and retained
   `BLOCK_RUNTIME`; Docs/Scribe final reconciliation is
   `GO_REPOSITORY_ONLY_CLOSURE / BLOCK_RUNTIME`.
-- Merge/push authority: autonomous only after all acceptance, verification and
-  independent review gates pass with no open R0/R1.
+- Integration: implementation/verification commit
+  `f85cf192d66e57d1dedcc7a8084768d2b40179d7` was pushed to the task branch and
+  fast-forwarded to `main`; the final lifecycle documentation commit must be
+  pushed to both and alignment rechecked before continuation.
 
 Evidence status is `confirmed` for the aligned remote default and completed
 TASK-042/TASK-043 dependencies. The actual project-known FogPlay Stick selector,
@@ -59,7 +63,7 @@ would expose local-only values, needs destructive/privileged action, leaves an
 R0/R1 finding unresolved or cannot pass the task-introduced tests inside this
 scope.
 
-### Verified pre-commit closure state
+### Verified lifecycle closure state
 
 The generated public-safe authority contains 19/19 terminal scenario rows:
 17 `blocked_by_device`, QA-048-014 `blocked_by_product_boundary`, and
@@ -83,10 +87,10 @@ both hygiene modes, public-safety (378/0), docs consistency (176/0), cached
 diff and the report manifest (31 records: 8 authoritative and 23 legacy)
 passed. Generated report `review` fields remain deterministic pending markers
 by contract; the actual final reviewer outcomes are authoritative in this run
-documentation. Task commit/push, default integration/alignment and inactive
-lifecycle status remain pending and are not claimed.
+documentation. The repository authority is complete and the runtime lane
+remains blocked; no runtime completion is claimed.
 
-If TASK-048 closes, create exactly one fresh selection continuation from the
+After the final lifecycle push/alignment, create exactly one fresh selection continuation from the
 verified remote-default closure. TASK-046 and TASK-047 remain runtime-blocked
 without fresh authoritative YandexTV/SberBox lane state; TASK-049 depends on
 both. The continuation must select from current authority and may legitimately

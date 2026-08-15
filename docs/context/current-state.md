@@ -39,9 +39,9 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## TASK-048 verified repository-only pre-commit state — 2026-08-15
+## Completed TASK-048 repository-only blocked-runtime closure — 2026-08-15
 
-TASK-048 is active in a fresh thread on
+TASK-048 completed in a fresh thread on
 `qa/task-048-aosp-launcher-system-cluster-runtime`, based exactly on
 `origin/main@c81fdf6c1853a42c73a4145d00bafbd173668e0d`. Mode is
 `BOUNDED_AUTONOMOUS`. Tracked repository work is `PROD_SAFE`; physical/APK/
@@ -58,7 +58,7 @@ launcher component mapping and runtime fixture remain `unknown`; generic TV,
 phone, AVD or historical-profile substitution is forbidden. The launcher/
 system contour remains separate from the five-APK contract.
 
-This is a verified repository-only closure candidate, not a product or release PASS.
+This is a completed repository-only closure, not a product or release PASS.
 No device, ADB, APK read, local-only input, component invocation, account,
 payment, session, QR, network or cleanup action occurred. QA-A and QA-B returned
 final `GO` with no open R0/R1. Security returned
@@ -78,8 +78,12 @@ CLI modes returned their expected repository-only results; compile, epic,
 both hygiene modes, public-safety (378/0), docs consistency (176/0), cached
 diff and the 31-record manifest (8 authoritative, 23 legacy) passed.
 
-Task commit/push, default integration/alignment and inactive lifecycle closure
-remain pending and are not claimed.
+Implementation/verification commit
+`f85cf192d66e57d1dedcc7a8084768d2b40179d7` was pushed to the task branch and
+fast-forwarded to `main`. Lifecycle status is
+`inactive_completed_blocked_runtime`; the final lifecycle documentation commit
+must be pushed to both branches and remote alignment rechecked before the fresh
+continuation starts.
 
 TASK-046 and TASK-047 remain runtime-blocked because no current authoritative
 YandexTV or SberBox physical lane is available. TASK-049 depends on both and is

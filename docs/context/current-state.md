@@ -39,13 +39,18 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## Active TASK-057R authorized reinstall readiness revalidation — 2026-08-16
+## Completed TASK-057R authorized reinstall readiness revalidation — 2026-08-16
 
 TASK-057R runs in a fresh `BOUNDED_AUTONOMOUS` thread on
 `qa/task-057r-phone-full-authorized-reinstall-readiness-revalidation` from the
 fresh remote default. Repository work is `PROD_SAFE`; the exact target-only
 uninstall/install contour was `PROD_CONDITIONAL` after the owner authorization
 dated 2026-08-16 and the task-local Security plan gate.
+
+Lifecycle is `inactive_completed_blocked_runtime`. Verified implementation
+commit `d9d51383e1c0ef132108f35cc31635229f363280` was pushed to the task branch
+and fast-forwarded to remote `main` from exact base
+`b38184ca53c34e8bc9847966e1b9ecec429bf982`.
 
 The bounded reinstall is `observed_pass`: fresh exact selector/artifact mapping,
 pre-action Security plan GO, a pre-action one-shot stop/no-retry contingency,

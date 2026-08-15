@@ -1,11 +1,16 @@
 # Active run
 
-## Active TASK-057R — Phone Full authorized reinstall and readiness revalidation
+## Completed TASK-057R — Phone Full authorized reinstall and readiness revalidation
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_candidate_blocked_runtime`.
+- Thread status: `inactive_completed_blocked_runtime`.
 - Task branch:
   `qa/task-057r-phone-full-authorized-reinstall-readiness-revalidation`.
+- Default branch: `main`.
+- Exact base: `origin/main@b38184ca53c34e8bc9847966e1b9ecec429bf982`.
+- Verified implementation commit:
+  `d9d51383e1c0ef132108f35cc31635229f363280`, pushed to the task branch and
+  fast-forwarded to remote `main`.
 - Production safety: repository work `PROD_SAFE`; the exact target-only
   uninstall/install was `PROD_CONDITIONAL` after owner authorization dated
   2026-08-16 and Security plan review.
@@ -77,6 +82,9 @@ cleanup/rollback. Security/Prod-safety must then issue `GO_RUNTIME` only after
 all seven rows are freshly revalidated. Any selector, device, artifact,
 passport or expiry drift requires rows 01 through 04 to be revalidated too.
 TASK-058 remains forbidden and blocked until every item passes.
+
+This task/thread is inactive after repository closure. It must not execute
+TASK-058 or another independent task.
 
 ## Completed TASK-057 — Phone Full runtime authority and fixture readiness gate
 

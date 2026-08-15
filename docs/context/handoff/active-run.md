@@ -7,8 +7,10 @@
 - Task branch: `qa/task-058-phone-first-launch-pre-auth-coverage`.
 - Default branch: `main`.
 - Exact base: `origin/main@809fd11fc47bde30871bc414d057128aef3918b2`.
-- Verified local implementation commit: `d877eaf6386e28b1c9d0c1603d85a3f247f47444`;
-  task/default push alignment remains pending the final review and drift gate.
+- Verified implementation commit: `d877eaf6386e28b1c9d0c1603d85a3f247f47444`.
+- Reviewed closure commit: `233277a233ae206c491593c6696ec375e3b380c1`,
+  pushed to the task branch and fast-forwarded to remote `main` after a fresh
+  default/drift gate.
 - Production safety: repository framing is `PROD_SAFE`; the exact target-only
   uninstall, one ordinary install and bounded pre-auth runtime are separate
   `PROD_CONDITIONAL` phases.

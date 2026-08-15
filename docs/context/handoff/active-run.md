@@ -1,10 +1,10 @@
 # Active run
 
-## Active TASK-056 — Phone-only end-to-end QA roadmap reprioritization
+## Completed TASK-056 — Phone-only end-to-end QA roadmap reprioritization
 
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Thread title: `TASK-056 — Phone-only end-to-end QA roadmap reprioritization`.
-- Thread status: `verified_ready_for_integration_docs_only`.
+- Thread status: `inactive_completed_docs_only`.
 - Fresh independent task: `yes`.
 - Task branch: `qa/task-056-phone-only-e2e-roadmap-reprioritization`.
 - Default branch: `main`.
@@ -85,7 +85,7 @@ failure is a tooling/process blocker, and target follow/publication is forbidden
 
 ### Multi-agent status
 
-- Orchestrator: active through integration.
+- Orchestrator: completed implementation, verification and integration.
 - Planner: completed the phone-gap/dependency/authority audit and selected
   TASK-056.
 - Security/Prod-safety plan review: `GO` for docs-only work and `NO-GO` for
@@ -100,14 +100,18 @@ failure is a tooling/process blocker, and target follow/publication is forbidden
 
 ### Verification and lifecycle
 
-Pre-integration checks passed: Git status and staged diff checks; epic index;
+Pre-integration and closure checks passed: Git status and staged diff checks; epic index;
 both hygiene modes; public repository safety `387/0`; docs/link sanity `184/0`;
 and the crosswalk check `43` rows (`26` TASK-045 plus `17` TASK-045A), zero
 duplicates or invalid owner-task values. An unfiltered suite was not required
 or run and the forbidden TASK-045 source was not read/restored. TASK-056 is
-ready to integrate after a final remote-drift check. It closes after task-branch
-push and fast-forward of actual remote default `main`; no second independent
-runtime task runs in this thread.
+integrated after a successful final remote-drift retry/check. Implementation
+commit `1cb85c53f5b191c739bbd4128e8097688a1b3c06` was pushed to
+`qa/task-056-phone-only-e2e-roadmap-reprioritization` and fast-forwarded from
+`e00d7763bcbe0fde9646fa46772af928fd11581a` to actual remote default `main`.
+This closure record is pushed to both branches before handoff. No second
+independent runtime task runs in this thread and no continuation is created
+until the owner satisfies TASK-057 authority actions.
 
 ## Superseded post-TASK-048 blocked selection record
 

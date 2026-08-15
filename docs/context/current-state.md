@@ -39,6 +39,77 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Active TASK-045A corrective continuation — 2026-08-15
+
+TASK-045A is active in a fresh independent thread on
+`qa/task-045a-phone-full-visual-transition-coverage`, based exactly on the
+completed TASK-045 lifecycle closure
+`origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f`. Mode is
+`BOUNDED_AUTONOMOUS`. Repository work is `PROD_SAFE`; physical phone work is
+`PROD_CONDITIONAL` and currently `BLOCK_RUNTIME` under the initial
+Security/Prod-safety decision.
+
+Phone Full is being modeled as its own visual screen/state/navigation graph.
+Television Full screen aliases, layouts, states, transitions and evidence are
+ineligible for Phone Full coverage. Two stable sanitized device snapshots show
+one approved mapped phone and no TV; the phone cannot provide TV or paired
+evidence. TASK-046 has not started.
+
+The active session provenance is `unknown_not_verified`; no task-authoritative
+synthetic-session passport has been validated. Therefore session-dependent
+product screens and edges remain `blocked_by_external_state`. The historical
+installed-newer Phone Full build is not proof of canonical compatibility or
+freshness; both remain `unknown_not_verified` without a successful read-only
+comparison. No real login, logout, clear-data, uninstall, downgrade override or
+account/session mutation is authorized.
+
+Existing TASK-045 local artifacts are quarantined audit input only: 20 PNG, 19
+UI-tree XML and 19 bounded logs. They all have `audit_only=true` and
+`counts_as_product_coverage=false`; `cp001` is incomplete because XML and log
+modalities are absent. No TASK-045A product visual coverage is confirmed at
+this checkpoint.
+
+The task-branch candidate is now repository-verified. The static authority
+contains 17 terminal branch rows, 17 screen rows and 17 transition rows, with
+zero `covered` rows and `full_visual_transition_coverage=false`. Focused
+TASK-045A plus TASK-045 checks pass 115 tests with 1 skipped; the full suite
+passes 1259 tests with 4 skipped. Report validation, the 30-record/7-
+authoritative report manifest, epic validation, compile, both hygiene modes,
+public-safety, docs consistency and diff checks pass. QA Reviewer A, QA
+Reviewer B, Security/Prod-safety and Docs/Scribe have no open R0/R1; Security
+keeps `BLOCK_RUNTIME`. Task-branch commit/default integration are still pending
+at this checkpoint, so the lifecycle is not yet inactive.
+
+The only device cleanup action in TASK-045A was the separately authorized Home
+restore on the single approved phone alias. No app launch occurred. Target-app
+force-stop was not attempted without a safe package oracle and is not claimed
+in the tracked cleanup ledger; A017 therefore remains blocked rather than PASS.
+
+The global terminal closure enum for each approved Phone Full branch is
+`covered`, `blocked_by_boundary`, `blocked_by_tooling`,
+`blocked_by_external_state` or `not_run_out_of_scope`, with public-safe evidence
+ids. Approved reachable branches cannot be classified out of scope. Fresh
+covered nodes/edges require a visually inspected screenshot, UI tree and
+bounded target-app log/marker captured in the TASK-045A run window; first
+failures, recoveries, recurrences, overlays, long-list/menu states and
+screenshot/XML mismatches remain separate first-class records.
+
+Two process anomalies are confirmed before runtime: the clean-worktree focused
+TASK-045 baseline returned 33 passes and 17 failures because ignored runtime
+source was absent and path checks ran in the wrong order, not because of a
+product result; a read-only build comparison helper was then blocked by host
+script execution policy, with no bypass, leaving build freshness unknown. A
+category-only package-binding precheck was also abandoned and not repeated
+after unexpectedly excessive/truncated sanitized output; it produced no
+accepted evidence and performed no mutation or product runtime action.
+
+All runtime budgets are zero while the Security gate is blocked. The later
+bounded kill switch remains target-app force-stop, Home, preserved session and
+no external app, payment/session, account, network or paired state. The owner
+requires exactly one fresh continuation thread only after verified TASK-045A
+default integration/alignment; after successful creation the completed thread
+must not send follow-up messages or poll it.
+
 ## Bootstrap state
 
 - GitHub remote was empty during TASK-000 bootstrap; `main` is initialized as the first default branch.

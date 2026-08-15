@@ -1,0 +1,6 @@
+boundary_id,category,status,external_action_performed,payment_or_session_started,account_mutated,network_changed,qr_traversed,evidence_status,evidence_count,evidence_ids,reason_code
+boundary-payment-session,payment_or_session,blocked_by_boundary,false,false,false,false,false,confirmed,1,static-boundary-guard,payment_or_session_not_started
+boundary-account-profile,account_or_profile,blocked_by_boundary,false,false,false,false,false,confirmed,1,static-boundary-guard,account_profile_not_mutated
+boundary-qr-external,qr_browser_external,blocked_by_boundary,false,false,false,false,false,confirmed,1,static-boundary-guard,qr_external_not_traversed
+boundary-network-lock,network_or_lock,not_run_out_of_scope,false,false,false,false,false,confirmed,1,static-boundary-guard,network_lock_actions_not_authorized
+boundary-paired-tv,paired_tv,blocked_by_external_state,false,false,false,false,false,confirmed,1,static-missing-tv,missing_tv_no_paired_evidence

@@ -1,14 +1,14 @@
 {
-  "authoritative_record_count": 6,
+  "authoritative_record_count": 7,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-08-15T00:03:23Z",
+  "generated_at_utc": "2026-08-15T07:35:28Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
   "mode": "BOUNDED_AUTONOMOUS",
   "path_source": "git_tracked",
   "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
-  "record_count": 29,
+  "record_count": 30,
   "records": [
     {
       "artifacts": [
@@ -2003,6 +2003,57 @@
           "status": "pass"
         }
       ]
+    },
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.summary.json",
+          "sha256": "98f7768a0b90867173e89430167a26d636de08d7fa196bfe7cdf967504422ca0"
+        }
+      ],
+      "authoritative": true,
+      "authority_status": "authoritative",
+      "blocked_reasons": [],
+      "build_ref": {
+        "alias": "task045a-phone-full-lane"
+      },
+      "coverage_status": "blocked",
+      "evidence_status": "confirmed",
+      "execution_status": "blocked",
+      "generated_at_utc": "2026-08-15T01:00:00Z",
+      "production_safety_classification": "PROD_SAFE_STATIC_BLOCKED_BASELINE",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.summary.json",
+        "source_sha256": "98f7768a0b90867173e89430167a26d636de08d7fa196bfe7cdf967504422ca0"
+      },
+      "record_id": "TASK-045A__task045a-phone-full-lane__phone-full-visual-transition-lane__task045a-static-blocked-baseline__task045a_phone_visual_transition_coverage.summary",
+      "release_effect": "blocks_release",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "v2_valid"
+      },
+      "risks": [],
+      "run_id": "task045a-static-blocked-baseline",
+      "schema_validation_status": "v2_valid",
+      "schema_version": "evidence-report-envelope-v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "phone-full-visual-transition-lane",
+      "task_id": "TASK-045A",
+      "unknowns": [],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.summary.json",
+          "sha256": "98f7768a0b90867173e89430167a26d636de08d7fa196bfe7cdf967504422ca0",
+          "status": "pass"
+        }
+      ]
     }
   ],
   "reports_root": "docs/qa/reports",
@@ -2010,7 +2061,7 @@
   "task_id": "TASK-038",
   "tool_name": "reporting.report_manifest_generator",
   "unknown_schema_record_count": 0,
-  "v2_record_count": 6,
+  "v2_record_count": 7,
   "verification": [
     {
       "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",

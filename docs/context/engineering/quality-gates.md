@@ -957,6 +957,94 @@ branch, fast-forwarded to remote default and aligned at
 `origin/main@405300a0ce15da75d62ffa822c68d219cf6ea31d`; TASK-045 is
 `inactive_completed`. TASK-046 has not started.
 
+## TASK-045A Phone Full visual transition gates
+
+TASK-045A repository work is `PROD_SAFE`; physical phone work is
+`PROD_CONDITIONAL` and remains `BLOCK_RUNTIME` while
+`active_session_provenance=unknown_not_verified`. The historical installed-newer
+lane is not canonical-build proof, and Television Full evidence cannot satisfy
+the distinct Phone Full graph.
+
+The TASK-045A bundle must fail closed unless:
+
+- the exact base is the completed TASK-045 lifecycle closure
+  `origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f` and work remains on
+  `qa/task-045a-phone-full-visual-transition-coverage`;
+- all 20 prior PNG, 19 XML and 19 log artifacts remain quarantined
+  `audit_only`, cannot count as product coverage, and `cp001` remains
+  incomplete rather than inferred complete;
+- session-dependent nodes and edges remain `blocked_by_external_state` until a
+  task-authoritative synthetic-session passport validates;
+- Phone Full aliases, states, layouts and transitions remain separate from all
+  Television Full/paired evidence;
+- every approved reachable branch is terminally one of `covered`,
+  `blocked_by_boundary`, `blocked_by_tooling`, `blocked_by_external_state` or
+  `not_run_out_of_scope`, with approved reachable branches forbidden from the
+  out-of-scope class;
+- each covered checkpoint has its own fresh run-window visually inspected
+  screenshot, UI tree and bounded target-app log/marker;
+- initial/later long-list segments, expanded/collapsed menus, overlays,
+  recurrences, first failures/recoveries, screenshot/XML mismatches and
+  anomalies remain explicit graph/ledger records;
+- payment or paid/active session start, account/profile/logout mutation,
+  QR/browser/external traversal, network shaping, unsafe lock/unlock, unknown
+  targets, APK modification/decompile/bypass, uninstall, clear-data and
+  downgrade override remain unexecuted;
+- runtime budgets remain zero under `BLOCK_RUNTIME`; any later GO-bounded run
+  has explicit attempt budgets and the kill switch target-app force-stop,
+  Home, preserved session and no external app/payment/session/account/network/
+  paired state;
+- raw serial/IP/path/hash/account/package/QR/screenshot/XML/log values remain
+  ignored/local-only and tracked output is category-only;
+- the 33-pass/17-fail clean-worktree baseline anomaly, host script-policy build
+  comparison block and abandoned excessive/truncated package-binding precheck
+  remain process/tooling evidence only, never product evidence;
+- QA Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe leave no
+  R0/R1 finding open before integration.
+
+Exact planned repository checks:
+
+```text
+git status --short --branch
+git diff --check
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-only
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --publish-blocked-baseline
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-report
+python -m pytest -q tests/test_task045a_phone_visual_transition_coverage.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The following conditional ingest commands are planned but remain `not_run` and
+blocked until Security returns GO and the approved lane, build, synthetic
+session passport, evidence root and bounded budgets validate:
+
+```text
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --preflight --adapter-input .qa_local/evidence/task-045a/runtime-adapter.local.json
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --execute --adapter-input .qa_local/evidence/task-045a/runtime-adapter.local.json --session-passport .qa_local/evidence/task-045a/synthetic-session-passport.local.json --allow-prod-conditional-ingest
+```
+
+Passing repository/static gates does not prove Phone Full product visual or
+transition coverage. At the current checkpoint fresh product coverage is zero,
+runtime is blocked/not-run and TASK-046 is not authorized to start.
+
+Final task-branch candidate result: all repository gates above pass. The
+focused TASK-045A plus TASK-045 set is 115 passed/1 skipped; full pytest is 1259
+passed/4 skipped. The regenerated manifest validates with 30 records and 7
+authoritative records. QA Reviewer A, QA Reviewer B, Security/Prod-safety and
+Docs/Scribe returned GO with no open R0/R1 after remediation of identifier,
+canonical-path, cleanup, graph/evidence, attempt/recovery, branch-specific,
+freshness, CSV-enum and report-parity false-pass routes. Runtime remains
+`BLOCK_RUNTIME`, product coverage remains zero and default integration is still
+required before lifecycle closure.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

@@ -1,0 +1,2 @@
+cleanup_id,status,target_app_force_stopped,home_restored,existing_session_preserved,external_app_opened,payment_or_session_started,account_mutated,network_changed,paired_state_observed,evidence_status,evidence_count,evidence_ids,reason_code
+cleanup-static-blocked,blocked_by_external_state,false,false,true,false,false,false,false,false,confirmed,2,static-security-block-runtime;static-cleanup-not-run,runtime_blocked_cleanup_not_run

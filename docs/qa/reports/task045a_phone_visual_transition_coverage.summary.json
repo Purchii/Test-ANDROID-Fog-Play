@@ -1,0 +1,201 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.scenario-ledger.csv",
+      "sha256": "05bdbae69d621189b30897d7680a9a9e800ea2bb7894bedcfa1f6ea7692105f3"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "screen_state_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.screen-state-ledger.csv",
+      "sha256": "832bac89aecbbb2901436d9d6d7a98878ad0c1c235b6450e0dc77c9efecc69a5"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "transition_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.transition-ledger.csv",
+      "sha256": "a3f63e7d1d4d612cde1807be4135b78b68d47997b4639298481dce3c7057dd5a"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "branch_closure_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.branch-closure-ledger.csv",
+      "sha256": "82a70cd27b80d60dfb8067bde1504665c580f9b74b26694f47c99ac31dab7e05"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "anomaly_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.anomaly-ledger.csv",
+      "sha256": "b00b1ccdc1bfea44dedb9eb24b1a87b83bba277fa40c942143aaab7b12e368a1"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "boundary_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.boundary-ledger.csv",
+      "sha256": "7fb1166f7d1a7cc85bbf6bfda54b48b3c3d738963bfbd3f10c80fd360af21cd5"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup_ledger",
+      "reference": "docs/qa/reports/task045a_phone_visual_transition_coverage.cleanup-ledger.csv",
+      "sha256": "ce843b06a28481495b9ddca91d4e4b07ccfb510ce7aa7a3b542b76be32345d8a"
+    }
+  ],
+  "blocked_reasons": [
+    "account_profile_not_mutated",
+    "active_session_provenance_unknown",
+    "missing_tv_no_paired_evidence",
+    "network_lock_actions_not_authorized",
+    "payment_or_session_not_started",
+    "qr_external_not_traversed",
+    "quarantined_audit_cp001_incomplete",
+    "runtime_blocked_cleanup_not_run",
+    "security_runtime_gate_blocked"
+  ],
+  "build_ref": {
+    "alias": "task045a-phone-full-lane"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-08-15T01:00:00Z",
+  "payload": {
+    "active_session_provenance": "unknown_not_verified",
+    "boundary_guards": {
+      "account_mutation_performed": false,
+      "network_changed": false,
+      "paid_session_started": false,
+      "qr_or_browser_traversal_performed": false,
+      "real_payment_performed": false
+    },
+    "cleanup_guards": {
+      "account_mutated": false,
+      "existing_session_preserved": true,
+      "external_app_opened": false,
+      "home_restored": false,
+      "network_changed": false,
+      "paired_state_observed": false,
+      "payment_or_session_started": false,
+      "target_app_force_stopped": false
+    },
+    "counts_as_paired_evidence": false,
+    "covered_counts": {
+      "branches": 0,
+      "screens": 0,
+      "transitions": 0
+    },
+    "evidence_registry": [
+      "audit-task045-cp001-incomplete",
+      "audit-task045-quarantine-category-summary",
+      "static-boundary-guard",
+      "static-cleanup-not-run",
+      "static-missing-tv",
+      "static-process-anomaly-task045-suite",
+      "static-security-block-runtime",
+      "static-session-provenance-unknown"
+    ],
+    "full_visual_transition_coverage": false,
+    "graph_ledger_terminal": true,
+    "prior_audit": {
+      "audit_only": true,
+      "bounded_log_count": 19,
+      "counts_as_product_coverage": false,
+      "incomplete_checkpoint_alias": "prior-audit-cp001",
+      "png_count": 20,
+      "session_provenance": "unknown_not_verified",
+      "source_task": "TASK-045",
+      "xml_count": 19
+    },
+    "row_counts": {
+      "anomaly_ledger": 1,
+      "boundary_ledger": 5,
+      "branch_closure_ledger": 17,
+      "cleanup_ledger": 1,
+      "scenario_ledger": 17,
+      "screen_state_ledger": 17,
+      "transition_ledger": 17
+    },
+    "runtime_gate": "BLOCK_RUNTIME",
+    "session_passport_evidence": "missing",
+    "tv_status": "BLOCKED_MISSING_TV"
+  },
+  "production_safety_classification": "PROD_SAFE_STATIC_BLOCKED_BASELINE",
+  "provenance": {
+    "adapter_input_published": false,
+    "adapter_schema": "docs/qa/schemas/task045a-phone-visual-transition-adapter-v1.schema.json",
+    "adapter_schema_sha256": "9f6023c3ab96e7f38781719534e6cf3253ad56c136def4bddfac83735ea06169",
+    "prior_task045_raw_evidence_published": false,
+    "scenario_contract": "docs/qa/epics/scenarios/task045a_phone_visual_transition_branches.csv",
+    "scenario_contract_version": "task045a-phone-visual-transition-scenarios-v1",
+    "session_passport_published": false
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "go_no_open_r0_r1",
+    "qa_reviewer_a": "go_no_open_r0_r1",
+    "qa_reviewer_b": "go_no_open_r0_r1",
+    "security_prod_safety_reviewer": "go_static_closure_runtime_blocked"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK045A-RISK-001",
+      "summary": "Quarantined TASK-045 evidence is audit-only and cannot establish product coverage."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK045A-RISK-002",
+      "summary": "Unknown active-session provenance blocks session-dependent Phone Full nodes and edges."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK045A-RISK-003",
+      "summary": "Missing TV keeps paired-only coverage blocked and prevents paired evidence."
+    }
+  ],
+  "run_id": "task045a-static-blocked-baseline",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-full-visual-transition-lane",
+  "task_id": "TASK-045A",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045A-UNKNOWN-SESSION",
+      "reason_code": "active_session_provenance_unknown"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK045A-UNKNOWN-TV",
+      "reason_code": "missing_tv_no_paired_evidence"
+    }
+  ],
+  "verification": [
+    {
+      "check": "scenario_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 17,
+      "status": "pass"
+    },
+    {
+      "check": "screen_state_ledger_validation",
+      "evidence_status": "confirmed",
+      "result_count": 17,
+      "status": "pass"
+    },
+    {
+      "check": "transition_ledger_validation",
+      "evidence_status": "confirmed",
+      "result_count": 17,
+      "status": "pass"
+    },
+    {
+      "check": "branch_closure_validation",
+      "evidence_status": "confirmed",
+      "result_count": 17,
+      "status": "pass"
+    }
+  ]
+}

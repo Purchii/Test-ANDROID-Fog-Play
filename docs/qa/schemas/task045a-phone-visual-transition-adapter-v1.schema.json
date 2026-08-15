@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/qa/schemas/task045a-phone-visual-transition-adapter-v1.schema.json",
+  "title": "TASK-045A Phone Full visual transition adapter",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "scenario_contract_version",
+    "run_id",
+    "generated_at_utc",
+    "build_ref",
+    "lane_preflight",
+    "prior_audit",
+    "scenarios",
+    "screen_states",
+    "transitions",
+    "branch_closure",
+    "anomalies",
+    "boundaries",
+    "cleanup",
+    "evidence_registry"
+  ],
+  "properties": {
+    "schema_version": {"const": "task045a-phone-visual-transition-adapter-v1"},
+    "task_id": {"const": "TASK-045A"},
+    "scenario_contract_version": {"const": "task045a-phone-visual-transition-scenarios-v1"},
+    "run_id": {"$ref": "#/$defs/safeId"},
+    "generated_at_utc": {"$ref": "#/$defs/timestamp"},
+    "build_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alias", "apk_family", "compatibility_status", "raw_identity_published"],
+      "properties": {
+        "alias": {"$ref": "#/$defs/safeId"},
+        "apk_family": {"const": "phone-full"},
+        "compatibility_status": {"enum": ["unknown_not_verified", "confirmed_for_task045a"]},
+        "raw_identity_published": {"const": false}
+      }
+    },
+    "lane_preflight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_gate",
+        "phone_alias",
+        "phone_status",
+        "tv_status",
+        "active_session_provenance",
+        "session_passport_status",
+        "ignored_evidence_storage_ready",
+        "reviewer_gate"
+      ],
+      "properties": {
+        "runtime_gate": {"enum": ["BLOCK_RUNTIME", "GO"]},
+        "phone_alias": {"$ref": "#/$defs/safeId"},
+        "phone_status": {"enum": ["READY", "BLOCKED"]},
+        "tv_status": {"enum": ["READY", "BLOCKED_MISSING_TV"]},
+        "active_session_provenance": {"enum": ["unknown_not_verified", "approved_synthetic_fixture"]},
+        "session_passport_status": {"enum": ["missing", "proven"]},
+        "ignored_evidence_storage_ready": {"type": "boolean"},
+        "reviewer_gate": {"type": "boolean"}
+      }
+    },
+    "prior_audit": {"$ref": "#/$defs/priorAudit"},
+    "scenarios": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/scenario"}
+    },
+    "screen_states": {
+      "type": "array",
+      "minItems": 17,
+      "items": {"$ref": "#/$defs/screenState"}
+    },
+    "transitions": {
+      "type": "array",
+      "minItems": 17,
+      "items": {"$ref": "#/$defs/transition"}
+    },
+    "branch_closure": {
+      "type": "array",
+      "minItems": 17,
+      "items": {"$ref": "#/$defs/branchClosure"}
+    },
+    "anomalies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/anomaly"}
+    },
+    "boundaries": {
+      "type": "array",
+      "minItems": 4,
+      "items": {"$ref": "#/$defs/boundary"}
+    },
+    "cleanup": {"$ref": "#/$defs/cleanup"},
+    "evidence_registry": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/safeId"}
+    }
+  },
+  "$defs": {
+    "safeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "status": {
+      "enum": ["covered", "blocked_by_boundary", "blocked_by_tooling", "blocked_by_external_state", "not_run_out_of_scope"]
+    },
+    "evidenceStatus": {"enum": ["confirmed", "likely", "hypothesis", "unknown"]},
+    "sessionScope": {"enum": ["session_independent", "session_dependent", "paired_only"]},
+    "modality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "captured_at_utc"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/safeId"},
+        "captured_at_utc": {"$ref": "#/$defs/timestamp"},
+        "visual_inspection": {"type": "boolean"}
+      }
+    },
+    "nullableModality": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["evidence_id", "captured_at_utc"],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/safeId"},
+        "captured_at_utc": {"$ref": "#/$defs/timestamp"},
+        "visual_inspection": {"type": "boolean"}
+      }
+    },
+    "modalities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenshot", "ui_tree", "runner_log"],
+      "properties": {
+        "screenshot": {"$ref": "#/$defs/nullableModality"},
+        "ui_tree": {"$ref": "#/$defs/nullableModality"},
+        "runner_log": {"$ref": "#/$defs/nullableModality"}
+      }
+    },
+    "priorAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_task",
+        "png_count",
+        "xml_count",
+        "bounded_log_count",
+        "incomplete_checkpoint_alias",
+        "audit_only",
+        "counts_as_product_coverage",
+        "session_provenance"
+      ],
+      "properties": {
+        "source_task": {"const": "TASK-045"},
+        "png_count": {"const": 20},
+        "xml_count": {"const": 19},
+        "bounded_log_count": {"const": 19},
+        "incomplete_checkpoint_alias": {"const": "prior-audit-cp001"},
+        "audit_only": {"const": true},
+        "counts_as_product_coverage": {"const": false},
+        "session_provenance": {"const": "unknown_not_verified"}
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario_id", "status", "evidence_status", "evidence_ids", "reason_code"],
+      "properties": {
+        "scenario_id": {"type": "string", "pattern": "^A0(?:0[1-9]|1[0-7])$"},
+        "status": {"$ref": "#/$defs/status"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "screenState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id", "scenario_id", "screen_alias", "state_alias", "state_category",
+        "session_scope", "surface_side", "observed", "evidence_origin", "audit_only",
+        "counts_as_product_coverage", "status", "evidence_status", "evidence_ids",
+        "modalities", "recurrence_status", "prior_node_id", "long_list_segment",
+        "menu_state", "overlay_category", "xml_visual_match", "reason_code"
+      ],
+      "properties": {
+        "node_id": {"$ref": "#/$defs/safeId"},
+        "scenario_id": {"type": "string", "pattern": "^A0(?:0[1-9]|1[0-7])$"},
+        "screen_alias": {"$ref": "#/$defs/safeId"},
+        "state_alias": {"$ref": "#/$defs/safeId"},
+        "state_category": {"$ref": "#/$defs/safeId"},
+        "session_scope": {"$ref": "#/$defs/sessionScope"},
+        "surface_side": {"enum": ["phone", "audit", "external_blocker"]},
+        "observed": {"type": "boolean"},
+        "evidence_origin": {"enum": ["fresh_task045a", "quarantined_task045_audit", "static_blocker"]},
+        "audit_only": {"type": "boolean"},
+        "counts_as_product_coverage": {"type": "boolean"},
+        "status": {"$ref": "#/$defs/status"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "modalities": {"$ref": "#/$defs/modalities"},
+        "recurrence_status": {"enum": ["first_observation", "recurrence", "not_observed"]},
+        "prior_node_id": {"$ref": "#/$defs/safeId"},
+        "long_list_segment": {"enum": ["none", "initial", "later"]},
+        "menu_state": {"enum": ["none", "expanded", "collapsed"]},
+        "overlay_category": {"enum": ["none", "app_overlay", "external_system_overlay", "loading_or_error_overlay", "unknown"]},
+        "xml_visual_match": {"enum": ["confirmed_match", "confirmed_mismatch", "not_compared"]},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transition_id", "scenario_id", "from_node_id", "to_node_id", "action_category",
+        "session_scope", "edge_scope", "requires_tv", "attempt_index", "recovery_attempt",
+        "recovery_of_transition_id", "status", "evidence_status", "evidence_ids",
+        "first_failure_retained", "boundary_id", "anomaly_id", "reason_code"
+      ],
+      "properties": {
+        "transition_id": {"$ref": "#/$defs/safeId"},
+        "scenario_id": {"type": "string", "pattern": "^A0(?:0[1-9]|1[0-7])$"},
+        "from_node_id": {"$ref": "#/$defs/safeId"},
+        "to_node_id": {"$ref": "#/$defs/safeId"},
+        "action_category": {"$ref": "#/$defs/safeId"},
+        "session_scope": {"$ref": "#/$defs/sessionScope"},
+        "edge_scope": {"enum": ["phone_independent", "audit", "external_blocker"]},
+        "requires_tv": {"type": "boolean"},
+        "attempt_index": {"type": "integer", "minimum": 0, "maximum": 2},
+        "recovery_attempt": {"type": "boolean"},
+        "recovery_of_transition_id": {"$ref": "#/$defs/safeId"},
+        "status": {"$ref": "#/$defs/status"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "first_failure_retained": {"type": "boolean"},
+        "boundary_id": {"$ref": "#/$defs/safeId"},
+        "anomaly_id": {"$ref": "#/$defs/safeId"},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "branchClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branch_id", "scenario_id", "coverage_scope", "approved_scope", "declared_reachable",
+        "status", "screen_node_ids", "transition_ids", "evidence_status",
+        "evidence_ids", "reason_code"
+      ],
+      "properties": {
+        "branch_id": {"$ref": "#/$defs/safeId"},
+        "scenario_id": {"type": "string", "pattern": "^A0(?:0[1-9]|1[0-7])$"},
+        "coverage_scope": {"enum": ["phone_independent", "audit", "external_blocker"]},
+        "approved_scope": {"type": "boolean"},
+        "declared_reachable": {"type": "boolean"},
+        "status": {"$ref": "#/$defs/status"},
+        "screen_node_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/safeId"}},
+        "transition_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/safeId"}},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "anomaly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anomaly_id", "classification", "trigger_category", "expected_result_category",
+        "observed_result_category", "public_safe_screen_alias", "evidence_status",
+        "cause_evidence_status", "cause_category", "test_design_implication",
+        "first_failure_retained", "evidence_ids", "reason_code"
+      ],
+      "properties": {
+        "anomaly_id": {"$ref": "#/$defs/safeId"},
+        "classification": {"enum": ["process_anomaly", "tooling_defect", "observed_fail", "blocked_by_fixture", "blocked_by_external_state"]},
+        "trigger_category": {"$ref": "#/$defs/safeId"},
+        "expected_result_category": {"$ref": "#/$defs/safeId"},
+        "observed_result_category": {"$ref": "#/$defs/safeId"},
+        "public_safe_screen_alias": {"$ref": "#/$defs/safeId"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "cause_evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "cause_category": {"$ref": "#/$defs/safeId"},
+        "test_design_implication": {"$ref": "#/$defs/safeId"},
+        "first_failure_retained": {"type": "boolean"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "boundary_id", "category", "status", "external_action_performed",
+        "payment_or_session_started", "account_mutated", "network_changed",
+        "qr_traversed", "evidence_status", "evidence_ids", "reason_code"
+      ],
+      "properties": {
+        "boundary_id": {"$ref": "#/$defs/safeId"},
+        "category": {"enum": ["payment_or_session", "account_or_profile", "qr_browser_external", "network_or_lock", "paired_tv"]},
+        "status": {"$ref": "#/$defs/status"},
+        "external_action_performed": {"type": "boolean"},
+        "payment_or_session_started": {"type": "boolean"},
+        "account_mutated": {"type": "boolean"},
+        "network_changed": {"type": "boolean"},
+        "qr_traversed": {"type": "boolean"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    },
+    "cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cleanup_id", "status", "target_app_force_stopped", "home_restored",
+        "existing_session_preserved", "external_app_opened", "payment_or_session_started",
+        "account_mutated", "network_changed", "paired_state_observed",
+        "evidence_status", "evidence_ids", "reason_code"
+      ],
+      "properties": {
+        "cleanup_id": {"$ref": "#/$defs/safeId"},
+        "status": {"$ref": "#/$defs/status"},
+        "target_app_force_stopped": {"type": "boolean"},
+        "home_restored": {"type": "boolean"},
+        "existing_session_preserved": {"type": "boolean"},
+        "external_app_opened": {"type": "boolean"},
+        "payment_or_session_started": {"type": "boolean"},
+        "account_mutated": {"type": "boolean"},
+        "network_changed": {"type": "boolean"},
+        "paired_state_observed": {"type": "boolean"},
+        "evidence_status": {"$ref": "#/$defs/evidenceStatus"},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/safeId"}},
+        "reason_code": {"$ref": "#/$defs/safeId"}
+      }
+    }
+  }
+}

@@ -2,6 +2,16 @@
 
 This directory contains public-safe local QA tooling for the Android TV QA repository.
 
+## TASK-045A Phone visual transition coverage
+
+The TASK-045A Phone visual transition runner is a static-only typed-adapter
+validator and public-safe bundle publisher. It never
+controls an Android device or application. Historical TASK-045 media remains
+ignored and audit-only; fresh session-dependent coverage is rejected unless a
+task-authoritative synthetic-session passport is supplied to the guarded
+ingest mode. The repository baseline is intentionally blocked while Security
+holds runtime at `BLOCK_RUNTIME`.
+
 ## Runtime Smoke Bootstrap
 
 `automation/runtime_smoke_bootstrap/` contains the TASK-001 blocked-report generator. It is a local dry-run utility and does not interact with an Android device, app binary, network service or production environment.

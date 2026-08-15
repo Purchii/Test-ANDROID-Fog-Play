@@ -6,6 +6,8 @@ This file records what was actually verified. Do not claim runtime checks passed
 
 | Date | Task | Branch | Checks run | Result | Notes |
 |---|---|---|---|---|---|
+| 2026-08-15 | TASK-045A verified blocked-runtime task-branch candidate | qa/task-045a-phone-full-visual-transition-coverage | runner validate-only/publish-blocked-baseline/validate-report; 115 focused passed with 1 skipped; 1259 full-suite passed with 4 skipped; compile; report manifest generation/validation; epic; both hygiene modes; public-safety; docs consistency; diff checks; QA-A, QA-B, Security and Docs reviews | repository candidate PASS with no open R0/R1; runtime `BLOCK_RUNTIME`; 17/17 terminal branches, 17 screens and 17 transitions; 0 covered; manifest 30 records/7 authoritative; commit/integration pending | Adversarial remediation closes raw alias/hash, symlink/reparse, cleanup, graph/evidence, branch semantics, current-UTC freshness and report-parity false-pass routes. Prior 20/19/19 evidence remains audit-only; TV absent; Home restored, no app launch, force-stop not claimed without safe oracle; TASK-046 not started. |
+| 2026-08-15 | TASK-045A initial source, lane and evidence-eligibility preflight | qa/task-045a-phone-full-visual-transition-coverage | exact `origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f` branch baseline; source-of-truth/task contract review; two stable sanitized device snapshots; category-only audit of prior TASK-045 modalities; clean-worktree focused TASK-045 baseline; read-only build/package precheck attempts; initial Security/Prod-safety review | active with `BLOCK_RUNTIME`; `active_session_provenance=unknown_not_verified`; zero fresh product coverage; runtime `not_run`; one approved mapped phone and no TV; historical 20 PNG/19 XML/19 logs audit-only, cp001 incomplete | Baseline suite produced 33 passes/17 failures from absent ignored runtime source and path-check ordering, not product behavior. Build comparison was blocked by host script policy with no bypass, so freshness/canonical compatibility remain unknown. A category-only package-binding precheck was abandoned and not repeated after excessive/truncated sanitized output; no mutation/runtime occurred. TASK-046 not started. |
 | 2026-08-15 | TASK-045 phone-independent runtime and lifecycle closure | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | exact branch/base and sanitized two-snapshot lane preflight; bounded independent phone inventory; all TASK-045 runner/report modes; 50 focused tests; 1194 full-suite tests with 3 skipped; compile; report-manifest, epic, docs, both hygiene modes, public-safety and diff checks; final QA-A, QA-B, Security and Docs reviews; task/default push and alignment | inactive_completed at `origin/main@405300a0ce15da75d62ffa822c68d219cf6ea31d`; all static gates PASS; v2 manifest 29 records/6 authoritative; 26 terminal phone-ledger rows (23 approved-scope, 21 approved plus reachable/discovered), 2 covered and 10 session-dependent blocked_by_external_state; 16 anomalies (11 process/tooling, 5 runtime); QA-045-006/009 blocked_by_oracle; 19 paired rows blocked_by_device; partial_blocked/blocks_release | QA-A, QA-B and Security final GO with no open R0/R1; Docs/Scribe reconciled source-of-truth. Only `phone-realme-001` was selected for independent phone evidence and remains non-equivalent to primary/fallback lanes. Canonical install downgrade rejection, unknown canonical compatibility, unverified session provenance, first failures/recoveries and final cleanup remain explicit. No paired or release PASS is claimed. TASK-046 has not started. Raw identities, machine paths, build/package/hash/account data, dynamic titles/prices/counts and runtime media remain local-only. |
 | 2026-08-15 | TASK-044 hardened report and device-availability closure | qa/task-044-tpv13-reference-lane-oracle-closure | hardened adapter `--preflight`; guarded `--execute --allow-prod-conditional-ingest`; fixed bundle `--validate-report`; no device commands during ingest; exact report/ledger reconciliation; 104 focused pytest; 1144 full pytest passed with 3 skipped; manifest validation; both hygiene modes; docs consistency; public-safety, compile and diff checks; final Builder, QA-A, QA-B, Security and Docs reviews; task/default push and alignment | all repository gates passed and all final reviewers returned GO with no open R0/R1; task commit `bcf1f375eba65f32f65c85804b4cd0831a294e23` published on task branch and remote default; final authority is 32 terminal rows (29 P0/3 P1): 16 observed_pass, 2 confirmed_defect, 11 observed_fail, 3 blocked_by_oracle; `fail` / `partial_blocked` / `blocks_release` | QA R1 report/checkpoint/anomaly/blocker semantics were remediated before regeneration. The two confirmed-defect rows are QA-044-002 and QA-044-004, both linked to `TASK044-DEFECT-LOADER-001` for cold-launch loader failure and bounded loader-not-catalog timeout. Search Back keyboard trap, Settings Gamepad→logout Cancel-only route, payment-boundary Back no-op and QA-044-032 connection-error recurrence remain observed failures with hypothesis-level cause attribution. Final target-app force-stop, Home and preserved-session cleanup is confirmed. The physical TV is now unavailable, so additional/repeat TV runtime is `blocked_by_device`; existing TV evidence is retained. Only the phone-full phone remains connected, but it is inventory-only/out of TASK-044 scope, received no runtime action and cannot substitute for TV. TASK-045 did not start in this thread; paired runtime requires a fresh task and begins with the missing-TV blocker. Raw identifiers, machine paths, build/package/hash/account/QR values, screenshots, UI trees and logs remain local-only. |
 | 2026-08-14 | TASK-044 Television Full TPV13 reference-lane oracle closure | qa/task-044-tpv13-reference-lane-oracle-closure | exact baseline and branch verification; public-safe TASK-042 APK/ADB/device-lane preflight; bounded physical TV runtime with per-checkpoint screenshot, UI tree and runner log; `python automation/native_regression/task044_tpv13_reference_lane.py --validate-only`; `python automation/native_regression/task044_tpv13_reference_lane.py --preflight --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json`; `python automation/native_regression/task044_tpv13_reference_lane.py --execute --adapter-input .qa_local/evidence/task-044/runtime-adapter.local.json --allow-prod-conditional-ingest`; `python automation/native_regression/task044_tpv13_reference_lane.py --validate-report`; `python -m pytest -q tests/test_task044_tpv13_reference_lane.py tests/test_task042_local_runtime_preflight.py`; `python -m compileall -q automation tests`; `git diff --check`; strict Planner, Builder, QA A, QA B, Security/Prod-safety and Docs/Scribe workflow | active; physical runtime terminal by pre-review ledger, result `fail` / `partial_blocked` / `blocks_release`; independent QA R1 remediation and final verification pending | Exact base is `origin/main@92896f61c37a682c74998c54fef46fc9a921e3b5`. Public-safe preflight confirmed the exact TV reference lane; phone remained inventory-only and never substituted for TV evidence. Initial combined focused suite passed 88 tests before independent QA found R1 report/checkpoint/anomaly/blocker semantics; that pass is not the final acceptance gate. The pre-review candidate grouped loader timeout, Search Back keyboard trap, Settings Gamepad→logout Cancel-only route, payment-boundary Back no-op and connection-error recurrence together; the 2026-08-15 hardened record above is authoritative for their final status classifications. QR classification used local-only `jsqr`; no QR was followed. No payment/session start, external browser/WebView traversal, logout/account mutation, network shaping, APK modification or security bypass occurred. Final target-app force-stop plus Home cleanup is confirmed and session was preserved. Raw device/build/package/hash/account/QR/screenshot/UI-tree/log evidence remains ignored/local-only. Final status counts, report-manifest regeneration, QA/Security/Docs GO, full-suite/static gates, commit/integration/push and TASK-045 handoff were pending at this checkpoint. |
@@ -720,3 +722,68 @@ commit `405300a0ce15da75d62ffa822c68d219cf6ea31d` was pushed on the task branch,
 fast-forwarded to remote default and verified aligned at the same SHA. TASK-045
 is `inactive_completed`. TASK-046 remains not started by explicit owner
 instruction.
+
+## TASK-045A initial blocked-runtime verification record — 2026-08-15
+
+Status: `active_blocked_runtime_preflight`. No fresh Phone Full product visual
+or transition coverage is claimed.
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Branch: `qa/task-045a-phone-full-visual-transition-coverage`.
+- Baseline: exact TASK-045 lifecycle closure
+  `origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f`.
+- Safety: repository checks are `PROD_SAFE`; physical runtime is
+  `PROD_CONDITIONAL` with Security `BLOCK_RUNTIME`.
+- Session: `active_session_provenance=unknown_not_verified`; no authoritative
+  synthetic-session passport is validated.
+- Device contour: two stable sanitized snapshots show one approved mapped phone
+  and no TV; no TV/paired substitution is allowed.
+- Build contour: the historical installed-newer alias is separate from the
+  canonical candidate; freshness and compatibility remain
+  `unknown_not_verified`.
+- Prior evidence: 20 PNG, 19 XML and 19 logs are quarantined audit-only;
+  `cp001` lacks XML/log and is incomplete; none counts as product coverage.
+- Runtime/action budgets: zero until Security GO; conditional ingest is
+  `not_run`.
+
+Confirmed process/tooling anomalies before product execution:
+
+- `TASK045A-PROCESS-ANOMALY-001`: expected a green clean-worktree focused
+  TASK-045 baseline; observed 33 passes and 17 failures because ignored runtime
+  source was missing and path checks ran in the wrong order. This is not product
+  behavior and does not alter TASK-045 history.
+- `TASK045A-PROCESS-ANOMALY-002`: a read-only build comparison stopped at host
+  script execution policy; no bypass or state change occurred and freshness
+  remains unknown.
+- `TASK045A-PROCESS-ANOMALY-003`: a category-only package-binding precheck
+  emitted unexpectedly excessive/truncated sanitized output, so it was
+  abandoned and not repeated. Its output is not accepted evidence; no mutation
+  or product runtime occurred.
+
+Planned exact repository commands:
+
+```text
+git status --short --branch
+git diff --check
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-only
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --publish-blocked-baseline
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-report
+python -m pytest -q tests/test_task045a_phone_visual_transition_coverage.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+Conditional adapter preflight/execute remains blocked/not-run. If Security
+later returns GO, every approved reachable Phone Full branch still requires
+terminal classification using the global five-value enum and fresh visual
+screenshot review plus UI tree and bounded log/marker evidence. Final cleanup
+must use target-app force-stop and Home while preserving the session and
+avoiding every external app, payment/session, account, network and paired-state
+action.

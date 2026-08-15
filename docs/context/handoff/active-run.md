@@ -1,5 +1,126 @@
 # Active run
 
+## Active TASK-045A — Phone Full visual screen and transition coverage
+
+- Lifecycle status: `active_blocked_runtime_preflight`.
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Branch: `qa/task-045a-phone-full-visual-transition-coverage`.
+- Default branch: `main`.
+- Exact base: `origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f`.
+- Production safety: repository/docs/tests are `PROD_SAFE`; physical phone
+  work is `PROD_CONDITIONAL` and currently `BLOCK_RUNTIME`.
+- Coverage scope: Phone Full is a distinct UI and transition graph. Television
+  Full aliases, layouts, states, edges and evidence cannot satisfy Phone Full
+  coverage. The absent TV remains an explicit external-state blocker and no
+  paired evidence is claimed.
+
+TASK-045A is a fresh corrective/continuation task after completed TASK-045. Its
+goal is fresh visual coverage, not reinterpretation of TASK-045 terminal-ledger
+closure. Two stable sanitized device snapshots report one approved mapped phone
+and no TV. Public docs record aliases and categories only; raw serial, IP,
+package, path, hash, account and device values remain local-only.
+
+Security/Prod-safety initial decision is `BLOCK_RUNTIME`: active session
+provenance is `unknown_not_verified`, and no task-authoritative synthetic
+session passport has been validated. The existing installed-newer Phone Full
+build is historical lane context only; freshness and compatibility with the
+canonical candidate remain `unknown_not_verified`. No login with real data,
+logout, clear-data, uninstall, downgrade override or account/session mutation
+is authorized. Session-dependent screens and transitions remain
+`blocked_by_external_state` until synthetic provenance is proven for this task.
+
+The quarantined TASK-045 audit set contains 20 PNG, 19 UI-tree XML and 19
+bounded-log artifacts. Every item is `audit_only=true` and
+`counts_as_product_coverage=false`; checkpoint `cp001` is incomplete because
+its UI tree and bounded log are absent. These artifacts may inform a local
+audit but cannot satisfy fresh TASK-045A node or edge coverage.
+
+Runtime budgets are zero while `BLOCK_RUNTIME` remains active: zero input,
+navigation, retry, QR traversal, external-app, payment/session, account,
+network, lock/unlock and paired-state actions. The cleanup/kill switch for any
+later Security-approved bounded runtime is target-app force-stop, Home, session
+preserved, with no external app, payment/session, account, network or paired
+state. First failure is preserved and recovery is recorded separately.
+
+The only terminal branch-closure enum is:
+`covered`, `blocked_by_boundary`, `blocked_by_tooling`,
+`blocked_by_external_state`, `not_run_out_of_scope`. Every approved reachable
+Phone Full branch must receive one of these states and public-safe evidence ids;
+an approved reachable branch cannot be closed as `not_run_out_of_scope`.
+Covered runtime checkpoints require their own fresh visually inspected
+screenshot, UI tree and bounded target-app log/marker inside the run window.
+
+Immediate process anomalies are retained before product execution:
+
+- `TASK045A-PROCESS-ANOMALY-001` is `confirmed`, alias
+  `baseline_focused_suite_missing_local_runtime_source`: the clean-worktree
+  focused TASK-045 suite expected a green baseline but produced 33 passes and
+  17 failures. The failures derive from missing ignored runtime-source material
+  and path-check ordering, not product behavior. No runtime/product conclusion
+  may be inferred; TASK-045 history remains unchanged.
+- `TASK045A-PROCESS-ANOMALY-002` is `confirmed`, alias
+  `readonly_build_compare_host_script_policy_block`: the read-only build
+  comparison helper was blocked by host script execution policy before a
+  trustworthy comparison. No bypass was attempted, no device/app state was
+  changed, and build freshness remains `unknown_not_verified`.
+- `TASK045A-PROCESS-ANOMALY-003` is `confirmed`, alias
+  `sanitized_package_binding_precheck_excessive_output`: an attempted
+  category-only package-binding precheck expected a bounded sanitized result
+  but produced unexpectedly excessive/truncated output. The attempt was
+  abandoned and not repeated; it is not evidence, and no mutation or product
+  runtime action occurred.
+
+Strict real multi-agent execution is active with Orchestrator, Planner,
+Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe.
+No product visual coverage has been established in TASK-045A at this
+checkpoint. TASK-046 has not started.
+
+Final task-branch candidate verification is complete: focused TASK-045A plus
+TASK-045 checks are 115 passed/1 skipped; the full suite is 1259 passed/4
+skipped. Compile, runner/report, 30-record/7-authoritative manifest, epic,
+both hygiene modes, public-safety, docs consistency and diff checks pass. QA
+Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe returned GO
+with no open R0/R1 after adversarial false-pass remediation. Security's runtime
+decision remains `BLOCK_RUNTIME`. Commit, task-branch push and default
+integration/alignment remain pending.
+
+Cleanup-only Home was restored on the single approved phone alias. The target
+app was never launched in TASK-045A; force-stop was not attempted without a
+safe package oracle and is not claimed. The public cleanup/branch row remains
+blocked, session preserved and no external/payment/session/account/network/
+paired action occurred.
+
+Planned repository verification, after Builder output stabilizes:
+
+```text
+git status --short --branch
+git diff --check
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-only
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --publish-blocked-baseline
+python automation/gamepad/task045a_phone_visual_transition_coverage.py --validate-report
+python -m pytest -q tests/test_task045a_phone_visual_transition_coverage.py
+python -m compileall -q automation tests
+python -m pytest -q
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+```
+
+The runtime ingest commands remain `not_run`/blocked until Security changes the
+gate to GO and the task-authoritative synthetic-session provenance, approved
+lane/build/evidence preflight and nonzero bounded action budgets validate.
+
+Owner lifecycle addendum: after TASK-045A is genuinely complete, independently
+reviewed, integrated and aligned with remote default, this thread creates
+exactly one fresh continuation thread with the complete source-of-truth
+handoff. After successful creation the old thread sends no follow-up/ping/wake
+message and does not poll the new thread. TASK-046 must not start before full
+TASK-045A lifecycle closure.
+
 ## Completed TASK-045 — paired TV plus phone virtual-gamepad E2E
 
 - Lifecycle status: `inactive_completed`.

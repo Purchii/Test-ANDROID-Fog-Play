@@ -39,9 +39,9 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## Active TASK-045A corrective continuation — 2026-08-15
+## Completed TASK-045A corrective continuation — 2026-08-15
 
-TASK-045A is active in a fresh independent thread on
+TASK-045A is `inactive_completed_blocked_runtime` after a fresh independent thread on
 `qa/task-045a-phone-full-visual-transition-coverage`, based exactly on the
 completed TASK-045 lifecycle closure
 `origin/main@de88d1a3fda251be16bd89a35fd68ef1ae29339f`. Mode is
@@ -77,8 +77,10 @@ passes 1259 tests with 4 skipped. Report validation, the 30-record/7-
 authoritative report manifest, epic validation, compile, both hygiene modes,
 public-safety, docs consistency and diff checks pass. QA Reviewer A, QA
 Reviewer B, Security/Prod-safety and Docs/Scribe have no open R0/R1; Security
-keeps `BLOCK_RUNTIME`. Task-branch commit/default integration are still pending
-at this checkpoint, so the lifecycle is not yet inactive.
+keeps `BLOCK_RUNTIME`. Task commit
+`96e0888ccef5ef33258c2fe6d6a49c83796c5e29` was pushed on the task branch
+and fast-forwarded to remote default. TASK-045A is inactive with an honest
+blocked-runtime/zero-visual-coverage closure; TASK-046 has not started.
 
 The only device cleanup action in TASK-045A was the separately authorized Home
 restore on the single approved phone alias. No app launch occurred. Target-app

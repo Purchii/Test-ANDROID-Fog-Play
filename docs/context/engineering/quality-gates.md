@@ -1035,15 +1035,16 @@ Passing repository/static gates does not prove Phone Full product visual or
 transition coverage. At the current checkpoint fresh product coverage is zero,
 runtime is blocked/not-run and TASK-046 is not authorized to start.
 
-Final task-branch candidate result: all repository gates above pass. The
+Final lifecycle result: all repository gates above pass. The
 focused TASK-045A plus TASK-045 set is 115 passed/1 skipped; full pytest is 1259
 passed/4 skipped. The regenerated manifest validates with 30 records and 7
 authoritative records. QA Reviewer A, QA Reviewer B, Security/Prod-safety and
 Docs/Scribe returned GO with no open R0/R1 after remediation of identifier,
 canonical-path, cleanup, graph/evidence, attempt/recovery, branch-specific,
 freshness, CSV-enum and report-parity false-pass routes. Runtime remains
-`BLOCK_RUNTIME`, product coverage remains zero and default integration is still
-required before lifecycle closure.
+`BLOCK_RUNTIME` and product coverage remains zero. Task commit `96e0888` is
+pushed on the task branch and fast-forwarded to remote default; this subsequent
+documentation commit closes the inactive lifecycle.
 
 ## Merge gates
 

@@ -1,8 +1,10 @@
 # Active run
 
-## Active TASK-045A — Phone Full visual screen and transition coverage
+No independent implementation task is active in this completed thread.
 
-- Lifecycle status: `active_blocked_runtime_preflight`.
+## Completed TASK-045A — Phone Full visual screen and transition coverage
+
+- Lifecycle status: `inactive_completed_blocked_runtime`.
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Branch: `qa/task-045a-phone-full-visual-transition-coverage`.
 - Default branch: `main`.
@@ -70,7 +72,7 @@ Immediate process anomalies are retained before product execution:
   abandoned and not repeated; it is not evidence, and no mutation or product
   runtime action occurred.
 
-Strict real multi-agent execution is active with Orchestrator, Planner,
+Strict real multi-agent execution completed with Orchestrator, Planner,
 Builder, QA Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe.
 No product visual coverage has been established in TASK-045A at this
 checkpoint. TASK-046 has not started.
@@ -81,8 +83,9 @@ skipped. Compile, runner/report, 30-record/7-authoritative manifest, epic,
 both hygiene modes, public-safety, docs consistency and diff checks pass. QA
 Reviewer A, QA Reviewer B, Security/Prod-safety and Docs/Scribe returned GO
 with no open R0/R1 after adversarial false-pass remediation. Security's runtime
-decision remains `BLOCK_RUNTIME`. Commit, task-branch push and default
-integration/alignment remain pending.
+decision remains `BLOCK_RUNTIME`. Task commit
+`96e0888ccef5ef33258c2fe6d6a49c83796c5e29` is pushed on the task branch and
+fast-forwarded to remote `main`; lifecycle closure is recorded here.
 
 Cleanup-only Home was restored on the single approved phone alias. The target
 app was never launched in TASK-045A; force-stop was not attempted without a
@@ -110,12 +113,12 @@ python automation/quality/public_repo_safety_scan.py
 python automation/quality/docs_consistency_link_sanity.py
 ```
 
-The runtime ingest commands remain `not_run`/blocked until Security changes the
-gate to GO and the task-authoritative synthetic-session provenance, approved
+The runtime ingest commands remain `not_run`/blocked. A future independent task
+may run them only if Security changes the gate to GO and the task-authoritative synthetic-session provenance, approved
 lane/build/evidence preflight and nonzero bounded action budgets validate.
 
-Owner lifecycle addendum: after TASK-045A is genuinely complete, independently
-reviewed, integrated and aligned with remote default, this thread creates
+Owner lifecycle addendum: TASK-045A is genuinely complete, independently
+reviewed and integrated. This thread creates
 exactly one fresh continuation thread with the complete source-of-truth
 handoff. After successful creation the old thread sends no follow-up/ping/wake
 message and does not poll the new thread. TASK-046 must not start before full

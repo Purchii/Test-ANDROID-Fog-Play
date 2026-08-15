@@ -48,6 +48,10 @@ TASK-057 ran in a fresh `BOUNDED_AUTONOMOUS` thread on
 `PROD_CONDITIONAL` under `GO_METADATA_CONDITIONAL / BLOCK_RUNTIME`.
 Lifecycle is `inactive_completed_blocked_runtime`; readiness is `blocked`,
 release effect is `blocks_release`, and TASK-058 remains blocked.
+Verified implementation commit
+`b321355bac267615e80c393736810292e9f94f5d` was pushed to the task branch and
+fast-forwarded to remote `main`; the subsequent documentation commit closes
+the inactive lifecycle without changing readiness.
 
 The authoritative readiness ledger contains exactly seven independent rows:
 two are `observed_pass` and five are blocking. Fresh mapping bound the neutral

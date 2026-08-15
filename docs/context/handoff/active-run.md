@@ -9,6 +9,10 @@
 - Task branch: `qa/task-057-phone-full-runtime-authority-gate`.
 - Default branch: `main`.
 - Exact base: `origin/main@146a390ec2e0bb40036aa3f7e13011869c0761d0`.
+- Verified implementation commit:
+  `b321355bac267615e80c393736810292e9f94f5d`, pushed to the task branch and
+  fast-forwarded to remote `main`; this subsequent documentation commit closes
+  the inactive lifecycle without changing readiness.
 - Remote drift gate: `confirmed_pass` after fetch; actual remote default is
   `main` and the task branch starts at the expected remote SHA.
 - Production safety: repository work is `PROD_SAFE`; the bounded read-only APK,

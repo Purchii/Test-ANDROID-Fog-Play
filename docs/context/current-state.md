@@ -39,6 +39,42 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Post-TASK-048 next-task selection blocked — 2026-08-15
+
+The fresh `BOUNDED_AUTONOMOUS` continuation
+`NEXT_TASK_SELECTION_FROM_main@c75a4bf` runs on
+`qa/next-task-selection-main-c75a4bf-blocked` from exact aligned remote default
+`origin/main@c75a4bf41470da8dc2649a8f77473141f7aeb7f9`. Planner returned
+`NO_ELIGIBLE_TASK`; lifecycle status is
+`inactive_blocked_no_eligible_backlog_task`. This is a
+`PROD_SAFE_DOCS_ONLY_SELECTION_CHECKPOINT`; runtime remains `BLOCK_RUNTIME`.
+
+TASK-046 and TASK-047 remain ineligible because current YandexTV/SberBox
+physical availability, compatible build binding and task-authoritative fixture
+readiness are `unknown`. Tracked TASK-042 authority keeps the physical lanes
+`UNKNOWN` / `blocked_by_device`, and stale heuristic inventory is
+non-authoritative. TASK-049 depends on TASK-046 and TASK-047; TASK-050 through
+TASK-055 are transitively blocked. TASK-034 remains approval-blocked. No task
+row status changed, no device/runtime/local-only action occurred, and TASK-048
+history remains closed and unchanged.
+
+Strict roles at this checkpoint are Orchestrator, Planner
+`NO_ELIGIBLE_TASK`, and Builder docs-only with review remediation complete. QA
+Reviewer A returned final `GO` with zero R0/R1/P2 after remediation of two R1
+findings. QA Reviewer B and Security/Prod-safety each returned final
+`GO_REPOSITORY_ONLY_SELECTION_CHECKPOINT / BLOCK_RUNTIME` with zero R0/R1/P2.
+Docs/Scribe returned final `GO` with zero open R0/R1. Final static gates passed:
+Git diff check, epic validation, both hygiene modes, public repository safety
+`378/0`, and docs consistency/link sanity `176/0`.
+
+`SELECTION-PROCESS-ANOMALY-001` is `confirmed`: read-only selection
+reconnaissance referenced two guessed TASK-043 report CSV paths that do not
+exist. No evidence was accepted from them; the tracked TASK-042 authority and
+epic dependency matrix were used instead. The cause is likely guessed
+derived-artifact naming, and product/runtime impact is none. The complete
+canonical anomaly record, including expected result, observed result and
+test-design implication, is in `docs/context/handoff/active-run.md`.
+
 ## Completed TASK-048 repository-only blocked-runtime closure — 2026-08-15
 
 TASK-048 completed in a fresh thread on

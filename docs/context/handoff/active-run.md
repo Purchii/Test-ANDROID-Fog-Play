@@ -1,6 +1,75 @@
 # Active run
 
-No independent implementation task is active in this completed thread.
+No independent implementation task is active in this blocked selection thread.
+
+## Post-TASK-048 next-task selection checkpoint — 2026-08-15
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread title: `NEXT_TASK_SELECTION_FROM_main@c75a4bf`.
+- Thread status: `inactive_blocked_no_eligible_backlog_task`.
+- Fresh thread verified: `yes`; this is the accepted independent continuation
+  after completed TASK-048.
+- Task ID: `NEXT_TASK_SELECTION_FROM_main@c75a4bf`.
+- Task goal: select exactly one eligible independent backlog task from current
+  source-of-truth authority, or record `NO_ELIGIBLE_TASK` without unsafe
+  substitution or invented readiness.
+- Task branch: `qa/next-task-selection-main-c75a4bf-blocked`.
+- Default branch: `main`.
+- Base commit: `origin/main@c75a4bf41470da8dc2649a8f77473141f7aeb7f9`.
+- Production safety classification:
+  `PROD_SAFE_DOCS_ONLY_SELECTION_CHECKPOINT`; all APK/device/runtime actions
+  remain `PROD_CONDITIONAL` and `BLOCK_RUNTIME`.
+- Multi-agent status: Orchestrator coordinates the checkpoint; Planner returned
+  `NO_ELIGIBLE_TASK`; Builder completed this four-file docs-only record and its
+  review remediation; QA Reviewer A returned final `GO` with zero R0/R1/P2
+  after remediation of two R1 findings; QA Reviewer B returned final
+  `GO_REPOSITORY_ONLY_SELECTION_CHECKPOINT / BLOCK_RUNTIME` with zero R0/R1/P2;
+  Security/Prod-safety returned final
+  `GO_REPOSITORY_ONLY_SELECTION_CHECKPOINT / BLOCK_RUNTIME` with zero R0/R1/P2;
+  Docs/Scribe returned final `GO` with zero open R0/R1.
+- Selection result: `NO_ELIGIBLE_TASK`.
+
+The remote default is `confirmed` aligned at the TASK-048 lifecycle closure.
+TASK-046 and TASK-047 cannot start because current physical YandexTV and
+SberBox availability, compatible build binding and task-authoritative fixture
+readiness are `unknown`. Tracked TASK-042 authority keeps the named physical
+lanes `UNKNOWN` / `blocked_by_device`; stale heuristic inventory is explicitly
+non-authoritative and cannot select or substitute a device. TASK-049 depends on
+both TASK-046 and TASK-047. TASK-050 through TASK-055 are transitively blocked
+by the same dependency chain. TASK-034 also remains approval-blocked pending an
+approved backend/staging environment, synthetic user, budget/rate limits,
+cleanup/rollback, audit trail, redaction and QA/Security review.
+
+No `.qa_local` input, ADB, APK read/hash/install, device inventory, app launch,
+UI input, screenshot, UI tree, logcat, QR decode/traversal, network, account,
+payment or session action is authorized or performed. Generic TV, phone, AVD,
+historical lane or heuristic inventory substitution is forbidden. The only
+allowed mutation is this public-safe selection checkpoint in
+`active-run.md`, `current-state.md`, `verification-memory.md` and `backlog.md`.
+
+`SELECTION-PROCESS-ANOMALY-001` is `confirmed`. Public-safe alias:
+`guessed-task043-report-path-reference`. A read-only selection search referenced
+two guessed TASK-043 report CSV paths. Expected result: discover and use
+tracked authoritative evidence paths before referencing derived reports.
+Observed result: the two guessed report paths did not exist. No content or
+evidence was accepted from those paths. The correct tracked TASK-042 authority
+and epic dependency matrix supplied the selection evidence. Likely cause is
+guessed derived-artifact naming; the test-design implication is to discover
+tracked authority before referencing report paths. Product/runtime impact is
+none.
+
+Acceptance is satisfied: blocker/dependency recording is exact, task-row
+statuses and TASK-048 history are unchanged, and final independent QA A, QA B,
+Security/Prod-safety and Docs/Scribe reviews have no open R0/R1. Final static
+verification passed: Git diff check, epic validation, both hygiene modes,
+public repository safety `378/0`, and docs consistency/link sanity `176/0`.
+The unfiltered pytest suite was not run and the Security-forbidden TASK-045
+environment-coupled source was not read or restored. No continuation thread is
+created while selection remains blocked; the next allowed action is fresh
+authoritative lane state, TASK-034 approvals, or an explicit new bounded
+public-safe task.
+
+## Completed predecessor — TASK-048
 
 ## Completed TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane
 

@@ -1,6 +1,102 @@
 # Active run
 
-No independent implementation task is active in this completed thread.
+## Active TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread title: `TASK-048 — AOSP FogPlay Stick and launcher system-cluster runtime lane`.
+- Thread status: `verified_pre_commit_repository_only_blocked_runtime`.
+- Fresh thread verified: `yes`; continuation thread id
+  `01a00468-0338-7a81-b73a-b7bbc7d7cbc5` was accepted and renamed after
+  Planner selection.
+- Task ID: `TASK-048`.
+- Task goal: implement and verify the fail-closed AOSP FogPlay Stick plus
+  launcher/system-cluster QA authority for all 19 catalog rows without generic
+  TV/phone/AVD substitution or a product-runtime PASS.
+- Task branch: `qa/task-048-aosp-launcher-system-cluster-runtime`.
+- Default branch: `main`.
+- Base commit: `origin/main@c81fdf6c1853a42c73a4145d00bafbd173668e0d`.
+- Production safety classification: tracked repository work is `PROD_SAFE`;
+  physical/APK/device/system execution is `PROD_CONDITIONAL` with current
+  Security decision `BLOCK_RUNTIME`.
+- Multi-agent status: Orchestrator active; Planner selected TASK-048;
+  Builder produced the verified candidate; QA Reviewer A and QA Reviewer B
+  returned final `GO` with no open R0/R1; Security/Prod-safety returned
+  `GO_REPOSITORY_ONLY_CLOSURE` with no open R0/R1 and retained
+  `BLOCK_RUNTIME`; Docs/Scribe final reconciliation is
+  `GO_REPOSITORY_ONLY_CLOSURE / BLOCK_RUNTIME`.
+- Merge/push authority: autonomous only after all acceptance, verification and
+  independent review gates pass with no open R0/R1.
+
+Evidence status is `confirmed` for the aligned remote default and completed
+TASK-042/TASK-043 dependencies. The actual project-known FogPlay Stick selector,
+current compatible AOSP lane, launcher contour mapping and runtime fixture are
+`unknown`; therefore all runtime budgets are zero. No `.qa_local` input, ADB,
+APK read/hash/install, app launch, input, reboot, HOME, process/service restart,
+component invocation, screenshot, UI tree, logcat, video, network, account,
+payment, session or QR action is authorized in the current contour. Cleanup is
+`not_applicable` because no device state may be touched.
+
+Allowed files are the TASK-048 runner/tests/public-safe report and ledgers,
+report manifest, task specification, automation README when needed, and the
+source-of-truth documentation required to record this bounded task. Forbidden
+actions include generic-device substitution, root/privilege use, factory reset,
+clear-data/uninstall/downgrade bypass, APK/source/decompile/signature changes,
+unauthorized component probing, security bypass, real payment/account/session
+mutation and publication of raw identifiers, paths, hashes, accounts, QR
+targets, screenshots or logs.
+
+Repository-only acceptance is satisfied: all 19 catalog rows are represented
+and terminally classified, static/blocked evidence grants no runtime/product
+PASS, the launcher contour remains separate from the five-APK contract, the
+blocked-device path fails closed, the authoritative report/manifest state is
+valid, permitted checks passed or produced their explicit expected blocker,
+and both QA reviewers, Security/Prod-safety and Docs/Scribe returned final GO
+for repository-only closure. Runtime acceptance is not satisfied and remains
+`BLOCK_RUNTIME`.
+
+Stop if any step requires device/APK/system runtime before a new Security GO,
+would expose local-only values, needs destructive/privileged action, leaves an
+R0/R1 finding unresolved or cannot pass the task-introduced tests inside this
+scope.
+
+### Verified pre-commit closure state
+
+The generated public-safe authority contains 19/19 terminal scenario rows:
+17 `blocked_by_device`, QA-048-014 `blocked_by_product_boundary`, and
+QA-048-019 `observed_pass` for `static_contract` terminal-ledger reconciliation
+only. Runtime actions and product coverage are both zero; execution and
+coverage remain `blocked`, release effect remains `blocks_release`, and no
+product/release PASS is claimed. No physical or local-only action occurred.
+
+Focused verification passed 65 tests. The permitted root supplementary suite,
+excluding only the Security-forbidden environment-coupled
+`tests/test_task045_paired_virtual_gamepad.py`, passed 1274 tests with 4
+skipped; it is not a full-suite PASS. The unfiltered root suite was attempted
+and is `environment_blocked` because the ignored
+`.qa_local/evidence/task-045` source is absent. Its latest recorded result
+before the final UTF-8 tests was 1305 passed, 4 skipped and 17 failed; the
+earlier checkpoint was 1269 passed, 4 skipped and 17 failed. Do not rerun it,
+read that source or restore it in TASK-048.
+
+All fixed CLI modes returned expected repository-only results. Compile, epic,
+both hygiene modes, public-safety (378/0), docs consistency (176/0), cached
+diff and the report manifest (31 records: 8 authoritative and 23 legacy)
+passed. Generated report `review` fields remain deterministic pending markers
+by contract; the actual final reviewer outcomes are authoritative in this run
+documentation. Task commit/push, default integration/alignment and inactive
+lifecycle status remain pending and are not claimed.
+
+If TASK-048 closes, create exactly one fresh selection continuation from the
+verified remote-default closure. TASK-046 and TASK-047 remain runtime-blocked
+without fresh authoritative YandexTV/SberBox lane state; TASK-049 depends on
+both. The continuation must select from current authority and may legitimately
+return `NO_ELIGIBLE_TASK` rather than invent a device or substitute another
+family.
+
+## Completed predecessor
+
+No independent implementation task remains active in the completed TASK-045A
+thread.
 
 ## Completed TASK-045A — Phone Full visual screen and transition coverage
 

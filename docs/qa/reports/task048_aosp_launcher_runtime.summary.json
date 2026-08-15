@@ -1,0 +1,122 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task048_aosp_launcher_runtime.scenario-ledger.csv",
+      "sha256": "55f26d13c277331cdea6d5c81a7d2f29562b46bdcacc4e08844fa522801386a2"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "authority_ledger",
+      "reference": "docs/qa/reports/task048_aosp_launcher_runtime.authority-ledger.csv",
+      "sha256": "afe284ee1056a9ffc508abbeb66dcb5ec9b95aa593bfcb61f80ae724f4ba4d21"
+    }
+  ],
+  "blocked_reasons": [
+    "actual_stick_mapping_missing",
+    "aosp_artifact_not_inspected_repository_only",
+    "launcher_component_mapping_missing",
+    "runtime_fixture_not_verified",
+    "security_runtime_gate_blocked"
+  ],
+  "build_ref": {
+    "alias": "task048-aosp-launcher-static-authority"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-08-15T00:00:00Z",
+  "payload": {
+    "actual_stick_mapping_state": "missing",
+    "aosp_artifact_state": "not_inspected_repository_only",
+    "generic_tv_phone_or_avd_substitution_allowed": false,
+    "launcher_cluster_is_separate_from_main_five_apks": true,
+    "launcher_mapping_state": "missing",
+    "physical_stick_availability": "unknown",
+    "product_coverage_count": 0,
+    "qa048_019_claim_scope": "static_terminal_ledger_only",
+    "release_pass_claimed": false,
+    "runtime_action_count": 0,
+    "runtime_gate": "BLOCK_RUNTIME",
+    "scenario_counts": {
+      "blocked_by_device": 17,
+      "blocked_by_product_boundary": 1,
+      "p0": 15,
+      "p1": 4,
+      "static_closure_observed_pass": 1,
+      "total": 19
+    },
+    "security_decision": "GO_REPOSITORY_ONLY_BLOCK_RUNTIME"
+  },
+  "production_safety_classification": "PROD_SAFE_REPOSITORY_ONLY_BLOCKED_RUNTIME",
+  "provenance": {
+    "adb_or_device_action": false,
+    "apk_read": false,
+    "local_only_input_read": false,
+    "runtime_evidence_published": false,
+    "scenario_contract": "docs/qa/epics/scenarios/task048_scenarios.csv",
+    "source": "tracked_public_safe_contracts_only"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety_reviewer": "go_repository_only_block_runtime"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK048-RISK-FALSE-PASS",
+      "summary": "Static contracts, generic devices, phones, AVDs, historical profiles, and blocked rows cannot establish AOSP or launcher product coverage."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK048-RISK-UNAUTHORIZED-IPC",
+      "summary": "QA-048-014 remains at the product-safety boundary because no approved public component contract exists."
+    }
+  ],
+  "run_id": "task048-repository-only-blocked-runtime-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "fogplay-stick-required-target",
+  "task_id": "TASK-048",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "TASK048-UNKNOWN-AOSP-COMPATIBILITY",
+      "reason_code": "actual_build_target_compatibility_not_verified"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "TASK048-UNKNOWN-LAUNCHER-MAPPING",
+      "reason_code": "launcher_component_mapping_missing"
+    }
+  ],
+  "verification": [
+    {
+      "check": "tracked_contract_validation",
+      "evidence_status": "confirmed",
+      "status": "pass"
+    },
+    {
+      "check": "scenario_terminal_reconciliation",
+      "evidence_status": "confirmed",
+      "result_count": 19,
+      "status": "pass"
+    },
+    {
+      "check": "physical_runtime",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "blocked"
+    },
+    {
+      "check": "product_coverage",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "blocked"
+    }
+  ]
+}

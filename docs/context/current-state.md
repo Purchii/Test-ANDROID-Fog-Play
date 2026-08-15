@@ -39,6 +39,54 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## TASK-048 verified repository-only pre-commit state — 2026-08-15
+
+TASK-048 is active in a fresh thread on
+`qa/task-048-aosp-launcher-system-cluster-runtime`, based exactly on
+`origin/main@c81fdf6c1853a42c73a4145d00bafbd173668e0d`. Mode is
+`BOUNDED_AUTONOMOUS`. Tracked repository work is `PROD_SAFE`; physical/APK/
+device/system execution remains `PROD_CONDITIONAL` and is currently
+`BLOCK_RUNTIME` under the Security/Prod-safety decision
+`GO_REPOSITORY_ONLY / BLOCK_RUNTIME`.
+
+The verified repository authority terminally classifies all 19 TASK-048
+scenario rows: 17 `blocked_by_device`, QA-048-014
+`blocked_by_product_boundary`, and QA-048-019 `observed_pass` only for static
+terminal-ledger reconciliation. Runtime action count and product coverage count
+are both zero. The exact FogPlay Stick, compatible current AOSP artifact,
+launcher component mapping and runtime fixture remain `unknown`; generic TV,
+phone, AVD or historical-profile substitution is forbidden. The launcher/
+system contour remains separate from the five-APK contract.
+
+This is a verified repository-only closure candidate, not a product or release PASS.
+No device, ADB, APK read, local-only input, component invocation, account,
+payment, session, QR, network or cleanup action occurred. QA-A and QA-B returned
+final `GO` with no open R0/R1. Security returned
+`GO_REPOSITORY_ONLY_CLOSURE` with no open R0/R1 and retained `BLOCK_RUNTIME`.
+Docs/Scribe reconciliation is `GO_REPOSITORY_ONLY_CLOSURE / BLOCK_RUNTIME`.
+
+Focused verification passed 65 tests. The root supplementary suite, excluding
+only the Security-forbidden environment-coupled
+`tests/test_task045_paired_virtual_gamepad.py`, passed 1274 tests with 4
+skipped; this is not called a full-suite PASS. The unfiltered suite was
+attempted and is `environment_blocked` because its ignored
+`.qa_local/evidence/task-045` source is absent. The latest recorded unfiltered
+result before the final UTF-8 tests was 1305 passed, 4 skipped and 17 failed
+(earlier: 1269 passed, 4 skipped and 17 failed); it must not be rerun or
+unblocked by reading/restoring that forbidden environment-coupled source.
+CLI modes returned their expected repository-only results; compile, epic,
+both hygiene modes, public-safety (378/0), docs consistency (176/0), cached
+diff and the 31-record manifest (8 authoritative, 23 legacy) passed.
+
+Task commit/push, default integration/alignment and inactive lifecycle closure
+remain pending and are not claimed.
+
+TASK-046 and TASK-047 remain runtime-blocked because no current authoritative
+YandexTV or SberBox physical lane is available. TASK-049 depends on both and is
+therefore not eligible. After TASK-048 closure, the next fresh continuation
+must perform a new source-of-truth selection; it must not assume TASK-046,
+TASK-047 or TASK-049 is eligible.
+
 ## Completed TASK-045A corrective continuation — 2026-08-15
 
 TASK-045A is `inactive_completed_blocked_runtime` after a fresh independent thread on

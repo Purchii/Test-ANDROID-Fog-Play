@@ -202,6 +202,34 @@ Codex должен добавить точные validate-only/preflight/execute
 созданного runner'а в task file и `verification-memory.md`. Для runtime-команд
 не печатать local-only values.
 
+### Repository-only команды текущего BLOCK_RUNTIME contour
+
+Текущий Security verdict — `GO_REPOSITORY_ONLY / BLOCK_RUNTIME`. Все четыре
+команды ниже работают только с фиксированными tracked public-safe контрактами;
+у них нет path override, они не читают `.qa_local`, APK или raw evidence, не
+запускают subprocess/ADB и не управляют устройством. `--execute` публикует
+только детерминированный blocked-runtime summary и два статических ledger.
+
+```text
+python automation/system_lane/task048_aosp_launcher_runtime.py --validate-only
+python automation/system_lane/task048_aosp_launcher_runtime.py --preflight
+python automation/system_lane/task048_aosp_launcher_runtime.py --execute
+python automation/system_lane/task048_aosp_launcher_runtime.py --validate-report
+python -m pytest -q tests/test_task048_aosp_launcher_runtime.py
+```
+
+Ожидаемый tracked baseline: 19/19 терминальных строк, из них 17
+`blocked_by_device`, QA-048-014 — `blocked_by_product_boundary`, QA-048-019 —
+единственный `observed_pass` строго для статической сверки ledger. Runtime action
+count и product coverage count равны нулю; product/release PASS не заявляется.
+
+Это только fail-closed static blocked adapter, а не реализация физического
+system-lane runtime runner. Device execution, launcher regression subset и
+runtime evidence остаются `not_run`/deferred до свежего Security GO, точного
+approved Stick mapping, совместимого build и fixture. Допустимое lifecycle-
+закрытие текущего contour — `inactive_completed_blocked_runtime`; оно не
+закрывает продуктовую runtime lane и не снимает release block.
+
 ## Multi-agent acceptance
 
 Обязательны реальные роли:

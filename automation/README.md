@@ -2,6 +2,23 @@
 
 This directory contains public-safe local QA tooling for the Android TV QA repository.
 
+## TASK-048 AOSP/launcher system-lane authority
+
+`automation/system_lane/task048_aosp_launcher_runtime.py` implements the
+repository-only authority allowed by the current
+`GO_REPOSITORY_ONLY / BLOCK_RUNTIME` Security decision. Its fixed
+`--validate-only`, `--preflight`, `--execute`, and `--validate-report` modes do
+not read ignored local storage or APKs, start subprocesses, contact ADB, or
+control a device. The approved exact FogPlay Stick mapping is missing while
+physical availability remains unknown, generic TV/phone/AVD substitution is
+forbidden, and the launcher/system cluster remains separate from the five-APK
+contract.
+
+The published baseline terminally classifies all 19 catalog rows while keeping
+runtime and product coverage at zero. QA-048-014 stops at the unauthorized
+component boundary. QA-048-019 passes only static terminal-ledger
+reconciliation; it is not a product or release PASS.
+
 ## TASK-045A Phone visual transition coverage
 
 The TASK-045A Phone visual transition runner is a static-only typed-adapter

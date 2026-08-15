@@ -53,7 +53,9 @@
 
 ## P2A - EPIC-QA-041-055 independent QA-only execution chain
 
-TASK-041 through TASK-045A are completed and integrated. TASK-045A closed the
+TASK-041 through TASK-045A are completed and integrated. TASK-048 is the verified
+repository-only pre-commit task after Planner selection from the aligned TASK-045A
+closure. TASK-045A closed the
 distinct Phone Full visual screen/state/transition graph by honest blockers,
 without claiming visual coverage. Its final
 Security/Prod-safety gate is `BLOCK_RUNTIME` because synthetic session
@@ -86,7 +88,7 @@ the backlog without replacing TASK-000…040 history.
 | TASK-045A | Phone Full visual screen and transition coverage | BOUNDED_AUTONOMOUS; repository `PROD_SAFE`, runtime `PROD_CONDITIONAL` with `BLOCK_RUNTIME` | completed TASK-045 lifecycle closure | qa/task-045a-phone-full-visual-transition-coverage | inactive_completed_blocked_runtime; exact base `origin/main@de88d1a3`, task commit `96e0888` pushed on task branch and remote default; 17/17 terminal branches with 0 covered, full visual coverage false; 115 focused/1 skipped and 1259 full/4 skipped; manifest 30/7; final QA-A/QA-B/Security/Docs GO, no R0/R1; session/build provenance unknown and TV absent; TASK-046 not started |
 | TASK-046 | Television Steam / YandexTV representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-046-yandextv-representative-lane | planned_blocked_by_dependency |
 | TASK-047 | Television Sber / SberBox representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-047-sberbox-representative-lane | planned_blocked_by_dependency |
-| TASK-048 | AOSP FogPlay Stick and launcher system-cluster runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_SYSTEM_RUNTIME | TASK-042, TASK-043 | qa/task-048-aosp-launcher-system-cluster-runtime | planned_blocked_by_dependency; may later classify lane rows `blocked_by_device` without stopping independent downstream work |
+| TASK-048 | AOSP FogPlay Stick and launcher system-cluster runtime lane | BOUNDED_AUTONOMOUS; repository `PROD_SAFE`, system runtime `PROD_CONDITIONAL` with `BLOCK_RUNTIME` | TASK-042, TASK-043 | qa/task-048-aosp-launcher-system-cluster-runtime | verified_pre_commit_blocked_runtime; 19/19 terminal: 17 blocked_by_device, QA-048-014 blocked_by_product_boundary, QA-048-019 static_contract observed_pass only; runtime/product coverage 0; QA-A/QA-B/Security/Docs GO with no open R0/R1; unfiltered suite environment_blocked, supplementary suite 1274 passed/4 skipped; task/default push pending |
 | TASK-049 | Cross-family non-payment transition and state graph closure | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_MULTI_LANE_RUNTIME | TASK-044, TASK-045, TASK-046, TASK-047 | qa/task-049-cross-family-transition-state-closure | planned_blocked_by_dependency; TASK-048 evidence is optional for non-AOSP subclaims only |
 | TASK-050 | Install, update, persistence, process-death and recovery matrix | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_STATEFUL_RUNTIME | TASK-044, TASK-046, TASK-047 | qa/task-050-install-update-persistence-recovery-matrix | planned_blocked_by_dependency |
 | TASK-051 | Network, offline, cache, API/STOMP reconnect and fault-runtime coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_NETWORK_RUNTIME | TASK-044, TASK-045, TASK-049 | qa/task-051-network-api-transport-runtime | planned_blocked_by_dependency |
@@ -100,6 +102,12 @@ independent task requires a fresh accepted thread, its own branch and strict
 multi-agent cycle. Parallel work is forbidden unless the Orchestrator records
 separate worktrees, no shared mutable device/session/evidence state, no shared
 device control and an explicit merge order.
+
+Current handoff is fail-closed: TASK-046 and TASK-047 remain runtime-blocked
+without fresh authoritative YandexTV/SberBox physical lanes. TASK-049 depends
+on both tasks and is also ineligible. Completion of TASK-048 permits only a
+fresh next-task selection thread; it does not automatically start or unblock
+TASK-046, TASK-047 or TASK-049.
 
 ## P3 - safe autonomous planning before user-answer-dependent runtime work
 

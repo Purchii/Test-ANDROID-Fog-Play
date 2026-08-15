@@ -1065,3 +1065,64 @@ Before starting the next independent task in autonomous continuation:
 - the detected default/trunk branch must be pushed to origin;
 - post-push verification must confirm local HEAD and `origin/<default-branch>` are aligned;
 - if this cannot be verified, record a blocker and do not start the next task.
+
+## TASK-048 repository-only blocked-runtime verified gates
+
+TASK-048 repository work is `PROD_SAFE`; device/APK/system execution is
+`PROD_CONDITIONAL` and currently `BLOCK_RUNTIME`. The fixed-path CLI may only
+validate tracked public-safe contracts and publish/validate the deterministic
+blocked-runtime baseline. It must not read `.qa_local`, inspect APKs, call ADB,
+start subprocesses, control a device, invoke components or accept path/runtime
+overrides.
+
+Verified invariants:
+
+- exactly 19/19 terminal scenario rows;
+- exactly 17 `blocked_by_device` rows;
+- QA-048-014 is `blocked_by_product_boundary` and no component invocation was
+  attempted;
+- QA-048-019 is `observed_pass` with `static_contract` evidence only;
+- runtime action count and product coverage count are zero;
+- the launcher/system contour remains separate from the five-APK contract;
+- execution/coverage remain blocked, release effect remains `blocks_release`,
+  and no product or release PASS is claimed;
+- generic TV, phone, AVD, historical profile, plan and static-artifact
+  substitution fail closed.
+
+Required commands before closure:
+
+```text
+python automation/system_lane/task048_aosp_launcher_runtime.py --validate-only
+python automation/system_lane/task048_aosp_launcher_runtime.py --preflight
+python automation/system_lane/task048_aosp_launcher_runtime.py --execute
+python automation/system_lane/task048_aosp_launcher_runtime.py --validate-report
+python -m pytest -q tests/test_task048_aosp_launcher_runtime.py
+python -m pytest -q
+python -m compileall -q automation tests
+python automation/reporting/generate_report_manifest.py --output docs/qa/reports/report-manifest.json
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python automation/quality/official_export_index.py validate-epic --root .
+python automation/quality/full_tree_hygiene_scan.py
+python automation/quality/full_tree_hygiene_scan.py --mode public-safe-tree
+python automation/quality/public_repo_safety_scan.py
+python automation/quality/docs_consistency_link_sanity.py
+git diff --check
+git status --short --branch
+```
+
+Final pre-commit status is `verified_repository_only_blocked_runtime`.
+Focused pytest passed 65 tests. The root supplementary suite excluding only
+the Security-forbidden environment-coupled TASK-045 paired-runtime module
+passed 1274 tests with 4 skipped and must not be described as a full-suite
+PASS. The unfiltered suite was attempted and is `environment_blocked` due the
+absent ignored TASK-045 runtime source; its latest recorded pre-final-UTF-8
+result is 1305 passed, 4 skipped and 17 failed (earlier 1269/4/17). It must not
+be rerun or made runnable by reading/restoring the forbidden source.
+
+CLI expected results, compile, manifest (31 records/8 authoritative/23 legacy),
+epic, both hygiene modes, public-safety (378/0), docs consistency (176/0) and
+cached diff checks passed. QA-A and QA-B returned final GO with no open R0/R1;
+Security returned `GO_REPOSITORY_ONLY_CLOSURE` with no open R0/R1 while keeping
+`BLOCK_RUNTIME`; Docs/Scribe returned
+`GO_REPOSITORY_ONLY_CLOSURE / BLOCK_RUNTIME`. Commit, task/default push,
+integration/alignment and inactive lifecycle closure remain pending.

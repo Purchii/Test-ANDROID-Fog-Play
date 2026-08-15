@@ -883,9 +883,9 @@ integration of this release-blocking evidence result. TASK-045 is accepted for
 one fresh thread, but its paired runtime begins with the TV-unavailable
 preflight blocker and must not treat the connected phone as a TV substitute.
 
-## TASK-045 integration-ready phone-independent runtime checkpoint — 2026-08-15
+## TASK-045 completed phone-independent runtime closure — 2026-08-15
 
-TASK-045 is active in accepted fresh thread
+TASK-045 ran in accepted fresh thread
 `01a00260-3925-7fd3-8bf8-aeee9f3bb3c5` on branch
 `qa/task-045-paired-tv-phone-virtual-gamepad-e2e`, based exactly on the
 published TASK-044 lifecycle closure
@@ -955,5 +955,8 @@ with 3 skipped; all runner/report, compile, docs, hygiene, public-safety, epic,
 manifest and diff gates. The v2 report manifest validates 29 records, including
 6 authoritative records. QA Reviewer A, QA Reviewer B and
 Security/Prod-safety returned final `GO` with no open R0/R1; Docs/Scribe source
-reconciliation is complete. TASK-045 is `integration_ready`, not yet
-`inactive_completed` or integrated. TASK-046 has not started.
+reconciliation is complete. The verified task bundle was committed and pushed
+on the task branch, then fast-forwarded and aligned with remote default at
+`origin/main@405300a0ce15da75d62ffa822c68d219cf6ea31d`. TASK-045 is
+`inactive_completed`; the integrated result remains `partial_blocked` and
+`blocks_release`. TASK-046 has not started.

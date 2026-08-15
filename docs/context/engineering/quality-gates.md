@@ -952,8 +952,10 @@ modes, public-safety and diff checks passed; the v2 manifest validates 29
 records, including 6 authoritative records. QA Reviewer A, QA Reviewer B and
 Security/Prod-safety returned final `GO` with no open R0/R1; Docs/Scribe source
 reconciliation is complete. Overall remains `partial_blocked` /
-`blocks_release`. TASK-045 is `integration_ready`, not yet lifecycle-complete;
-TASK-046 has not started.
+`blocks_release`. The verified bundle was committed, published on the task
+branch, fast-forwarded to remote default and aligned at
+`origin/main@405300a0ce15da75d62ffa822c68d219cf6ea31d`; TASK-045 is
+`inactive_completed`. TASK-046 has not started.
 
 ## Merge gates
 

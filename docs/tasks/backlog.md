@@ -53,17 +53,18 @@
 
 ## P2A - EPIC-QA-041-055 independent QA-only execution chain
 
-TASK-041 through TASK-044 are completed and integrated. TASK-044's bounded
+TASK-041 through TASK-045 are completed and integrated. TASK-044's bounded
 physical runtime is terminal by hardened ledger and blocks release. Further TV
-runtime is currently unavailable. TASK-045 is accepted for one fresh thread,
-but its paired runtime begins with the missing-TV preflight blocker; the
-connected phone cannot substitute for the TV member of the lane. Its approved
-independent phone inventory now has 26 terminal ledger rows: 23 approved-scope
+runtime is currently unavailable. TASK-045 ran in one accepted fresh thread;
+its paired runtime retained the missing-TV blocker, and the connected phone did
+not substitute for the TV member of the lane. Its approved independent phone
+inventory has 26 terminal ledger rows: 23 approved-scope
 and 21 approved plus declared reachable/discovered. Only 2 rows are covered and
 10 session-dependent rows are blocked by external state. The two independently
 eligible scenario rows remain blocked by missing oracles. Final QA-A, QA-B,
-Security and Docs reviews plus all static gates passed; TASK-045 is
-integration-ready but not yet integrated or inactive-completed.
+Security and Docs reviews plus all static gates passed; TASK-045 is completed,
+integrated and remote-default aligned at `405300a` while its result remains
+`partial_blocked` / `blocks_release`.
 TASK-044…055 remain governed by their explicit
 dependencies; later runtime work also remains subject
 to each task's own `PROD_CONDITIONAL` lane-readiness gates. These entries extend
@@ -75,7 +76,7 @@ the backlog without replacing TASK-000…040 history.
 | TASK-042 | Local APK, launcher, AVD and device runtime preflight | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL bounded read-only metadata/inventory | TASK-041 | qa/task-042-local-runtime-preflight | completed_integrated at task commit `76faacc`; final QA A/QA B/Security/Docs GO; 18 terminal rows: 6 observed_pass, 8 blocked, 4 tooling_defect; current SDK/content-integrity access blocker; no product-runtime claim |
 | TASK-043 | Sanitized source-informed runtime surface registry and regression selector | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-041, TASK-042 | qa/task-043-source-informed-runtime-coverage-map | completed_integrated; task commit `9e12a13`; integration checkpoint `b4a6d82` pushed and aligned; 18/18 static scenarios observed_pass; manifest v2 authoritative/no release claim; fresh TASK-044 accepted |
 | TASK-044 | Television Full reference-lane oracle closure on TPV13 | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-042, TASK-043 | qa/task-044-tpv13-reference-lane-oracle-closure | inactive_completed; task commit `bcf1f37` published on task branch and remote default; hardened 32/32 terminal (29 P0/3 P1): 16 observed_pass, 2 confirmed_defect, 11 observed_fail, 3 blocked_by_oracle; fail/partial_blocked/blocks_release; final Builder/QA-A/QA-B/Security/Docs GO with no open R0/R1; additional TV runtime blocked_by_device; phone-full phone never substituted |
-| TASK-045 | Paired Television Full plus Phone Full virtual-gamepad E2E | BOUNDED_AUTONOMOUS; paired runtime blocked, `PROD_CONDITIONAL_PHONE_INDEPENDENT` executed | TASK-044 | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | integration_ready in accepted fresh thread from exact `origin/main@db574915`; 26 terminal phone-ledger rows (23 approved-scope, 21 approved plus declared reachable/discovered), only 2 covered and 10 session-dependent blocked external; 16 anomalies (11 process/5 runtime); QA-045-006/009 blocked_by_oracle, 19 paired rows blocked_by_device, static QA-045-022 ledger closure only; 50 focused and 1194 full/3 skipped; manifest 29/6; final QA-A/QA-B/Security/Docs GO with no open R0/R1; partial_blocked/blocks_release; not yet integrated/inactive; TASK-046 not started |
+| TASK-045 | Paired Television Full plus Phone Full virtual-gamepad E2E | BOUNDED_AUTONOMOUS; paired runtime blocked, `PROD_CONDITIONAL_PHONE_INDEPENDENT` executed | TASK-044 | qa/task-045-paired-tv-phone-virtual-gamepad-e2e | inactive_completed and integrated at `origin/main@405300a`; accepted fresh thread used exact base `db574915`; 26 terminal phone-ledger rows (23 approved-scope, 21 approved plus declared reachable/discovered), only 2 covered and 10 session-dependent blocked external; 16 anomalies (11 process/5 runtime); QA-045-006/009 blocked_by_oracle, 19 paired rows blocked_by_device, static QA-045-022 ledger closure only; 50 focused and 1194 full/3 skipped; manifest 29/6; final QA-A/QA-B/Security/Docs GO with no open R0/R1; partial_blocked/blocks_release; TASK-046 not started |
 | TASK-046 | Television Steam / YandexTV representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-046-yandextv-representative-lane | planned_blocked_by_dependency |
 | TASK-047 | Television Sber / SberBox representative runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-044 | qa/task-047-sberbox-representative-lane | planned_blocked_by_dependency |
 | TASK-048 | AOSP FogPlay Stick and launcher system-cluster runtime lane | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_SYSTEM_RUNTIME | TASK-042, TASK-043 | qa/task-048-aosp-launcher-system-cluster-runtime | planned_blocked_by_dependency; may later classify lane rows `blocked_by_device` without stopping independent downstream work |

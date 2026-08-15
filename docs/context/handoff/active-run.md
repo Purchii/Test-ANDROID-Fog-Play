@@ -1,8 +1,8 @@
 # Active run
 
-## Active TASK-045 — paired TV plus phone virtual-gamepad E2E
+## Completed TASK-045 — paired TV plus phone virtual-gamepad E2E
 
-- Lifecycle status: `integration_ready`.
+- Lifecycle status: `inactive_completed`.
 - Thread id: `01a00260-3925-7fd3-8bf8-aeee9f3bb3c5`.
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Branch: `qa/task-045-paired-tv-phone-virtual-gamepad-e2e`.
@@ -241,11 +241,12 @@ tests and 1194 full-suite tests with 3 skipped. All runner/report, compile,
 manifest, epic, docs, hygiene, public-safety and diff gates passed. The v2
 manifest validates 29 records, including 6 authoritative records.
 
-TASK-045 is `integration_ready` with `partial_blocked` coverage and
-`blocks_release`; this authorizes integration of the honest blocked evidence
-bundle only, not a paired or release PASS. The task remains active until commit,
-task-branch push, default integration/push and alignment verification complete;
-it must not yet be marked `inactive_completed`. TASK-046 has not started.
+TASK-045 is `inactive_completed` with `partial_blocked` coverage and
+`blocks_release`; this is integration of the honest blocked evidence bundle,
+not a paired or release PASS. Task commit
+`405300a0ce15da75d62ffa822c68d219cf6ea31d` was pushed on the task branch,
+fast-forwarded to remote default and verified aligned at the same SHA. The
+accepted fresh thread is now inactive. TASK-046 has not started.
 
 ## Completed TASK-044 — TPV13 reference-lane runtime closed, release blocked
 

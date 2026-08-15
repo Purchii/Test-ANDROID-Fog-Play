@@ -1,5 +1,120 @@
 # Active run
 
+## Completed TASK-057 — Phone Full runtime authority and fixture readiness gate
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread title: `TASK-057 — Phone Full runtime authority and fixture readiness gate`.
+- Thread status: `inactive_completed_blocked_runtime` / readiness `blocked`.
+- Fresh independent task: `yes`.
+- Task branch: `qa/task-057-phone-full-runtime-authority-gate`.
+- Default branch: `main`.
+- Exact base: `origin/main@146a390ec2e0bb40036aa3f7e13011869c0761d0`.
+- Remote drift gate: `confirmed_pass` after fetch; actual remote default is
+  `main` and the task branch starts at the expected remote SHA.
+- Production safety: repository work is `PROD_SAFE`; the bounded read-only APK,
+  ADB and fixture-metadata contour is `PROD_CONDITIONAL` under Security
+  decision `GO_METADATA_CONDITIONAL / BLOCK_RUNTIME`.
+
+The task keeps exactly seven independent readiness rows from the TASK-057
+contract. No app launch, product navigation, authentication, install/update,
+uninstall, clear-data, downgrade bypass, account/payment/session mutation,
+network shaping, external QR/browser traversal or TASK-058 execution is
+authorized. Raw device/APK/fixture evidence stays ignored and local-only.
+
+`TASK057-PROCESS-ANOMALY-001` is `confirmed`; public-safe alias
+`same_repository_common_dir_path_normalization_failure`. Trigger/action: the
+first bounded same-repository preflight attempted to compare the active and
+owner checkout Git common directories before listing or reading APK files.
+Expected result: normalize both Git common-directory references and confirm
+same-repository provenance. Observed result: an already absolute common-dir
+reference was joined to the active worktree path, so path resolution failed and
+the gate stopped with a repository-mismatch category. No source APK listing,
+APK read/copy, ADB or device action occurred. Likely cause: incorrect handling
+of absolute versus relative `git rev-parse --git-common-dir` output. Test-design
+implication: normalize each common-dir reference according to its rootedness
+before equality comparison, retain the first tooling failure, and rerun only
+the corrected bounded preflight without weakening the same-repository gate.
+
+### Readiness closure
+
+The tracked readiness ledger contains exactly seven rows, with no row inferred
+from another:
+
+| Row | Public-safe subject | Terminal status | Fresh result |
+|---|---|---|---|
+| 01 | `main-apk-03` | `blocked_by_oracle` | Candidate presence, integrity, provenance, signature, version relation, target-SDK and ABI metadata are confirmed; min-SDK metadata was not emitted. |
+| 02 | `installed-phone-full-build` | `blocked_by_external_state` | Fresh relation is `candidate_newer`, distinct from historical installed-newer evidence; installed and candidate signing certificates mismatch. Device/candidate ABI intersection is true. |
+| 03 | `phone-current-001` | `observed_pass` | Neutral selector mapping, ADB authorization and the connected-device set were stable across three snapshots. |
+| 04 | `ordinary-downgrade-guard` | `observed_pass` | Ordinary downgrade rejection is preserved; no bypass was attempted. |
+| 05 | `synthetic-session-passport` | `blocked_by_fixture` | Current synthetic test-only session passport is absent. |
+| 06 | `clean-first-launch-fixture` | `blocked_by_fixture` | Pre-provisioned non-destructive clean-first-launch fixture is absent. |
+| 07 | `evidence-cleanup-passport` | `blocked_by_fixture` | Metadata cleanup was stable/no-mutation, but the current evidence/cleanup passport and Security `GO_RUNTIME` are absent. |
+
+Totals are two `observed_pass` and five blocking rows. Release effect is
+`blocks_release`; Security remains `BLOCK_RUNTIME`; TASK-058 remains
+`planned_blocked_by_dependency`. Historical `phone-realme-001` and the
+historical installed-newer build were not reused without a fresh exact mapping.
+
+### Action budget, cleanup and evidence
+
+The bounded metadata budget was one non-overwrite candidate copy, one
+hash/signature/metadata extraction, three ADB snapshots and four per-device
+read-only commands. Install, UI, app launch/navigation, authentication,
+account, payment, session, network and external-boundary action counts were all
+zero. Raw APK/device/fixture evidence remained ignored/local-only; tracked
+output contains aliases, categories, statuses and evidence ids only. Opening
+and cleanup snapshots were stable, no mutation was observed, and no cleanup or
+rollback action against app/device/account state was needed.
+
+The metadata-process kill switch was confirmed and remained unused. A runtime
+kill switch is not established because the current evidence/cleanup passport
+is absent; row 07 therefore remains blocking.
+
+Tracked closure artifacts:
+
+- `docs/qa/reports/task057_phone_full_runtime_authority.readiness-ledger.csv`;
+- `docs/qa/reports/task057_phone_full_runtime_authority.cleanup-ledger.csv`;
+- `docs/qa/reports/task057_phone_full_runtime_authority.summary.json`.
+
+### Multi-agent and verification closure
+
+Strict roles completed: Orchestrator, Planner, Builder, QA Reviewer A, QA
+Reviewer B, Security/Prod-safety and Docs/Scribe. Planner produced the bounded
+fail-closed plan; Security approved metadata only before any APK/device action;
+Builder implemented the repository authority bundle; Docs/Scribe reconciled
+the source of truth. Four review R1 false-GO routes and one P2 wording issue
+were remediated before final acceptance. QA A and QA B each returned
+`GO_REPOSITORY_BLOCKED_CLOSURE / BLOCK_RUNTIME` with final R0/R1/P2 `0/0/0`.
+Security returned the same final verdict and counts. Docs/Scribe completed with
+no open documentation finding.
+
+Final repository verification: 52 focused TASK-057/report-manifest tests pass;
+both TASK-057 validators pass; compile, exact manifest validation (`32`
+records, `9` authoritative), epic index, both hygiene modes, public repository
+safety (`393/0`), docs/link sanity (`184/0`) and cached/working-tree diff checks
+pass. The Security-forbidden TASK-045 source and unfiltered suite were not
+read, restored or run.
+
+### Exact public-safe owner actions
+
+Before a new independent readiness attempt, the owner must:
+
+1. provide a freshly approved Phone Full candidate whose permitted metadata
+   oracle emits min-SDK and whose signing identity is compatible with the
+   installed state, while preserving a non-downgrade `candidate_newer`
+   relation;
+2. provide a current ignored/local-only synthetic test-session passport;
+3. provide a pre-provisioned non-destructive clean-first-launch fixture that
+   requires no clear-data, uninstall, reset, patch or downgrade bypass;
+4. provide a current ignored/local-only evidence/cleanup passport covering
+   retention/redaction, bounded action budget, kill switch and
+   cleanup/rollback; and
+5. obtain Security/Prod-safety `GO_RUNTIME` after all seven rows are freshly
+   revalidated.
+
+No TASK-058 runtime was executed. This thread is inactive after repository
+closure and must not implement another independent task.
+
 ## Completed TASK-056 — Phone-only end-to-end QA roadmap reprioritization
 
 - Mode: `BOUNDED_AUTONOMOUS`.

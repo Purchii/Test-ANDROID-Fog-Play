@@ -39,6 +39,67 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Completed TASK-057 blocked Phone Full readiness — 2026-08-15
+
+TASK-057 ran in a fresh `BOUNDED_AUTONOMOUS` thread on
+`qa/task-057-phone-full-runtime-authority-gate` from exact aligned
+`origin/main@146a390ec2e0bb40036aa3f7e13011869c0761d0`. Repository work was
+`PROD_SAFE`; the Security-approved bounded metadata contour was
+`PROD_CONDITIONAL` under `GO_METADATA_CONDITIONAL / BLOCK_RUNTIME`.
+Lifecycle is `inactive_completed_blocked_runtime`; readiness is `blocked`,
+release effect is `blocks_release`, and TASK-058 remains blocked.
+
+The authoritative readiness ledger contains exactly seven independent rows:
+two are `observed_pass` and five are blocking. Fresh mapping bound the neutral
+selector to `phone-current-001`; authorization and the connected-device set
+were stable across three snapshots. Ordinary downgrade rejection remained
+preserved and no bypass was attempted. Neither result can satisfy another row.
+
+The selected Phone Full candidate `main-apk-03` was freshly confirmed for
+presence, integrity, provenance, signing metadata, version relation,
+target-SDK and ABI metadata. Device/candidate ABI intersection is true. The
+candidate is freshly `candidate_newer` relative to current installed state and
+remains distinct from the historical installed-newer build. Readiness still
+blocks because candidate min-SDK metadata was not emitted and the installed
+signing certificate does not match the candidate signing certificate. The
+historical `phone-realme-001` candidate and historical installed-newer evidence
+were not reused as current authority.
+
+Three fixture/security rows also block independently: no current synthetic
+test-only session passport, no pre-provisioned non-destructive clean-first-
+launch fixture, and no current evidence/cleanup passport with Security
+`GO_RUNTIME` were present. Metadata cleanup itself is confirmed: evidence
+remained ignored/local-only and public-redacted, the opening and cleanup device
+snapshots were unchanged, and no install, app, UI, authentication, account,
+payment, session, network or external-boundary action occurred.
+
+The consumed metadata budget was one non-overwrite candidate copy, one bounded
+hash/signature/metadata extraction, three ADB snapshots and four per-device
+read-only commands. Product/runtime/navigation action count was zero. The
+metadata stop condition and no-mutation cleanup were exercised; the runtime
+kill switch remains absent as part of the missing evidence/cleanup passport.
+
+`TASK057-PROCESS-ANOMALY-001` is retained as `confirmed`: the first bounded
+same-repository preflight mishandled an already absolute Git common-directory
+reference and failed before any APK/device action. The corrected rerun
+normalized rooted and relative references separately without weakening the
+same-repository gate.
+
+Owner action before a new independent readiness attempt:
+
+1. provide a freshly approved Phone Full candidate whose permitted metadata
+   oracle emits min-SDK and whose signing identity is compatible with the
+   installed state, while preserving a non-downgrade `candidate_newer`
+   relation;
+2. provide a current ignored/local-only synthetic test-session passport;
+3. provide a pre-provisioned non-destructive clean-first-launch fixture that
+   needs no clear-data, uninstall, reset, patch or downgrade bypass;
+4. provide a current ignored/local-only evidence/cleanup passport covering
+   retention/redaction, bounded action budget, kill switch and
+   cleanup/rollback; and
+5. obtain final Security/Prod-safety `GO_RUNTIME` after all seven rows are
+   freshly revalidated.
+
 ## Completed TASK-056 phone-only roadmap reprioritization — 2026-08-15
 
 TASK-056 runs in a fresh `BOUNDED_AUTONOMOUS` thread on

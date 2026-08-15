@@ -1046,6 +1046,39 @@ freshness, CSV-enum and report-parity false-pass routes. Runtime remains
 pushed on the task branch and fast-forwarded to remote default; this subsequent
 documentation commit closes the inactive lifecycle.
 
+## TASK-057 Phone Full runtime-authority readiness gates
+
+TASK-057 repository work is `PROD_SAFE`. Security may authorize only a bounded
+`PROD_CONDITIONAL` read-only metadata contour under
+`GO_METADATA_CONDITIONAL / BLOCK_RUNTIME`; this is not `GO_RUNTIME`.
+
+The readiness closure fails closed unless:
+
+- exactly seven unique rows are present and no row infers, duplicates or merges
+  another;
+- current-phone mapping/authorization and the opening, confirmation and cleanup
+  device snapshots are fresh and stable;
+- candidate and installed build presence, provenance, integrity, signature,
+  version, min/target-SDK and ABI compatibility are independently confirmed;
+- historical aliases/build evidence never substitutes for fresh authority;
+- ordinary downgrade rejection remains preserved without bypass;
+- synthetic-session, non-destructive clean-first-launch and evidence/cleanup
+  passports independently validate;
+- all seven rows are `observed_pass` and Security returns `GO_RUNTIME`;
+- raw identifiers/paths/hashes/signing/account/session values remain
+  ignored/local-only; and
+- no install, app/UI/navigation, auth, account, payment, session, network or
+  external-boundary action occurs.
+
+The 2026-08-15 closure has two `observed_pass` and five blocking rows. Current
+phone mapping/authorization and downgrade safety pass. Candidate min-SDK was
+not emitted; installed/candidate signing certificates mismatch; synthetic
+session, clean-first-launch and evidence/cleanup passports are absent. Other
+confirmed candidate metadata, true device/candidate ABI intersection, stable
+snapshots and no-mutation cleanup cannot infer the missing rows. Security stays
+`BLOCK_RUNTIME`, release effect is `blocks_release`, and TASK-058 remains
+blocked.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

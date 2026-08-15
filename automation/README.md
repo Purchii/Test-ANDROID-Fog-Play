@@ -2,6 +2,19 @@
 
 This directory contains public-safe local QA tooling for the Android TV QA repository.
 
+## TASK-057 Phone Full readiness authority
+
+`automation/runtime_authority/task057_phone_full_runtime_authority.py` is a
+repository-only fail-closed generator and validator for the seven independent
+Phone Full readiness rows. It does not read local APK/device evidence, invoke
+Android tools or ADB, or navigate the app; sanitized metadata observations are
+supplied by the bounded Orchestrator workflow. Individual non-security rows may
+close under `GO_METADATA_CONDITIONAL`, while the tracked aggregate remains
+`BLOCK_RUNTIME` unless all seven rows and the separate cleanup passport are
+fresh, confirmed and non-expired, and row 7 plus cleanup have Security
+`GO_RUNTIME`. Missing, duplicate, merged, stale, unsafe or partially passing
+rows block release.
+
 ## TASK-048 AOSP/launcher system-lane authority
 
 `automation/system_lane/task048_aosp_launcher_runtime.py` implements the

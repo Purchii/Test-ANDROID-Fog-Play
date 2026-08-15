@@ -136,13 +136,21 @@ deferred, not completed. Phone evidence cannot satisfy or unblock those claims.
 | ID | Title | Mode default / safety | Dependencies | Branch | Status |
 |---|---|---|---|---|---|
 | TASK-056 | Phone-only end-to-end QA roadmap reprioritization | BOUNDED_AUTONOMOUS; PROD_SAFE_DOCS_ONLY; runtime BLOCK_RUNTIME | owner direction; TASK-042/TASK-045/TASK-045A authority | qa/task-056-phone-only-e2e-roadmap-reprioritization | inactive_completed_docs_only; implementation `1cb85c53f5b191c739bbd4128e8097688a1b3c06` pushed to task branch and fast-forwarded to main; no runtime executed |
-| TASK-057 | Phone Full runtime authority and fixture readiness gate | BOUNDED_AUTONOMOUS; repository PROD_SAFE; bounded metadata PROD_CONDITIONAL after Security GO | TASK-056; TASK-042/TASK-045/TASK-045A public authority | qa/task-057-phone-full-runtime-authority-gate | planned_blocked_by_authority; next planned task; BLOCK_RUNTIME |
+| TASK-057 | Phone Full runtime authority and fixture readiness gate | BOUNDED_AUTONOMOUS; repository PROD_SAFE; bounded metadata PROD_CONDITIONAL after Security GO | TASK-056; TASK-042/TASK-045/TASK-045A public authority | qa/task-057-phone-full-runtime-authority-gate | inactive_completed_blocked_runtime; exact base `146a390e`; exactly 7 rows: 2 observed_pass/5 blocking; candidate min-SDK metadata not emitted, signing mismatch and three missing fixture/security passports; BLOCK_RUNTIME/blocks_release; no product runtime |
 | TASK-058 | Phone Full first-launch and pre-auth coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-057 GO_RUNTIME and approved non-destructive first-launch fixture | qa/task-058-phone-first-launch-pre-auth-coverage | planned_blocked_by_dependency |
 | TASK-059 | Phone Full synthetic-session and core navigation coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-058 PASS/zero release blockers/cleanup plus current TASK-057/Security and session passport | qa/task-059-phone-synthetic-session-core-navigation | planned_blocked_by_dependency |
 | TASK-060 | Phone Full exhaustive screen, state and transition inventory | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-059 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-060-phone-exhaustive-screen-transition-inventory | planned_blocked_by_dependency |
 | TASK-061 | Phone Full input, lifecycle and safe recovery coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-061-phone-input-lifecycle-recovery | planned_blocked_by_dependency |
 | TASK-062 | Phone Full boundary classification and safe recovery | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 and TASK-061 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-062-phone-boundary-classification-recovery | planned_blocked_by_dependency |
 | TASK-063 | Phone-only evidence aggregation and QA release gate | BOUNDED_AUTONOMOUS; PROD_SAFE_OFFLINE_STATIC_ONLY | TASK-057 through TASK-062; blocked terminal inputs aggregate only to blocks_release | qa/task-063-phone-only-release-gate | planned_blocked_by_dependency |
+
+TASK-058 remains `planned_blocked_by_dependency`. TASK-057 did not produce
+`GO_RUNTIME`: current phone mapping/authorization and downgrade safety passed,
+but candidate min-SDK was not emitted, installed/candidate signing certificates
+mismatch, and current synthetic-session, clean-first-launch and
+evidence/cleanup passports are absent. A future fresh readiness attempt must
+revalidate all seven rows; partial metadata and historical evidence cannot be
+carried forward by assumption.
 
 The authoritative decomposition and common gates are in
 `tasks/TASK_056_phone_only_e2e_roadmap_reprioritization.md`; each future task

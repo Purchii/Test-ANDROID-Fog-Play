@@ -1,0 +1,121 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness_ledger",
+      "reference": "docs/qa/reports/task057_phone_full_runtime_authority.readiness-ledger.csv",
+      "sha256": "17ab9573627607f635560fcf1204e3df9793843696e405d66619e2933d33d9af"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup_ledger",
+      "reference": "docs/qa/reports/task057_phone_full_runtime_authority.cleanup-ledger.csv",
+      "sha256": "85d597e206f8098516d1ab407da098a3f97b09e1753a75d2927df28ac9922808"
+    }
+  ],
+  "blocked_reasons": [
+    "candidate_min_sdk_metadata_not_emitted",
+    "clean_first_launch_fixture_absent",
+    "evidence_cleanup_passport_absent_security_block_runtime",
+    "installed_signing_certificate_mismatch",
+    "synthetic_session_passport_absent"
+  ],
+  "build_ref": {
+    "alias": "main-apk-03"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-08-15T12:00:00Z",
+  "payload": {
+    "authority_row_count": 7,
+    "blocked_row_count": 5,
+    "cleanup_passport_status": "blocked",
+    "go_runtime": false,
+    "product_navigation_executed": false,
+    "product_runtime_action_count": 0,
+    "readiness_decision": "BLOCK_RUNTIME",
+    "runtime_action_count_by_generator": 0,
+    "security_gate": "BLOCK_RUNTIME"
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_READ_ONLY_METADATA",
+  "provenance": {
+    "adb_or_device_action": true,
+    "apk_read": true,
+    "bounded_metadata_actions_recorded": true,
+    "local_only_input_read": true,
+    "product_navigation": false,
+    "source": "sanitized_task057_metadata_observations_and_tracked_public_safe_ledgers"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety_reviewer": "block_runtime"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK057-RISK-FALSE-PASS",
+      "summary": "No readiness row may infer another; missing, stale, merged, unsafe, or non-confirmed authority blocks runtime."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK057-RISK-DOWNGRADE-BYPASS",
+      "summary": "Ordinary downgrade rejection must remain preserved; uninstall, clear-data, patching, and downgrade bypass remain forbidden."
+    }
+  ],
+  "run_id": "task057-readiness-authority-blocked-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-current-001",
+  "task_id": "TASK-057",
+  "unknowns": [
+    {
+      "evidence_status": "confirmed",
+      "id": "task057-authority-01-canonical-phone-full",
+      "reason_code": "candidate_min_sdk_metadata_not_emitted"
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "task057-authority-02-installed-compatibility",
+      "reason_code": "installed_signing_certificate_mismatch"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-05-synthetic-session",
+      "reason_code": "synthetic_session_passport_absent"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-06-clean-first-launch",
+      "reason_code": "clean_first_launch_fixture_absent"
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "task057-authority-07-evidence-cleanup-security",
+      "reason_code": "evidence_cleanup_passport_absent_security_block_runtime"
+    }
+  ],
+  "verification": [
+    {
+      "check": "exact_seven_authority_rows",
+      "evidence_status": "confirmed",
+      "result_count": 7,
+      "status": "pass"
+    },
+    {
+      "check": "readiness_authority",
+      "evidence_status": "confirmed",
+      "result_count": 2,
+      "status": "blocked"
+    },
+    {
+      "check": "product_navigation",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "not_run"
+    }
+  ]
+}

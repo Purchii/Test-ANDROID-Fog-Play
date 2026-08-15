@@ -15,6 +15,19 @@ fresh, confirmed and non-expired, and row 7 plus cleanup have Security
 `GO_RUNTIME`. Missing, duplicate, merged, stale, unsafe or partially passing
 rows block release.
 
+## TASK-057R Phone Full authorized reinstall revalidation
+
+`automation/runtime_authority/task057r_phone_full_authorized_reinstall_readiness.py`
+is the separate repository-only validator for the sanitized TASK-057R result.
+It validates fixed TASK-057R readiness, reinstall-action and cleanup ledgers;
+it never reads local APK/device evidence, invokes Android tooling/ADB, performs
+package actions or navigates the app. The tracked result records one authorized
+target-only uninstall and one ordinary candidate install as `observed_pass`,
+while readiness remains `BLOCK_RUNTIME` because synthetic-session,
+clean-first-launch and runtime evidence/cleanup passports are independently
+absent. Successful reinstall cannot infer any of those rows or Security
+`GO_RUNTIME`.
+
 ## TASK-048 AOSP/launcher system-lane authority
 
 `automation/system_lane/task048_aosp_launcher_runtime.py` implements the

@@ -1,0 +1,11 @@
+action_id,action_alias,phase_order,phase,intended_count,observed_count,current_status,evidence_status,evidence_ids,terminal_status,reason_code
+task057r-action-01-target-map,target-map,10,pre-action,1,1,exact_target_and_candidate_mapped,confirmed,task057r-selector-artifact-map,observed_pass,exact_target_and_candidate_mapped
+task057r-action-02-security-plan-go,security-plan-go,20,pre-action,1,1,security_plan_go_confirmed_before_uninstall,confirmed,task057r-security-plan-go,observed_pass,security_plan_go_confirmed_before_uninstall
+task057r-action-03-one-shot-contingency,one-shot-contingency,30,pre-action,1,1,stop_no_retry_contingency_confirmed,confirmed,task057r-one-shot-contingency,observed_pass,stop_no_retry_contingency_confirmed
+task057r-action-04-uninstall,uninstall,40,package-mutation,1,1,authorized_target_uninstall_observed,confirmed,task057r-uninstall-observation,observed_pass,authorized_target_uninstall_observed
+task057r-action-05-midstate-absence,midstate-absence,50,package-mutation,1,1,target_absent_after_uninstall,confirmed,task057r-midstate-absence,observed_pass,target_absent_after_uninstall
+task057r-action-06-ordinary-install,ordinary-install,60,package-mutation,1,1,selected_candidate_ordinary_install_observed,confirmed,task057r-install-observation,observed_pass,selected_candidate_ordinary_install_observed
+task057r-action-07-postinstall-equivalence,postinstall-equivalence,70,post-action-validation,1,1,installed_candidate_exact_equivalence,confirmed,task057r-postinstall-equivalence,observed_pass,installed_candidate_exact_equivalence
+task057r-action-08-unrelated-package-delta,unrelated-package-delta,80,post-action-validation,0,0,unrelated_package_delta_zero,confirmed,task057r-unrelated-delta-check,observed_pass,unrelated_package_delta_zero
+task057r-action-09-launch-navigation,launch-navigation,90,scope-closure,0,0,launch_navigation_not_executed,confirmed,task057r-zero-launch-navigation,observed_pass,launch_navigation_not_executed
+task057r-action-10-task058,task058,100,scope-closure,0,0,task058_not_executed,confirmed,task057r-zero-task058,observed_pass,task058_not_executed

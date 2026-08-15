@@ -1,5 +1,83 @@
 # Active run
 
+## Active TASK-057R — Phone Full authorized reinstall and readiness revalidation
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread status: `active_candidate_blocked_runtime`.
+- Task branch:
+  `qa/task-057r-phone-full-authorized-reinstall-readiness-revalidation`.
+- Production safety: repository work `PROD_SAFE`; the exact target-only
+  uninstall/install was `PROD_CONDITIONAL` after owner authorization dated
+  2026-08-16 and Security plan review.
+- Runtime decision: `BLOCK_RUNTIME`; release effect `blocks_release`.
+- Product/app launch, navigation and TASK-058 actions: zero.
+
+The owner authorized uninstall of only the freshly mapped installed Phone Full
+target and explicitly accepted loss of that target application's local
+data/session. The bounded action result is `observed_pass`: one uninstall, one
+ordinary install of selected `main-apk-03`, target absent mid-sequence, final
+installed state exactly equivalent to the candidate by permitted launch-free
+metadata/signing/hash evidence, and unrelated-package delta zero. Lost local
+data/session was not restored and no rollback of it is claimed.
+
+The reinstall ledger has explicit phase/order authority: public-safe
+pre-action Security plan GO and the one-shot stop/no-retry contingency precede
+uninstall. The contingency was unused; drift or uninstall/install failure would
+stop without retry, and recovery after such failure requires new owner
+authority. This differs from accepted data loss/no rollback and from the absent
+runtime kill switch/passport. Candidate row 01 requires all category-level
+integrity, provenance, signing, version, emitted min-SDK, target-SDK, ABI and
+install-compatibility evidence; no raw values are public.
+
+The exact seven TASK-057 readiness rows are terminal: rows 01–04
+`observed_pass`; rows 05–07 `blocked_by_fixture`. A missing post-uninstall
+session is not a synthetic-session passport; reinstall success is not an
+approved clean-first-launch fixture/passport; and the bounded action/redaction
+record cannot infer the runtime evidence/cleanup passport, runtime budget,
+kill switch, cleanup/rollback or Security `GO_RUNTIME`. Aggregate is 4 pass/3
+blocked, so TASK-058 remains `planned_blocked_by_dependency` and was not run.
+
+Tracked authority:
+
+- `docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.readiness-ledger.csv`;
+- `docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.reinstall-action-ledger.csv`;
+- `docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.cleanup-ledger.csv`;
+- `docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.summary.json`.
+
+Confirmed process anomalies, all fail-closed before mutation with no product
+impact: `TASK057R-PROCESS-ANOMALY-001` common-dir normalization;
+`TASK057R-PROCESS-ANOMALY-002` PowerShell line-selection/expression errors;
+`TASK057R-PROCESS-ANOMALY-003` split-package false ambiguity. No failed output
+was accepted as evidence and no alternate package was touched.
+`TASK057R-PROCESS-ANOMALY-004` is a repository-only post-action Builder
+validation anomaly: a generic lowercase-slug check rejected valid uppercase
+reviewer-gate enums and caused eight focused failures. Exact enum validation
+fixed the issue, the rerun passes, and product impact is none.
+
+### Verification and review closure
+
+The final repository candidate passes both TASK-057R validator modes, 94
+focused TASK-057R/TASK-057/report-manifest tests, compile, manifest validation
+with 33 records and 10 authoritative records, epic validation, both hygiene
+modes, public repository safety with 400 files and zero findings, documentation
+consistency/link sanity with 185 files and zero findings, and cached diff
+checks. QA Reviewer A, QA Reviewer B and Security/Prod-safety each returned
+`GO_REPOSITORY_BLOCKED_CLOSURE / BLOCK_RUNTIME` with final R0/R1/P2 counts
+`0/0/0` after the three QA A R1 findings were remediated. The generated summary
+keeps deterministic pending-review markers; these source-of-truth reviewer
+verdicts are the authoritative review closure.
+
+### Exact owner actions before runtime can resume
+
+The owner must provide a current ignored/local-only synthetic test-session
+passport; a separately approved, pre-provisioned, non-destructive clean-first-
+launch fixture/passport; and a current runtime evidence/cleanup passport that
+covers retention/redaction, a runtime action budget, runtime kill switch and
+cleanup/rollback. Security/Prod-safety must then issue `GO_RUNTIME` only after
+all seven rows are freshly revalidated. Any selector, device, artifact,
+passport or expiry drift requires rows 01 through 04 to be revalidated too.
+TASK-058 remains forbidden and blocked until every item passes.
+
 ## Completed TASK-057 — Phone Full runtime authority and fixture readiness gate
 
 - Mode: `BOUNDED_AUTONOMOUS`.

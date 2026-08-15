@@ -1079,6 +1079,62 @@ snapshots and no-mutation cleanup cannot infer the missing rows. Security stays
 `BLOCK_RUNTIME`, release effect is `blocks_release`, and TASK-058 remains
 blocked.
 
+## TASK-057R authorized reinstall readiness gates
+
+TASK-057R repository validation is `PROD_SAFE`. The exact mapped target-only
+uninstall and ordinary selected-candidate install are `PROD_CONDITIONAL` only
+under the owner authorization dated 2026-08-16 and the task-local Security plan
+gate. The authorization accepts target-app local data/session loss but does not
+authorize clear-data, reset, another package, downgrade bypass, APK mutation,
+launch/navigation or TASK-058.
+
+The TASK-057R bundle fails closed unless:
+
+- historical TASK-057 spec, runner, tests and report bundle remain unchanged;
+- a separate TASK-057R task/report identity and fixed tracked paths are used;
+- the action ledger records exact fresh selector/artifact mapping, a distinct
+  public-safe pre-action Security plan GO row and a pre-action one-shot
+  stop/no-retry contingency before uninstall, one
+  authorized uninstall, target absence, one ordinary `main-apk-03` install,
+  exact launch-free installed/candidate metadata/signing/hash equivalence, zero
+  unrelated-package delta and zero launch/navigation/TASK-058 actions;
+- all exact seven TASK-057 authority subjects are present once and in order;
+- row 01 has separate category-level evidence for integrity, provenance,
+  signing, version, emitted min-SDK, target-SDK, ABI and install compatibility;
+  omission of any category blocks the row;
+- only rows 01–04 are `observed_pass`; successful reinstall, empty session and
+  local action/redaction evidence cannot promote rows 05–07;
+- synthetic-session, clean-first-launch and runtime evidence/cleanup passport
+  rows remain independent and release-blocking while absent;
+- Security remains `BLOCK_RUNTIME`, aggregate readiness is 4 pass/3 blocked,
+  and release effect is `blocks_release`;
+- target-app local data/session is recorded as owner-authorized lost and not
+  restored, with no rollback claim;
+- reinstall drift/failure stops without retry; recovery after uninstall/install
+  failure requires new owner authority; this contingency is distinct from the
+  absent later-runtime kill switch/passport;
+- all three pre-mutation process anomalies remain fail-closed, retain the first
+  failure, accept no failed output as evidence and state product impact none;
+- raw paths, device identifiers, package names, hashes, signing values and
+  command output remain ignored/local-only.
+
+The repository-only runner must not read `.qa_local`, invoke Android tooling or
+ADB, perform package actions, accept arbitrary path overrides, launch/navigate
+the app or execute TASK-058. Passing its report contract proves only the
+integrity of the sanitized tracked TASK-057R record, not `GO_RUNTIME`.
+
+Required focused checks:
+
+```text
+python automation/runtime_authority/task057r_phone_full_authorized_reinstall_readiness.py --validate-only
+python automation/runtime_authority/task057r_phone_full_authorized_reinstall_readiness.py --validate-report
+python -m pytest -q tests/test_task057r_phone_full_authorized_reinstall_readiness.py tests/test_task057_phone_full_runtime_authority.py tests/test_report_manifest.py
+python automation/reporting/generate_report_manifest.py --validate-only --manifest docs/qa/reports/report-manifest.json
+python -m compileall -q automation/runtime_authority tests/test_task057r_phone_full_authorized_reinstall_readiness.py
+git diff --check
+git status --short --branch
+```
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

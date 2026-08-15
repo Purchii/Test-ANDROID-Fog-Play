@@ -1,0 +1,190 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness_ledger",
+      "reference": "docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.readiness-ledger.csv",
+      "sha256": "ff0b0ef503f3d6f1761a63ab278018bdbabcc3e26036f1ff92950656f5ab4d81"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "reinstall_action_ledger",
+      "reference": "docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.reinstall-action-ledger.csv",
+      "sha256": "6d71900a61489a043db01061a380909fac6a118b5436934721920264e1d51de9"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup_ledger",
+      "reference": "docs/qa/reports/task057r_phone_full_authorized_reinstall_readiness.cleanup-ledger.csv",
+      "sha256": "6fdac4b2d76080d3849906ae0e5b324b35066c25bb4f59696a59af9fcc88afe2"
+    }
+  ],
+  "blocked_reasons": [
+    "runtime_passport_budget_kill_switch_cleanup_security_absent",
+    "synthetic_session_passport_absent",
+    "reinstall_success_does_not_establish_clean_first_launch_fixture"
+  ],
+  "build_ref": {
+    "alias": "main-apk-03"
+  },
+  "coverage_status": "blocked",
+  "evidence_status": "confirmed",
+  "execution_status": "blocked",
+  "generated_at_utc": "2026-08-16T12:00:00Z",
+  "payload": {
+    "anomalies": [
+      {
+        "alias": "same_repository_common_dir_path_normalization_failure",
+        "cause": "rooted_and_relative_reference_handling_error",
+        "evidence_status": "confirmed",
+        "expected": "same_repository_provenance_normalized",
+        "id": "TASK057R-PROCESS-ANOMALY-001",
+        "observed": "rooted_reference_join_failed_closed",
+        "phase": "before_mutation",
+        "product_impact": "none",
+        "test_implication": "normalize_each_reference_by_rootedness_before_comparison"
+      },
+      {
+        "alias": "powershell_line_selection_expression_errors",
+        "cause": "powershell_expression_compatibility_error",
+        "evidence_status": "confirmed",
+        "expected": "bounded_public_safe_line_projection",
+        "id": "TASK057R-PROCESS-ANOMALY-002",
+        "observed": "expression_failed_closed_without_evidence_acceptance",
+        "phase": "before_mutation",
+        "product_impact": "none",
+        "test_implication": "validate_bounded_expression_before_action_and_accept_no_failed_output"
+      },
+      {
+        "alias": "split_package_false_ambiguity",
+        "cause": "split_package_classifier_false_positive",
+        "evidence_status": "confirmed",
+        "expected": "exact_target_package_shape_classified",
+        "id": "TASK057R-PROCESS-ANOMALY-003",
+        "observed": "permitted_split_shape_was_initially_ambiguous",
+        "phase": "before_mutation",
+        "product_impact": "none",
+        "test_implication": "use_exact_mapping_and_category_only_split_aware_classifier"
+      },
+      {
+        "alias": "reviewer_gate_uppercase_slug_validation_mismatch",
+        "cause": "generic_lowercase_slug_check_applied_to_reviewer_gate_enum",
+        "evidence_status": "confirmed",
+        "expected": "focused_contract_suite_passes",
+        "id": "TASK057R-PROCESS-ANOMALY-004",
+        "observed": "valid_uppercase_reviewer_gate_was_rejected",
+        "phase": "repository_validation_after_device_action",
+        "product_impact": "none",
+        "test_implication": "validate_reviewer_gate_as_exact_enum_not_generic_slug"
+      }
+    ],
+    "app_launch_count": 0,
+    "bounded_reinstall_status": "observed_pass",
+    "go_runtime": false,
+    "ordinary_install_count": 1,
+    "owner_authorized_target_data_loss": true,
+    "postinstall_candidate_exact_equivalence": true,
+    "product_navigation_action_count": 0,
+    "readiness_authority_row_count": 7,
+    "readiness_blocked_count": 3,
+    "readiness_decision": "BLOCK_RUNTIME",
+    "readiness_observed_pass_count": 4,
+    "reinstall_contingency_status": "confirmed_unused",
+    "reinstall_failure_recovery": "requires_new_owner_authority_after_uninstall_or_install_failure",
+    "reinstall_kill_switch": "confirmed_stop_no_retry_on_drift_or_failure",
+    "runtime_passport_established": false,
+    "security_gate": "BLOCK_RUNTIME",
+    "security_plan_go_phase_order": 20,
+    "security_plan_go_pre_action": true,
+    "target_absent_mid_reinstall": true,
+    "target_data_restored": false,
+    "task058_action_count": 0,
+    "uninstall_count": 1,
+    "uninstall_phase_order": 40,
+    "unrelated_package_delta_count": 0
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_AUTHORIZED_TARGET_REINSTALL",
+  "provenance": {
+    "adb_or_device_action_by_orchestrator": true,
+    "local_only_input_read": true,
+    "package_mutation_by_orchestrator": true,
+    "product_navigation": false,
+    "runner_device_action": false,
+    "runner_package_action": false,
+    "source": "sanitized_task057r_action_and_readiness_ledgers",
+    "task058_executed": false
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety_reviewer": "block_runtime"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK057R-RISK-INSTALL-FALSE-GO",
+      "summary": "Successful reinstall cannot infer any independent fixture, cleanup passport, runtime budget, kill switch, rollback, or Security GO_RUNTIME row."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK057R-RISK-AUTHORIZED-DATA-LOSS",
+      "summary": "Target local data loss was owner-authorized and accepted; restoration or rollback of that data is not claimed."
+    }
+  ],
+  "run_id": "task057r-authorized-reinstall-readiness-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-current-001",
+  "task_id": "TASK-057R",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-05-synthetic-session",
+      "reason_code": "synthetic_session_passport_absent"
+    },
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-06-clean-first-launch",
+      "reason_code": "reinstall_success_does_not_establish_clean_first_launch_fixture"
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "task057-authority-07-evidence-cleanup-security",
+      "reason_code": "runtime_passport_budget_kill_switch_cleanup_security_absent"
+    }
+  ],
+  "verification": [
+    {
+      "check": "exact_task057_seven_rows",
+      "evidence_status": "confirmed",
+      "result_count": 7,
+      "status": "pass"
+    },
+    {
+      "check": "bounded_reinstall",
+      "evidence_status": "confirmed",
+      "result_count": 1,
+      "status": "pass"
+    },
+    {
+      "check": "readiness_authority",
+      "evidence_status": "confirmed",
+      "result_count": 4,
+      "status": "blocked"
+    },
+    {
+      "check": "product_navigation",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "not_run"
+    },
+    {
+      "check": "task058",
+      "evidence_status": "unknown",
+      "result_count": 0,
+      "status": "not_run"
+    }
+  ]
+}

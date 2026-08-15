@@ -39,6 +39,63 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Active TASK-057R authorized reinstall readiness revalidation — 2026-08-16
+
+TASK-057R runs in a fresh `BOUNDED_AUTONOMOUS` thread on
+`qa/task-057r-phone-full-authorized-reinstall-readiness-revalidation` from the
+fresh remote default. Repository work is `PROD_SAFE`; the exact target-only
+uninstall/install contour was `PROD_CONDITIONAL` after the owner authorization
+dated 2026-08-16 and the task-local Security plan gate.
+
+The bounded reinstall is `observed_pass`: fresh exact selector/artifact mapping,
+pre-action Security plan GO, a pre-action one-shot stop/no-retry contingency,
+exactly one authorized uninstall, target absence after uninstall, exactly one
+ordinary `main-apk-03` install, launch-free exact candidate metadata/signing/
+hash equivalence, zero unrelated-package delta and zero app launch, navigation
+or TASK-058 action. Row 01 separately confirms the category-level integrity,
+provenance, signing, version, emitted min-SDK, target-SDK, ABI and install-
+compatibility oracle without publishing values. Raw paths, device identifiers,
+package names, hashes, signing values and command output remain ignored/local-
+only. The authorized target application's local data/session loss was accepted
+by the owner; it was not restored and no rollback of that lost data is claimed.
+The reinstall contingency was unused; any uninstall/install failure would have
+stopped without retry and required new owner authority. The later runtime kill
+switch/passport remains absent and distinct.
+
+All seven TASK-057 authority rows were freshly and independently revalidated.
+Rows 01 through 04 are `observed_pass`. Rows 05 through 07 remain
+`blocked_by_fixture`: the synthetic-session passport is absent; a successful
+reinstall does not establish a clean-first-launch fixture/passport; and the
+runtime evidence/cleanup passport, runtime budget, kill switch, cleanup/
+rollback authority and Security `GO_RUNTIME` are absent. Aggregate readiness is
+four pass and three blocking rows, `BLOCK_RUNTIME` / `blocks_release`; TASK-058
+remains blocked and was not executed.
+
+Three confirmed fail-closed process anomalies occurred before mutation and
+have no product impact: Git common-directory rooted/relative normalization,
+PowerShell line-selection/expression errors, and split-package false ambiguity.
+Their public-safe records are in the TASK-057R task spec and summary. A fourth
+repository-only Builder anomaly records the initial focused-suite failure where
+valid uppercase reviewer gates were incorrectly checked as lowercase slugs;
+the corrected focused rerun passes and product impact is none.
+
+Final verification passes both TASK-057R validator modes, 94 focused tests,
+compile, manifest validation at 33 records/10 authoritative, epic validation,
+both hygiene modes, public repository safety at 400 files/zero findings,
+documentation consistency at 185 files/zero findings and cached diff checks.
+QA Reviewer A, QA Reviewer B and Security/Prod-safety each returned
+`GO_REPOSITORY_BLOCKED_CLOSURE / BLOCK_RUNTIME` with R0/R1/P2 `0/0/0` after
+remediation. The generated summary retains deterministic pending-review
+markers; these source-of-truth verdicts are authoritative.
+
+Runtime remains blocked until the owner supplies a current ignored/local-only
+synthetic test-session passport, a separately approved pre-provisioned non-
+destructive clean-first-launch fixture/passport, and a runtime evidence/cleanup
+passport covering retention/redaction, runtime budget, runtime kill switch and
+cleanup/rollback. Security must then issue `GO_RUNTIME` after all seven rows are
+freshly revalidated. Drift or expiry also requires fresh rows 01 through 04;
+TASK-058 remains forbidden until the full gate passes.
+
 ## Completed TASK-057 blocked Phone Full readiness — 2026-08-15
 
 TASK-057 ran in a fresh `BOUNDED_AUTONOMOUS` thread on

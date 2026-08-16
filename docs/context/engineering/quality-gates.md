@@ -1281,6 +1281,50 @@ TASK-062 are superseded as internal stages 2 through 5; no gate may require or
 create a separate task/thread/branch for those objectives. Historical
 TASK-058/TASK-058A artifacts are read-only inputs and must not be rewritten.
 
+### Resumed controller-construction gate
+
+Owner authority now confirms `epic-phone-001-fixture-001` is synthetic/test-
+only, non-real-user, limited to the current build/environment/authorized phone
+and without billing/payment/subscription/entitlement impact. Its permitted
+future scope is session creation/termination, read-only navigation and safe
+logout. Payment, subscription, entitlement/profile/account mutation, paid
+session and external/QR traversal remain forbidden. This authority is
+category-only and is not a Security GO.
+
+Final repository Security status is
+`GO_REPOSITORY_COMMIT / NO_GO_C0P_EXECUTION / NO_GO_C1_EXECUTION /
+BLOCK_RUNTIME / BLOCK_AUTH_ENTRY / NO_LITERAL_RUNTIME_GO`; C0P local-presence execution is also
+blocked without its exact literal token. Before any local C0P execution, the
+controller candidate must pass all of these repository gates:
+
+- exact Security-fixed run, contour, target/build/fixture and passport aliases;
+- exact source/HEAD/plan-hash binding with independent controller source hash;
+- guarded C0P interface requiring both explicit flags, one execution, zero
+  retry/resume, no subprocess/ADB/device/app/auth action and fixed contained
+  ignored paths only;
+- durable plan/token-bound attempt-marker exclusive creation before the sole
+  secret-file read, retained across parser/validation/write/interruption failure;
+- exact two-field ASCII secret grammar without printing values or hashes;
+- public validate/dry-run/preflight projections restricted to category-level
+  booleans, enums and counters, with no local path, plan body or full hash;
+- current C0P result required and hash-bound before C1 can pass;
+- adversarial tests for alias drift, stale/tampered/expired plans/tokens,
+  wrong source/HEAD, extra secret fields, unsafe paths/reparse points, repeated
+  execution, public-output leakage and read-before-rejection ordering;
+- independent QA Reviewer A, QA Reviewer B and Security re-review with no open
+  R0/R1 before any C0P plan can be considered for literal GO.
+
+Initial review confirmed four pre-execution defects: stale no-C0P-interface
+metadata, verbose dry-run plan/hash/path projection, misleading C1 fixture
+status and a late one-shot check after secret read. Further adversarial review
+confirmed replay after post-marker failure, missing C1 TTL/future-passport
+checks, an interruption traceback and raw `OSError` text projection. These are
+process evidence, not product
+evidence. The repository candidate includes regressions for all findings;
+final QA A, QA B and Security review counts are 0/0/0 and authorize repository
+commit only. `.qa_local`, secret, device, runtime and auth counters remain exact
+zero.
+
 The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
 runner may only validate tracked inputs, publish the deterministic blocked
 baseline and validate that bundle. It must reject arbitrary path/input
@@ -1288,13 +1332,13 @@ overrides and have no subprocess, device, network, credential or ignored-local
 storage interface. A repository `closed_by_ledger` status must never be
 promoted to product execution or release PASS.
 
-Runtime/auth gating is fail-closed:
+Historical blocked-baseline and future runtime/auth gating remain fail-closed:
 
-- the statement that phone/OTP values are available does not establish a
-  synthetic fixture;
-- credential access/entry requires explicit owner/team classification of the
-  exact local alias as fully synthetic/test-only, non-real-user,
-  app/environment-bound and incapable of real billing/entitlement impact;
+- fixture value availability alone never establishes synthetic authority; the
+  current owner classification applies only to the exact current epic alias and
+  does not replace C0P/C1/runtime Security GO;
+- credential access/entry requires both the confirmed category-only owner
+  classification and the exact current contour's literal Security token;
 - values remain ignored/local-only and may not be requested, logged or
   published;
 - each materially different conditional contour requires a fresh exact

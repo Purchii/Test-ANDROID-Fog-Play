@@ -7,7 +7,8 @@
 - Repository planning, harness, ledgers and validation: `PROD_SAFE_REPOSITORY_ONLY`.
 - Runtime and device actions: `PROD_CONDITIONAL`, currently blocked.
 - Authentication or credential entry: `PROD_CONDITIONAL`, currently blocked.
-- Security verdict: `GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY`.
+- Current Security verdict:
+  `GO_REPOSITORY_CONTROLLER_CONSTRUCTION / NO_GO_C1_EXECUTION / BLOCK_RUNTIME / BLOCK_AUTH_ENTRY`.
 - Terminal baseline: `closed_by_ledger`, `partial_blocked`, `blocks_release`.
 
 The former TASK-059, TASK-060, TASK-061 and TASK-062 objectives are internal
@@ -19,19 +20,27 @@ authority.
 
 ## Current fail-closed authority decision
 
-The owner stated that phone-number and OTP fixture values are available, but
-the tracked authority does not classify them as fully synthetic/test-only.
-Values are neither requested nor accessed. Credential entry remains blocked.
-No literal runtime GO exists for this epic. Repository work may close with a
-terminal blocked ledger; product coverage and release readiness may not pass.
+On 2026-08-16 the owner confirmed the category-only authority for fixture alias
+`epic-phone-001-fixture-001`: it is fully synthetic/test-only, is not linked to
+a real user, is approved only for the current MTC Fog Play build/environment
+and authorized phone, and authentication/read-only navigation cannot create
+billing, payment, subscription or entitlement impact. Authority lasts only for
+run `epic-phone-001-20260816-r01` until completion or revocation. Synthetic
+session creation, read-only navigation and safe logout are allowed in scope;
+payment, subscription, entitlement, profile/account mutation, paid session and
+external/QR traversal are forbidden. The owner also stated that the OTP is
+constant; its value was not requested, accessed, recorded or published.
 
-Authentication can be reconsidered only after an explicit owner/team statement
-classifies the exact local fixture alias as synthetic/test-only, not a real
-user, approved for the exact app/environment, and incapable of real billing or
-entitlement impact. That statement must also provide a task/run alias, TTL and
-allowed/forbidden mutation scope; values themselves remain local-only and
-redacted. Task/run-bound synthetic-session and evidence/retention/cleanup
-passports plus a controller dry-run are also prerequisites.
+This confirmation closes only the category-level fixture-classification
+prerequisite. It does not authorize secret presence inspection, C1 execution,
+application launch, authentication or runtime. Those remain blocked pending
+their distinct exact plans, local passports and fresh literal Security tokens.
+The current interim Security decision permits repository controller
+construction only.
+
+The immutable pre-confirmation baseline retains its historical Security
+verdict `GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY`; this is provenance
+for that report, not current runtime authority and not a reusable GO.
 
 Every materially different conditional action contour requires a fresh exact
 Security plan and a literal runtime GO. The epic harness cannot issue either.
@@ -59,13 +68,16 @@ Rows `phone-coverage-001`, `phone-coverage-017` and `A002` may remain `covered`
 only when the tracked TASK-058A v2 summary, scenario-ledger hash and all three
 visual/UI-tree/bounded-log modality references validate exactly.
 
-All remaining `phone_required` rows are terminal
-`blocked_by_external_state` with reason
-`synthetic_fixture_classification_absent_and_no_literal_runtime_go` and block
-release. Paired/non-phone deferred rows preserve their crosswalk status and
-release effect. `A001` remains audit-only `blocked_by_tooling`; it never counts
-as product coverage. No approved reachable phone row is silently converted to
-`not_run_out_of_scope`.
+The already-published blocked baseline remains immutable evidence of the
+pre-confirmation checkpoint. Its remaining `phone_required` rows keep their
+then-current reason
+`synthetic_fixture_classification_absent_and_no_literal_runtime_go`; that old
+reason is not reused as a claim about current owner authority. Current runtime
+coverage remains blocked because no C0P or C1 literal token has been issued and
+no contour has run. Paired/non-phone deferred rows preserve their crosswalk
+status and release effect. `A001` remains audit-only `blocked_by_tooling`; it
+never counts as product coverage. No approved reachable phone row is silently
+converted to `not_run_out_of_scope`.
 
 ## Unified action and evidence contract
 
@@ -73,23 +85,36 @@ The current authorized maximum and actual budget are both zero. There were zero
 device, application, runtime, authentication, credential-value and forbidden
 actions. The following ceilings are plan-only and do not authorize runtime:
 
-- epic total: concurrency `1`, launches/relaunches `<=8`, UI actions `<=340`,
-  checkpoints `<=200`, local-only QR decodes `<=20`, runtime `<=180` minutes,
-  raw sink `<=1 GiB`;
-- readiness metadata: `<=3` selector snapshots and `<=8` target-only read-only
-  metadata queries, with zero launch/input;
+- epic total plan ceiling is subject to each contour's fresh GO; checkpoint
+  capacity must always be at least state-changing actions plus one when
+  adjacent post/pre checkpoint sharing is used: concurrency `1`, state-changing
+  actions `<=340`, checkpoint triplets `<=349`, launches/relaunches `<=8`,
+  runtime `<=180` minutes, local-only QR decodes `<=20`, raw sink `<=1 GiB`;
+- C1 launch-free readiness: one external executor call, zero retries, `<=10`
+  minutes, `20` seconds command timeout, `<=3` selector snapshots, `<=8`
+  target-only read-only metadata queries, `48 MiB` soft and `64 MiB` hard sink
+  limits, and zero launch/UI/auth/credential/mutation actions;
 - authentication: `<=1` launch, `<=40` safe inputs, at most one phone submit
-  and one OTP submit, `<=12` checkpoints, `<=15` minutes, zero wrong-code,
+  and one OTP submit, `<=42` checkpoints, `<=15` minutes, zero wrong-code,
   captcha or retry attempts;
-- core navigation: `<=60` actions, `<=35` checkpoints, `<=25` minutes;
-- each exhaustive-inventory slice: `<=80` actions, `<=50` checkpoints,
-  `<=30` minutes, always within the epic total;
+- core navigation: `<=60` actions, `<=61` checkpoints, `<=25` minutes;
+- each exhaustive-inventory slice: `<=80` actions, `<=81` checkpoints,
+  `<=30` minutes, at most two slices with aggregate `<=120` actions and
+  `<=122` checkpoints, always within the epic total;
 - lifecycle/input: `<=40` inputs, `<=2` Home/foreground cycles, `<=1`
-  target-only force-stop/relaunch cycle, `<=30` checkpoints, `<=25` minutes;
+  target-only force-stop/relaunch cycle, `<=47` checkpoints, `<=25` minutes;
   orientation/display actions remain zero without separate review;
 - boundary coverage: `<=60` actions, `<=20` boundaries, `<=20` local-only QR
-  decodes, one known-safe Back attempt at most per boundary, `<=40` checkpoints,
+  decodes, one known-safe Back attempt at most per boundary, `<=61` checkpoints,
   `<=30` minutes, and zero external follow/auth/payment/session start.
+- terminal cleanup: `<=3` state-changing actions and `<=4` checkpoints,
+  target-only stop/Home/capture shutdown, under its own fresh literal GO.
+
+For `N` state-changing actions a contour must reserve at least `N+1` complete
+triplet checkpoints. A post-action checkpoint may serve as the next pre-action
+checkpoint only after all three modalities and the target/oracle/budget gate
+validate; otherwise sharing is forbidden. This correction prevents C2 or any
+later contour from claiming a 40-action budget with only 12 checkpoints.
 
 Before every future conditional action, capture directly into the fixed ignored
 run sink a screenshot for visual inspection, a UI tree, and a target-only
@@ -165,6 +190,44 @@ It accepts no path/input override, never reads ignored local storage, never
 starts subprocesses and has no device/network/credential interface. It emits
 the v2 blocked summary and coverage, readiness, stage, action-budget, anomaly
 and cleanup ledgers under `docs/qa/reports/`.
+
+`automation/phone/epic_phone_001_runtime_controller.py` is the separate
+fail-closed runtime-controller contract. Its fixed public aliases are target
+`phone-current-001`, build `task058-selected-phone-full-001`, fixture
+`epic-phone-001-fixture-001`, run `epic-phone-001-20260816-r01`, and C1 contour
+`epic-phone-001-c1-launch-free-readiness`. `--validate-only` and `--dry-run`
+perform no ignored-storage, secret, subprocess, device or application access.
+Future `--preflight-c1 --allow-prod-conditional-c1` validates only fixed local
+plan/passport/token artifacts; it has no executor and cannot run C1.
+
+The separate guarded C0P interface is
+`--preflight-c0p --allow-prod-conditional-c0p`. It is inert without the exact
+allow flag and literal C0P token. After every source/plan/passport/token binding
+passes, it atomically creates the fixed durable one-shot attempt marker and only
+then reads the fixed secret source once with an `8 KiB` ceiling. The marker is
+never removed on parser, validation, result-write or interruption failure, so
+the same token cannot authorize a second read. C0P accepts exactly the two
+approved ASCII fields once each, writes the fixed canonical local-only result,
+and emits only the approved five-field aggregate. It starts no subprocess and
+performs no ADB, device, application or auth action.
+
+The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
+UTF-8 JSON. The literal token format is
+`GO_EPIC_PHONE_001_C1_LAUNCH_FREE_READINESS__epic-phone-001-20260816-r01__<64_lowercase_plan_sha256>`.
+Its Security passport alias is `epic-phone-001-security-c1-001`, and token
+validity may not exceed 30 minutes.
+Checkpoint `C1-000` is the mandatory pre-execution gate; `C1-999` is mandatory
+after success, failure, timeout or kill-switch handling and cannot be omitted.
+
+Local phone/OTP presence is a distinct C0P contour
+`epic-phone-001-c0p-local-presence`, not part of C1. It requires its own plan,
+Security alias `epic-phone-001-security-c0p-001`, and literal token format
+`GO_EPIC_PHONE_001_C0P_LOCAL_PRESENCE__epic-phone-001-20260816-r01__<64_lowercase_c0p_plan_sha256>`.
+Its exact public aggregate contains only `required_field_count=2`,
+`required_fields_present`, `unexpected_fields_absent`,
+`phone_format_policy_pass`, and `otp_format_policy_pass`. Raw field names,
+values, individual-presence flags, lengths and credential hashes may never be
+emitted.
 
 ## Acceptance and stop conditions
 

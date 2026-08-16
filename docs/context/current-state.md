@@ -39,7 +39,55 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## Completed EPIC-PHONE-001 repository-only blocked baseline — 2026-08-16
+## Resumed EPIC-PHONE-001 controller-construction checkpoint — 2026-08-16
+
+The owner resumed the same `BOUNDED_AUTONOMOUS` epic, thread and branch after
+the repository-only blocked baseline. The owner explicitly confirmed public
+fixture alias `epic-phone-001-fixture-001` as fully synthetic/test-only,
+unrelated to any real user, approved only for the current MTC Fog Play
+build/environment and authorized phone, and without billing, payment,
+subscription or entitlement impact. The authority expires when this epic run
+ends or is revoked. It permits creation and termination of the synthetic
+session, read-only navigation and safe logout only. Payment, subscription,
+entitlement, profile/account mutation, paid-session start and external/QR
+traversal remain forbidden. Phone and OTP values remain local-only, redacted
+and absent from tracked text and chat.
+
+This category-only confirmation closes the former fixture-classification
+blocker but does not issue a runtime GO. Security's final repository posture is
+`GO_REPOSITORY_COMMIT / NO_GO_C0P_EXECUTION / NO_GO_C1_EXECUTION /
+BLOCK_RUNTIME / BLOCK_AUTH_ENTRY / NO_LITERAL_RUNTIME_GO`; the separate C0P local-presence
+contour also has no literal token. C0P, C1, device contact, app launch,
+credential access/entry and authentication therefore remain blocked. Every
+materially different conditional contour still needs its own hash-bound,
+one-shot, expiring Security plan and literal GO. The controller cannot
+self-issue or infer one.
+
+Repository-only construction is in progress for the fail-closed runtime
+controller and focused tests. The current candidate adds guarded, explicit
+C0P/C1 preflight interfaces, fixed public aliases, source/HEAD/plan bindings,
+one-shot local result semantics and public-safe no-action validation. Initial
+review found a stale claim that no C0P interface existed, over-detailed dry-run
+output, misleading C1 fixture wording and a one-shot output check placed after
+secret read. Later adversarial reviews also confirmed replay after post-marker
+failure, acceptance of overlong C1 GO/future-issued passports and an escaping
+interrupt traceback; final Security review then found raw `OSError` text could
+escape. The frozen repository candidate remediates these with
+a durable one-shot marker, 30-minute/current-time gates and a fixed public-safe
+interrupt/I/O reason. Final QA A, QA B and Security reviews returned 0/0/0 and
+approve repository commit only. No controller candidate or owner statement is
+itself C0P, runtime or authentication authority.
+
+Current resumed-run counters remain exact zero: `.qa_local` reads/writes `0`,
+secret-value accesses `0`, subprocess/ADB/device actions `0`, app launches `0`,
+runtime/UI actions `0`, auth/credential-entry actions `0`, forbidden actions
+`0`, new runtime checkpoints `0` and cleanup executions `0`. The immutable
+blocked baseline remains 43 rows with three exact TASK-058A inherited covered
+rows, 33 required blockers and seven deferred/audit rows. TASK-058A remains
+six of seven with row 03 `unknown`; its consumed clean-first-launch state is
+not restorable and no restoration is claimed.
+
+## Historical completed EPIC-PHONE-001 repository-only blocked baseline — 2026-08-16
 
 EPIC-PHONE-001 runs as one `BOUNDED_AUTONOMOUS` epic in one fresh thread and
 one branch, `qa/epic-phone-001-full-mobile-application-test-coverage`, from

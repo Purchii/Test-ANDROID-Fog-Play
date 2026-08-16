@@ -19,6 +19,33 @@ action-budget, anomaly and cleanup ledgers plus an evidence-envelope-v2 summary
 that always preserves
 `GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY` and `blocks_release`.
 
+`automation/phone/epic_phone_001_runtime_controller.py` is the separate
+repository-safe controller contract for the resumed epic. Its
+`--validate-only` and `--dry-run` modes perform no ignored-storage, secret,
+subprocess, device, application or credential action. It fixes the approved
+aliases, canonical NFC/sorted JSON plan hash, C0P presence-only separation,
+C1 plan/passport/token gate, C1-000/C1-999 checkpoint semantics, exact launch-
+free C1 budget, anomaly and kill-switch contracts, and sufficient N+1
+checkpoint budgets for future C2-C7 contours.
+
+The future guarded command is:
+
+```text
+python automation/phone/epic_phone_001_runtime_controller.py --preflight-c1 --allow-prod-conditional-c1
+```
+
+It only validates fixed ignored local authority artifacts and still cannot
+execute C1. It must not be run until the exact local plans/passports exist and
+Security has issued the matching literal token. Secret presence is a separate
+C0P contour and cannot be authorized by a C1 token. Its guarded fixed-path
+interface is `--preflight-c0p --allow-prod-conditional-c0p`; without its exact
+literal token it fails before reading the secret source. After all authority
+bindings pass and before the sole bounded secret read, C0P atomically writes a
+durable one-shot attempt marker. The marker is never removed on failure, so a
+parser, validation, write or interruption failure cannot consume the same
+token for a second credential read. C1 uses Security alias
+`epic-phone-001-security-c1-001` and remains validation-only with no executor.
+
 ## TASK-057 Phone Full readiness authority
 
 `automation/runtime_authority/task057_phone_full_runtime_authority.py` is a

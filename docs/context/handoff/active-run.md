@@ -1,6 +1,148 @@
 # Active run
 
-## Completed EPIC-PHONE-001 — Full mobile application test coverage
+## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread status: `active_resumed_repository_controller_commit_approved_c0p_blocked`.
+- Task/epic id: `EPIC-PHONE-001`.
+- Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
+- Fresh thread verified: yes; this is a resume of the same epic, not a new
+  independent task or continuation thread.
+- Task branch: `qa/epic-phone-001-full-mobile-application-test-coverage`.
+- Default branch: `main`.
+- Immutable epic base: `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
+- Last integrated repository-only closure: epic branch and `main` aligned at
+  `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
+- Production safety: repository/controller/tests/docs work `PROD_SAFE`; C0P,
+  C1, device, app, runtime and auth are `PROD_CONDITIONAL` and blocked without
+  their exact literal Security GO; payment, paid session, external/QR traversal,
+  account/profile/entitlement/subscription mutation and destructive/bypass
+  actions remain `PROD_FORBIDDEN`.
+
+### Resumed owner authority
+
+On 2026-08-16 the owner explicitly confirmed public fixture alias
+`epic-phone-001-fixture-001` as fully synthetic/test-only, not associated with
+a real user, approved only for the current build/environment and authorized
+phone, and without billing/payment/subscription/entitlement impact. Authority
+is limited to this epic run until completion or revocation. It permits
+synthetic-session creation/termination, read-only navigation and safe logout.
+It does not permit payment, subscriptions, entitlement/profile/account
+mutation, paid sessions, or external/QR link traversal. Values are never
+tracked, requested in chat or printed; they remain ignored/local-only and
+redacted.
+
+This explicit confirmation is `confirmed` category-only authority. It does not
+constitute a Security GO. Final repository Security verdict is:
+`GO_REPOSITORY_COMMIT / NO_GO_C0P_EXECUTION / NO_GO_C1_EXECUTION /
+BLOCK_RUNTIME / BLOCK_AUTH_ENTRY / NO_LITERAL_RUNTIME_GO`. C0P local-presence execution is also
+blocked until its own exact literal token exists. No C0P/C1/device/app/auth
+action has run.
+
+### Current repository checkpoint
+
+Builder produced a repository-only controller/test candidate. Planner fixed a
+single concurrency lane, global ceiling of 340 actions/349 triplets, eight
+launches and 180 minutes, with smaller contour budgets and the invariant that
+`N` actions require `N+1` complete screenshot-visual/UI-tree/bounded-log
+triplets. These are ceilings, not authority.
+
+Security fixed the run and public aliases, local-only passport/result paths,
+one-shot C0P/C1 token formats, TTL and secret-field shape. The candidate must
+remain stdlib-only, fail closed before local reads, expose only category-level
+public output and never use Git/device subprocesses in C0P. Initial review
+found four controller defects before any local/device action: a stale no-C0P-
+interface contract, over-detailed dry-run output, misleading C1 fixture status
+and a one-shot result-existence check after secret read. Adversarial review then
+found replay after a post-marker failure was not durably prevented, a C1 token
+could exceed 30 minutes, future-issued fixture/target passports were accepted,
+and an interruption could escape the CLI with a traceback; Security then found
+raw `OSError` text projection. The repository candidate now adds the durable
+marker, temporal gates and fixed public-safe interrupt/I/O reasons. Final QA A,
+QA B and Security reviews returned 0/0/0 and approve repository commit only;
+there is no C0P, C1 or runtime GO.
+
+### Resumed process anomalies
+
+- `EPICPHONE001-PROCESS-ANOMALY-005`, public alias
+  `runtime_controller_initial_alias_drift`, is `confirmed`. Trigger: initial
+  Builder controller projection. Expected: exact Security-fixed run, contour,
+  target/build/fixture and passport aliases. Observed: initial candidate used
+  mismatched aliases before review. Likely cause: manual transcription drift;
+  product impact is none. Test-design implication: assert all fixed aliases and
+  hashes before any local or conditional interface can open. The alias set was
+  corrected before execution and passed final repository review.
+- `EPICPHONE001-PROCESS-ANOMALY-006`, public alias
+  `focused_test_path_invocation_mistakes`, is `confirmed`. Trigger: two
+  repository-only focused-test command attempts. Expected: collect the intended
+  focused suites. Observed: each command referenced an incorrect test path and
+  failed before testing the candidate; corrected commands were then used.
+  Likely cause: invocation/path transcription error; product and runtime impact
+  are none. Test-design implication: enumerate tracked test paths before the
+  authoritative command and never treat collection/path failure as product
+  evidence.
+- `EPICPHONE001-PROCESS-ANOMALY-007`, alias
+  `c0p_post_failure_replay_gap`, is `confirmed`. Trigger: repository-only
+  adversarial parser/result/interruption probes. Expected: one durable attempt
+  marker before the only bounded secret read. Observed: the earlier candidate
+  could retry after a failure before result publication. Likely cause: result
+  existence was used as consumption state. Test implication: persist a
+  plan/token-bound marker with exclusive create and never remove it on failure;
+  regression tests now cover parser, validation, write and interruption paths.
+- `EPICPHONE001-PROCESS-ANOMALY-008`, alias
+  `c1_overlong_go_accepted`, is `confirmed`. Trigger: a synthetic in-memory
+  65-minute C1 GO. Expected: reject validity above 30 minutes. Observed: the
+  earlier validator returned readiness. Likely cause: current-time checks lacked
+  a duration ceiling. Test implication: enforce and adversarially test the exact
+  30-minute maximum.
+- `EPICPHONE001-PROCESS-ANOMALY-009`, alias
+  `future_passport_accepted`, is `confirmed`. Trigger: synthetic future-issued
+  fixture/target passports. Expected: fail before readiness. Observed: the
+  earlier validator accepted them when expiry was later. Likely cause: expiry
+  validation omitted issue-time freshness. Test implication: require
+  `issued_at_utc <= current trusted UTC` in both C0P and C1 paths.
+- `EPICPHONE001-PROCESS-ANOMALY-010`, alias
+  `interrupt_traceback_public_leak`, is `confirmed`. Trigger: a monkeypatched
+  post-marker `KeyboardInterrupt`. Expected: fixed category-only failure.
+  Observed: the earlier CLI emitted a traceback containing a local path. Likely
+  cause: `KeyboardInterrupt` was outside the exception boundary. Test
+  implication: catch it separately, emit only
+  `operation_interrupted_fail_closed`, and preserve one-shot consumption.
+- `EPICPHONE001-PROCESS-ANOMALY-011`, alias
+  `oserror_text_public_leak`, is `confirmed`. Trigger: an in-memory guarded-CLI
+  `OSError` containing a synthetic local path. Expected: fixed category-only
+  I/O failure. Observed: the earlier common exception branch printed raw
+  exception text. Likely cause: `ContractError` and `OSError` shared formatting.
+  Test implication: catch I/O errors separately, emit only
+  `local_io_error_fail_closed`, and assert no path or traceback is exposed.
+
+### Exact current counters
+
+| Counter | Actual |
+|---|---:|
+| `.qa_local` reads/writes | 0 |
+| Secret-value accesses | 0 |
+| Subprocess/ADB/device actions | 0 |
+| App launches/relaunches | 0 |
+| Runtime/UI actions | 0 |
+| Authentication/credential-entry actions | 0 |
+| New runtime checkpoints | 0 |
+| Forbidden actions | 0 |
+| Device cleanup executions | 0 |
+
+The immutable repository-only terminal ledger remains authoritative until a
+later properly authorized contour produces new accepted evidence: 43 rows,
+three exact TASK-058A inherited covered rows, 33 required blockers and seven
+deferred/audit rows. TASK-058A stays 6/7 with row 03 `unknown`; its one-use
+clean-first-launch state was consumed and cannot be restored by force-stop,
+Home or capture shutdown.
+
+Next safe action is commit and task-branch push of the accepted frozen candidate.
+After the committed controller/source hash exists, Security may review
+the exact C0P plan and, only if satisfied, issue the literal C0P token. Until
+then stop before `.qa_local`, secret, device, app, runtime or auth access.
+
+## Historical completed EPIC-PHONE-001 repository-only checkpoint
 
 - Mode: `BOUNDED_AUTONOMOUS`.
 - Thread status: `inactive_completed_repository_only_terminal_blocked`.

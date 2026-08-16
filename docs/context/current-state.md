@@ -39,16 +39,17 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## TASK-058A final reviews passed, integration pending — 2026-08-16
+## Completed TASK-058A owner-override pre-auth release-blocked closure — 2026-08-16
 
 TASK-058A runs in a fresh `BOUNDED_AUTONOMOUS` thread on
 `qa/task-058a-phone-launch-readiness-pre-auth-continuation` from exact aligned
 `origin/main@adc601edfe579ac5cf63bf2a4c3c149be0686c72`. Repository work is
 `PROD_SAFE`; the launch-free collector and the bounded pre-auth run are
 `PROD_CONDITIONAL`. Lifecycle is
-`task_branch_pushed_default_integration_pending`. Verified commit
-`65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff` is aligned with the remote task
-branch; no default-branch integration claim is made yet.
+`inactive_completed_release_blocked`. Implementation commit
+`65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff` and reviewed closure
+`3b7e8b12e15989b791363d2be9a216fc38d2633f` were pushed to the task branch;
+the reviewed closure was fast-forwarded to remote `main`.
 
 The purpose-built launch-free collector received a collection-only Security
 GO and executed exactly once. It captured native channels into ignored local

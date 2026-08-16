@@ -1,17 +1,18 @@
 # Active run
 
-## TASK-058A — Phone Full owner-override pre-auth closure, integration pending
+## Completed TASK-058A — Phone Full owner-override pre-auth release-blocked closure
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `task_branch_pushed_default_integration_pending`.
+- Thread status: `inactive_completed_release_blocked`.
 - Task branch: `qa/task-058a-phone-launch-readiness-pre-auth-continuation`.
 - Default branch: `main`.
 - Exact base: `origin/main@adc601edfe579ac5cf63bf2a4c3c149be0686c72`.
 - Production safety: repository work `PROD_SAFE`; launch-free collection and
   bounded pre-auth runtime `PROD_CONDITIONAL`.
-- Verified task commit: `65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff`,
-  pushed and aligned with the remote task branch.
-- Integration status: default-branch integration remains pending.
+- Implementation commit: `65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff`.
+- Reviewed closure commit: `3b7e8b12e15989b791363d2be9a216fc38d2633f`.
+- Integration status: both commits pushed to the task branch; reviewed closure
+  fast-forwarded to remote `main`.
 
 ### Owner authority and Security decisions
 
@@ -158,11 +159,10 @@ Final independent verdicts:
   diff review.
 
 These verdicts approve repository closure only and grant no new runtime
-authority. Thread status is `task_branch_pushed_default_integration_pending`.
-The verified task commit and task-branch push are complete. Remote-default
-integration remains pending; do not
-record a commit SHA, push alignment or `inactive_completed` state until those
-steps actually succeed.
+authority. Thread status is `inactive_completed_release_blocked`. The
+implementation and reviewed closure commits are on the remote task branch,
+and the reviewed closure is on remote `main`. This final docs-only alignment
+records those completed lifecycle steps without granting runtime authority.
 
 ## Completed TASK-058 — Phone Full first-launch and pre-auth blocked closure
 

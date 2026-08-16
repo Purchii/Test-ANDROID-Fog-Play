@@ -92,6 +92,41 @@ rows, 33 required blockers and seven deferred/audit rows. TASK-058A remains
 six of seven with row 03 `unknown`; its consumed clean-first-launch state is
 not restorable and no restoration is claimed.
 
+The current blocker exposed a circular gate: C0P execution correctly requires
+fixed ignored plan/passport artifacts and a literal token, but those artifacts
+cannot be created by C0P itself. The proposed correction defines a separate
+`C0P-PREP` contour, classified for review with canonical class `PROD_SAFE` and
+scope qualifier `ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`. It may create only the
+fixed ignored run directory, canonical C0P plan, fixture-authority passport,
+target-build authorization passport and evidence-cleanup passport, then verify
+path containment, Git-ignore coverage, no-reparse state and local sink/control/
+retention readiness. It must not read the secret environment file, serial map,
+device, app or network; start a subprocess; create a C0P attempt/result; or
+issue/write/infer a GO token. `C0P-PREP` is not authorized yet: Security must
+review and approve its exact plan before any ignored-path write.
+
+The target-build passport created by any future approved `C0P-PREP` is
+authorization-only. It records the public target/build aliases and owner scope;
+it is not freshness, installed-state, selector, mapping or current runtime
+evidence. Security blocker
+`CURRENT_EPIC_TARGET_BUILD_FRESHNESS_AUTHORITY_ABSENT` therefore remains open.
+Fresh target/build state belongs to the separately planned C1 launch-free
+readiness contour after its own literal GO. The evidence-cleanup passport is a
+policy/readiness authorization artifact and is valid only if fixed local sink
+containment, control, ignore/no-reparse and retention readiness are actually
+verified without touching the device. It does not prove force-stop/Home/
+capture-shutdown execution, zero mutation or successful post-run cleanup;
+later contour evidence must prove those outcomes.
+
+Before this source-of-truth correction, committed bindings were repository
+HEAD `3df6b883301b6512cb90ed1e616221f10cc48e26`, controller implementation
+commit `68e8bebd1162fef9aea51d88e603ebf4832d41c4` and controller source SHA-256
+`793e03d2dc3c141d728bcd9cc0b1c58e8ee79d760d58e634915f83fe8d486e68`.
+The candidate C0P plan hash with prefix `f883` is invalidated by any docs commit
+that changes repository HEAD. It must be discarded and recomputed only after
+the final reviewed `C0P-PREP` documentation commit; it cannot be reused for a
+literal token.
+
 ## Historical completed EPIC-PHONE-001 repository-only blocked baseline — 2026-08-16
 
 EPIC-PHONE-001 runs as one `BOUNDED_AUTONOMOUS` epic in one fresh thread and

@@ -211,6 +211,47 @@ approved ASCII fields once each, writes the fixed canonical local-only result,
 and emits only the approved five-field aggregate. It starts no subprocess and
 performs no ADB, device, application or auth action.
 
+### C0P-PREP artifact preparation contour
+
+C0P cannot create the plan/passports that gate its own execution. The proposed
+`C0P-PREP` contour is therefore separate from C0P and C1. Its review uses the
+canonical class `PROD_SAFE` with scope qualifier
+`ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`, but it must not execute until
+Security reviews and explicitly approves the exact prep plan.
+
+An approved `C0P-PREP` may create only the fixed ignored run-directory tree for
+`epic-phone-001-20260816-r01`, its canonical `c0p-plan.local.json`,
+`fixture-authority-passport.local.json`, `target-build-passport.local.json` and
+`evidence-cleanup-passport.local.json`. The fixed sink tree may contain the
+empty readiness directories `raw/`, `checkpoints/` and `public-safe/`; prep may
+not place runtime evidence in them. Prep validates only fixed-root containment,
+tracked ignore-policy coverage, no-reparse state, ownership/control and the
+declared local retention ceiling. The evidence-cleanup passport is a policy/
+readiness authorization artifact and cannot pass unless those sink/control/
+retention checks are verified. It does not prove force-stop/Home/capture-
+shutdown execution, zero mutation or successful post-run cleanup; later
+contour evidence must prove those outcomes.
+
+`C0P-PREP` has exact zero reads of `.qa_local/secrets/qa_user.env`, the serial
+map or any credential/identity source; zero subprocess, ADB, device, app or
+network contact; zero runtime/auth actions; and zero C0P attempt/result writes.
+It cannot issue, write, derive or infer a GO token. C0P remains the separate
+one-shot `PROD_CONDITIONAL` contour described above.
+
+The target-build passport is authorization-only. It binds public aliases and
+the owner's current-epic permission but is not current target/build freshness,
+installed-state, selector, mapping or runtime evidence. Security blocker
+`CURRENT_EPIC_TARGET_BUILD_FRESHNESS_AUTHORITY_ABSENT` remains open; C1 must
+obtain fresh launch-free target/build evidence under its own later literal GO.
+
+The pre-correction binding used repository HEAD
+`3df6b883301b6512cb90ed1e616221f10cc48e26`, controller implementation commit
+`68e8bebd1162fef9aea51d88e603ebf4832d41c4` and controller source SHA-256
+`793e03d2dc3c141d728bcd9cc0b1c58e8ee79d760d58e634915f83fe8d486e68`.
+Any commit containing this source-of-truth correction changes HEAD, so the
+candidate C0P plan hash prefix `f883` is invalid and must be recomputed after
+the final reviewed docs commit. No token may bind or reuse that candidate hash.
+
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is
 `GO_EPIC_PHONE_001_C1_LAUNCH_FREE_READINESS__epic-phone-001-20260816-r01__<64_lowercase_plan_sha256>`.

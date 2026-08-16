@@ -1329,6 +1329,34 @@ branch; `origin/main` intentionally remains
 still requires the exact committed-source-bound ignored plan/passports and a
 fresh literal Security token; C1/runtime/auth remain separately blocked.
 
+`C0P-PREP` resolves only the artifact-creation dependency and is not C0P
+execution. Its proposed canonical class is `PROD_SAFE` with scope qualifier
+`ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`, pending Security review of the
+exact prep plan. Before approval it must not run. An approved prep may:
+
+- create only the fixed ignored run directory and canonical C0P plan;
+- create only the fixture-authority, target-build authorization and evidence-
+  cleanup passports;
+- validate fixed-root containment, Git-ignore coverage, no-reparse state and
+  local evidence-sink control/retention readiness.
+
+It must have exact zero secret-env/serial-map reads, subprocesses, device/app/
+network contacts, credential/runtime/auth actions and GO/attempt/result writes.
+It cannot inspect whether credential fields exist and cannot issue, derive or
+materialize a Security token. Its target-build passport is authorization-only,
+not current freshness/installed-state/selector/runtime evidence. The evidence-
+cleanup passport is policy/readiness authorization only and passes only with
+verified sink containment, control, ignore/no-reparse and retention policy. It
+does not prove force-stop/Home/capture-shutdown execution, zero mutation or
+successful post-run cleanup. Security blocker
+`CURRENT_EPIC_TARGET_BUILD_FRESHNESS_AUTHORITY_ABSENT` remains until separately
+authorized C1 launch-free freshness evidence exists.
+
+C0P stays a separate `PROD_CONDITIONAL` one-shot contour requiring its own
+committed-source-bound plan/passports and literal token. Any tracked docs commit
+changes repository HEAD and invalidates the candidate plan hash prefix `f883`;
+recompute after final reviewed docs commit before Security considers a token.
+
 The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
 runner may only validate tracked inputs, publish the deterministic blocked
 baseline and validate that bundle. It must reject arbitrary path/input

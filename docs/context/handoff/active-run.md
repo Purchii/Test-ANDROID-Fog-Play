@@ -143,11 +143,44 @@ deferred/audit rows. TASK-058A stays 6/7 with row 03 `unknown`; its one-use
 clean-first-launch state was consumed and cannot be restored by force-stop,
 Home or capture shutdown.
 
-Next safe input is the exact committed-source-bound ignored local C0P plan and
-three required passports, followed by fresh Security review and a literal
-one-shot C0P token. Those local authority artifacts are not present as accepted
-evidence in this checkpoint. Until the exact token exists, stop before
-`.qa_local`, secret, device, app, runtime or auth access. C1 and every later
+### C0P circular-gate correction and current blocker
+
+`C0P-PREP` is a distinct proposed contour with canonical class `PROD_SAFE` and
+scope qualifier `ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`. Its exact allowed
+write set is limited to the fixed ignored run directory, canonical C0P plan,
+fixture-authority passport, target-build authorization passport and evidence-
+cleanup passport. Its validation set is limited to containment, Git-ignore,
+no-reparse and local evidence-sink control/retention readiness. It has zero
+secret reads, zero serial-map reads, zero subprocesses, zero device/app/network
+contact, zero credential/runtime/auth actions and no authority to create an
+attempt/result or issue/write/infer a GO. This definition is not authorization:
+Security must review the exact preparation plan before the first ignored-path
+write.
+
+The target-build passport is authorization-only. It binds public aliases and
+the owner's permitted current epic scope but cannot prove current target/build
+freshness, installed state, selector mapping or runtime identity. Current
+Security blocker is
+`CURRENT_EPIC_TARGET_BUILD_FRESHNESS_AUTHORITY_ABSENT`; C1 must establish fresh
+launch-free target/build readiness under its own future literal GO. The
+evidence-cleanup passport is policy/readiness authorization only and requires
+verified fixed-sink containment, control, ignore/no-reparse and retention
+readiness without device contact. It cannot prove target force-stop/Home/
+capture-shutdown execution, zero mutation or successful post-run cleanup;
+later contour evidence must prove those outcomes.
+
+Pre-correction committed bindings are repository HEAD
+`3df6b883301b6512cb90ed1e616221f10cc48e26`, controller implementation commit
+`68e8bebd1162fef9aea51d88e603ebf4832d41c4` and controller source SHA-256
+`793e03d2dc3c141d728bcd9cc0b1c58e8ee79d760d58e634915f83fe8d486e68`.
+The candidate plan hash prefix `f883` becomes invalid when this docs correction
+is committed because repository HEAD changes. Discard it and recompute the
+canonical plan hash only after final reviewed docs are committed.
+
+Next safe action is Security review of the exact zero-secret/zero-device
+`C0P-PREP` plan. Until Security explicitly approves that preparation contour,
+do not create or inspect its ignored artifacts. C0P execution remains a
+separate `PROD_CONDITIONAL` one-shot literal-token-gated contour. C1 and every
 runtime/auth contour remain separately blocked even after any future C0P pass.
 
 ## Historical completed EPIC-PHONE-001 repository-only checkpoint

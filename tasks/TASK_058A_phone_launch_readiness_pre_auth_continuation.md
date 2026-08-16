@@ -197,9 +197,11 @@ QA Reviewer A and QA Reviewer B each returned final `GO` with R0/R1/P2
 `0/0/0`. Security returned
 `GO_REPOSITORY_CLOSURE / NO_NEW_RUNTIME_AUTHORITY` with R0/R1/P2 `0/0/0`.
 Docs/Scribe final reconciliation returned `GO`. Lifecycle is
-`final_reviews_passed_integration_pending`: repository closure is approved,
-but no commit SHA, task-branch push, default integration or
-`inactive_completed` state may be claimed until those steps succeed.
+`task_branch_pushed_default_integration_pending`: repository closure is
+approved and verified commit
+`65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff` is pushed/aligned to the task
+branch, but default integration and `inactive_completed` may not be claimed
+until that step succeeds.
 
 ## Acceptance criteria
 

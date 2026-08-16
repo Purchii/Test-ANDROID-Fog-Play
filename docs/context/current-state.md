@@ -46,8 +46,9 @@ TASK-058A runs in a fresh `BOUNDED_AUTONOMOUS` thread on
 `origin/main@adc601edfe579ac5cf63bf2a4c3c149be0686c72`. Repository work is
 `PROD_SAFE`; the launch-free collector and the bounded pre-auth run are
 `PROD_CONDITIONAL`. Lifecycle is
-`final_reviews_passed_integration_pending`; no commit, push or integration
-claim is made yet.
+`task_branch_pushed_default_integration_pending`. Verified commit
+`65b9b9e07515ee77e2aa27f9b5f21b4b5f0840ff` is aligned with the remote task
+branch; no default-branch integration claim is made yet.
 
 The purpose-built launch-free collector received a collection-only Security
 GO and executed exactly once. It captured native channels into ignored local

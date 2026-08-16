@@ -1,0 +1,123 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "coverage-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.coverage-ledger.csv",
+      "sha256": "7a135fb93ded0b6873f174854b1f5f139868236d5b7cf1efab9ea8676100739c"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.readiness-ledger.csv",
+      "sha256": "4f139d339b2a43288900e2431f920720aff3839997f78316b8f3d71be44d64ae"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "stage-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.stage-ledger.csv",
+      "sha256": "1962ecd451b26b496b49dc8be68a1618c27db9c261099ffb252f87c34c11b946"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "action-budget-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.action-budget-ledger.csv",
+      "sha256": "b2b904e1654a80010d25bbfbfa86a61ae7ea470186c068ced96b7d4abaa31725"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "anomaly-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.anomaly-ledger.csv",
+      "sha256": "7018fa016b197b49d1f44135ebb265c3f7506f6784e9cd921a4ceca9f530288a"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup-ledger",
+      "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.cleanup-ledger.csv",
+      "sha256": "e47d31bff7f68bdd20a40cdd7fb9fc378cf58d83cc4b8d21ff40c6d7e22c36d7"
+    }
+  ],
+  "blocked_reasons": [
+    "synthetic_fixture_classification_absent",
+    "no_literal_runtime_go",
+    "auth_entry_explicitly_blocked",
+    "current_row03_unknown",
+    "clean_first_launch_consumed_not_restorable"
+  ],
+  "build_ref": {
+    "alias": "phone-full-authority-inherited-public-safe"
+  },
+  "coverage_status": "partial_blocked",
+  "evidence_status": "confirmed_for_recorded_checkpoints",
+  "execution_status": "closed_by_ledger",
+  "generated_at_utc": "2026-08-16T12:57:00Z",
+  "payload": {
+    "action_count": 0,
+    "anomaly_count": 0,
+    "application_action_count": 0,
+    "auth_entry_action_count": 0,
+    "blocked_by_external_state_count": 36,
+    "blocked_by_tooling_count": 1,
+    "checkpoint_contract": "screenshot_visual_inspection_plus_ui_tree_plus_bounded_target_log_before_every_action",
+    "clean_first_launch_consumed": true,
+    "covered_row_count": 3,
+    "credential_value_access_count": 0,
+    "crosswalk_row_count": 43,
+    "current_row03_unknown": true,
+    "deferred_or_audit_row_count": 7,
+    "device_action_count": 0,
+    "forbidden_action_count": 0,
+    "inherited_task058a_row_count": 3,
+    "kill_switch": "target_only_force_stop_then_home_then_capture_shutdown",
+    "not_run_out_of_scope_count": 3,
+    "required_phone_blocked_count": 33,
+    "security_verdict": "GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY",
+    "stage_count": 6
+  },
+  "production_safety_classification": "PROD_SAFE_REPOSITORY_ONLY_BLOCKED_BASELINE",
+  "provenance": {
+    "application_action": false,
+    "arbitrary_input_supported": false,
+    "credential_action": false,
+    "device_action": false,
+    "forbidden_action": false,
+    "local_only_input_read": false,
+    "source": "fixed_tracked_public_safe_inputs"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "planner": "GO_TO_BUILD_REPOSITORY_ONLY",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety": "GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "EPIC-PHONE-001-RISK-FALSE-GO",
+      "summary": "Repository closure cannot authorize runtime or credential entry."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "EPIC-PHONE-001-RISK-FIRST-LAUNCH",
+      "summary": "Clean first launch was consumed and is not claimed restorable."
+    }
+  ],
+  "run_id": "epic-phone-001-repository-blocked-baseline-20260816-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-current-authority-unresolved",
+  "task_id": "EPIC-PHONE-001",
+  "unknowns": [
+    "synthetic_test_fixture_classification",
+    "current_phone_selector_row03",
+    "all_unexecuted_product_behavior"
+  ],
+  "verification": [
+    "fixed_path_contract",
+    "exact_43_row_crosswalk",
+    "task058a_hash_and_modality_validation",
+    "deterministic_bundle_validation"
+  ]
+}

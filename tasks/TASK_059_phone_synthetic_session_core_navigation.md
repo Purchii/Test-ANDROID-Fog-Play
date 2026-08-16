@@ -1,5 +1,10 @@
 # TASK-059 — Phone Full synthetic-session and core navigation coverage
 
+> Superseded on 2026-08-16 as internal stage 2 of
+> `EPIC-PHONE-001 — Full mobile application test coverage`. This specification
+> is retained for lossless objective/history only and must not be executed as
+> a separate task, thread or branch.
+
 ## Contract
 
 - Mode: `BOUNDED_AUTONOMOUS`; runtime is `PROD_CONDITIONAL`.

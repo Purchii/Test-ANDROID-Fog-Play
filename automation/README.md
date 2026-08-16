@@ -2,6 +2,23 @@
 
 This directory contains public-safe local QA tooling for the Android TV QA repository.
 
+## EPIC-PHONE-001 full mobile coverage closure
+
+`automation/phone/epic_phone_001_full_mobile_coverage.py` is a fixed-path,
+deterministic repository-only validator and blocked-baseline publisher. It
+losslessly projects the exact 43-row phone crosswalk once, reuses only three
+tracked TASK-058A rows after hash/modality validation, and terminally blocks
+all remaining required phone rows while synthetic fixture classification and a
+literal runtime GO are absent. It accepts no external input path, reads no
+ignored local evidence, starts no subprocess, and performs no device, APK,
+application, authentication, credential, QR, payment or network action.
+
+The three modes are `--validate-only`, `--publish-blocked-baseline` and
+`--validate-report`. The output includes coverage, readiness, stage,
+action-budget, anomaly and cleanup ledgers plus an evidence-envelope-v2 summary
+that always preserves
+`GO_REPOSITORY_PLAN/BLOCK_RUNTIME/BLOCK_AUTH_ENTRY` and `blocks_release`.
+
 ## TASK-057 Phone Full readiness authority
 
 `automation/runtime_authority/task057_phone_full_runtime_authority.py` is a

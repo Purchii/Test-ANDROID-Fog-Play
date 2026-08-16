@@ -1,5 +1,158 @@
 # Active run
 
+## Active EPIC-PHONE-001 — Full mobile application test coverage
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread status: `repository_only_terminal_blocked_integration_pending`.
+- Task/epic id: `EPIC-PHONE-001`.
+- Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
+- Fresh thread verified: yes.
+- Task branch: `qa/epic-phone-001-full-mobile-application-test-coverage`.
+- Default branch: `main`.
+- Exact base: `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
+- Production safety: repository/docs/automation work `PROD_SAFE`; all device,
+  application, runtime and authentication contours `PROD_CONDITIONAL` and
+  currently blocked; listed forbidden boundaries remain `PROD_FORBIDDEN`.
+- Merge/push authority: only after final acceptance, passing quality gates,
+  independent QA A/QA B and final Security approval, with a fresh remote drift
+  gate and fast-forward-only integration.
+
+### One-epic lifecycle and internal stages
+
+Owner direction dated 2026-08-16 makes this one large epic in one thread and
+one branch. TASK-059, TASK-060, TASK-061 and TASK-062 are superseded only as
+internal stage objectives and must not be executed as separate tasks or
+continuation threads:
+
+| Stage | Objective | Current terminal ledger status | Evidence status |
+|---|---|---|---|
+| 1 | Authority/readiness and synthetic-fixture gate | `blocked_by_external_state` | `unknown` |
+| 2 | Authenticated session and core navigation (former TASK-059) | `blocked_by_external_state` | `unknown` |
+| 3 | Exhaustive screen/state/transition inventory (former TASK-060) | `blocked_by_external_state` | `unknown` |
+| 4 | Input/lifecycle/safe recovery (former TASK-061) | `blocked_by_external_state` | `unknown` |
+| 5 | Boundary classification and safe recovery (former TASK-062) | `blocked_by_external_state` | `unknown` |
+| 6 | Regression ledger, reports, reviews, cleanup and integration | `closed_by_ledger` for the repository-only baseline | `confirmed` for tracked baseline records |
+
+This ledger is a genuine safety-blocked terminal checkpoint, not full product
+coverage. It must not create independent continuation tasks for stages 2
+through 5.
+
+### Authority and Security checkpoint
+
+The owner stated that phone-number and OTP fixture values are available. The
+tracked authority does not yet explicitly classify the exact fixture alias as
+fully synthetic/test-only, non-real-user, approved for this app/environment and
+incapable of real billing or entitlement impact. No values were requested,
+opened, printed, copied or entered. Credential entry remains blocked.
+
+Initial Security verdict is exact:
+`GO_REPOSITORY_PLAN / BLOCK_RUNTIME / BLOCK_AUTH_ENTRY`. It permits the
+fixed-path repository plan and deterministic blocked-baseline publication only.
+There is no literal runtime GO for this epic. Every materially different
+conditional contour requires a fresh Security plan and a literal token bound to
+epic id, contour id, run id, plan hash, target/build/passport aliases and
+hashes/expiry, and the contour budget. Drift, resume, expiry, material contour
+change or kill-switch use invalidates the token. No agent or automation may
+self-issue, infer or reuse a GO.
+
+### Historical inheritance and coverage ledger
+
+Completed TASK-058/TASK-058A files and history remain immutable. TASK-058A
+closed six of seven readiness rows under a one-run owner override; row 03
+remains `evidence_status=unknown`. The override does not authorize this epic or
+authenticated work. TASK-058A also consumed the installed-never-launched
+fixture with one launch. Target force-stop, Home and capture shutdown did not
+restore never-launched state; no reinstall/clear/reset or restoration claim is
+permitted.
+
+The epic consumes the fixed 43-row Phone Full crosswalk losslessly. The three
+exact validated TASK-058A rows remain inherited `covered`; 33 remaining
+`phone_required` rows are release-blocking `blocked_by_external_state`; seven
+deferred/audit rows preserve their prior classifications. Aggregate execution
+is `closed_by_ledger`, coverage is `partial_blocked`, and release effect is
+`blocks_release`. All unexecuted current product behavior remains `unknown`.
+
+### Exact current counters and safety contract
+
+| Counter | Authorized maximum | Actual |
+|---|---:|---:|
+| Device actions | 0 | 0 |
+| Application actions | 0 | 0 |
+| Launches/relaunches | 0 | 0 |
+| Runtime/UI actions | 0 | 0 |
+| Authentication or credential-entry actions | 0 | 0 |
+| Credential-value accesses | 0 | 0 |
+| New runtime checkpoints | 0 | 0 |
+| QR decodes/follows | 0 | 0 |
+| Payment/external/account mutations | 0 | 0 |
+| Network shaping/load actions | 0 | 0 |
+| Forbidden/destructive/bypass actions | 0 | 0 |
+| Device cleanup executions | 0 | 0 |
+
+Security's documented future ceilings are plan-only and grant no authority.
+Before every future conditional action, the current contract requires a fresh
+checkpoint with screenshot visual inspection, UI tree and bounded target-only
+log/marker, plus intended target/oracle, remaining budget, boundary state and
+risk/hypothesis. Missing modality, ambiguous target, budget exhaustion, raw
+spill, drift or a boundary hard-stops the contour. Every anomaly is recorded
+immediately before continuation or recovery. Raw evidence must remain in a
+fresh contained ignored run sink under
+`.qa_local/evidence/epic-phone-001/<run_id>/`; public output is limited to
+aliases, category-level enums/booleans, counters, timestamps, evidence ids and
+reason/status codes.
+
+QR decode is local-only and never implies follow. Payment, external browser,
+authentication, account mutation and media/session start are boundaries. The
+kill switch is target-only force-stop, then Home, then capture shutdown and
+post-stop evidence. It is not permission to uninstall, reinstall, clear/reset,
+patch/bypass, perform broad cleanup or affect another package.
+
+### Repository artifacts and current review state
+
+The fixed-path runner may only validate tracked inputs, publish the deterministic
+blocked baseline, and validate that report. It has no device, network,
+credential or arbitrary-path interface. Public artifacts are the v2 summary
+plus coverage, readiness, stage, action-budget, anomaly and cleanup ledgers.
+
+Current checkpoint: Builder produced the repository-only candidate. QA
+Reviewer A's initial three R1 findings were recorded immediately: weak
+TASK-058A inheritance binding, lost epic manifest identity and a future epic
+timestamp. All three were remediated with immutable bundle/semantic binding,
+adversarial tests, canonical EPIC identity, TASK-043 consumer compatibility and
+non-future/monotonic time gates. A first supplementary suite run then exposed
+35 TASK-043 failures from the single EPIC-id compatibility root cause; that
+process anomaly was fixed before continuation and the rerun passed.
+
+Final checks now pass: fixed runner validate/publish/report parity; 152 focused
+passed/1 skipped; supplementary safe suite 1418 passed/4 skipped with only the
+Security-forbidden TASK-045 runtime test excluded; compile; manifest 36 records,
+13 authoritative and 23 legacy; both hygiene modes; public safety 431/0; docs
+consistency 187/0; official export-index validation; and diff checks. QA
+Reviewer B returned repository GO, R0/R1/P2 `0/0/2`; both P2 notes were
+remediated by making passive evidence capture and the emergency kill switch
+non-recursive and adding trusted-UTC clock-skew resume guidance. Security
+returned `GO_REPOSITORY_INTEGRATION / BLOCK_RUNTIME / BLOCK_AUTH_ENTRY /
+NO_NEW_RUNTIME_AUTHORITY`, R0/R1/P2 `0/0/1`; its lifecycle reconciliation note
+is satisfied here. Docs/Scribe returned GO, R0/R1/P2 `0/0/0`. Replacement final
+QA Reviewer A returned `GO_REPOSITORY_INTEGRATION / NO_RUNTIME_AUTHORITY`,
+R0/R1/P2 `0/0/0`, closing the original three R1 findings. Fresh remote drift
+check, commit, task-branch push, default fast-forward and post-push alignment
+remain pending.
+
+### Stop conditions and exact safe handoff
+
+Stop before any device/runtime/auth action while either the fully
+synthetic/test-only fixture classification or a fresh exact literal Security GO
+is absent. Also stop on target/build/passport drift, unsafe or ambiguous UI,
+missing checkpoint modality, evidence spill, unapproved external/payment/auth
+boundary, budget exhaustion or cleanup/kill-switch failure.
+
+The next safe owner/team input is category-only authority for the exact local
+fixture alias; no phone or OTP value belongs in tracked text or chat. After that
+authority, Security must review the exact first conditional contour and issue a
+fresh literal GO before the Orchestrator may reconsider runtime. Until then,
+the epic remains in this same thread with a release-blocking repository ledger.
+
 ## Completed TASK-058A — Phone Full owner-override pre-auth release-blocked closure
 
 - Mode: `BOUNDED_AUTONOMOUS`.

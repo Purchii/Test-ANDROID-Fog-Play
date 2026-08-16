@@ -498,8 +498,16 @@ def _validate_manifest_and_migration(manifest: Mapping[str, Any]) -> list[dict[s
         if not isinstance(record, dict):
             raise ContractError("REPORT_MANIFEST_RECORD_INVALID")
         task_id = record.get("task_id")
-        if not isinstance(task_id, str) or not re.fullmatch(r"TASK-[0-9]{3}[A-Z]?", task_id):
+        if not isinstance(task_id, str) or not re.fullmatch(
+            r"(?:TASK-[0-9]{3}[A-Z]?|EPIC-[A-Z0-9]+-[0-9]{3})",
+            task_id,
+        ):
             raise ContractError("REPORT_MANIFEST_TASK_INVALID")
+        if task_id.startswith("EPIC-"):
+            # TASK-043 migration rows intentionally cover TASK-019..040 only.
+            # A valid epic manifest record is governed by the manifest but does
+            # not masquerade as, or inflate, a historical TASK migration row.
+            continue
         task_number = int(task_id[5:8])
         if not 19 <= task_number <= 40:
             continue

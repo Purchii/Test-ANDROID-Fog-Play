@@ -10,6 +10,7 @@ from unittest import mock
 
 from automation.reporting.generate_report_manifest import (
     ENVELOPE_SCHEMA_VERSION,
+    _infer_task_id,
     _sha256,
     build_manifest,
     main,
@@ -103,6 +104,11 @@ def _v2_report(
 
 
 class ReportManifestTests(unittest.TestCase):
+    def test_epic_phone_id_is_preserved_as_authoritative_identity(self) -> None:
+        path = Path("docs/qa/reports/epic_phone_001.summary.json")
+        self.assertEqual(_infer_task_id(path, {"task_id": "EPIC-PHONE-001"}), "EPIC-PHONE-001")
+        self.assertEqual(_infer_task_id(path, {"task_id": "EPIC-PHONE-1"}), "TASK-UNKNOWN")
+
     def test_text_artifact_sha_is_stable_across_lf_and_crlf_checkouts(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             report = Path(temp_dir) / "report.json"

@@ -1273,6 +1273,84 @@ PASS; QA A and QA B final GO 0/0/0; Security
 Lifecycle is `final_reviews_passed_integration_pending` until commit, push and
 default integration succeed.
 
+## EPIC-PHONE-001 full mobile application coverage gates
+
+EPIC-PHONE-001 is one `BOUNDED_AUTONOMOUS` epic in one thread and
+`qa/epic-phone-001-full-mobile-application-test-coverage`. TASK-059 through
+TASK-062 are superseded as internal stages 2 through 5; no gate may require or
+create a separate task/thread/branch for those objectives. Historical
+TASK-058/TASK-058A artifacts are read-only inputs and must not be rewritten.
+
+The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
+runner may only validate tracked inputs, publish the deterministic blocked
+baseline and validate that bundle. It must reject arbitrary path/input
+overrides and have no subprocess, device, network, credential or ignored-local
+storage interface. A repository `closed_by_ledger` status must never be
+promoted to product execution or release PASS.
+
+Runtime/auth gating is fail-closed:
+
+- the statement that phone/OTP values are available does not establish a
+  synthetic fixture;
+- credential access/entry requires explicit owner/team classification of the
+  exact local alias as fully synthetic/test-only, non-real-user,
+  app/environment-bound and incapable of real billing/entitlement impact;
+- values remain ignored/local-only and may not be requested, logged or
+  published;
+- each materially different conditional contour requires a fresh exact
+  Security plan and literal epic/contour/run-bound GO;
+- no agent, report, harness, plan-only budget or prior TASK-058A override may
+  issue, infer or reuse that GO;
+- absent classification or GO keeps stages 1 through 5
+  `blocked_by_external_state`, auth entry blocked and release blocked.
+
+The terminal coverage bundle passes only if:
+
+- all 43 crosswalk rows appear exactly once in canonical order with no merge,
+  omission, duplicate, rename or owner drift;
+- exactly the three validated TASK-058A rows remain inherited `covered`, all
+  33 other `phone_required` rows remain release-blocking, and seven
+  deferred/audit rows preserve their prior status;
+- TASK-058A inheritance is bound to its exact immutable task/run identity,
+  six-of-seven readiness result, row-03 unknown/override semantics, one launch,
+  zero pre-auth actions, consumed clean-first-launch state and exact modality
+  evidence; a hash-rebound or internally self-consistent mutation fails;
+- row 03 remains `evidence_status=unknown`, the one-run owner override is not
+  reusable, and clean-first-launch is not represented as restored;
+- summary/result remain `partial_blocked` and `blocks_release` with all
+  unexecuted product behavior `unknown`;
+- device, application, runtime/UI, authentication-entry, credential-value,
+  payment/external/account, network/load, QR-follow, destructive/bypass and
+  cleanup-action counters are each exact zero for this epic baseline;
+- the v2 report uses canonical task id `EPIC-PHONE-001`, its generation time is
+  valid non-future UTC, and manifest authority identifies the epic rather than
+  `TASK-UNKNOWN`;
+- public artifacts contain only approved aliases, category values, counters,
+  timestamps, evidence ids and reason/status codes.
+
+Any future conditional action requires a checkpoint before the action with
+screenshot visual inspection, UI tree and bounded target-only log/marker, plus
+target/oracle, remaining budget, boundary and risk/hypothesis fields. The same
+modalities follow the action. Missing modality, screenshot/XML mismatch,
+target ambiguity, raw spill, drift, budget exhaustion or boundary encounter is
+recorded immediately and stops or safely recovers before continuation. Raw
+evidence stays in a contained ignored run sink. Local-only QR decode never
+authorizes follow. The kill switch is target-only force-stop, then Home, then
+capture shutdown and post-stop evidence; it never authorizes reinstall,
+clear/reset, APK modification/bypass or broad device cleanup.
+
+Final repository acceptance requires runner validate/publish/report parity,
+focused adversarial tests, relevant supplementary tests, compile, manifest
+generation/validation, hygiene, public-safety, docs consistency, diff/Git state
+checks, independent QA Reviewer A and QA Reviewer B GO, final Security GO for
+repository closure, Docs/Scribe reconciliation, and a fresh remote drift gate.
+The runner, focused/supplementary tests, compile, manifest, hygiene,
+public-safety, docs, export-index and diff gates pass. QA Reviewer B, replacement
+final QA Reviewer A and final Security returned repository-integration GO; all
+non-blocking checkpoint, clock-skew and lifecycle reconciliation notes were
+addressed. Only the fresh remote drift gate and Git integration remain pending;
+no merge/push or completed lifecycle may be recorded before they pass.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

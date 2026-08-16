@@ -277,6 +277,8 @@ def test_unknown_surface_family_scope_is_rejected() -> None:
 
 
 def test_missing_manifest_tasks_are_explicit_and_legacy_never_inflates() -> None:
+    manifest = json.loads(subject.REPORT_MANIFEST.read_text(encoding="utf-8-sig"))
+    assert any(record["task_id"] == "EPIC-PHONE-001" for record in manifest["records"])
     rows = subject.load_snapshot()["migration"]
     assert {row["task_id"] for row in rows} == {f"TASK-{number:03d}" for number in range(19, 41)}
     assert any(row["schema_status"] == "missing" for row in rows)

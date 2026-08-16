@@ -1,15 +1,66 @@
 {
-  "authoritative_record_count": 12,
+  "authoritative_record_count": 13,
   "blocked_reasons": [],
-  "generated_at_utc": "2026-08-16T11:55:04Z",
+  "generated_at_utc": "2026-08-16T13:08:12Z",
   "invalid_record_count": 0,
   "legacy_record_count": 23,
   "manifest_status": "pass_with_legacy_migration_blockers",
   "mode": "BOUNDED_AUTONOMOUS",
   "path_source": "git_tracked",
   "production_safety_classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",
-  "record_count": 35,
+  "record_count": 36,
   "records": [
+    {
+      "artifacts": [
+        {
+          "evidence_status": "confirmed_for_recorded_checkpoints",
+          "kind": "public_safe_report_summary",
+          "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.summary.json",
+          "sha256": "0f14397194661119f2bad60b129ae12452754e121fd54cd683dee94babd1b3e8"
+        }
+      ],
+      "authoritative": true,
+      "authority_status": "authoritative",
+      "blocked_reasons": [],
+      "build_ref": {
+        "alias": "phone-full-authority-inherited-public-safe"
+      },
+      "coverage_status": "partial_blocked",
+      "evidence_status": "confirmed_for_recorded_checkpoints",
+      "execution_status": "closed_by_ledger",
+      "generated_at_utc": "2026-08-16T12:57:00Z",
+      "production_safety_classification": "PROD_SAFE_REPOSITORY_ONLY_BLOCKED_BASELINE",
+      "provenance": {
+        "indexed_by_task": "TASK-038",
+        "source_kind": "tracked_public_safe_report",
+        "source_reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.summary.json",
+        "source_sha256": "0f14397194661119f2bad60b129ae12452754e121fd54cd683dee94babd1b3e8"
+      },
+      "record_id": "EPIC-PHONE-001__phone-full-authority-inherited-public-safe__phone-current-authority-unresolved__epic-phone-001-repository-blocked-baseline-20260816-001__epic_phone_001_full_mobile_application_test_coverage.summary",
+      "release_effect": "blocks_release",
+      "review": {
+        "manifest_generator": "generated",
+        "schema_policy": "v2_valid"
+      },
+      "risks": [],
+      "run_id": "epic-phone-001-repository-blocked-baseline-20260816-001",
+      "schema_validation_status": "v2_valid",
+      "schema_version": "evidence-report-envelope-v2",
+      "superseded_by": null,
+      "supersedes": [],
+      "target_alias": "phone-current-authority-unresolved",
+      "task_id": "EPIC-PHONE-001",
+      "unknowns": [],
+      "verification": [
+        {
+          "evidence_status": "confirmed",
+          "name": "report_file_sha256",
+          "reference": "docs/qa/reports/epic_phone_001_full_mobile_application_test_coverage.summary.json",
+          "sha256": "0f14397194661119f2bad60b129ae12452754e121fd54cd683dee94babd1b3e8",
+          "status": "pass"
+        }
+      ]
+    },
     {
       "artifacts": [
         {
@@ -2316,7 +2367,7 @@
   "task_id": "TASK-038",
   "tool_name": "reporting.report_manifest_generator",
   "unknown_schema_record_count": 0,
-  "v2_record_count": 12,
+  "v2_record_count": 13,
   "verification": [
     {
       "classification": "PROD_SAFE_OFFLINE_STATIC_ONLY",

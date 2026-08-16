@@ -248,7 +248,7 @@ def _load_json_object(path: Path) -> tuple[dict[str, Any], list[str]]:
 
 def _infer_task_id(path: Path, data: dict[str, Any]) -> str:
     task_id = data.get("task_id")
-    if isinstance(task_id, str) and re.fullmatch(r"TASK-\d{3}[A-Z]?", task_id):
+    if isinstance(task_id, str) and re.fullmatch(r"(?:TASK-\d{3}[A-Z]?|EPIC-[A-Z0-9]+-\d{3})", task_id):
         return task_id
     match = re.search(r"task(\d{3})([a-z]?)", path.name, re.IGNORECASE)
     if match:

@@ -39,6 +39,67 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## Active EPIC-PHONE-001 repository-only blocked baseline — 2026-08-16
+
+EPIC-PHONE-001 runs as one `BOUNDED_AUTONOMOUS` epic in one fresh thread and
+one branch, `qa/epic-phone-001-full-mobile-application-test-coverage`, from
+exact freshly fetched `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
+The former TASK-059, TASK-060, TASK-061 and TASK-062 objectives are superseded
+as internal stages 2 through 5 of this epic; they are not separate tasks,
+threads, branches or continuation runs. Repository planning, deterministic
+automation and public-safe ledger work are `PROD_SAFE`. Device, application,
+runtime and authentication actions remain `PROD_CONDITIONAL` and blocked.
+
+The owner stated that phone-number and OTP fixture values are available, but
+no tracked authority explicitly classifies the exact fixture as fully
+synthetic/test-only, non-real-user and safe from real billing or entitlement
+impact. Availability alone is not that classification. No value was requested,
+read, printed or entered. Security therefore returned
+`GO_REPOSITORY_PLAN / BLOCK_RUNTIME / BLOCK_AUTH_ENTRY`; no literal
+epic/contour/run-bound runtime GO exists. Each materially different future
+conditional contour requires its own fresh exact Security plan and literal GO;
+the Orchestrator, harness and reports cannot self-issue or infer one.
+
+The repository-only baseline closes all six epic stages by ledger without
+claiming terminal product coverage. Stages 1 through 5 are
+`blocked_by_external_state`; stage 6 is `closed_by_ledger`. The lossless
+43-row crosswalk preserves three exact TASK-058A inherited covered rows and
+keeps the other 33 required phone rows release-blocking. Seven deferred/audit
+rows preserve their prior status. Aggregate result is `partial_blocked`,
+`blocks_release`; all unexecuted product behavior remains `unknown`.
+
+TASK-058 and TASK-058A history is immutable. TASK-058A remains six of seven
+readiness rows, with row 03 `evidence_status=unknown` under a one-run owner
+override that cannot be reused. Its single clean-first launch was consumed;
+force-stop/Home/capture shutdown did not restore the never-launched state, and
+this epic makes no restoration or rollback claim.
+
+Current epic counters are exact zero: device actions `0`, application actions
+`0`, runtime/UI actions `0`, authentication-entry actions `0`, credential-value
+accesses `0`, forbidden actions `0`, new runtime checkpoints `0`, QR decodes
+`0`, payment/external/account mutations `0`, and cleanup executions `0` because
+no device contour began. Future plan ceilings do not authorize execution.
+Before every future action the contract requires screenshot visual inspection,
+UI tree and bounded target-only log evidence, immediate anomaly recording, an
+ignored local run sink, and the target-only force-stop + Home + capture-shutdown
+kill switch.
+
+The fixed-path blocked-baseline bundle passes validate/publish/report parity.
+Final checks include 152 focused passed/1 skipped, a supplementary safe suite
+of 1418 passed/4 skipped with only the Security-forbidden TASK-045 runtime test
+excluded, compile, manifest 36/13/23, both hygiene modes, public safety 431/0,
+docs consistency 187/0 and diff checks. QA Reviewer B returned repository GO
+with two P2 notes; the passive-capture/kill-switch checkpoint recursion and
+clock-skew resume guidance were clarified and revalidated. Final Security
+returned `GO_REPOSITORY_INTEGRATION / BLOCK_RUNTIME / BLOCK_AUTH_ENTRY /
+NO_NEW_RUNTIME_AUTHORITY`, R0/R1/P2 `0/0/1`; its lifecycle-only P2 is satisfied
+by this reconciliation. Replacement final QA Reviewer A returned
+`GO_REPOSITORY_INTEGRATION / NO_RUNTIME_AUTHORITY`, R0/R1/P2 `0/0/0`, closing
+all three original R1 findings. Fresh remote drift validation and Git
+integration are the remaining gates. No runtime, device, APK, `.qa_local`, secret, real-user,
+payment, external browser/QR traversal, network shaping, destructive or bypass
+action has been performed by this epic.
+
 ## Completed TASK-058A owner-override pre-auth release-blocked closure — 2026-08-16
 
 TASK-058A runs in a fresh `BOUNDED_AUTONOMOUS` thread on

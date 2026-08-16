@@ -1,5 +1,10 @@
 # TASK-062 — Phone Full boundary classification and safe recovery
 
+> Superseded on 2026-08-16 as internal stage 5 of
+> `EPIC-PHONE-001 — Full mobile application test coverage`. This specification
+> is retained for lossless objective/history only and must not be executed as
+> a separate task, thread or branch.
+
 ## Contract
 
 - Mode: `BOUNDED_AUTONOMOUS`; runtime is `PROD_CONDITIONAL`.

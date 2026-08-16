@@ -139,7 +139,8 @@ deferred, not completed. Phone evidence cannot satisfy or unblock those claims.
 | TASK-057 | Phone Full runtime authority and fixture readiness gate | BOUNDED_AUTONOMOUS; repository PROD_SAFE; bounded metadata PROD_CONDITIONAL after Security GO | TASK-056; TASK-042/TASK-045/TASK-045A public authority | qa/task-057-phone-full-runtime-authority-gate | inactive_completed_blocked_runtime; exact base `146a390e`; exactly 7 rows: 2 observed_pass/5 blocking; candidate min-SDK metadata not emitted, signing mismatch and three missing fixture/security passports; BLOCK_RUNTIME/blocks_release; no product runtime |
 | TASK-057R | Phone Full authorized reinstall and readiness revalidation | BOUNDED_AUTONOMOUS; repository PROD_SAFE; exact target-only uninstall/install PROD_CONDITIONAL after owner authorization and Security plan GO | completed TASK-057; owner authorization dated 2026-08-16 | qa/task-057r-phone-full-authorized-reinstall-readiness-revalidation | inactive_completed_blocked_runtime; implementation `d9d51383e1c0ef132108f35cc31635229f363280` pushed to task branch and fast-forwarded to `main`; bounded reinstall observed_pass; exact 7 rows 4 observed_pass/3 blocked_by_fixture; BLOCK_RUNTIME/blocks_release; no app launch/navigation/TASK-058 |
 | TASK-058 | Phone Full first-launch and pre-auth coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_PACKAGE_ACTION; runtime BLOCK_RUNTIME | latest TASK-057 readiness revalidation GO_RUNTIME and approved non-destructive first-launch fixture | qa/task-058-phone-first-launch-pre-auth-coverage | inactive_completed_blocked_runtime; implementation `d877eaf6386e28b1c9d0c1603d85a3f247f47444`, reviewed closure `233277a233ae206c491593c6696ec375e3b380c1` pushed to task branch and fast-forwarded to `main`; one uninstall/one ordinary install succeeded with zero retry, post-install raw-spill hard stop left readiness 2 pass/5 blocked, exact 3 inherited rows terminal-blocked, product runtime not_run, blocks_release |
-| TASK-059 | Phone Full synthetic-session and core navigation coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-058 PASS/zero release blockers/cleanup plus current TASK-057/Security and session passport | qa/task-059-phone-synthetic-session-core-navigation | planned_blocked_by_dependency |
+| TASK-058A | Phone Full launch-readiness and pre-auth continuation | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_OWNER_OVERRIDE_BOUNDED_PRE_AUTH | completed blocked TASK-058; owner authority and hash-bound Security override dated 2026-08-16 | qa/task-058a-phone-launch-readiness-pre-auth-continuation | final_reviews_passed_integration_pending; exact base `adc601ed`; collector failed closed once on ambiguous min-SDK with no retry; owner waived selector/delta revalidation; readiness 6 pass/1 `evidence_status=unknown` with owner-override reason; one launch/zero UI actions; inherited three rows covered; discovered auth boundary blocked_by_boundary; cleanup confirmed; blocks_release; TASK-059 blocked; runner/check suites PASS including 161 focused, supplementary 1392/4, manifest 35/12/23, public 421/0, docs 186/0; QA A/QA B GO 0/0/0; Security repository-closure GO/no-new-runtime-authority 0/0/0; commit/push/integration pending |
+| TASK-059 | Phone Full synthetic-session and core navigation coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-058A PASS/zero release blockers/cleanup plus fresh normal seven-row readiness/Security/session authority; TASK-058A owner override is ineligible | qa/task-059-phone-synthetic-session-core-navigation | planned_blocked_by_dependency |
 | TASK-060 | Phone Full exhaustive screen, state and transition inventory | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-059 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-060-phone-exhaustive-screen-transition-inventory | planned_blocked_by_dependency |
 | TASK-061 | Phone Full input, lifecycle and safe recovery coverage | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-061-phone-input-lifecycle-recovery | planned_blocked_by_dependency |
 | TASK-062 | Phone Full boundary classification and safe recovery | BOUNDED_AUTONOMOUS; PROD_CONDITIONAL_BOUNDED_RUNTIME | TASK-060 and TASK-061 PASS/zero release blockers/cleanup plus current TASK-057/Security | qa/task-062-phone-boundary-classification-recovery | planned_blocked_by_dependency |
@@ -171,6 +172,19 @@ evidence/cleanup passport, runtime budget, kill switch, rollback or Security
 blocked and was not executed. TASK-058 has since executed only its newly
 authorized package-action contour and closed `inactive_completed_blocked_runtime`;
 product launch/navigation coverage remains `not_run`.
+
+TASK-058A is the fresh corrective continuation after the completed blocked
+TASK-058. Its one authorized collector execution failed closed on ambiguous
+min-SDK metadata and was not retried. The owner then confirmed the installed
+app as the supplied same build, authorized that installed app and explicitly
+waived selector/unrelated-package-delta revalidation while accepting drift
+risk. Security issued a hash-bound `GO_RUNTIME_OWNER_OVERRIDE` for this run
+only. One launch reached the pre-auth login/authentication boundary; no UI or
+forbidden action occurred, and force-stop/Home/capture cleanup succeeded. The
+three TASK-058 inherited coverage rows are covered, but readiness row 03 remains
+`evidence_status=unknown` with owner-override reason metadata, so the overall
+result still blocks release and cannot
+satisfy TASK-059 dependency authority.
 
 The authoritative decomposition and common gates are in
 `tasks/TASK_056_phone_only_e2e_roadmap_reprioritization.md`; each future task

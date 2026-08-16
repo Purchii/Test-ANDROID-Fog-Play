@@ -39,6 +39,69 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## TASK-058A final reviews passed, integration pending — 2026-08-16
+
+TASK-058A runs in a fresh `BOUNDED_AUTONOMOUS` thread on
+`qa/task-058a-phone-launch-readiness-pre-auth-continuation` from exact aligned
+`origin/main@adc601edfe579ac5cf63bf2a4c3c149be0686c72`. Repository work is
+`PROD_SAFE`; the launch-free collector and the bounded pre-auth run are
+`PROD_CONDITIONAL`. Lifecycle is
+`final_reviews_passed_integration_pending`; no commit, push or integration
+claim is made yet.
+
+The purpose-built launch-free collector received a collection-only Security
+GO and executed exactly once. It captured native channels into ignored local
+evidence and failed closed with public-safe reason
+`artifact_metadata_ambiguous:min_sdk`. No collector retry, package mutation,
+reinstall, uninstall, clear-data, reset or app launch occurred in that phase.
+
+After that blocker, the owner confirmed that the installed application is the
+supplied same build, explicitly authorized testing the installed app and then
+verbatim waived selector and unrelated-package-delta revalidation while
+accepting the drift risk. This authority allowed no collector retry, reinstall,
+clear-data or reset. Security reviewed the exact owner statement and issued a
+hash-bound `GO_RUNTIME_OWNER_OVERRIDE`; this is not the legacy seven-of-seven
+readiness GO and does not convert row 03 into observed evidence. Readiness is
+six of seven `observed_pass`; `task057-authority-03-current-phone-selector`
+remains `evidence_status=unknown` with owner-override reason metadata and is
+release-blocking.
+
+The runtime consumed exactly one launch and zero UI actions. The prelaunch
+checkpoint confirmed Home with the target absent from the visible foreground.
+The postlaunch checkpoint, with screenshot visual inspection, UI tree and
+bounded target-app marker/log, showed the Fog Play pre-auth login surface. It
+was classified as an authentication boundary, so the run entered no data and
+performed no credential, authentication, payment, media, network, external,
+QR, destructive or TASK-059 action. A partial green left-edge visual overlay
+was present in the screenshot and absent from the UI tree. The mismatch is
+`confirmed`; a system/tooling overlay is `likely`, while product cause remains
+`unknown`.
+
+Boundary stop invoked the one-shot kill switch. Target force-stop, Home and
+capture shutdown all succeeded. Final counters are one launch, zero safe
+pre-auth UI actions, zero forbidden actions, two checkpoints and one cleanup.
+The clean-first-launch fixture is consumed and cannot be restored under the
+approved scope; no rollback is claimed.
+
+The inherited `phone-coverage-001`, `phone-coverage-017` and `A002` rows are
+freshly covered. The discovered login/authentication surface is terminal
+`blocked_by_boundary`. Overall release effect remains `blocks_release` because
+legacy readiness row 03 is unresolved under owner override, and TASK-059 stays
+blocked. All raw screenshots, XML, logs, device/package values and command
+output remain ignored/local-only.
+
+Final repository verification passes: both runner validation modes; 161
+focused related/release tests; the supplementary suite excluding only the
+Security-forbidden TASK-045 environment-coupled test with 1392 passed and 4
+skipped; compile; report manifest with 35 records, 12 authoritative and 23
+legacy; both hygiene modes; public safety 421/0; docs consistency/link sanity
+186/0; and diff checks. QA Reviewer A and QA Reviewer B each returned final
+`GO` with R0/R1/P2 `0/0/0`. Security returned
+`GO_REPOSITORY_CLOSURE / NO_NEW_RUNTIME_AUTHORITY` with R0/R1/P2 `0/0/0`.
+Docs/Scribe final reconciliation is `GO`. These verdicts authorize repository
+closure only; commit, task-branch push and remote-default integration remain
+pending.
+
 ## Completed TASK-058 blocked first-launch/pre-auth closure — 2026-08-16
 
 TASK-058 runs in a fresh `BOUNDED_AUTONOMOUS` thread on

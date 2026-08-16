@@ -1,0 +1,133 @@
+{
+  "artifacts": [
+    {
+      "evidence_status": "confirmed",
+      "kind": "readiness_ledger",
+      "reference": "docs/qa/reports/task058a_phone_launch_readiness_pre_auth_continuation.readiness-ledger.csv",
+      "sha256": "bc2c878efab8d03593f717490183df5c39ce4220d32d853b5c469fc98a6b6ace"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "passport_ledger",
+      "reference": "docs/qa/reports/task058a_phone_launch_readiness_pre_auth_continuation.passport-ledger.csv",
+      "sha256": "a06606bc596e980f60b9e1adad673b4ed0f66b3b9175cfbc2a4c2bab1c298b34"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "scenario_ledger",
+      "reference": "docs/qa/reports/task058a_phone_launch_readiness_pre_auth_continuation.scenario-ledger.csv",
+      "sha256": "bf0a2bf730ed6d5d15ae85a30029259bb688543c15cd5e00edd4ea4f206e8bdb"
+    },
+    {
+      "evidence_status": "confirmed",
+      "kind": "cleanup_ledger",
+      "reference": "docs/qa/reports/task058a_phone_launch_readiness_pre_auth_continuation.cleanup-ledger.csv",
+      "sha256": "d2cdc73e28d40c8bb91e61c796e38ef8d33a3a83e09761620f8b58c7a519c868"
+    }
+  ],
+  "blocked_reasons": [
+    "selector_unrelated_delta_waived_owner_override_blocks_release"
+  ],
+  "build_ref": {
+    "alias": "task058-selected-phone-full-001"
+  },
+  "coverage_status": "covered",
+  "evidence_status": "confirmed",
+  "execution_status": "partial_blocked",
+  "generated_at_utc": "2026-08-16T10:40:00Z",
+  "payload": {
+    "authentication_boundary_count": 1,
+    "blocked_scenario_count": 1,
+    "collector_execution_status": "blocked_artifact_metadata_ambiguity",
+    "collector_launch_count": 0,
+    "collector_mutation_count": 0,
+    "collector_retry_count": 0,
+    "covered_scenario_count": 4,
+    "first_launch_restored": false,
+    "forbidden_action_count": 0,
+    "go_runtime": false,
+    "go_runtime_owner_override": true,
+    "inherited_scenario_covered_count": 3,
+    "launch_count": 1,
+    "passport_count": 3,
+    "readiness_blocked_count": 1,
+    "readiness_observed_pass_count": 6,
+    "readiness_row_count": 7,
+    "required_scenario_count": 3,
+    "runtime_checkpoint_count": 2,
+    "safe_pre_auth_action_count": 0,
+    "scenario_count": 5,
+    "security_gate": "GO_RUNTIME_OWNER_OVERRIDE",
+    "unrelated_package_delta_count": null,
+    "visual_xml_mismatch_anomaly_count": 1
+  },
+  "production_safety_classification": "PROD_CONDITIONAL_LAUNCH_FREE_THEN_BOUNDED_PRE_AUTH",
+  "provenance": {
+    "local_only_input_read": true,
+    "reporter_security_decision_authority": false,
+    "runner_device_action": false,
+    "runner_package_action": false,
+    "source": "sanitized_task058a_fixed_local_projection"
+  },
+  "release_effect": "blocks_release",
+  "review": {
+    "docs_scribe": "pending_independent_review",
+    "qa_reviewer_a": "pending_independent_review",
+    "qa_reviewer_b": "pending_independent_review",
+    "security_prod_safety_reviewer": "go_runtime_owner_override"
+  },
+  "risks": [
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058A-RISK-IRREVERSIBLE-FIRST-LAUNCH",
+      "summary": "The installed-never-launched fixture is consumable and cannot be restored without a prohibited reinstall."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058A-RISK-FALSE-GO",
+      "summary": "Owner authority and collector success do not self-issue Security GO_RUNTIME."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058A-RISK-OWNER-OVERRIDE-ROW03",
+      "summary": "Selector and unrelated-package delta remain unknown under the literal owner override and continue to block release."
+    },
+    {
+      "evidence_status": "confirmed",
+      "id": "TASK058A-RISK-VISUAL-XML-MISMATCH",
+      "summary": "A partial green left-edge overlay was visible but absent from the UI tree and remains a first-class anomaly."
+    }
+  ],
+  "run_id": "task058a-phone-launch-readiness-pre-auth-20260816-001",
+  "schema_validation_status": "pass",
+  "schema_version": "evidence-report-envelope-v2",
+  "target_alias": "phone-current-001",
+  "task_id": "TASK-058A",
+  "unknowns": [
+    {
+      "evidence_status": "unknown",
+      "id": "task057-authority-03-current-phone-selector",
+      "reason_code": "selector_unrelated_delta_waived_owner_override"
+    }
+  ],
+  "verification": [
+    {
+      "check": "exact_seven_readiness_rows",
+      "evidence_status": "confirmed",
+      "result_count": 6,
+      "status": "blocked"
+    },
+    {
+      "check": "three_task_run_bound_passports",
+      "evidence_status": "confirmed",
+      "result_count": 3,
+      "status": "pass"
+    },
+    {
+      "check": "task058a_inherited_runtime_coverage",
+      "evidence_status": "confirmed",
+      "result_count": 3,
+      "status": "pass"
+    }
+  ]
+}

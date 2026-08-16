@@ -1201,6 +1201,78 @@ distinct public-safe unobserved from/to checkpoint aliases. All three are
 `blocked_by_external_state`; fresh runtime screenshots, UI trees, bounded logs,
 covered checkpoints and product transitions remain zero.
 
+## TASK-058A owner-override launch-readiness and pre-auth continuation gates
+
+TASK-058A repository work is `PROD_SAFE`. Its one-shot launch-free collector
+and bounded pre-auth run are `PROD_CONDITIONAL`. Historical TASK-058 artifacts
+are immutable inputs and must not be rewritten.
+
+The launch-free collector gate requires native stdout and stderr to be captured
+inside one ignored task/run-bound sink before parsing or public projection. It
+allows one execution and zero retry, mutation or launch. The actual execution
+failed closed with `artifact_metadata_ambiguous:min_sdk`; ambiguous metadata is
+not evidence and the collector must not be retried under current authority.
+
+The owner subsequently confirmed the installed app as the supplied same build,
+authorized testing the installed app, waived selector and unrelated-package-
+delta revalidation verbatim and accepted drift risk. Security may bind that
+exact statement to `GO_RUNTIME_OWNER_OVERRIDE` only for this run. The override
+gate must enforce all of the following:
+
+- it is hash-bound to the reviewed authority/evidence state;
+- it is not labeled or treated as the legacy exact-seven-row `GO_RUNTIME`;
+- readiness row 03 stays `blocked_by_external_state` with
+  `evidence_status=unknown` with owner-override reason/status metadata;
+- aggregate readiness is six `observed_pass` and one owner-override blocker;
+- no missing selector/delta evidence is manufactured or inferred;
+- collector retry, reinstall, uninstall, clear-data and reset remain zero;
+- the override cannot authorize TASK-059 or a later independent run.
+
+The runtime budget is exactly one launch, at most 20 safe pre-auth UI actions
+and zero credential, authentication, account/payment, media/session, network,
+external, QR, destructive or TASK-059 actions. Before launch and before every
+UI action, screenshot visual inspection, UI tree and bounded target marker/log
+are required. A missing modality hard-stops and blocks release.
+
+The actual bounded run passes its runtime-budget and safety gates only if:
+
+- prelaunch evidence shows Home and no visible target foreground;
+- launch count is exactly one;
+- postlaunch evidence contains all three modalities and is classified without
+  entering data or authentication;
+- `phone-coverage-001`, `phone-coverage-017` and `A002` retain distinct fresh
+  covered evidence, including distinct transition endpoints;
+- the discovered pre-auth login surface is terminal
+  `blocked_by_boundary`, not entered and not treated as TASK-059 coverage;
+- the partial green left-edge screenshot-only overlay is recorded as a
+  first-class anomaly and XML/visual mismatch, with system/tooling cause no
+  stronger than `likely` and product cause `unknown`;
+- target force-stop, Home and capture shutdown each have confirmed cleanup
+  evidence;
+- final counters are launch `1`, safe pre-auth UI actions `0`, forbidden
+  actions `0`, checkpoints `2` and cleanup `1`; and
+- cleanup explicitly states that the clean-first-launch fixture was consumed,
+  is unrecoverable under the approved scope and was not rolled back.
+
+The three inherited coverage rows may be `covered` while overall release
+remains `blocks_release`: row 03 is still unknown under owner override. TASK-059
+therefore remains blocked. Public artifacts may contain only aliases,
+categories, counts, status values and evidence ids; raw screenshot/XML/log,
+device, package, hash, signing and command-output values remain ignored and
+local-only.
+
+Final task closure additionally requires focused tests, report/manifest
+validation, compile, epic, hygiene, public-safety, docs consistency, diff and
+Git-state checks plus final independent QA A, QA B, Security and Docs/Scribe
+verdicts. These gates pass for the reviewed repository candidate: runner modes
+PASS; 161 focused tests PASS; supplementary suite 1392 passed/4 skipped with
+only the Security-forbidden TASK-045 test excluded; compile PASS; manifest
+35/12/23; both hygiene modes PASS; public safety 421/0; docs 186/0; diff checks
+PASS; QA A and QA B final GO 0/0/0; Security
+`GO_REPOSITORY_CLOSURE / NO_NEW_RUNTIME_AUTHORITY` 0/0/0; Docs/Scribe GO.
+Lifecycle is `final_reviews_passed_integration_pending` until commit, push and
+default integration succeed.
+
 ## Merge gates
 
 To merge/push default branch in `BOUNDED_AUTONOMOUS`:

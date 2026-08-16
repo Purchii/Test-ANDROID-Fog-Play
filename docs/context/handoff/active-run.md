@@ -1,5 +1,167 @@
 # Active run
 
+## TASK-058A — Phone Full owner-override pre-auth closure, integration pending
+
+- Mode: `BOUNDED_AUTONOMOUS`.
+- Thread status: `final_reviews_passed_integration_pending`.
+- Task branch: `qa/task-058a-phone-launch-readiness-pre-auth-continuation`.
+- Default branch: `main`.
+- Exact base: `origin/main@adc601edfe579ac5cf63bf2a4c3c149be0686c72`.
+- Production safety: repository work `PROD_SAFE`; launch-free collection and
+  bounded pre-auth runtime `PROD_CONDITIONAL`.
+- Integration status: final checks and strict role verdicts passed; commit,
+  task-branch push and default integration are pending.
+
+### Owner authority and Security decisions
+
+The owner authority dated 2026-08-16 initially approved launch-free validation
+of the installed build, selector and unrelated-package delta, then one launch
+and at most 20 safe pre-auth actions only after the exact gate. It accepted the
+current installed-never-launched state as a consumable clean-first-launch
+fixture and absence of a real session as a synthetic pre-auth fixture. It
+forbade uninstall/install, clear-data, reset and retry.
+
+Security reviewed the one-shot collector, ignored evidence sink, three
+task/run-bound passports, action budget, kill switch and cleanup and issued a
+collection-only GO. That decision was not runtime authority. The collector ran
+exactly once and failed closed with public-safe reason
+`artifact_metadata_ambiguous:min_sdk`. No evidence from the ambiguous field was
+promoted, and collector retry, mutation and launch counts remained zero.
+
+The owner then confirmed that the installed application is the supplied same
+build and explicitly authorized testing that installed app. The owner finally
+waived selector and unrelated-package-delta revalidation verbatim and accepted
+the associated drift risk, while continuing to forbid collector retry,
+reinstall, clear-data and reset. Security bound the exact owner override to the
+reviewed evidence state and issued `GO_RUNTIME_OWNER_OVERRIDE`. This is a
+task/run-specific owner-risk override, not the legacy exact-seven-row
+`GO_RUNTIME`, and it does not transform missing selector/delta observation into
+`confirmed` evidence.
+
+### Readiness result
+
+| Row | Result | Evidence status | Notes |
+|---|---|---|---|
+| 01 canonical Phone Full | `observed_pass` | `confirmed` | Current task authority accepts the supplied/installed same build. |
+| 02 installed compatibility | `observed_pass` | `confirmed` | Owner-confirmed supplied same build plus reviewed current evidence; the ambiguous min-SDK collector result was not reused as an observation. |
+| 03 current selector and unrelated delta | `blocked_by_external_state` | `unknown` | Owner-override reason metadata records the waived revalidation and accepted drift risk; no false observed pass is claimed. |
+| 04 downgrade safety | `observed_pass` | `confirmed` | No package mutation, retry or bypass occurred. |
+| 05 synthetic pre-auth fixture | `observed_pass` | `confirmed` | Owner-approved no-real-session pre-auth passport; not TASK-059 authenticated-session authority. |
+| 06 clean first launch | `observed_pass` | `confirmed` | Owner-approved installed-never-launched passport, consumed by this run. |
+| 07 evidence/cleanup/Security | `observed_pass` | `confirmed` | Current passport, exact budgets, one-shot kill switch, cleanup and hash-bound owner-override Security GO. |
+
+Aggregate readiness is six `observed_pass` and one release-blocking owner-
+override row. This result explicitly departs from the legacy seven-of-seven
+gate under the owner's final risk acceptance. It authorizes only this exact
+TASK-058A pre-auth run and cannot unblock TASK-059.
+
+### Runtime evidence and terminal ledger
+
+The prelaunch checkpoint was captured before launch and showed Home with the
+target absent from the visible foreground. Exactly one app launch then
+occurred. The postlaunch checkpoint contained all required modalities:
+screenshot with visual inspection, UI tree and bounded target-app marker/log.
+It showed the Fog Play pre-auth login surface, classified as an authentication
+boundary.
+
+No UI action followed because entering or submitting data would cross the
+forbidden authentication boundary. Credentials, authentication, account or
+payment mutation, media/session start, network shaping, external traversal,
+QR action, destructive action and TASK-059 actions all remained zero.
+
+The inherited rows close as follows:
+
+- `phone-coverage-001`: `covered`, `confirmed` first-launch observation;
+- `phone-coverage-017`: `covered`, `confirmed` auth-guard observation;
+- `A002`: `covered`, `confirmed` launch-to-pre-auth transition with distinct
+  prelaunch and postlaunch checkpoints;
+- discovered pre-auth login/authentication boundary:
+  `blocked_by_boundary`, `confirmed` terminal classification.
+
+The screenshot also showed a partial green overlay at the left edge that was
+absent from the UI tree. The screenshot/XML mismatch is `confirmed`. A
+system/tooling overlay is `likely`; product cause is `unknown`. The overlay is
+a first-class visual anomaly and does not change the authentication-boundary
+stop.
+
+### Action budget, kill switch and cleanup
+
+| Counter | Final value |
+|---|---:|
+| Launch | 1 |
+| Safe pre-auth UI actions | 0 |
+| Forbidden actions | 0 |
+| Evidence checkpoints | 2 |
+| Cleanup executions | 1 |
+
+Boundary stop triggered the one-shot target force-stop plus Home kill switch,
+followed by capture shutdown. Target force-stop, Home and capture shutdown all
+completed successfully with `confirmed` evidence. The clean-first-launch state
+was consumed by the single launch and is unrecoverable without a prohibited
+reinstall; no rollback or restoration is claimed.
+
+### Process anomalies
+
+- `TASK058A-PROCESS-ANOMALY-001`, alias
+  `collector_artifact_metadata_min_sdk_ambiguous`, is `confirmed`. Trigger:
+  the one authorized launch-free collector execution. Expected: one complete
+  category-only compatibility projection. Observed: fail-closed
+  `artifact_metadata_ambiguous:min_sdk`. No retry, mutation or launch occurred;
+  ambiguous output was not accepted as evidence. Test-design implication:
+  ambiguous artifact metadata remains blocking unless the owner explicitly
+  assumes the risk through a new reviewed authority path.
+- `TASK058A-PROCESS-ANOMALY-002`, alias
+  `runtime_controller_security_defects_pre_device`, is `confirmed` process
+  evidence. Security review found controller defects before any device action;
+  they were fixed and re-reviewed before execution. No unsafe command or
+  product action occurred. The exact defect detail remains in local/review
+  evidence; public consequence is fail-closed pre-device remediation.
+- `TASK058A-RUNTIME-ANOMALY-001`, alias
+  `partial_green_left_edge_visual_xml_mismatch`, is `confirmed`. Trigger:
+  postlaunch checkpoint. Expected: screenshot and UI tree describe the same
+  visible state. Observed: partial green left-edge overlay visible only in the
+  screenshot. A system/tooling overlay is `likely`; product cause is `unknown`.
+  Test-design implication: retain mandatory screenshot inspection and never
+  infer overlay absence from UI tree alone.
+
+### Release, verification and review closure
+
+All TASK-058A runtime actions are terminal and cleanup is complete. Product
+coverage closes the three inherited rows but overall release effect remains
+`blocks_release` because readiness row 03 is still
+`evidence_status=unknown` with owner-override reason metadata. TASK-059 remains
+`planned_blocked_by_dependency`.
+Raw screenshots, XML, logs, identifiers, package/build values and command
+output remain ignored/local-only.
+
+Final verification passes:
+
+- both TASK-058A runner `--validate-only` and `--validate-report` modes;
+- 161 focused related and release tests;
+- supplementary repository suite excluding only the Security-forbidden
+  TASK-045 environment-coupled test: 1392 passed, 4 skipped;
+- compile;
+- report manifest: 35 records, 12 authoritative, 23 legacy;
+- both full-tree hygiene modes;
+- public repository safety: 421 files, zero findings;
+- docs consistency/link sanity: 186 files, zero findings;
+- diff checks.
+
+Final independent verdicts:
+
+- QA Reviewer A: `GO`, R0/R1/P2 `0/0/0`;
+- QA Reviewer B: `GO`, R0/R1/P2 `0/0/0`;
+- Security/Prod-safety:
+  `GO_REPOSITORY_CLOSURE / NO_NEW_RUNTIME_AUTHORITY`, R0/R1/P2 `0/0/0`;
+- Docs/Scribe: `GO`, no open documentation inconsistency after final link and
+  diff review.
+
+These verdicts approve repository closure only and grant no new runtime
+authority. Thread status is `final_reviews_passed_integration_pending`.
+Commit, task-branch push and remote-default integration remain pending; do not
+record a commit SHA, push alignment or `inactive_completed` state until those
+steps actually succeed.
+
 ## Completed TASK-058 — Phone Full first-launch and pre-auth blocked closure
 
 - Mode: `BOUNDED_AUTONOMOUS`.

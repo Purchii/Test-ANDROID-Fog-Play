@@ -13,6 +13,12 @@
 - Immutable epic base: `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
 - Last integrated repository-only closure: epic branch and `main` aligned at
   `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
+- Current epic-branch commit:
+  `68e8bebd1162fef9aea51d88e603ebf4832d41c4`, pushed and aligned with
+  `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
+- Default integration: intentionally not performed. `origin/main` remains
+  `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
+  acceptance and all final gates complete.
 - Production safety: repository/controller/tests/docs work `PROD_SAFE`; C0P,
   C1, device, app, runtime and auth are `PROD_CONDITIONAL` and blocked without
   their exact literal Security GO; payment, paid session, external/QR traversal,
@@ -137,10 +143,12 @@ deferred/audit rows. TASK-058A stays 6/7 with row 03 `unknown`; its one-use
 clean-first-launch state was consumed and cannot be restored by force-stop,
 Home or capture shutdown.
 
-Next safe action is commit and task-branch push of the accepted frozen candidate.
-After the committed controller/source hash exists, Security may review
-the exact C0P plan and, only if satisfied, issue the literal C0P token. Until
-then stop before `.qa_local`, secret, device, app, runtime or auth access.
+Next safe input is the exact committed-source-bound ignored local C0P plan and
+three required passports, followed by fresh Security review and a literal
+one-shot C0P token. Those local authority artifacts are not present as accepted
+evidence in this checkpoint. Until the exact token exists, stop before
+`.qa_local`, secret, device, app, runtime or auth access. C1 and every later
+runtime/auth contour remain separately blocked even after any future C0P pass.
 
 ## Historical completed EPIC-PHONE-001 repository-only checkpoint
 

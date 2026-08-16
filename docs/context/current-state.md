@@ -39,7 +39,7 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
-## Resumed EPIC-PHONE-001 controller-construction checkpoint — 2026-08-16
+## Resumed EPIC-PHONE-001 committed-controller checkpoint — 2026-08-16
 
 The owner resumed the same `BOUNDED_AUTONOMOUS` epic, thread and branch after
 the repository-only blocked baseline. The owner explicitly confirmed public
@@ -63,8 +63,8 @@ materially different conditional contour still needs its own hash-bound,
 one-shot, expiring Security plan and literal GO. The controller cannot
 self-issue or infer one.
 
-Repository-only construction is in progress for the fail-closed runtime
-controller and focused tests. The current candidate adds guarded, explicit
+Repository-only construction is complete for the current fail-closed runtime
+controller and focused tests. The committed controller adds guarded, explicit
 C0P/C1 preflight interfaces, fixed public aliases, source/HEAD/plan bindings,
 one-shot local result semantics and public-safe no-action validation. Initial
 review found a stale claim that no C0P interface existed, over-detailed dry-run
@@ -75,8 +75,13 @@ interrupt traceback; final Security review then found raw `OSError` text could
 escape. The frozen repository candidate remediates these with
 a durable one-shot marker, 30-minute/current-time gates and a fixed public-safe
 interrupt/I/O reason. Final QA A, QA B and Security reviews returned 0/0/0 and
-approve repository commit only. No controller candidate or owner statement is
-itself C0P, runtime or authentication authority.
+approve repository commit only. Commit
+`68e8bebd1162fef9aea51d88e603ebf4832d41c4` is pushed and aligned on
+`origin/qa/epic-phone-001-full-mobile-application-test-coverage`. It is
+intentionally not integrated into `main`; `origin/main` remains
+`b268b1f198f595ec835e066169c97cdf839cc05b` because epic runtime acceptance is
+not complete. No committed controller or owner statement is itself C0P,
+runtime or authentication authority.
 
 Current resumed-run counters remain exact zero: `.qa_local` reads/writes `0`,
 secret-value accesses `0`, subprocess/ADB/device actions `0`, app launches `0`,

@@ -1319,11 +1319,15 @@ metadata, verbose dry-run plan/hash/path projection, misleading C1 fixture
 status and a late one-shot check after secret read. Further adversarial review
 confirmed replay after post-marker failure, missing C1 TTL/future-passport
 checks, an interruption traceback and raw `OSError` text projection. These are
-process evidence, not product
-evidence. The repository candidate includes regressions for all findings;
-final QA A, QA B and Security review counts are 0/0/0 and authorize repository
-commit only. `.qa_local`, secret, device, runtime and auth counters remain exact
-zero.
+process evidence, not product evidence. The committed epic-branch controller
+includes regressions for all findings; final QA A, QA B and Security review
+counts are 0/0/0 and authorize repository commit only. Commit
+`68e8bebd1162fef9aea51d88e603ebf4832d41c4` is pushed/aligned on the epic
+branch; `origin/main` intentionally remains
+`b268b1f198f595ec835e066169c97cdf839cc05b` until terminal runtime acceptance.
+`.qa_local`, secret, device, runtime and auth counters remain exact zero. C0P
+still requires the exact committed-source-bound ignored plan/passports and a
+fresh literal Security token; C1/runtime/auth remain separately blocked.
 
 The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
 runner may only validate tracked inputs, publish the deterministic blocked

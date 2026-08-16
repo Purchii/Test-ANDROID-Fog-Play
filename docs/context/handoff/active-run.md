@@ -1,9 +1,9 @@
 # Active run
 
-## Active EPIC-PHONE-001 — Full mobile application test coverage
+## Completed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `repository_only_terminal_blocked_integration_pending`.
+- Thread status: `inactive_completed_repository_only_terminal_blocked`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes.
@@ -13,9 +13,11 @@
 - Production safety: repository/docs/automation work `PROD_SAFE`; all device,
   application, runtime and authentication contours `PROD_CONDITIONAL` and
   currently blocked; listed forbidden boundaries remain `PROD_FORBIDDEN`.
-- Merge/push authority: only after final acceptance, passing quality gates,
-  independent QA A/QA B and final Security approval, with a fresh remote drift
-  gate and fast-forward-only integration.
+- Merge/push result: final acceptance, QA A/QA B, Security, Docs and fresh remote
+  drift gates passed; implementation commit
+  `55c75ca5cb6f200a44f97ce22677a21e522249f3` was pushed to the epic branch and
+  fast-forwarded to actual default `main`; reviewed lifecycle closure is the
+  final fast-forward-aligned commit.
 
 ### One-epic lifecycle and internal stages
 
@@ -136,8 +138,12 @@ NO_NEW_RUNTIME_AUTHORITY`, R0/R1/P2 `0/0/1`; its lifecycle reconciliation note
 is satisfied here. Docs/Scribe returned GO, R0/R1/P2 `0/0/0`. Replacement final
 QA Reviewer A returned `GO_REPOSITORY_INTEGRATION / NO_RUNTIME_AUTHORITY`,
 R0/R1/P2 `0/0/0`, closing the original three R1 findings. Fresh remote drift
-check, commit, task-branch push, default fast-forward and post-push alignment
-remain pending.
+check passed. Implementation commit
+`55c75ca5cb6f200a44f97ce22677a21e522249f3` was pushed to both the epic branch
+and actual default `main`. This reviewed lifecycle record is included in the
+final closure commit; the task branch and `main` are fast-forward aligned after
+its push. The epic thread is inactive at this genuine safety-blocked terminal
+checkpoint; internal stages are not split into continuation threads.
 
 ### Stop conditions and exact safe handoff
 

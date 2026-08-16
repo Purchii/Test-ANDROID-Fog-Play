@@ -1348,8 +1348,10 @@ The runner, focused/supplementary tests, compile, manifest, hygiene,
 public-safety, docs, export-index and diff gates pass. QA Reviewer B, replacement
 final QA Reviewer A and final Security returned repository-integration GO; all
 non-blocking checkpoint, clock-skew and lifecycle reconciliation notes were
-addressed. Only the fresh remote drift gate and Git integration remain pending;
-no merge/push or completed lifecycle may be recorded before they pass.
+addressed. The fresh remote drift gate passed at exact `origin/main@e1fb05f5`,
+implementation commit `55c75ca5cb6f200a44f97ce22677a21e522249f3` was pushed
+to the epic branch and fast-forwarded to `main`, and the reviewed closure is
+integrated with final branch/default SHA alignment.
 
 ## Merge gates
 

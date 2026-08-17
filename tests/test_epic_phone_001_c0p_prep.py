@@ -101,6 +101,7 @@ def test_validate_only_does_not_touch_local_or_environment(tmp_path, monkeypatch
     assert prep.main(["--validate-only"]) == 0
     output = json.loads(capsys.readouterr().out)
     assert output["execution_requires_literal_security_go"] is True
+    assert output["prep_attempt_id"] == "c0p-prep-002"
     assert output["secret_read_max"] == 0
     assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
 
@@ -115,15 +116,57 @@ def test_unified_prep_budget_counts_host_and_both_public_inputs():
     assert prep.BUDGET["metadata_path_target_max"] == 32
 
 
+def test_consumed_attempt_identity_cannot_be_rebound_as_fresh(tmp_path, monkeypatch):
+    now = datetime(2026, 8, 18, 10, 0, tzinfo=UTC)
+    candidate, _token = _repo(tmp_path, monkeypatch, now)
+    candidate["prep_attempt_id"] = "c0p-prep-001"
+    token = _write_candidate_and_rebind(tmp_path, candidate, now)
+    monkeypatch.setenv(prep.GO_ENV, token)
+    with pytest.raises(prep.PrepError, match="candidate_fixed_binding_invalid"):
+        prep.execute_prep(now)
+    assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
+
+
+def test_legacy_missing_attempt_identity_candidate_and_plan_are_rejected(tmp_path, monkeypatch):
+    now = datetime(2026, 8, 18, 10, 0, tzinfo=UTC)
+    candidate, _token = _repo(tmp_path, monkeypatch, now)
+    fresh_candidate = json.loads(json.dumps(candidate))
+    candidate.pop("prep_attempt_id")
+    token = _write_candidate_and_rebind(tmp_path, candidate, now)
+    monkeypatch.setenv(prep.GO_ENV, token)
+    with pytest.raises(prep.PrepError, match="candidate_keyset_invalid"):
+        prep.execute_prep(now)
+    assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
+
+    (tmp_path / prep.CANDIDATE_REL).write_bytes(prep.canonical_bytes(fresh_candidate))
+    _rebind_plan(tmp_path, now)
+    plan_path = tmp_path / prep.PREP_PLAN_REL
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    plan.pop("prep_attempt_id")
+    data = prep.canonical_bytes(plan)
+    plan_path.write_bytes(data)
+    monkeypatch.setenv(prep.GO_ENV, prep.GO_PREFIX + hashlib.sha256(data).hexdigest())
+    with pytest.raises(prep.PrepError, match="prep_plan_keyset_invalid"):
+        prep.execute_prep(now)
+    assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
+
+
 def test_success_materializes_exact_four_files_without_child_process(tmp_path, monkeypatch):
     now = datetime(2026, 8, 18, 10, 0, tzinfo=UTC)
     candidate, token = _repo(tmp_path, monkeypatch, now)
+    plan = json.loads((tmp_path / prep.PREP_PLAN_REL).read_text(encoding="utf-8"))
+    assert candidate["schema_version"].endswith("-v2")
+    assert plan["schema_version"].endswith("-v2")
+    assert candidate["prep_attempt_id"] == plan["prep_attempt_id"] == "c0p-prep-002"
+    assert candidate["public_aggregate_contract"]["prep_attempt_id"] == "c0p-prep-002"
     assert candidate["attempt_root"] == prep.ATTEMPT_ROOT_REL.as_posix()
     assert candidate["durable_attempt_marker"] == "exclusive_attempt_root_creation_first_mutation"
     assert candidate["failure_policy"].startswith("leave_partial_attempt_root")
     monkeypatch.setenv(prep.GO_ENV, token)
     result = prep.execute_prep(now)
     assert result["status"] == "prepared"
+    assert result["schema_version"].endswith("-v2")
+    assert result["prep_attempt_id"] == "c0p-prep-002"
     assert result["directory_target_count"] == 7
     assert result["directory_created_count"] == 5
     assert result["file_created_count"] == 4

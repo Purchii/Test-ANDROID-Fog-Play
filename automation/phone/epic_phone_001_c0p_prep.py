@@ -27,6 +27,7 @@ from typing import Any, Mapping, Sequence
 EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-c0p-prep"
+PREP_ATTEMPT_ID = "c0p-prep-002"
 TARGET_ALIAS = "phone-current-001"
 BUILD_ALIAS = "task058-selected-phone-full-001"
 FIXTURE_ALIAS = "epic-phone-001-fixture-001"
@@ -50,9 +51,9 @@ FIXTURE_PASSPORT_REL = RUN_ROOT_REL / "fixture-authority-passport.local.json"
 TARGET_BUILD_PASSPORT_REL = RUN_ROOT_REL / "target-build-passport.local.json"
 EVIDENCE_CLEANUP_PASSPORT_REL = RUN_ROOT_REL / "evidence-cleanup-passport.local.json"
 
-CANDIDATE_SCHEMA = "epic-phone-001-c0p-prep-candidate-v1"
-PLAN_SCHEMA = "epic-phone-001-c0p-prep-plan-v1"
-RESULT_SCHEMA = "epic-phone-001-c0p-prep-result-v1"
+CANDIDATE_SCHEMA = "epic-phone-001-c0p-prep-candidate-v2"
+PLAN_SCHEMA = "epic-phone-001-c0p-prep-plan-v2"
+RESULT_SCHEMA = "epic-phone-001-c0p-prep-result-v2"
 GO_ENV = "EPIC_PHONE_001_C0P_PREP_GO"
 GO_PREFIX = f"GO_EPIC_PHONE_001_C0P_PREP__{RUN_ID}__"
 MAX_CANDIDATE_BYTES = 32 * 1024
@@ -344,6 +345,7 @@ def build_candidate(
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "classification": CLASSIFICATION,
         "scope_qualifier": SCOPE_QUALIFIER,
         "execution_status": "planned_literal_security_go_required_not_run",
@@ -364,6 +366,7 @@ def build_candidate(
         "public_aggregate_contract": {
             "schema_version": RESULT_SCHEMA,
             "status": "prepared",
+            "prep_attempt_id": PREP_ATTEMPT_ID,
             "directory_target_count": 7,
             "directory_created_count_on_success": 5,
             "file_created_count_on_success": 4,
@@ -393,6 +396,7 @@ def build_prep_plan(
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "classification": CLASSIFICATION,
         "scope_qualifier": SCOPE_QUALIFIER,
         "repository_head": repository_head,
@@ -432,7 +436,8 @@ def _validate_prep_plan(
     plan: Mapping[str, Any], candidate_data: bytes, now: datetime
 ) -> str:
     keys = {
-        "schema_version", "epic_id", "run_id", "contour_id", "classification",
+        "schema_version", "epic_id", "run_id", "contour_id", "prep_attempt_id",
+        "classification",
         "scope_qualifier", "repository_head", "controller_source_sha256",
         "executor_source_sha256", "gitignore_sha256", "candidate_path",
         "candidate_bytes", "candidate_sha256", "target_alias", "build_alias",
@@ -447,6 +452,7 @@ def _validate_prep_plan(
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "classification": CLASSIFICATION,
         "scope_qualifier": SCOPE_QUALIFIER,
         "candidate_path": CANDIDATE_REL.as_posix(),
@@ -484,7 +490,8 @@ def _validate_prep_plan(
 
 def _validate_candidate(value: Mapping[str, Any], now: datetime) -> tuple[str, list[tuple[Path, bytes]]]:
     keys = {
-        "schema_version", "epic_id", "run_id", "contour_id", "classification",
+        "schema_version", "epic_id", "run_id", "contour_id", "prep_attempt_id",
+        "classification",
         "scope_qualifier", "execution_status", "repository_head",
         "controller_source_sha256", "executor_source_sha256", "target_alias",
         "build_alias", "fixture_alias", "issued_at_utc", "expires_at_utc",
@@ -498,6 +505,7 @@ def _validate_candidate(value: Mapping[str, Any], now: datetime) -> tuple[str, l
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "classification": CLASSIFICATION,
         "scope_qualifier": SCOPE_QUALIFIER,
         "execution_status": "planned_literal_security_go_required_not_run",
@@ -512,6 +520,7 @@ def _validate_candidate(value: Mapping[str, Any], now: datetime) -> tuple[str, l
         "public_aggregate_contract": {
             "schema_version": RESULT_SCHEMA,
             "status": "prepared",
+            "prep_attempt_id": PREP_ATTEMPT_ID,
             "directory_target_count": 7,
             "directory_created_count_on_success": 5,
             "file_created_count_on_success": 4,
@@ -935,6 +944,7 @@ def execute_prep(now: datetime | None = None) -> Mapping[str, Any]:
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "status": "prepared",
         "directory_target_count": 7,
         "directory_created_count": created_directories,
@@ -953,9 +963,10 @@ def execute_prep(now: datetime | None = None) -> Mapping[str, Any]:
 
 def validate_only() -> Mapping[str, Any]:
     return {
-        "schema_version": "epic-phone-001-c0p-prep-contract-v1",
+        "schema_version": "epic-phone-001-c0p-prep-contract-v2",
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "classification": CLASSIFICATION,
         "scope_qualifier": SCOPE_QUALIFIER,
         "fixed_candidate": CANDIDATE_REL.as_posix(),

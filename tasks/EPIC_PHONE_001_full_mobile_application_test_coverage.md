@@ -239,6 +239,12 @@ after lstat, the plan must also bind a Security-attested exclusive-workspace,
 no-external-path-mutator precondition for the complete two-minute window. If
 that precondition cannot be assured, Security must not issue GO.
 
+Any C0P-PREP reconsideration after successful parent provisioning must bind
+`prep_attempt_id=c0p-prep-002` in the candidate, plan and public aggregate.
+The consumed first plan/token cannot be relabeled, replayed or inferred as the
+new attempt. Candidate, plan, result and validate-only contract identifiers are
+therefore bumped to `v2`; legacy `v1` missing-field envelopes fail closed.
+
 The tracked preparer is
 `automation/phone/epic_phone_001_c0p_prep.py`. Current authority is
 `GO_REPOSITORY_CONSTRUCTION_ONLY`; only `--validate-only` may be run during

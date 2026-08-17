@@ -323,8 +323,17 @@ there is no C0P, C1 or runtime GO.
   runtime effect. Likely cause: command-path recall drift. Test implication:
   use the source-of-truth command `public_repo_safety_scan.py`; its corrected
   rerun passed 437 scanned files with zero findings.
+- `EPICPHONE001-PROCESS-ANOMALY-037`, alias
+  `c0p_prep_attempt_identity_schema_alias`, is `confirmed`. Trigger: QA-B
+  reviewed the new required attempt field against the consumed legacy wire
+  shape. Expected: incompatible contracts have distinct schema ids and both
+  explicit-old and missing-field replay are tested. Observed: the first patch
+  retained `v1` ids and covered only explicit `c0p-prep-001`. Likely cause:
+  attempt identity was treated as payload metadata rather than a required wire
+  field. Test implication: bump candidate/plan/result/contract to `v2`, reject
+  legacy missing-field envelopes, and assert identity on every exact surface.
 
-For anomalies 013-036, evidence status is `confirmed`; all probes were
+For anomalies 013-037, evidence status is `confirmed`; all probes were
 synthetic/repository-only, screenshot/XML/runtime-log modalities are not
 applicable, and secret/device/app/network/auth counters remain zero. Anomaly
 025 adds one fixed-path local metadata preflight; it read no local file content
@@ -413,6 +422,9 @@ exclusive-workspace/no-external-path-mutator Security attestation: pre/post
 lstat checkpoints detect ordinary drift, while Windows path-based `mkdir`
 cannot atomically prevent a hostile reparse swap inside that narrow interval.
 Absent the attestation, no GO may be issued.
+Any later prep plan must be a distinct attempt and bind
+`prep_attempt_id=c0p-prep-002` throughout its candidate, plan and aggregate;
+the consumed first GO/plan cannot be renamed or replayed.
 
 ## Historical completed EPIC-PHONE-001 repository-only checkpoint
 

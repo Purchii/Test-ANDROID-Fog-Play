@@ -56,6 +56,11 @@ reads, controller/preparer/candidate/`.gitignore` hashes, aliases, schemas and
 budgets. Shared ignored parents must pre-exist. Exclusive creation of the
 task-specific prep-attempt root is the first mutation and durable one-shot
 marker; failure leaves it in place and the preparer never cleans up or retries.
+The consumed first plan cannot be reused: every fresh envelope and result binds
+the exact superseding identity `prep_attempt_id=c0p-prep-002`.
+Because that field changes the required wire contract, the candidate, plan,
+result and validate-only contract use distinct `v2` schema identifiers; legacy
+`v1` envelopes with the field absent are rejected.
 
 The first authorized prep attempt failed before mutation because those shared
 parents were absent; its literal GO is consumed and cannot be retried. The

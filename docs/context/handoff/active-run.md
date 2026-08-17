@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_resumed_repository_controller_commit_approved_c0p_blocked`.
+- Thread status: `active_resumed_shared_parent_owner_attestation_pending`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -13,8 +13,8 @@
 - Immutable epic base: `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
 - Last integrated repository-only closure: epic branch and `main` aligned at
   `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
-- Current epic-branch commit:
-  `9a377c24f62c433033de66140ab77badaaaa521e`, pushed and aligned with
+- Current accepted implementation commit before this docs-only handoff delta:
+  `5a7a34c8562ab80adb7c307aa623c70d676a936a`, pushed and aligned with
   `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
@@ -403,10 +403,15 @@ canonical plan hash only after final reviewed docs are committed.
 The first exact Security-authorized `C0P-PREP` attempt failed closed before
 mutation because the fixed shared ignored parent was absent. Its one-shot GO is
 consumed, invalid and non-reusable; it cannot authorize provisioning or a prep
-retry, and C0P-PREP remains unprepared. The next safe action is construction,
-independent review and fresh literal authorization of a distinct shared-parent
-provisioning contour. Only after that contour passes may a newly HEAD-bound
-C0P-PREP plan receive a fresh literal GO. C0P execution remains a separate
+retry, and C0P-PREP remains unprepared. The distinct shared-parent executor is
+now committed and independently accepted repository-only. Its prior fixed-path
+failure proves category `both_absent` because `.qa_local` is checked first and
+no later local write occurred. The remaining authority prerequisite is an
+explicit owner/team confirmation that no non-Codex external path mutator will
+touch `.qa_local` or `.qa_local/evidence` during the single bounded execution.
+Only after that confirmation may Security review a fresh post-commit plan and
+issue a literal shared-parent GO. After that contour passes, a newly HEAD-bound
+C0P-PREP plan may receive its own fresh literal GO. C0P remains a separate
 `PROD_CONDITIONAL` one-shot literal-token-gated contour. C1 and every
 runtime/auth contour remain separately blocked even after any future C0P pass.
 

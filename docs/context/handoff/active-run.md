@@ -14,7 +14,7 @@
 - Last integrated repository-only closure: epic branch and `main` aligned at
   `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
 - Current epic-branch commit:
-  `68e8bebd1162fef9aea51d88e603ebf4832d41c4`, pushed and aligned with
+  `9a377c24f62c433033de66140ab77badaaaa521e`, pushed and aligned with
   `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
@@ -224,18 +224,122 @@ there is no C0P, C1 or runtime GO.
   classification. Test implication: use lstat-first optional classification
   throughout and assert ordering for commondir, loose-ref and ignored-root
   reparse cases.
+- `EPICPHONE001-PROCESS-ANOMALY-025`, alias
+  `c0p_prep_shared_parent_missing`, is `confirmed`. Trigger: the single
+  Security-authorized C0P-PREP execution bound to committed HEAD `9a377c24`
+  and its exact public plan. Expected: both fixed shared ignored parents exist
+  as plain contained directories so the exclusive task attempt root can be the
+  first mutation. Observed: fail-closed reason
+  `shared_ignored_parent_missing` before the attempt marker or any artifact was
+  created. Likely cause: the repository-local evidence parent had not yet been
+  provisioned in this worktree. Test implication: treat shared-parent
+  provisioning as a separate exact zero-secret/zero-device contour; consume
+  the failed one-shot GO and never retry it. Evidence status is `confirmed`;
+  screenshot/XML/runtime-log modalities are not applicable.
+- `EPICPHONE001-PROCESS-ANOMALY-026`, alias
+  `shared_parent_head_not_runtime_verified`, is `confirmed`. Trigger: QA-A/B
+  changed the post-GO repository identity while leaving the three originally
+  bound files unchanged. Expected: current HEAD drift invalidates GO. Observed:
+  only the plan's 40-character value was checked. Likely cause: Security
+  attestation was mistaken for execution-time verification. Test implication:
+  execute the exact-hash hardened no-subprocess HEAD reader and reject mismatch
+  or unreadable Git metadata before local classification.
+- `EPICPHONE001-PROCESS-ANOMALY-027`, alias
+  `shared_parent_go_env_budget_omission`, is `confirmed`. Trigger: exact budget
+  review. Expected: every fixed input read is counted. Observed: the plan env
+  read was bound but the literal GO env read was omitted. Likely cause: the two
+  fixed inputs were modeled separately in code but not the envelope. Test
+  implication: bind one plan-env and one GO-env read with type-strict counters.
+- `EPICPHONE001-PROCESS-ANOMALY-028`, alias
+  `shared_parent_pre_mkdir_parent_revalidation_gap`, is `confirmed`. Trigger:
+  QA-A/B synthetic parent-swap analysis. Expected: lstat/no-reparse checkpoint
+  immediately before and after every create-new action. Observed: classification
+  was reused across disk/deadline and the second mkdir. Likely cause: the
+  initial-state gate was treated as the action checkpoint. Test implication:
+  perform uncached parent checkpoints around each mkdir and test both allowed
+  initial-state branches.
+- `EPICPHONE001-PROCESS-ANOMALY-029`, alias
+  `shared_parent_json_depth_traceback`, is `confirmed`. Trigger: QA-B supplied a
+  bounded-size deeply nested synthetic JSON value. Expected: fixed public-safe
+  parser reason. Observed: parser/canonicalization could raise raw
+  `RecursionError` and expose a traceback. Likely cause: depth failure was not
+  converted at both parser and canonicalization boundaries. Test implication:
+  map recursion to a fixed reason and assert empty stdout/no traceback.
+- `EPICPHONE001-PROCESS-ANOMALY-030`, alias
+  `shared_parent_exact_compare_depth_traceback`, is `confirmed`. Trigger: QA-B
+  placed deeply nested arrays in a dynamic scalar field. Expected: fixed
+  contract rejection. Observed: recursive exact comparison could raise raw
+  `RecursionError` after parsing succeeded. Likely cause: only JSON parsing was
+  depth-guarded. Test implication: guard exact comparison independently and
+  regress a canonical nested dynamic field through the CLI.
+- `EPICPHONE001-PROCESS-ANOMALY-031`, alias
+  `windows_parent_mkdir_atomic_nofollow_gap`, is `confirmed`. Trigger: final
+  path-race review. Expected: no external reparse redirection between lstat and
+  path-based mkdir. Observed: Windows path-based creation has no atomic
+  no-follow guarantee in this executor. Likely cause: the standard path API
+  cannot bind an already-validated parent handle. Test implication: retain
+  immediate pre/post checkpoints and require the exact GO to bind an exclusive-
+  workspace/no-external-path-mutator attestation; absent it, do not execute.
+- `EPICPHONE001-PROCESS-ANOMALY-032`, alias
+  `shared_parent_lone_surrogate_traceback`, is `confirmed`. Trigger: QA-B
+  supplied canonical-sized JSON with an escaped lone Unicode surrogate.
+  Expected: fixed public-safe parser rejection. Observed: canonical UTF-8
+  encoding raised raw `UnicodeEncodeError` and could expose a traceback. Likely
+  cause: recursion and decode failures were guarded but invalid Unicode scalar
+  encoding was not. Test implication: convert canonicalization encoding errors
+  to a fixed reason and regress the exact CLI path with no traceback.
+- `EPICPHONE001-PROCESS-ANOMALY-033`, alias
+  `shared_parent_env_surrogate_and_runtime_budget_gap`, is `confirmed`.
+  Trigger: QA-B exercised an unpaired surrogate directly in the fixed plan
+  environment input and reconciled the public aggregate against its budget.
+  Expected: fixed encoding rejection and an explicit zero runtime-action
+  ceiling. Observed: env UTF-8 encoding could raise before the strict parser,
+  and `runtime_action_count=0` lacked its matching maximum. Likely cause: the
+  parser boundary was guarded after, not before, env encoding and the runtime
+  counter was added to the aggregate later than the budget. Test implication:
+  guard env encoding, bind `runtime_action_max=0`, and assert the exact budget
+  keyset in both successful initial-state branches.
+- `EPICPHONE001-PROCESS-ANOMALY-034`, alias
+  `shared_parent_budget_regression_test_name_error`, is `confirmed`. Trigger:
+  the first focused run after adding the exact budget-keyset assertion.
+  Expected: both successful synthetic branches assert the returned plan.
+  Observed: two tests raised `NameError` because the helper return value was
+  discarded. Likely cause: the assertion was added after the fixture call
+  without binding its result. Test implication: retain the plan value in both
+  parametrized branches and rerun the full focused set before review.
+- `EPICPHONE001-PROCESS-ANOMALY-035`, alias
+  `shared_parent_large_integer_parser_traceback`, is `confirmed`. Trigger:
+  QA-B supplied a bounded canonical-sized JSON integer beyond Python's digit
+  limit. Expected: fixed parser rejection. Observed: `json.loads` raised raw
+  `ValueError`, which could expose a traceback before GO or mutation. Likely
+  cause: only the decoder subclass and recursion were caught. Test implication:
+  convert parser `ValueError` to `plan_json_invalid` and regress the CLI with no
+  stdout, traceback or path text.
+- `EPICPHONE001-PROCESS-ANOMALY-036`, alias
+  `shared_parent_qa_b_public_scan_path_typo`, is `confirmed`. Trigger: QA-B's
+  first final public-safety command used the nonexistent helper name
+  `public_safety_scan.py`. Expected: execute the tracked public repository
+  scanner. Observed: Python returned file-not-found with zero candidate or
+  runtime effect. Likely cause: command-path recall drift. Test implication:
+  use the source-of-truth command `public_repo_safety_scan.py`; its corrected
+  rerun passed 437 scanned files with zero findings.
 
-For anomalies 013-024, evidence status is `confirmed`; all probes were
+For anomalies 013-036, evidence status is `confirmed`; all probes were
 synthetic/repository-only, screenshot/XML/runtime-log modalities are not
-applicable, and `.qa_local`/secret/device/app/network/auth counters remain zero.
+applicable, and secret/device/app/network/auth counters remain zero. Anomaly
+025 adds one fixed-path local metadata preflight; it read no local file content
+and wrote nothing.
 
 ### Exact current counters
 
 | Counter | Actual |
 |---|---:|
-| `.qa_local` reads/writes | 0 |
+| `.qa_local` metadata preflights | 1 |
+| `.qa_local` file-content reads | 0 |
+| `.qa_local` writes | 0 |
 | Secret-value accesses | 0 |
-| Subprocess/ADB/device actions | 0 |
+| C0P-PREP host-process executions | 1 |
+| Child subprocess/ADB/device actions | 0 |
 | App launches/relaunches | 0 |
 | Runtime/UI actions | 0 |
 | Authentication/credential-entry actions | 0 |
@@ -287,11 +391,28 @@ The candidate plan hash prefix `f883` becomes invalid when this docs correction
 is committed because repository HEAD changes. Discard it and recompute the
 canonical plan hash only after final reviewed docs are committed.
 
-Next safe action is Security review of the exact zero-secret/zero-device
-`C0P-PREP` plan. Until Security explicitly approves that preparation contour,
-do not create or inspect its ignored artifacts. C0P execution remains a
-separate `PROD_CONDITIONAL` one-shot literal-token-gated contour. C1 and every
+The first exact Security-authorized `C0P-PREP` attempt failed closed before
+mutation because the fixed shared ignored parent was absent. Its one-shot GO is
+consumed, invalid and non-reusable; it cannot authorize provisioning or a prep
+retry, and C0P-PREP remains unprepared. The next safe action is construction,
+independent review and fresh literal authorization of a distinct shared-parent
+provisioning contour. Only after that contour passes may a newly HEAD-bound
+C0P-PREP plan receive a fresh literal GO. C0P execution remains a separate
+`PROD_CONDITIONAL` one-shot literal-token-gated contour. C1 and every
 runtime/auth contour remain separately blocked even after any future C0P pass.
+
+Repository construction now includes the proposed fixed executor
+`automation/phone/epic_phone_001_shared_parent_provision.py` for contour
+`epic-phone-001-shared-parent-provision`. Only its `--validate-only` mode is
+authorized during construction. A future `--execute` can create only the two
+fixed shared parents under an exact category-only initial-state attestation,
+canonical plan and independent literal Security GO. It creates no files and
+has zero secret/serial/device/app/network/auth/runtime budget. No shared-parent
+execution authority currently exists. A future plan must additionally bind an
+exclusive-workspace/no-external-path-mutator Security attestation: pre/post
+lstat checkpoints detect ordinary drift, while Windows path-based `mkdir`
+cannot atomically prevent a hostile reparse swap inside that narrow interval.
+Absent the attestation, no GO may be issued.
 
 ## Historical completed EPIC-PHONE-001 repository-only checkpoint
 

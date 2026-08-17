@@ -57,6 +57,23 @@ budgets. Shared ignored parents must pre-exist. Exclusive creation of the
 task-specific prep-attempt root is the first mutation and durable one-shot
 marker; failure leaves it in place and the preparer never cleans up or retries.
 
+The first authorized prep attempt failed before mutation because those shared
+parents were absent; its literal GO is consumed and cannot be retried. The
+separate `automation/phone/epic_phone_001_shared_parent_provision.py` executor
+supports only `--validate-only` and a guarded future `--execute`. It can create,
+in fixed order, only `.qa_local` and `.qa_local/evidence`, with create-new
+semantics and an exact Security-bound initial-state category. Its canonical
+plan and literal GO are accepted only through fixed environment names; there
+are no path overrides. It reads no directory contents and creates no files,
+starts no child process, and has zero secret/device/app/network/auth/runtime
+budget. Execution remains blocked until the committed executor, current HEAD,
+source hashes, ignore policy, initial-state attestation, TTL and exact budget
+receive a fresh independent literal Security GO. Windows path-based directory
+creation cannot atomically exclude a hostile external reparse swap between a
+parent lstat and `mkdir`; therefore the exact plan also requires a Security-
+attested exclusive workspace with no external path mutator for the bounded
+execution window. Without that attestation there is no GO.
+
 ## TASK-057 Phone Full readiness authority
 
 `automation/runtime_authority/task057_phone_full_runtime_authority.py` is a

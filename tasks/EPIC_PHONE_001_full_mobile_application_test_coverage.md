@@ -219,6 +219,26 @@ canonical class `PROD_SAFE` with scope qualifier
 `ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`, but it must not execute until
 Security reviews and explicitly approves the exact prep plan.
 
+The first exact approved C0P-PREP attempt failed closed before mutation with
+`shared_ignored_parent_missing`; its one-shot GO is consumed, invalid and
+non-reusable. Shared-parent provisioning is therefore a separate contour with
+id `epic-phone-001-shared-parent-provision`, class `PROD_SAFE` and qualifier
+`ZERO_SECRET_ZERO_DEVICE_FIXED_SHARED_PARENT_PROVISIONING`. The fixed executor
+`automation/phone/epic_phone_001_shared_parent_provision.py` may create only
+`.qa_local` and `.qa_local/evidence`, in that order, and creates no files. Its
+exact initial-state category is either `both_absent` or
+`qa_local_present_evidence_absent`; mismatch, both-present, reparse, collision,
+hash/TTL/GO drift or insufficient capacity fails closed. The first created
+directory is the durable consumed-attempt marker. A later failure leaves it,
+with no cleanup, retry or reuse. The contour has one host executor, zero child
+processes and zero secret/serial/device/app/network/auth/runtime actions. Its
+`--execute` mode remains blocked pending a post-commit canonical plan and fresh
+literal Security GO; `--validate-only` is repository-safe. Because Windows
+path-based `mkdir` cannot atomically rule out a hostile external reparse swap
+after lstat, the plan must also bind a Security-attested exclusive-workspace,
+no-external-path-mutator precondition for the complete two-minute window. If
+that precondition cannot be assured, Security must not issue GO.
+
 The tracked preparer is
 `automation/phone/epic_phone_001_c0p_prep.py`. Current authority is
 `GO_REPOSITORY_CONSTRUCTION_ONLY`; only `--validate-only` may be run during

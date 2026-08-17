@@ -46,6 +46,17 @@ parser, validation, write or interruption failure cannot consume the same
 token for a second credential read. C1 uses Security alias
 `epic-phone-001-security-c1-001` and remains validation-only with no executor.
 
+The separate `automation/phone/epic_phone_001_c0p_prep.py` preparer supports
+`--validate-only` and a future guarded `--execute`. It accepts no path
+overrides, starts no child process and has zero secret/device/app/network/auth
+budget. Execution requires the exact fixed canonical candidate and prep plan,
+plus a fresh `EPIC_PHONE_001_C0P_PREP_GO` literal bound to the plan hash. Before
+creating under `.qa_local`, it verifies TTL, current HEAD through bounded Git metadata
+reads, controller/preparer/candidate/`.gitignore` hashes, aliases, schemas and
+budgets. Shared ignored parents must pre-exist. Exclusive creation of the
+task-specific prep-attempt root is the first mutation and durable one-shot
+marker; failure leaves it in place and the preparer never cleans up or retries.
+
 ## TASK-057 Phone Full readiness authority
 
 `automation/runtime_authority/task057_phone_full_runtime_authority.py` is a

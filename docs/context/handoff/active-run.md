@@ -121,6 +121,113 @@ there is no C0P, C1 or runtime GO.
   exception text. Likely cause: `ContractError` and `OSError` shared formatting.
   Test implication: catch I/O errors separately, emit only
   `local_io_error_fail_closed`, and assert no path or traceback is exposed.
+- `EPICPHONE001-PROCESS-ANOMALY-012`, alias
+  `full_suite_local_runtime_source_absent`, is `confirmed`. Trigger: the
+  repository-wide `python -B -m pytest -q` check during repository-only
+  C0P-PREP construction. Expected: repository-safe tests pass while
+  environment-coupled runtime fixtures remain fail-closed. Observed: 17
+  TASK-045 tests failed with category reasons `COVERAGE_SOURCE_MISSING` or
+  `ADAPTER_INPUT_MISSING` because their fixed ignored local runtime source is
+  absent and the current Security gate forbids creating or reading it; 1521
+  tests passed and four skipped. Likely cause: the unfiltered full suite
+  includes tests intentionally coupled to a prior ignored runtime adapter, not
+  a C0P-PREP product regression. Evidence status is `confirmed`; public-safe
+  alias is `task045_local_runtime_source_absent`; screenshot/XML/log modalities
+  are not applicable to this repository-only command; action budgets and all
+  device/runtime/secret counters remain zero. Test-design implication: retain
+  this first failure, run the safe suite with only the explicitly forbidden
+  TASK-045 environment-coupled file excluded, and never synthesize or inspect
+  its ignored input to make a repository gate green.
+- `EPICPHONE001-PROCESS-ANOMALY-013`, alias
+  `c0p_prep_budget_envelope_incomplete`, is `confirmed`. Trigger: Security
+  review of the repository-only preparer budget. Expected: every public input
+  and the sole host invocation are explicitly counted. Observed: the first
+  candidate omitted canonical `subprocess_max` and the prep-plan read count.
+  Likely cause: host/child terminology drift. Test implication: bind and assert
+  subprocess/host `1`, child `0`, candidate read `1` and prep-plan read `1`.
+- `EPICPHONE001-PROCESS-ANOMALY-014`, alias
+  `c0p_plan_boolean_integer_type_drift`, is `confirmed`. Trigger: QA-A changed
+  a rebound synthetic C0P budget integer `0` to boolean `false`. Expected:
+  type-strict rejection before mutation. Observed: ordinary Python equality
+  accepted it and would materialize an invalid plan. Likely cause: non-strict
+  dictionary comparison. Test implication: use recursive exact-type equality
+  and retain the fully rebound adversarial regression.
+- `EPICPHONE001-PROCESS-ANOMALY-015`, alias
+  `prep_passport_current_ttl_gap`, is `confirmed`. Trigger: QA-A supplied a
+  rebound expired target passport. Expected: current issued/expiry checks for
+  both fixture and target. Observed: the earlier candidate returned prepared.
+  Likely cause: only fixture expiry was bounded. Test implication: require
+  issue equality/currentness and a two-hour ceiling for both passports.
+- `EPICPHONE001-PROCESS-ANOMALY-016`, alias
+  `sink_control_documentation_overclaim`, is `confirmed`. Trigger: QA-A
+  compared task/source-of-truth claims with implemented preflight. Expected:
+  claims limited to proven containment/ignore/no-reparse/capacity/create-new
+  facts. Observed: wording also claimed ownership/control/retention readiness.
+  Likely cause: policy intent was written as execution evidence. Test-design
+  implication: defer OS ownership/ACL privacy, capture control and retention
+  enforcement to a separately evidenced later gate.
+- `EPICPHONE001-PROCESS-ANOMALY-017`, alias
+  `controller_pyc_source_binding_bypass`, is `confirmed`. Trigger: QA-B used a
+  same-size/same-mtime ignored malicious cached bytecode specimen. Expected:
+  execute only controller bytes bound by Security SHA. Observed: the initial
+  import loader could execute cached bytecode. Likely cause: disabling bytecode
+  writes does not disable reads. Test implication: read/hash/strict-decode/
+  compile/execute one exact source buffer and retain a malicious-pyc test.
+- `EPICPHONE001-PROCESS-ANOMALY-018`, alias
+  `controller_source_second_read_toctou`, is `confirmed`. Trigger: QA-B swapped
+  controller source between the pre-binding read and module load. Expected:
+  executed bytes equal the bound hash. Observed: the second read was not
+  independently compared. Likely cause: validation and execution used separate
+  buffers. Test implication: hash the exact buffer immediately before compiling
+  that same buffer; a between-stage swap must fail pre-mutation.
+- `EPICPHONE001-PROCESS-ANOMALY-019`, alias
+  `git_junction_head_redirect`, is `confirmed`. Trigger: QA-B redirected `.git`
+  through a Windows junction/reparse directory. Expected: no-reparse HEAD
+  binding. Observed: `is_symlink=false` let the redirected metadata pass.
+  Likely cause: Windows reparse attributes were not checked before resolve.
+  Test implication: lstat every unresolved metadata component, reject reparse,
+  and strictly test detached, packed-ref and linked-worktree forms.
+- `EPICPHONE001-PROCESS-ANOMALY-020`, alias
+  `prep_first_mutation_replay_gap`, is `confirmed`. Trigger: QA-B interrupted
+  ancestor creation before the former run-root marker. Expected: the first
+  mutation durably consumes the one allowed attempt. Observed: a created parent
+  could remain without a consumed marker and the same GO could retry. Likely
+  cause: marker creation followed mutable ancestor setup. Test implication:
+  require shared parents to pre-exist and exclusively create the task attempt
+  root as the first mutation; any later failure leaves it consumed.
+- `EPICPHONE001-PROCESS-ANOMALY-021`, alias
+  `git_unc_metadata_network_touch`, is `confirmed`. Trigger: QA-B supplied a
+  synthetic UNC Git metadata pointer. Expected: `network_action_max=0` and no
+  remote stat. Observed: component lstat could touch SMB before rejection.
+  Likely cause: no lexical UNC/device/foreign-volume gate. Test implication:
+  reject those namespaces before the first stat and assert zero lstat calls.
+- `EPICPHONE001-PROCESS-ANOMALY-022`, alias
+  `attempt_marker_policy_name_drift`, is `confirmed`. Trigger: final Security
+  envelope review. Expected: exact candidate/plan policy names the first
+  mutation marker. Observed: it still named partial run root although only the
+  attempt root might exist. Likely cause: implementation evolved ahead of its
+  binding text. Test implication: bind `attempt_root`, durable marker category
+  and attempt-root failure policy in both exact envelopes.
+- `EPICPHONE001-PROCESS-ANOMALY-023`, alias
+  `final_readback_deadline_gap`, is `confirmed`. Trigger: final Security timing
+  review. Expected: no prepared result after the five-minute ceiling. Observed:
+  the last readback had a pre-check but no post-check. Likely cause: deadline
+  checks bracketed each iteration only at entry. Test implication: check once
+  more after the final readback and simulate a last-read overrun.
+- `EPICPHONE001-PROCESS-ANOMALY-024`, alias
+  `git_local_follow_stat_before_reparse_gate`, is `confirmed`. Trigger: QA-A
+  exercised synthetic reparse paths in Git commondir/loose-ref metadata and
+  ignored local ancestors. Expected: lexical and lstat-chain rejection before
+  any target-following filesystem probe. Observed: convenience `exists` and
+  `is_file` predicates could follow the redirected target before the explicit
+  reparse gate. Likely cause: existence/type checks preceded unresolved-path
+  classification. Test implication: use lstat-first optional classification
+  throughout and assert ordering for commondir, loose-ref and ignored-root
+  reparse cases.
+
+For anomalies 013-024, evidence status is `confirmed`; all probes were
+synthetic/repository-only, screenshot/XML/runtime-log modalities are not
+applicable, and `.qa_local`/secret/device/app/network/auth counters remain zero.
 
 ### Exact current counters
 
@@ -150,8 +257,10 @@ scope qualifier `ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`. Its exact allowed
 write set is limited to the fixed ignored run directory, canonical C0P plan,
 fixture-authority passport, target-build authorization passport and evidence-
 cleanup passport. Its validation set is limited to containment, Git-ignore,
-no-reparse and local evidence-sink control/retention readiness. It has zero
-secret reads, zero serial-map reads, zero subprocesses, zero device/app/network
+no-reparse, capacity and exclusive create-new access; it does not prove OS
+ownership/ACL privacy, later capture control or retention enforcement. It has zero
+secret reads, zero serial-map reads, one approved host executor process, zero
+child subprocesses, and zero device/app/network
 contact, zero credential/runtime/auth actions and no authority to create an
 attempt/result or issue/write/infer a GO. This definition is not authorization:
 Security must review the exact preparation plan before the first ignored-path
@@ -163,9 +272,10 @@ freshness, installed state, selector mapping or runtime identity. Current
 Security blocker is
 `CURRENT_EPIC_TARGET_BUILD_FRESHNESS_AUTHORITY_ABSENT`; C1 must establish fresh
 launch-free target/build readiness under its own future literal GO. The
-evidence-cleanup passport is policy/readiness authorization only and requires
-verified fixed-sink containment, control, ignore/no-reparse and retention
-readiness without device contact. It cannot prove target force-stop/Home/
+evidence-cleanup passport is a policy/readiness declaration only. C0P-PREP can
+prove fixed-sink containment, ignore/no-reparse, capacity and exclusive
+create-new access without device contact, but not OS ownership/ACL privacy,
+later capture control or retention enforcement. It cannot prove target force-stop/Home/
 capture-shutdown execution, zero mutation or successful post-run cleanup;
 later contour evidence must prove those outcomes.
 

@@ -219,24 +219,49 @@ canonical class `PROD_SAFE` with scope qualifier
 `ZERO_SECRET_ZERO_DEVICE_LOCAL_PREPARATION`, but it must not execute until
 Security reviews and explicitly approves the exact prep plan.
 
+The tracked preparer is
+`automation/phone/epic_phone_001_c0p_prep.py`. Current authority is
+`GO_REPOSITORY_CONSTRUCTION_ONLY`; only `--validate-only` may be run during
+construction/review. Future `--execute` has no path overrides and requires a
+fresh literal `EPIC_PHONE_001_C0P_PREP_GO` value bound to the SHA-256 of the
+exact canonical fixed prep plan. The fixed public-safe inputs use directory
+`docs/qa/phone/` and filenames `epic-phone-001-c0p-prep-candidate.json` and
+`epic-phone-001-c0p-prep-plan.json`. The plan binds committed
+HEAD, controller and preparer source hashes, exact candidate size/hash,
+`.gitignore` hash, aliases, TTL, budgets, output paths and failure policy.
+Neither input is accepted through a CLI override.
+
 An approved `C0P-PREP` may create only the fixed ignored run-directory tree for
 `epic-phone-001-20260816-r01`, its canonical `c0p-plan.local.json`,
 `fixture-authority-passport.local.json`, `target-build-passport.local.json` and
 `evidence-cleanup-passport.local.json`. The fixed sink tree may contain the
 empty readiness directories `raw/`, `checkpoints/` and `public-safe/`; prep may
-not place runtime evidence in them. Prep validates only fixed-root containment,
-tracked ignore-policy coverage, no-reparse state, ownership/control and the
-declared local retention ceiling. The evidence-cleanup passport is a policy/
-readiness authorization artifact and cannot pass unless those sink/control/
-retention checks are verified. It does not prove force-stop/Home/capture-
+not place runtime evidence in them. Prep validates fixed-root containment,
+tracked ignore-policy coverage, no-reparse state, capacity and exclusive
+create-new access. The evidence-cleanup passport is a policy/readiness
+declaration only: prep does not prove OS ownership, ACL privacy, later capture
+control or retention enforcement. Those controls require a separate gate
+before runtime evidence capture. It does not prove force-stop/Home/capture-
 shutdown execution, zero mutation or successful post-run cleanup; later
 contour evidence must prove those outcomes.
 
 `C0P-PREP` has exact zero reads of `.qa_local/secrets/qa_user.env`, the serial
-map or any credential/identity source; zero subprocess, ADB, device, app or
-network contact; zero runtime/auth actions; and zero C0P attempt/result writes.
+map or any credential/identity source; one approved host executor process and
+zero child subprocesses, ADB, device, app or network contact; zero runtime/auth
+actions; and zero C0P attempt/result writes.
 It cannot issue, write, derive or infer a GO token. C0P remains the separate
 one-shot `PROD_CONDITIONAL` contour described above.
+
+The shared ignored parents `.qa_local/` and `.qa_local/evidence/` must already
+exist. Exclusive creation of the task-specific prep-attempt root is the first
+mutation and durable consumed-attempt marker; the fixed run root follows under
+it. Any interruption or I/O/validation failure after that point leaves the partial root
+in place and permanently blocks retry/reuse; the preparer performs no cleanup,
+delete, overwrite, append or rename. Success creates exactly four canonical
+files and the empty `raw/`, `checkpoints/` and `public-safe/` directories. Its
+safe aggregate reports seven directory targets, exactly five created task/run
+directories and four successful files, with one host process, zero child processes
+and zero secret/device/app/network/auth/runtime actions.
 
 The target-build passport is authorization-only. It binds public aliases and
 the owner's current-epic permission but is not current target/build freshness,

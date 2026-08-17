@@ -50,6 +50,9 @@ def _target():
         "build_authorized": True,
         "launch_allowed": False,
         "mutation_allowed": False,
+        "passport_purpose": "authorization_only",
+        "current_freshness_evidence": False,
+        "runtime_evidence": False,
         "issued_at_utc": ISSUED,
         "expires_at_utc": EXPIRES,
     }
@@ -67,6 +70,8 @@ def _cleanup():
         "direct_capture_no_echo": True,
         "cleanup_sequence": ["target_only_force_stop", "home", "post_kill_checkpoint", "capture_shutdown"],
         "forbidden_action_count": 0,
+        "passport_purpose": "policy_readiness_only",
+        "execution_evidence": False,
         "retention_expires_at_utc": RETENTION_EXPIRES,
     }
 

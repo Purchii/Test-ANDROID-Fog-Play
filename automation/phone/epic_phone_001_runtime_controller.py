@@ -713,7 +713,8 @@ def _validate_target_build_passport(value: Any) -> None:
     required = {
         "schema_version", "epic_id", "run_id", "target_alias", "build_alias",
         "target_authorized", "build_authorized", "launch_allowed", "mutation_allowed",
-        "issued_at_utc", "expires_at_utc",
+        "issued_at_utc", "expires_at_utc", "passport_purpose",
+        "current_freshness_evidence", "runtime_evidence",
     }
     passport = _strict_object(value, required, "target_build_passport")
     expected = {
@@ -726,6 +727,9 @@ def _validate_target_build_passport(value: Any) -> None:
         "build_authorized": True,
         "launch_allowed": False,
         "mutation_allowed": False,
+        "passport_purpose": "authorization_only",
+        "current_freshness_evidence": False,
+        "runtime_evidence": False,
     }
     if any(not _exact_equal(passport.get(key), expected_value) for key, expected_value in expected.items()):
         raise ContractError("target_build_passport_binding_invalid")
@@ -740,6 +744,7 @@ def _validate_evidence_cleanup_passport(value: Any) -> None:
         "schema_version", "epic_id", "run_id", "run_root", "soft_bytes_max",
         "hard_bytes_max", "redaction_default", "direct_capture_no_echo",
         "cleanup_sequence", "forbidden_action_count", "retention_expires_at_utc",
+        "passport_purpose", "execution_evidence",
     }
     passport = _strict_object(value, required, "evidence_cleanup_passport")
     expected = {
@@ -753,6 +758,8 @@ def _validate_evidence_cleanup_passport(value: Any) -> None:
         "direct_capture_no_echo": True,
         "cleanup_sequence": ["target_only_force_stop", "home", "post_kill_checkpoint", "capture_shutdown"],
         "forbidden_action_count": 0,
+        "passport_purpose": "policy_readiness_only",
+        "execution_evidence": False,
     }
     if any(not _exact_equal(passport.get(key), expected_value) for key, expected_value in expected.items()):
         raise ContractError("evidence_cleanup_passport_binding_invalid")

@@ -837,8 +837,20 @@ there is no C0P, C1 or runtime GO.
   Test implication: preserve this blocker and rerun the safe repository suite
   with that exact module excluded; never synthesize, copy or inspect the missing
   local source under the current NO_GO authority.
+- `EPICPHONE001-PROCESS-ANOMALY-084`, alias
+  `github_fetch_connectivity_failure_before_blocked_handoff`, is `confirmed`.
+  Trigger: final fresh remote drift check while owner no-mutator authority was
+  still absent. Expected: `git fetch origin --prune` refreshes the epic/default
+  remote refs. Observed: GitHub port 443 could not be reached within the bounded
+  fetch; the clean local HEAD and cached epic remote ref both remained
+  `f8484158161909073bdb3ab91d3b4738eae27b94`, cached `origin/main` remained
+  `b268b1f198f595ec835e066169c97cdf839cc05b`, and no candidate/plan/local/runtime
+  artifact existed. Likely cause: transient external network availability.
+  Test implication: perform one bounded retry; if unavailable, retain the last
+  confirmed remote alignment as stale evidence and never integrate default or
+  issue a plan from an unrefreshed remote state.
 
-For anomalies 013-083, evidence status is `confirmed`; all probes were
+For anomalies 013-084, evidence status is `confirmed`; all probes were
 synthetic/repository-only, screenshot/XML/runtime-log modalities are not
 applicable, and secret/device/app/network/auth counters remain zero. Anomaly
 025 adds one fixed-path local metadata preflight; it read no local file content

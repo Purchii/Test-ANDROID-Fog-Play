@@ -367,10 +367,12 @@ owner acceptance before later execution.
 execution step and cannot be replayed. No GO was issued and no renewal,
 fixture-write, C0P, C1, secret, device, app, network, authentication or runtime
 action executed; checkpoint-local counters are zero. Expired authorities stay
-immutable/non-replayable. The next safe step is exactly one joint commit and
-epic-branch push, followed by construction of a new canonical candidate/plan
-bound to the final post-commit HEAD and fresh owner/Security authority. Default
-integration and product/runtime coverage are not claimed.
+immutable/non-replayable. The joint implementation commit is
+`2ca38ae9fff08550a0be533f9d8d934b8c7b7da6`, pushed/aligned on the epic branch;
+the worktree was clean before the docs-only lifecycle delta. The post-doc final
+HEAD must bind any new canonical candidate/plan and fresh owner/Security
+authority. `origin/main@b268b1f198f595ec835e066169c97cdf839cc05b` remains
+not integrated, and product/runtime coverage is not claimed.
 
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is

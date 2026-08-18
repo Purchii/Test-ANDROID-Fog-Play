@@ -93,10 +93,14 @@ secret, device, application, network, authentication and runtime counters are
 exact zero. The previously prepared authorities expired at
 `2026-08-18T05:50:28Z` and remain immutable and non-replayable.
 
-The next safe repository step is one joint commit and epic-branch push. Only
-after that final HEAD exists may the team construct a new canonical candidate
-and plan bound to that post-commit HEAD and request fresh owner and Security
-authority. No default-branch integration or runtime acceptance is claimed.
+The accepted implementation snapshot is commit
+`2ca38ae9fff08550a0be533f9d8d934b8c7b7da6`, pushed and aligned with
+`origin/qa/epic-phone-001-full-mobile-application-test-coverage`. The worktree
+was clean before this docs-only lifecycle delta. `origin/main` remains
+`b268b1f198f595ec835e066169c97cdf839cc05b`; no default integration or runtime
+acceptance is claimed. The post-doc commit will be the final repository HEAD
+from which a new canonical candidate/plan must be built before fresh owner and
+Security authority can be requested.
 
 ## EPIC-PHONE-001 owner-local provisioner expiry checkpoint — 2026-08-18
 

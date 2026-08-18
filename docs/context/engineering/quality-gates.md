@@ -1416,10 +1416,12 @@ cached and working-tree diff checks PASS.
 as a pending executable stage or reusable authority. Repository acceptance is
 `NO_GO / NO_EXECUTION`: renewal, fixture write, C0P, C1, secret access, device,
 auth and runtime counters remain zero for this checkpoint, while all expired
-authorities stay immutable and non-replayable. The snapshot must be committed
-and pushed once as a unit. Any later candidate/plan must be rebuilt and bound
-to the resulting post-commit HEAD and receive fresh owner and Security
-authority before execution.
+authorities stay immutable and non-replayable. The snapshot was committed once
+as `2ca38ae9fff08550a0be533f9d8d934b8c7b7da6` and pushed/aligned on the epic
+branch. The worktree was clean before the docs-only lifecycle delta. Any later
+candidate/plan must be rebuilt and bound to the resulting post-doc final HEAD
+and receive fresh owner and Security authority before execution. Default
+integration remains blocked.
 
 The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
 runner may only validate tracked inputs, publish the deterministic blocked

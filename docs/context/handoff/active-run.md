@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_renewal_rebind_repository_accepted_commit_pending`.
+- Thread status: `active_post_integration_lifecycle_docs_delta_no_go`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -13,9 +13,10 @@
 - Immutable epic base: `origin/main@e1fb05f521012ef375d08ace64a34e9ff0a30599`.
 - Last integrated repository-only closure: epic branch and `main` aligned at
   `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
-- Current accepted implementation commit before this docs-only handoff delta:
-  `76375fa49e0117b9ced251fbb51212a893b0c449`, pushed and aligned with
+- Accepted implementation commit before this docs-only lifecycle delta:
+  `2ca38ae9fff08550a0be533f9d8d934b8c7b7da6`, pushed and aligned with
   `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
+- Worktree state before this docs-only lifecycle delta: clean.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
   acceptance and all final gates complete.
@@ -989,10 +990,14 @@ application, network, authentication or runtime actions; all corresponding
 checkpoint-local counters are zero. Prepared authorities expired at
 `2026-08-18T05:50:28Z` and remain immutable/non-replayable.
 
-Next safe handoff: create one joint repository commit and push only the epic
-branch. Then construct the canonical candidate/plan from the final post-commit
-HEAD and obtain fresh owner and Security authority. `origin/main` is not
-integrated and no runtime/product coverage is claimed.
+The joint implementation commit is
+`2ca38ae9fff08550a0be533f9d8d934b8c7b7da6`, pushed and aligned on the epic
+branch before this docs-only lifecycle delta. After this lifecycle delta is
+committed, that post-doc commit becomes the final HEAD from which a new
+canonical candidate/plan must be constructed before fresh owner and Security
+authority can be obtained. `origin/main` remains
+`b268b1f198f595ec835e066169c97cdf839cc05b`; it is not integrated, and no
+runtime/product coverage is claimed.
 
 ### C0P circular-gate correction and current blocker
 

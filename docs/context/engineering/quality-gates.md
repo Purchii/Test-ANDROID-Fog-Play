@@ -1281,6 +1281,42 @@ TASK-062 are superseded as internal stages 2 through 5; no gate may require or
 create a separate task/thread/branch for those objectives. Historical
 TASK-058/TASK-058A artifacts are read-only inputs and must not be rewritten.
 
+### Generation 004 repository gate
+
+Renewal `001` / set `003` execution is closed and non-replayable. It ran on
+HEAD `92a60f8d585d5887a465563902c66a2aa2b373b4` from candidate
+`da2dfb73dbcd6d8bf7d9584809eb941e392fd7777386158a19f8c6d284580cb0`
+(`10136` bytes) and plan
+`48f2eaa1fee9047c3ca084fbbbf048e65fb8cc2a030e82473af90343abf0d49c`
+(`5395` bytes). Its consumed GO materialized four artifacts/two directories/six
+files with zero forbidden actions. The resulting passports expired at
+`2026-08-18T10:44:00Z`; no provisioner, C0P or runtime contour used them.
+Generic renewal-001 candidate/plan inputs must remain removed and unstaged;
+their hashes are history only.
+
+Generation `004` passes the repository gate only at the exact ten source/test
+hashes and sizes recorded in current-state and active-run. Required checks are
+core `170`, safety `14`, shared-parent `21`, and the exact combined command
+`205 passed`. The safe full-suite gate excluding only
+`tests/test_task045_paired_virtual_gamepad.py` is `1609 passed, 4 skipped`.
+Compileall, AST, docs `187/0`, public safety `443/0`, both hygiene modes, diff
+and cached-diff checks must pass. Required final reviews are QA-A `0/0/0`,
+QA-B delta `0/0/0` and Security `0/0/2`.
+QA-B's integration-only P2 notes require expired-input removal and docs.
+Security P2 retains cooperative no-hard-kill and a maximum ten-minute
+provision orchestration envelope.
+
+The closed R1 regression set must preserve exact no-mutator alias `002`, leave
+existing set `003` unread and unchanged while creating only set `004`, validate
+both bound and actual repository HEAD in provisioner paths, and support the
+optional loose-ref form in all three readers. Any regression fails the gate.
+Anomalies 085–088, especially orchestration anomaly 087, remain append-only.
+
+This is repository acceptance pending commit, not GO. Renewal `002` cannot be
+planned until the final commit HEAD exists and requires fresh owner no-mutator
+authority `002`, a combined weekly provision envelope, a canonical plan and a
+fresh literal Security GO. Provisioner/C0P/C1/auth/runtime remain blocked.
+
 ### Resumed controller-construction gate
 
 Owner authority now confirms `epic-phone-001-fixture-001` is synthetic/test-

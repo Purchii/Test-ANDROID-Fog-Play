@@ -374,6 +374,59 @@ HEAD must bind any new canonical candidate/plan and fresh owner/Security
 authority. `origin/main@b268b1f198f595ec835e066169c97cdf839cc05b` remains
 not integrated, and product/runtime coverage is not claimed.
 
+### Generation 004 repository snapshot
+
+Renewal `001` materialized immutable authority set `003` on HEAD
+`92a60f8d585d5887a465563902c66a2aa2b373b4` from public candidate
+`da2dfb73dbcd6d8bf7d9584809eb941e392fd7777386158a19f8c6d284580cb0`
+(`10136` bytes) and plan
+`48f2eaa1fee9047c3ca084fbbbf048e65fb8cc2a030e82473af90343abf0d49c`
+(`5395` bytes). Result `authority_set_materialized` contains four artifacts,
+two directories and six files with zero forbidden actions. Its literal GO is
+consumed. Downstream passports expired at `2026-08-18T10:44:00Z`; no
+provisioner, C0P, authentication or runtime contour executed. The generic
+renewal-001 candidate/plan must remain removed and unstaged, with hashes
+retained only as history.
+
+Generation `004` repository bindings are:
+
+- renewal `11a067beaf5d93d22bac9cb345f26d5eae64f4160b5c2684561f68a03aded007`
+  / `36363`, loader
+  `44e3d051b9bf5040c8c5b66087b5e74c4d3e2d0ce1cfeb22e11d5b209afde599`
+  / `13051`;
+- C0P `9e93e04577c3335717e9df649f8354100dd85eb69953233bbdc48fb44321aca0`
+  / `42226`, controller
+  `faa879fbbcffc7a3f30d55d9da4a4686d502ef0bfce2c9048f149787689a1540`
+  / `59251`;
+- provisioner
+  `7e025a7e11f616b53f840e8a25e6c31b53cd0144a42584df4a3b380c8f1e73b5`
+  / `59828`, provisioner loader
+  `57bf6ae0df45fa1f36f61c3b38345f55ff8a02b0522a815d8b7c7397771bb3c9`
+  / `22736`;
+- authority/prep/controller/provisioner tests
+  `4a025d2a86ad566548197a61655d98b5d1ab90b265cabd23462abdc4238c1013`,
+  `77b79887be8eb34e2093bef9a0b0db51827b087350b5e131d4cb26db28e9ace5`,
+  `96fedabeb06c2709f4ba594627cee2e5874d40066df198b89cc534c3b6919c23`
+  and `cd06975e35104136a022aca77a8a812445b777c15a6ff8bd1eedc43ed3b05465`.
+
+Core `170`, safety `14` and shared-parent `21` pass; the exact combined command
+is `205 passed`. The safe full suite
+`python -m pytest -q --ignore=tests/test_task045_paired_virtual_gamepad.py`
+is `1609 passed, 4 skipped`. Compileall, AST, docs `187/0`, public safety
+`443/0`, both hygiene modes, diff and cached-diff checks pass. QA-A is
+`0/0/0`; QA-B delta is `0/0/0`, with integration P2 for expired-input
+removal and docs; Security is `0/0/2`. Security P2 is cooperative no-hard-kill
+plus a maximum ten-minute orchestration envelope. Closed R1 regressions cover
+no-mutator alias `002`, unread preservation of existing set `003` with
+create-only set `004`, provisioner dual actual-HEAD validation, and optional
+loose-ref support in all three readers.
+
+Anomalies 085–088 are retained; 087 is the orchestration anomaly. Generation
+`004` is pending commit and has no GO. Renewal `002` requires the final
+committed HEAD, fresh owner no-mutator authority `002`, a combined weekly
+provision envelope, a canonical plan and Security GO. No default integration
+or product/runtime coverage is claimed.
+
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is
 `GO_EPIC_PHONE_001_C1_LAUNCH_FREE_READINESS__epic-phone-001-20260816-r01__<64_lowercase_plan_sha256>`.

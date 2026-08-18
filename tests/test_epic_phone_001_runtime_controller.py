@@ -231,9 +231,14 @@ def test_fixed_epic_run_contour_aliases_and_paths_are_exact():
     assert controller.TARGET_ALIAS == "phone-current-001"
     assert controller.BUILD_ALIAS == "task058-selected-phone-full-001"
     assert controller.FIXTURE_ALIAS == "epic-phone-001-fixture-001"
-    assert controller.FIXTURE_PASSPORT_ALIAS == "epic-phone-001-fixture-authority-003"
-    assert controller.TARGET_BUILD_PASSPORT_ALIAS == "epic-phone-001-target-build-003"
-    assert controller.EVIDENCE_CLEANUP_PASSPORT_ALIAS == "epic-phone-001-evidence-cleanup-003"
+    assert controller.AUTHORITY_SET_ID == "c0p-authority-004"
+    assert controller.AUTHORITY_RENEWAL_ID == "authority-renewal-002"
+    assert controller.C0P_PREP_ATTEMPT_ID == "c0p-prep-004"
+    assert controller.FIXTURE_PASSPORT_ALIAS == "epic-phone-001-fixture-authority-004"
+    assert controller.TARGET_BUILD_PASSPORT_ALIAS == "epic-phone-001-target-build-004"
+    assert controller.EVIDENCE_CLEANUP_PASSPORT_ALIAS == "epic-phone-001-evidence-cleanup-004"
+    assert controller.C0P_SECURITY_ALIAS == "epic-phone-001-security-c0p-004"
+    assert controller.AUTHORITY_SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-004")
     assert controller.C1_SECURITY_ALIAS == "epic-phone-001-security-c1-001"
     assert controller.SECRET_SOURCE_REL.as_posix() == ".qa_local/secrets/qa_user.env"
     assert controller.SERIAL_ALIAS_MAP_REL.as_posix() == ".qa_local/devices/serial_alias_map.json"
@@ -245,7 +250,7 @@ def test_fixed_epic_run_contour_aliases_and_paths_are_exact():
 def test_c0p_is_a_separate_fixed_token_contour_with_guarded_interface():
     plan = controller.c0p_plan("a" * 40, "b" * 64, ISSUED, EXPIRES)
     assert plan["contour_id"] == "epic-phone-001-c0p-local-presence"
-    assert plan["security_alias"] == "epic-phone-001-security-c0p-003"
+    assert plan["security_alias"] == "epic-phone-001-security-c0p-004"
     assert plan["fixed_plan_path"].endswith("/c0p-plan.local.json")
     assert plan["fixed_token_path"].endswith("/security-go-c0p.local.json")
     assert plan["public_result_allowlist"] == [
@@ -259,6 +264,39 @@ def test_c0p_is_a_separate_fixed_token_contour_with_guarded_interface():
     assert plan["controller_execution_interface_present"] is True
     digest = controller.plan_sha256(plan)
     assert controller.expected_c0p_go_token(digest) == f"GO_EPIC_PHONE_001_C0P_LOCAL_PRESENCE__{controller.RUN_ID}__{digest}"
+
+
+@pytest.mark.parametrize(
+    "payload_factory,field,consumed_value,validator",
+    [
+        (_fixture, "authority_set_id", "c0p-authority-003", controller._validate_fixture_passport),
+        (_target, "renewal_id", "authority-renewal-001", controller._validate_target_build_passport),
+        (_cleanup, "prep_attempt_id", "c0p-prep-003", controller._validate_evidence_cleanup_passport),
+    ],
+)
+def test_consumed_generation_passports_cannot_be_mixed_into_generation004(
+    payload_factory, field, consumed_value, validator
+):
+    payload = payload_factory()
+    payload[field] = consumed_value
+    with pytest.raises(controller.ContractError, match="passport_binding_invalid"):
+        validator(payload)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda plan: plan.update(security_alias="epic-phone-001-security-c0p-003"),
+        lambda plan: plan["passport_aliases"].update(fixture_authority="epic-phone-001-fixture-authority-003"),
+        lambda plan: plan["passport_aliases"].update(target_build="epic-phone-001-target-build-003"),
+        lambda plan: plan["passport_aliases"].update(evidence_cleanup="epic-phone-001-evidence-cleanup-003"),
+    ],
+)
+def test_consumed_security_or_passport_alias_cannot_be_mixed_into_generation004(mutation):
+    plan = controller.c0p_plan("a" * 40, "b" * 64, ISSUED, EXPIRES)
+    mutation(plan)
+    with pytest.raises(controller.ContractError, match="c0p_plan_contract_drift"):
+        controller._validate_c0p_plan(plan, "b" * 64)
 
 
 def test_c0p_secret_parser_emits_only_exact_approved_aggregate():

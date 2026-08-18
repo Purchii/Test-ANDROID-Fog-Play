@@ -39,6 +39,68 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## EPIC-PHONE-001 generation 004 repository snapshot — 2026-08-18
+
+Renewal `001` successfully materialized authority set `003` against repository
+HEAD `92a60f8d585d5887a465563902c66a2aa2b373b4`. Its canonical public candidate
+was SHA-256
+`da2dfb73dbcd6d8bf7d9584809eb941e392fd7777386158a19f8c6d284580cb0`
+(`10136` bytes) and plan was
+`48f2eaa1fee9047c3ca084fbbbf048e65fb8cc2a030e82473af90343abf0d49c`
+(`5395` bytes). The one-shot renewal GO was consumed. Result
+`authority_set_materialized` created four artifacts, two directories and six
+files with `forbidden_action_count=0`. No provisioner, C0P, device, app,
+network, authentication or runtime contour executed.
+
+The downstream passports expired at `2026-08-18T10:44:00Z` before the
+separate provisioner authorities were complete. They remain immutable and
+non-replayable. The generic renewal-001 candidate/plan are expired execution
+inputs: they must remain removed and unstaged; their hashes above are retained
+only as historical evidence and must not be reused.
+
+Generation `004` is accepted as repository logic only and remains pending one
+commit. Exact source hashes are:
+
+- renewal `11a067beaf5d93d22bac9cb345f26d5eae64f4160b5c2684561f68a03aded007`
+  (`36363` bytes), loader
+  `44e3d051b9bf5040c8c5b66087b5e74c4d3e2d0ce1cfeb22e11d5b209afde599`
+  (`13051` bytes);
+- C0P `9e93e04577c3335717e9df649f8354100dd85eb69953233bbdc48fb44321aca0`
+  (`42226` bytes), controller
+  `faa879fbbcffc7a3f30d55d9da4a4686d502ef0bfce2c9048f149787689a1540`
+  (`59251` bytes);
+- provisioner
+  `7e025a7e11f616b53f840e8a25e6c31b53cd0144a42584df4a3b380c8f1e73b5`
+  (`59828` bytes), provisioner loader
+  `57bf6ae0df45fa1f36f61c3b38345f55ff8a02b0522a815d8b7c7397771bb3c9`
+  (`22736` bytes);
+- authority/prep/controller/provisioner tests
+  `4a025d2a86ad566548197a61655d98b5d1ab90b265cabd23462abdc4238c1013`,
+  `77b79887be8eb34e2093bef9a0b0db51827b087350b5e131d4cb26db28e9ace5`,
+  `96fedabeb06c2709f4ba594627cee2e5874d40066df198b89cc534c3b6919c23`
+  and `cd06975e35104136a022aca77a8a812445b777c15a6ff8bd1eedc43ed3b05465`.
+
+Verification passes: core `170`, safety `14` and shared-parent `21`, with the
+exact combined authority/provision/C0P/controller/shared-parent/public-safety/
+hygiene command at `205 passed`. The safe full suite
+`python -m pytest -q --ignore=tests/test_task045_paired_virtual_gamepad.py`
+is `1609 passed, 4 skipped`. Compileall, AST, docs `187/0`, public safety
+`443/0`, both hygiene modes, diff and cached-diff checks pass. Final QA-A is
+R0/R1/P2 `0/0/0`; QA-B delta review is
+`0/0/0`, with integration-only P2 notes for expired-input removal and docs;
+Security is `0/0/2`. Security's P2 items are cooperative no-hard-kill and the
+requirement to keep the provision orchestration envelope at or below ten
+minutes. The R1 history is closed: no-mutator alias `002`, preserve unread
+existing set `003` while create-only set `004`, provisioner dual actual-HEAD
+binding, and optional loose-ref validation in all three readers.
+
+Anomalies 085–088, including orchestration anomaly 087, remain confirmed
+process evidence. Generation `004` has no GO and no execution authority. A
+future renewal `002` requires the final committed HEAD, fresh owner no-mutator
+authority `002`, a combined weekly provision envelope, and a newly canonical
+plan plus Security GO. Provisioning, C0P, C1, authentication and runtime remain
+blocked; `origin/main` remains unintegrated.
+
 ## EPIC-PHONE-001 final renewal/rebind repository checkpoint — 2026-08-18
 
 The joint authority-renewal, C0P, controller and owner-local provisioner rebind

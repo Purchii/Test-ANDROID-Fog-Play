@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_post_integration_lifecycle_docs_delta_no_go`.
+- Thread status: `active_generation004_repository_accepted_commit_pending_no_go`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -17,6 +17,9 @@
   `2ca38ae9fff08550a0be533f9d8d934b8c7b7da6`, pushed and aligned with
   `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
 - Worktree state before this docs-only lifecycle delta: clean.
+- Current generation-004 rebind base: repository HEAD
+  `92a60f8d585d5887a465563902c66a2aa2b373b4`, pushed and aligned with the epic
+  remote before the uncommitted generation-004 snapshot.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
   acceptance and all final gates complete.
@@ -45,6 +48,74 @@ constitute a Security GO. Final repository Security verdict is:
 BLOCK_RUNTIME / BLOCK_AUTH_ENTRY / NO_LITERAL_RUNTIME_GO`. C0P local-presence execution is also
 blocked until its own exact literal token exists. No C0P/C1/device/app/auth
 action has run.
+
+### Authority renewal execution checkpoint — 2026-08-18
+
+The owner confirmed exact one-shot no-mutator authority alias
+`epic-phone-001-owner-authority-renewal-no-mutator-001`, canonical
+`NO_MUTATOR_SCOPE`, HEAD `92a60f8d585d5887a465563902c66a2aa2b373b4` and expiry
+`2026-08-25T10:31:51Z`. Public canonical candidate SHA-256
+`da2dfb73dbcd6d8bf7d9584809eb941e392fd7777386158a19f8c6d284580cb0`
+(`10136` bytes) and plan SHA-256
+`48f2eaa1fee9047c3ca084fbbbf048e65fb8cc2a030e82473af90343abf0d49c`
+(`5395` bytes) passed independent QA-B and Security byte-exact review. Security
+issued exactly one renewal-only literal GO; the loader returned
+`authority_set_materialized` with four artifacts, two directories, six files
+and `all_forbidden_counters=0`. The GO is consumed and non-reusable. No secret,
+device, application, network, authentication, UI or runtime action occurred.
+
+The generated C0P/fixture/target passports expire at
+`2026-08-18T10:44:00Z`. Owner-local fixture provisioning remains separately
+blocked because its exact owner-console, no-mutator and cooperative-timeout
+authorities were not part of the renewal authority. A fresh downstream GO may
+not be inferred from renewal success.
+
+The passports have now expired at `2026-08-18T10:44:00Z`; no downstream
+provisioner/C0P/runtime action used them. The generic renewal-001 candidate and
+plan must remain removed and unstaged. Their SHA-256/byte bindings above are
+historical evidence only and are not reusable authority.
+
+### Generation 004 repository-only acceptance
+
+Generation `004` is pending commit and has no GO. Exact source hashes/sizes
+are renewal
+`11a067beaf5d93d22bac9cb345f26d5eae64f4160b5c2684561f68a03aded007` /
+`36363`, loader
+`44e3d051b9bf5040c8c5b66087b5e74c4d3e2d0ce1cfeb22e11d5b209afde599` /
+`13051`, C0P
+`9e93e04577c3335717e9df649f8354100dd85eb69953233bbdc48fb44321aca0` /
+`42226`, controller
+`faa879fbbcffc7a3f30d55d9da4a4686d502ef0bfce2c9048f149787689a1540` /
+`59251`, provisioner
+`7e025a7e11f616b53f840e8a25e6c31b53cd0144a42584df4a3b380c8f1e73b5` /
+`59828`, and provisioner loader
+`57bf6ae0df45fa1f36f61c3b38345f55ff8a02b0522a815d8b7c7397771bb3c9` /
+`22736`. Test hashes are authority
+`4a025d2a86ad566548197a61655d98b5d1ab90b265cabd23462abdc4238c1013`,
+prep `77b79887be8eb34e2093bef9a0b0db51827b087350b5e131d4cb26db28e9ace5`,
+controller `96fedabeb06c2709f4ba594627cee2e5874d40066df198b89cc534c3b6919c23`
+and provisioner
+`cd06975e35104136a022aca77a8a812445b777c15a6ff8bd1eedc43ed3b05465`.
+
+Core `170`, safety `14` and shared-parent `21` pass; the exact combined
+authority/provision/C0P/controller/shared-parent/public-safety/hygiene command
+is `205 passed`. The safe full suite
+`python -m pytest -q --ignore=tests/test_task045_paired_virtual_gamepad.py`
+is `1609 passed, 4 skipped`. Compileall, AST, docs `187/0`, public safety
+`443/0`, both hygiene modes, diff and cached-diff checks pass. QA-A is
+`0/0/0`; QA-B delta review is `0/0/0`, with integration-only P2 notes
+for expired-input removal and documentation; Security is `0/0/2`. Security P2
+items are cooperative no-hard-kill and a provision orchestration envelope of
+at most ten minutes. All R1 findings are closed: no-mutator alias `002`, unread
+preservation of existing set `003` with create-only set `004`, provisioner dual
+actual-HEAD validation, and optional loose-ref handling in all three readers.
+
+Anomalies 085–088 remain confirmed; anomaly 087 is the orchestration ordering
+failure that let downstream passports expire before complete provisioner
+authority. Renewal `002` requires the final committed HEAD, fresh owner
+no-mutator authority `002`, the combined weekly provision envelope, and a new
+canonical plan plus Security GO. No provisioner, C0P, C1, auth or runtime GO is
+present.
 
 ### Current repository checkpoint
 
@@ -849,8 +920,56 @@ there is no C0P, C1 or runtime GO.
   Test implication: perform one bounded retry; if unavailable, retain the last
   confirmed remote alignment as stale evidence and never integrate default or
   issue a plan from an unrefreshed remote state.
+- `EPICPHONE001-PROCESS-ANOMALY-085`, alias
+  `renewal_public_input_preflight_powershell_parse_error`, is `confirmed`.
+  Trigger: first repository-only existence/ignore preflight for the two fixed
+  public renewal inputs after owner authority confirmation. Expected: report
+  whether each fixed public input exists and is ignored. Observed: PowerShell
+  rejected the command before execution because a grouped expression around
+  `git check-ignore` and its conditional result had mismatched parentheses;
+  no file, local evidence, secret, device, app or runtime state was read or
+  changed. Likely cause: command-composition syntax error. Test implication:
+  use separate literal-path commands and record their exit status without an
+  inline grouped conditional before materializing canonical public inputs.
+- `EPICPHONE001-PROCESS-ANOMALY-086`, alias
+  `renewal_public_input_hash_projection_api_unavailable`, is `confirmed`.
+  Trigger: read-only SHA-256/byte-count verification of the two newly created
+  public renewal inputs. Expected: PowerShell formats the computed digest with
+  `System.Convert.ToHexString`. Observed: the host .NET surface does not expose
+  that method, so the command stopped after a read-only byte load and before
+  reporting either digest; no file or runtime state changed. Likely cause:
+  PowerShell/.NET version mismatch. Test implication: use tracked-compatible
+  `Get-FileHash -Algorithm SHA256` plus literal `FileInfo.Length` for the fixed
+  public inputs and compare against the canonical builder projection.
+- `EPICPHONE001-PROCESS-ANOMALY-087`, alias
+  `renewed_passport_window_precedes_downstream_owner_authority`, is
+  `confirmed`. Trigger: successful one-shot authority renewal followed by the
+  separately gated owner-local provisioner handoff. Expected: fresh artifacts
+  remain usable through collection of every already-known downstream owner
+  authority and a distinct Security review. Observed: renewal succeeded with
+  zero forbidden counters, but the C0P/fixture/target artifacts expire at
+  `2026-08-18T10:44:00Z`, while owner-console, provision no-mutator and
+  cooperative-timeout acceptance were not collected before renewal. No secret
+  read/write or downstream execution occurred. Likely cause: orchestration
+  sequenced short-lived artifact materialization before all independent owner
+  prerequisites. Test implication: pre-collect a bounded long-lived owner
+  envelope for every downstream human/host condition, then create the next
+  versioned authority set and immediately derive one short plan/GO per contour;
+  never replay or extend consumed generation `003`.
+- `EPICPHONE001-PROCESS-ANOMALY-088`, alias
+  `generation004_builder_transport_403`, is `confirmed`. Trigger: delegated
+  repository-only Builder rebind from consumed generation `003` to immutable
+  generation `004`. Expected: Builder edits only the bounded automation/test
+  files and returns focused verification. Observed: the agent request failed
+  with external HTTP 403 before any automation/test edit; worktree inspection
+  showed only the Orchestrator-owned active-run and two executed-renewal public
+  inputs. Likely cause: transient agent service/access failure. Test
+  implication: preserve the role assignment and exact scope, then retry the
+  same Builder once; if transport remains unavailable, record the unavailable
+  delegated execution and continue the repository patch locally while keeping
+  independent QA/Security review mandatory.
 
-For anomalies 013-084, evidence status is `confirmed`; all probes were
+For anomalies 013-088, evidence status is `confirmed`; all probes were
 synthetic/repository-only, screenshot/XML/runtime-log modalities are not
 applicable, and secret/device/app/network/auth counters remain zero. Anomaly
 025 adds one fixed-path local metadata preflight; it read no local file content

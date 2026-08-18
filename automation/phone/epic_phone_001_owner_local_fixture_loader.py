@@ -32,6 +32,17 @@ MAX_INTEGER = 9_007_199_254_740_991
 REPARSE_ATTRIBUTE = 0x400
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 WORKSPACE_CONTRACT = ()
+NO_MUTATOR_SCOPE = {
+    "ancestors": "all_lexical_ancestors_of_every_listed_or_resolved_path",
+    "git_metadata": [".git_marker", "resolved_local_gitdir", "optional_resolved_local_commondir",
+                     "gitdir_HEAD", "optional_active_loose_ref_component_probe",
+                     "exact_active_loose_ref_or_packed_refs"],
+    "local_paths": ["bound_repository_sources", "authority_set004_artifacts", "run_root",
+                    "attempt_marker", "secret_parent", "secret_destination"],
+}
+LOADER_GIT_CHECK_GLOBAL = "__owner_fixture_loader_git_head_validation_count__"
+LOADER_GIT_CONTENT_GLOBAL = "__owner_fixture_loader_git_metadata_content_read_count__"
+LOADER_GIT_PATH_GLOBAL = "__owner_fixture_loader_git_metadata_path_target_count__"
 BUDGET = {
     "acl_check_max": 5, "acl_create_max": 3, "application_action_max": 0,
     "authority_artifact_read_max": 4, "authentication_action_max": 0,
@@ -39,6 +50,8 @@ BUDGET = {
     "console_api_validation_max": 3, "console_prompt_write_max": 2, "console_separator_write_max": 2, "destination_directory_create_max": 1,
     "destination_secret_file_create_max": 1, "device_action_max": 0,
     "execution_max": 1, "go_env_read_max": 2, "host_process_max": 1,
+    "git_head_validation_max": 2, "git_metadata_content_read_max": 8,
+    "git_metadata_path_target_max": 64,
     "marker_file_create_max": 1, "network_action_max": 0,
     "no_echo_secret_field_read_max": 2, "overwrite_append_delete_rename_max": 0,
     "plan_env_read_max": 2, "retry_max": 0, "runtime_action_max": 0,
@@ -87,6 +100,8 @@ def _aggregate(created):
         "application_action_count": 0, "authentication_action_count": 0,
         "contour_id": CONTOUR_ID, "destination_directory_created_count": created,
         "device_action_count": 0, "host_process_count": 1, "marker_file_created_count": 1,
+        "git_head_validation_count": 2, "git_metadata_content_read_count_max": 8,
+        "git_metadata_path_target_count_max": 64,
         "network_action_count": 0, "no_echo_secret_field_read_count": 2,
         "runtime_action_count": 0, "schema_version": "epic-phone-001-owner-local-fixture-provision-result-v1",
         "secret_file_created_count": 1, "secret_payload_readback_count": 1,
@@ -140,7 +155,7 @@ def _plan():
         "marker_relative_path": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/fixture-owner-provision-attempt.local.json",
         "output_contract": "exact_two_ascii_lf_lines_payload_max_96",
         "run_id": RUN_ID,
-        "schema_version": SCHEMA, "security_alias": "epic-phone-001-security-owner-local-fixture-provision-001",
+        "schema_version": SCHEMA, "security_alias": "epic-phone-001-security-owner-local-fixture-provision-002",
         "timeout_contract": TIMEOUT_CONTRACT,
     }
     if any(not _exact(plan.get(key), value) for key, value in fixed.items()): raise ValueError
@@ -155,17 +170,17 @@ def _plan():
         if type(plan.get(key)) is not int or not 0 < plan[key] <= MAX_SOURCE: raise ValueError
     authorities = plan.get("authority_objects")
     expected_aliases = {
-        "cooperative_timeout_acceptance": "epic-phone-001-owner-cooperative-timeout-acceptance-001",
-        "fixture_authority": "epic-phone-001-fixture-authority-owner-provision-001",
-        "owner_local_console_entry": "epic-phone-001-owner-local-console-entry-001",
-        "provision_no_mutator_window": "epic-phone-001-owner-local-provision-no-mutator-001",
+        "cooperative_timeout_acceptance": "epic-phone-001-owner-cooperative-timeout-acceptance-002",
+        "fixture_authority": "epic-phone-001-fixture-authority-owner-provision-002",
+        "owner_local_console_entry": "epic-phone-001-owner-local-console-entry-002",
+        "provision_no_mutator_window": "epic-phone-001-owner-local-provision-no-mutator-002",
     }
     if type(authorities) is not dict or set(authorities) != set(expected_aliases): raise ValueError
     scopes = {
         "cooperative_timeout_acceptance": TIMEOUT_CONTRACT["owner_acceptance_scope"],
         "fixture_authority": "synthetic_fixture_alias_only",
         "owner_local_console_entry": "console_values_only_fixture_alias_not_recorded",
-        "provision_no_mutator_window": "repo_loader_executor_local_authority_marker_destination",
+        "provision_no_mutator_window": NO_MUTATOR_SCOPE,
     }
     expected_statuses = {"cooperative_timeout_acceptance": "accepted_by_owner",
                          "fixture_authority": "confirmed", "owner_local_console_entry": "confirmed",
@@ -186,15 +201,15 @@ def _plan():
             raise ValueError
     artifacts = plan.get("authority_artifacts")
     paths = (
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/c0p-plan.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/fixture-authority-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/target-build-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/evidence-cleanup-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/c0p-plan.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/fixture-authority-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/target-build-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/evidence-cleanup-passport.local.json",
     )
     schemas = ("epic-phone-001-c0p-plan-v2", "epic-phone-001-fixture-authority-passport-v2",
                "epic-phone-001-target-build-passport-v2", "epic-phone-001-evidence-cleanup-passport-v2")
     artifact_contracts = (
-        ("epic-phone-001-security-c0p-003", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc"),
+        ("epic-phone-001-security-c0p-004", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc"),
         ("epic-phone-001-fixture-001", "revoked", False, "expires_at_utc"),
         ("phone-current-001", "target_authorized", True, "expires_at_utc"),
         ("policy_readiness_only", "execution_evidence", False, "retention_expires_at_utc"),
@@ -240,6 +255,90 @@ def _plan():
     return plan
 
 
+def _fixed_drive(path):
+    if os.name != "nt" or not path.is_absolute() or not path.drive or str(path).startswith(("\\\\", "//", "\\\\?\\", "\\\\.\\")):
+        raise ValueError
+    import ctypes
+    if ctypes.windll.kernel32.GetDriveTypeW(path.anchor) != 3: raise ValueError
+
+
+def _safe_absolute_chain(path):
+    absolute = path.absolute(); _fixed_drive(absolute); current = Path(absolute.anchor)
+    for part in absolute.parts[1:]:
+        current /= part; item = current.lstat()
+        if stat.S_ISLNK(item.st_mode) or getattr(item, "st_file_attributes", 0) & REPARSE_ATTRIBUTE: raise ValueError
+
+
+def _track_git_path(path, budget):
+    budget["targets"].add(str(path.absolute()))
+    if len(budget["targets"]) > BUDGET["git_metadata_path_target_max"] // 2: raise ValueError
+
+
+def _probe_optional_git_path(path, budget):
+    absolute = path.absolute(); _fixed_drive(absolute); current = Path(absolute.anchor)
+    for part in absolute.parts[1:]:
+        current /= part; _track_git_path(current, budget)
+        try: item = current.lstat()
+        except FileNotFoundError: return False
+        if stat.S_ISLNK(item.st_mode) or getattr(item, "st_file_attributes", 0) & REPARSE_ATTRIBUTE: raise ValueError
+    return True
+
+
+def _read_git_metadata(path, budget, maximum=4096):
+    _track_git_path(path, budget); budget["content_reads"] += 1
+    if budget["content_reads"] > BUDGET["git_metadata_content_read_max"] // 2: raise ValueError
+    _safe_absolute_chain(path); before = path.lstat()
+    if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= maximum: raise ValueError
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0))
+    try: opened = os.fstat(fd); data = os.read(fd, maximum + 1); after = os.fstat(fd)
+    finally: os.close(fd)
+    identity = (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
+    if ((opened.st_dev, opened.st_ino, opened.st_size, opened.st_mtime_ns) != identity or
+            (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns) != identity or len(data) != before.st_size): raise ValueError
+    return data
+
+
+def _actual_repository_head(root=None):
+    base = (root or Path.cwd()).absolute(); _fixed_drive(base); budget = {"content_reads": 0, "targets": set()}
+    marker = base / ".git"; _track_git_path(marker, budget); _safe_absolute_chain(marker); info = marker.lstat()
+    if stat.S_ISDIR(info.st_mode):
+        gitdir = marker
+    elif stat.S_ISREG(info.st_mode):
+        raw = _read_git_metadata(marker, budget).decode("utf-8", errors="strict").strip()
+        if not raw.startswith("gitdir: "): raise ValueError
+        value = raw[8:]
+        if not value or value.startswith(("\\\\", "//", "\\\\?\\", "\\\\.\\")): raise ValueError
+        gitdir = Path(value) if Path(value).is_absolute() else base / value
+        gitdir = Path(os.path.abspath(gitdir)); _track_git_path(gitdir, budget); _safe_absolute_chain(gitdir)
+    else: raise ValueError
+    common = gitdir; commondir = gitdir / "commondir"; _track_git_path(commondir, budget)
+    try: commondir_info = commondir.lstat()
+    except FileNotFoundError: commondir_info = None
+    if commondir_info is not None:
+        raw_common = _read_git_metadata(commondir, budget).decode("utf-8", errors="strict").strip()
+        if not raw_common or raw_common.startswith(("\\\\", "//", "\\\\?\\", "\\\\.\\")): raise ValueError
+        common = Path(raw_common) if Path(raw_common).is_absolute() else gitdir / raw_common
+        common = Path(os.path.abspath(common)); _track_git_path(common, budget); _safe_absolute_chain(common)
+    head = _read_git_metadata(gitdir / "HEAD", budget).decode("ascii", errors="strict").strip()
+    if len(head) == 40 and all(ch in "0123456789abcdef" for ch in head): return head, budget["content_reads"], len(budget["targets"])
+    if not head.startswith("ref: "): raise ValueError
+    ref = head[5:]
+    if not ref.startswith("refs/") or "\\" in ref or ":" in ref or any(part in ("", ".", "..") for part in ref.split("/")): raise ValueError
+    loose = common.joinpath(*ref.split("/"))
+    if _probe_optional_git_path(loose, budget):
+        value = _read_git_metadata(loose, budget).decode("ascii", errors="strict").strip()
+        if len(value) == 40 and all(ch in "0123456789abcdef" for ch in value): return value, budget["content_reads"], len(budget["targets"])
+        raise ValueError
+    packed = _read_git_metadata(common / "packed-refs", budget, 32768).decode("ascii", errors="strict"); matches = []
+    for line in packed.splitlines():
+        if not line or line.startswith(("#", "^")): continue
+        parts = line.split(" ")
+        if len(parts) != 2: raise ValueError
+        if parts[1] == ref: matches.append(parts[0])
+    if len(matches) != 1 or len(matches[0]) != 40 or any(ch not in "0123456789abcdef" for ch in matches[0]): raise ValueError
+    return matches[0], budget["content_reads"], len(budget["targets"])
+
+
 def _load_executor(path: Path, expected_bytes: int, expected_sha: str) -> bytes:
     if os.name != "nt": raise ValueError
     import ctypes
@@ -264,9 +363,13 @@ def _load_executor(path: Path, expected_bytes: int, expected_sha: str) -> bytes:
 def main() -> int:
     try:
         plan = _plan(); target = Path.cwd() / EXECUTOR_REL
+        actual_head, git_content_reads, git_path_targets = _actual_repository_head(Path.cwd())
+        if actual_head != plan["repository_head"]: raise ValueError
         source = _load_executor(target, plan["executor_bytes"], plan["executor_sha256"])
         sys.dont_write_bytecode = True
-        namespace = {"__name__": "__owner_fixture_executor__", "__file__": str(target), "__package__": None}
+        namespace = {"__name__": "__owner_fixture_executor__", "__file__": str(target), "__package__": None,
+                     LOADER_GIT_CHECK_GLOBAL: 1, LOADER_GIT_CONTENT_GLOBAL: git_content_reads,
+                     LOADER_GIT_PATH_GLOBAL: git_path_targets}
         exec(compile(source, str(target), "exec", dont_inherit=True), namespace, namespace)
         entry = namespace.get("main")
         if not callable(entry): return 2

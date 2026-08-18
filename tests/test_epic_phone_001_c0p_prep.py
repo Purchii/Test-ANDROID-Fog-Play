@@ -101,12 +101,14 @@ def test_validate_only_does_not_touch_local_or_environment(tmp_path, monkeypatch
     assert prep.main(["--validate-only"]) == 0
     output = json.loads(capsys.readouterr().out)
     assert output["execution_requires_literal_security_go"] is True
-    assert output["prep_attempt_id"] == "c0p-prep-003"
+    assert output["prep_attempt_id"] == "c0p-prep-004"
     assert output["secret_read_max"] == 0
     assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
 
 
 def test_unified_prep_budget_counts_host_and_both_public_inputs():
+    assert prep.PREP_ATTEMPT_ID == "c0p-prep-004"
+    assert prep.AUTHORITY_SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-004")
     assert prep.BUDGET["execution_max"] == 1
     assert prep.BUDGET["subprocess_max"] == 1
     assert prep.BUDGET["host_process_max"] == 1
@@ -119,7 +121,7 @@ def test_unified_prep_budget_counts_host_and_both_public_inputs():
 def test_consumed_attempt_identity_cannot_be_rebound_as_fresh(tmp_path, monkeypatch):
     now = datetime(2026, 8, 18, 10, 0, tzinfo=UTC)
     candidate, _token = _repo(tmp_path, monkeypatch, now)
-    candidate["prep_attempt_id"] = "c0p-prep-002"
+    candidate["prep_attempt_id"] = "c0p-prep-003"
     token = _write_candidate_and_rebind(tmp_path, candidate, now)
     monkeypatch.setenv(prep.GO_ENV, token)
     with pytest.raises(prep.PrepError, match="candidate_fixed_binding_invalid"):
@@ -157,8 +159,8 @@ def test_success_materializes_exact_four_files_without_child_process(tmp_path, m
     plan = json.loads((tmp_path / prep.PREP_PLAN_REL).read_text(encoding="utf-8"))
     assert candidate["schema_version"].endswith("-v2")
     assert plan["schema_version"].endswith("-v2")
-    assert candidate["prep_attempt_id"] == plan["prep_attempt_id"] == "c0p-prep-003"
-    assert candidate["public_aggregate_contract"]["prep_attempt_id"] == "c0p-prep-003"
+    assert candidate["prep_attempt_id"] == plan["prep_attempt_id"] == "c0p-prep-004"
+    assert candidate["public_aggregate_contract"]["prep_attempt_id"] == "c0p-prep-004"
     assert candidate["attempt_root"] == prep.ATTEMPT_ROOT_REL.as_posix()
     assert candidate["durable_attempt_marker"] == "exclusive_attempt_root_creation_first_mutation"
     assert candidate["failure_policy"].startswith("leave_partial_attempt_root")
@@ -169,7 +171,7 @@ def test_success_materializes_exact_four_files_without_child_process(tmp_path, m
     execute_source = Path(prep.__file__).read_text("utf-8").split("def execute_prep", 1)[1].split("def dry_run", 1)[0]
     assert 'open("xb")' not in execute_source and "_mkdir_new_or_existing(" not in execute_source
     assert result["schema_version"].endswith("-v2")
-    assert result["prep_attempt_id"] == "c0p-prep-003"
+    assert result["prep_attempt_id"] == "c0p-prep-004"
     assert result["directory_target_count"] == 9
     assert result["directory_created_count"] == 0
     assert result["file_created_count"] == 0

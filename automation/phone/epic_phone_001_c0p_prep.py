@@ -27,7 +27,7 @@ from typing import Any, Mapping, Sequence
 EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-c0p-prep"
-PREP_ATTEMPT_ID = "c0p-prep-003"
+PREP_ATTEMPT_ID = "c0p-prep-004"
 TARGET_ALIAS = "phone-current-001"
 BUILD_ALIAS = "task058-selected-phone-full-001"
 FIXTURE_ALIAS = "epic-phone-001-fixture-001"
@@ -41,7 +41,7 @@ CANDIDATE_REL = Path("docs/qa/phone/epic-phone-001-c0p-prep-candidate.json")
 PREP_PLAN_REL = Path("docs/qa/phone/epic-phone-001-c0p-prep-plan.json")
 GITIGNORE_REL = Path(".gitignore")
 RUN_ROOT_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
-AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-003"
+AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-004"
 ATTEMPT_ROOT_REL = Path(".qa_local/evidence/epic-phone-001")
 RAW_REL = RUN_ROOT_REL / "raw"
 CHECKPOINTS_REL = RUN_ROOT_REL / "checkpoints"
@@ -290,8 +290,8 @@ def build_candidate(
         "schema_version": controller.FIXTURE_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
-        "authority_set_id": "c0p-authority-003",
-        "renewal_id": "authority-renewal-001",
+        "authority_set_id": "c0p-authority-004",
+        "renewal_id": "authority-renewal-002",
         "prep_attempt_id": PREP_ATTEMPT_ID,
         "fixture_alias": FIXTURE_ALIAS,
         "synthetic_test_only": True,
@@ -311,8 +311,8 @@ def build_candidate(
         "schema_version": controller.TARGET_BUILD_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
-        "authority_set_id": "c0p-authority-003",
-        "renewal_id": "authority-renewal-001",
+        "authority_set_id": "c0p-authority-004",
+        "renewal_id": "authority-renewal-002",
         "prep_attempt_id": PREP_ATTEMPT_ID,
         "target_alias": TARGET_ALIAS,
         "build_alias": BUILD_ALIAS,
@@ -331,8 +331,8 @@ def build_candidate(
         "schema_version": controller.EVIDENCE_CLEANUP_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
-        "authority_set_id": "c0p-authority-003",
-        "renewal_id": "authority-renewal-001",
+        "authority_set_id": "c0p-authority-004",
+        "renewal_id": "authority-renewal-002",
         "prep_attempt_id": PREP_ATTEMPT_ID,
         "issued_at_utc": issued_at_utc,
         "run_root": RUN_ROOT_REL.as_posix(),
@@ -931,7 +931,7 @@ def execute_prep(now: datetime | None = None) -> Mapping[str, Any]:
         "prep_attempt_id": PREP_ATTEMPT_ID,
         "status": "superseded_validate_only",
         "superseded_by_contour": "epic-phone-001-authority-renewal",
-        "authority_output_source": "authority-renewal-001_result_feeds_c0p_directly",
+        "authority_output_source": "authority-renewal-002_result_feeds_c0p_directly",
         "directory_target_count": 9,
         "directory_created_count": 0,
         "file_created_count": 0,

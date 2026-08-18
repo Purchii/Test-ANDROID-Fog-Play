@@ -29,6 +29,9 @@ def _setup(tmp_path: Path, monkeypatch, *, parent_state: str = "present"):
     monkeypatch.setattr(provision.time, "monotonic_ns", lambda: 1_000_000_000)
     monkeypatch.setattr(provision, "_utc_now", lambda: now)
     monkeypatch.setattr(provision, "_preflight_real_console", lambda: None)
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_CHECK_GLOBAL, 1)
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_CONTENT_GLOBAL, 1)
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_PATH_GLOBAL, 3)
     sources = {
         provision.EXECUTOR_REL: b"fixed executor", provision.LOADER_REL: b"fixed loader",
         provision.CONTROLLER_REL: b"fixed controller", provision.GITIGNORE_REL: b".qa_local/\n",
@@ -36,6 +39,7 @@ def _setup(tmp_path: Path, monkeypatch, *, parent_state: str = "present"):
     for index, (relative, _) in enumerate(provision.WORKSPACE_ALLOWLIST_CONTRACT):
         sources.setdefault(Path(relative), f"workspace-{index}".encode())
     for path, data in sources.items(): _write(root / path, data)
+    _write(root / ".git/HEAD", ("a" * 40 + "\n").encode())
     (root / provision.RUN_REL).mkdir(parents=True)
     if parent_state == "present": (root / provision.DESTINATION_REL.parent).mkdir(parents=True)
     expiry = _stamp(now + timedelta(minutes=8))
@@ -44,7 +48,7 @@ def _setup(tmp_path: Path, monkeypatch, *, parent_state: str = "present"):
         issued_at_utc=_stamp(now - timedelta(seconds=5)), expires_at_utc=expiry,
         retention_expires_at_utc=expiry)
     artifact_contracts = (
-        ("epic-phone-001-security-c0p-003", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc", expiry),
+        ("epic-phone-001-security-c0p-004", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc", expiry),
         ("epic-phone-001-fixture-001", "revoked", False, "expires_at_utc", expiry),
         ("phone-current-001", "target_authorized", True, "expires_at_utc", expiry),
         ("policy_readiness_only", "execution_evidence", False, "retention_expires_at_utc", expiry),
@@ -91,13 +95,55 @@ def test_exact_security_literals_and_bootstrap_never_parses_plan():
     assert provision.CONTOUR_ID == "epic-phone-001-owner-local-fixture-provision"
     assert provision.SCHEMA == "epic-phone-001-owner-local-fixture-provision-plan-v1"
     assert provision.MARKER_REL.name == "fixture-owner-provision-attempt.local.json"
+    assert provision.AUTHORITY_SET_REL.as_posix().endswith("authority-sets/c0p-authority-004")
+    assert provision.FIXTURE_AUTHORITY_ALIAS == "epic-phone-001-fixture-authority-owner-provision-002"
+    assert provision.OWNER_CONSOLE_ALIAS == "epic-phone-001-owner-local-console-entry-002"
+    assert provision.NO_MUTATOR_ALIAS == "epic-phone-001-owner-local-provision-no-mutator-002"
+    assert provision.COOPERATIVE_TIMEOUT_ALIAS == "epic-phone-001-owner-cooperative-timeout-acceptance-002"
+    assert provision.NO_MUTATOR_SCOPE == loader.NO_MUTATOR_SCOPE
+    assert "exact_active_loose_ref_or_packed_refs" in provision.NO_MUTATOR_SCOPE["git_metadata"]
     assert provision.GO_PREFIX == "GO_EPIC_PHONE_001_OWNER_LOCAL_FIXTURE_PROVISION__epic-phone-001-20260816-r01__"
     assert provision.PLAN_ENV.encode() not in bootstrap
     assert bootstrap.count(b'print(\'{"status":"blocked"}\')') == 1
 
 
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda plan: plan.update(security_alias="epic-phone-001-security-owner-local-fixture-provision-001"),
+        lambda plan: plan["authority_objects"]["fixture_authority"].update(
+            alias="epic-phone-001-fixture-authority-owner-provision-001"
+        ),
+        lambda plan: plan["authority_objects"]["owner_local_console_entry"].update(
+            alias="epic-phone-001-owner-local-console-entry-001"
+        ),
+        lambda plan: plan["authority_objects"]["provision_no_mutator_window"].update(
+            alias="epic-phone-001-owner-local-provision-no-mutator-001"
+        ),
+        lambda plan: plan["authority_objects"]["cooperative_timeout_acceptance"].update(
+            alias="epic-phone-001-owner-cooperative-timeout-acceptance-001"
+        ),
+    ],
+)
+def test_consumed_provision_aliases_fail_before_marker(tmp_path, monkeypatch, mutation):
+    fx = _setup(tmp_path, monkeypatch)
+    mutation(fx.plan)
+    raw = provision.canonical_bytes(fx.plan)
+    monkeypatch.setenv(provision.PLAN_ENV, raw.decode())
+    monkeypatch.setenv(provision.GO_ENV, provision.GO_PREFIX + hashlib.sha256(raw).hexdigest())
+    with pytest.raises(provision.ProvisionError, match="plan_contract_invalid"):
+        provision.execute(fx.now)
+    assert not (fx.root / provision.MARKER_REL).exists()
+    _loader_env(fx, monkeypatch, fx.plan)
+    with pytest.raises(ValueError):
+        loader._plan()
+
+
 def test_success_marker_before_input_exact_payload_and_aggregate(tmp_path, monkeypatch):
     fx = _setup(tmp_path, monkeypatch); events = []; inputs = [bytearray(b"0123456789"), bytearray(b"0042")]
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_CHECK_GLOBAL, 1)
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_CONTENT_GLOBAL, 1)
+    monkeypatch.setitem(provision.__dict__, provision.LOADER_GIT_PATH_GLOBAL, 3)
     def marker(path, payload, deadline, **kwargs): events.append((path.name, bytes(payload), False)); _write(path, bytes(payload))
     def secure(path, payload, deadline): events.append((path.name, bytes(payload), True)); _write(path, bytes(payload))
     def console(*args):
@@ -108,7 +154,10 @@ def test_success_marker_before_input_exact_payload_and_aggregate(tmp_path, monke
     assert (fx.root / provision.DESTINATION_REL).read_bytes() == expected
     assert events[0][0] == provision.MARKER_REL.name and events[1][0] == "input"
     assert events[-1] == ("qa_user.env", expected, True)
-    assert result == fx.plan["aggregate_contract"] == provision._aggregate(0)
+    assert {key: result[key] for key in fx.plan["aggregate_contract"]} == fx.plan["aggregate_contract"] == provision._aggregate(0)
+    assert result["git_head_validation_count"] == 2
+    assert 0 < result["git_metadata_content_read_count"] <= provision.BUDGET["git_metadata_content_read_max"]
+    assert 0 < result["git_metadata_path_target_count"] <= provision.BUDGET["git_metadata_path_target_max"]
 
 
 def test_absent_parent_is_created_once_before_destination(tmp_path, monkeypatch):
@@ -118,7 +167,9 @@ def test_absent_parent_is_created_once_before_destination(tmp_path, monkeypatch)
     monkeypatch.setattr(provision, "_secure_write_new", lambda path, payload, deadline: _write(path, bytes(payload)))
     answers = iter((bytearray(b"0123456789"), bytearray(b"1234")))
     monkeypatch.setattr(provision, "_read_console_digits", lambda *args: next(answers))
-    assert provision.execute(fx.now) == provision._aggregate(1)
+    result = provision.execute(fx.now)
+    assert {key: result[key] for key in provision._aggregate(1)} == provision._aggregate(1)
+    assert result["git_head_validation_count"] == 2
     assert created == [fx.root / provision.DESTINATION_REL.parent]
 
 
@@ -192,6 +243,121 @@ def test_loader_rejects_extra_plan_and_executor_systemexit(monkeypatch, tmp_path
     monkeypatch.setattr(loader, "_plan", lambda: {"executor_bytes": 1, "executor_sha256": "a" * 64})
     monkeypatch.setattr(loader, "_load_executor", lambda *args: b"raise SystemExit(0)\n")
     assert loader.main() == 2
+
+
+@pytest.mark.parametrize("shape,expected_content_reads", [
+    ("detached", 1), ("loose", 2), ("packed", 2), ("worktree", 4),
+])
+def test_git_head_reader_accepts_detached_loose_packed_and_worktree(
+    tmp_path, monkeypatch, shape, expected_content_reads
+):
+    fx = _setup(tmp_path, monkeypatch)
+    git = fx.root / ".git"
+    if shape == "loose":
+        _write(git / "HEAD", b"ref: refs/heads/main\n")
+        _write(git / "refs/heads/main", ("a" * 40 + "\n").encode())
+    elif shape == "packed":
+        _write(git / "HEAD", b"ref: refs/heads/main\n")
+        _write(git / "packed-refs", ("# pack-refs\n" + "a" * 40 + " refs/heads/main\n").encode())
+    elif shape == "worktree":
+        common = fx.root / "git-common"
+        git.rename(common)
+        gitdir = common / "worktrees/w1"
+        _write(git, f"gitdir: {gitdir}\n".encode())
+        _write(gitdir / "HEAD", b"ref: refs/heads/main\n")
+        _write(gitdir / "commondir", b"../..\n")
+        _write(common / "refs/heads/main", ("a" * 40 + "\n").encode())
+    assert provision._actual_repository_head(fx.root)[:2] == ("a" * 40, expected_content_reads)
+    assert loader._actual_repository_head(fx.root)[:2] == ("a" * 40, expected_content_reads)
+
+
+def test_executor_and_loader_reject_git_head_drift_before_marker_or_executor(tmp_path, monkeypatch):
+    fx = _setup(tmp_path, monkeypatch)
+    _write(fx.root / ".git/HEAD", ("b" * 40 + "\n").encode())
+    with pytest.raises(provision.ProvisionError, match="repository_head_binding_invalid"):
+        provision.execute(fx.now)
+    assert not (fx.root / provision.MARKER_REL).exists()
+    _loader_env(fx, monkeypatch, fx.plan)
+    monkeypatch.chdir(fx.root)
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(AssertionError("executor_loaded")))
+    assert loader.main() == 2
+    assert not (fx.root / provision.MARKER_REL).exists()
+
+
+def test_executor_rejects_missing_loader_git_attestation_before_marker(tmp_path, monkeypatch):
+    fx = _setup(tmp_path, monkeypatch)
+    monkeypatch.delitem(provision.__dict__, provision.LOADER_GIT_CHECK_GLOBAL, raising=False)
+    monkeypatch.delitem(provision.__dict__, provision.LOADER_GIT_CONTENT_GLOBAL, raising=False)
+    monkeypatch.delitem(provision.__dict__, provision.LOADER_GIT_PATH_GLOBAL, raising=False)
+    with pytest.raises(provision.ProvisionError, match="loader_git_counter_invalid"):
+        provision.execute(fx.now)
+    assert not (fx.root / provision.MARKER_REL).exists()
+
+def test_git_head_reader_rejects_reparse_gate_and_unc(monkeypatch, tmp_path):
+    fx = _setup(tmp_path, monkeypatch)
+    monkeypatch.setattr(provision, "_safe_absolute_chain", lambda *args: (_ for _ in ()).throw(provision.ProvisionError("git_metadata_reparse")))
+    with pytest.raises(provision.ProvisionError, match="git_metadata_reparse"):
+        provision._actual_repository_head(fx.root)
+    with pytest.raises(ValueError):
+        loader._fixed_drive(Path(r"\\server\share\repo"))
+
+
+def test_optional_loose_ref_component_probe_is_bounded_and_fail_closed_before_marker_or_executor(
+    tmp_path, monkeypatch
+):
+    fx = _setup(tmp_path, monkeypatch)
+    _write(fx.root / ".git/HEAD", b"ref: refs/heads/main\n")
+    _write(fx.root / ".git/packed-refs", ("a" * 40 + " refs/heads/main\n").encode())
+    (fx.root / ".git/refs").mkdir()
+    refs = fx.root / ".git/refs"; heads = refs / "heads"; loose = heads / "main"
+    real_lstat = Path.lstat; observed = []
+
+    def missing_first(path):
+        candidate = Path(path)
+        if candidate in (refs, heads, loose): observed.append(candidate)
+        if candidate == refs: raise FileNotFoundError
+        if candidate in (heads, loose): raise AssertionError("probe_continued_after_missing_component")
+        return real_lstat(path)
+
+    with monkeypatch.context() as missing_patch:
+        missing_patch.setattr(Path, "lstat", missing_first)
+        assert provision._actual_repository_head(fx.root)[0] == "a" * 40
+        assert loader._actual_repository_head(fx.root)[0] == "a" * 40
+    assert observed == [refs, refs]
+    assert not (fx.root / provision.MARKER_REL).exists()
+
+    def intermediate_reparse(path):
+        if Path(path) == heads:
+            return SimpleNamespace(st_mode=0, st_file_attributes=provision.REPARSE_ATTRIBUTE)
+        return real_lstat(path)
+
+    with monkeypatch.context() as reparse_patch:
+        reparse_patch.setattr(Path, "lstat", intermediate_reparse)
+        with pytest.raises(provision.ProvisionError, match="git_metadata_reparse"):
+            provision.execute(fx.now)
+        _loader_env(fx, reparse_patch, fx.plan)
+        reparse_patch.chdir(fx.root)
+        reparse_patch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(AssertionError("executor_loaded")))
+        assert loader.main() == 2
+    assert not (fx.root / provision.MARKER_REL).exists()
+
+
+def test_loader_binds_head_and_injects_exact_git_counters_before_executor(monkeypatch):
+    plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "b" * 64}
+    monkeypatch.setattr(loader, "_plan", lambda: plan)
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 2, 5))
+    source = (
+        b"def main():\n"
+        b" return 0 if __owner_fixture_loader_git_head_validation_count__==1 "
+        b"and __owner_fixture_loader_git_metadata_content_read_count__==2 "
+        b"and __owner_fixture_loader_git_metadata_path_target_count__==5 else 2\n"
+    )
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: source)
+    assert loader.main() == 0
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("b" * 40, 1, 3))
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(AssertionError("executor_loaded")))
+    assert loader.main() == 2
+    assert loader.BUDGET["subprocess_max"] == 0
 
 
 def test_acl_createfile_same_handle_flush_readback_and_protected_check_are_mandatory():

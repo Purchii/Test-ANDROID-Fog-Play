@@ -18,24 +18,24 @@ from typing import Any, Mapping
 EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-authority-renewal"
-RENEWAL_ID = "authority-renewal-001"
-AUTHORITY_SET_ID = "c0p-authority-003"
-PREP_ATTEMPT_ID = "c0p-prep-003"
-SECURITY_ALIAS = "epic-phone-001-security-c0p-003"
-NO_MUTATOR_ALIAS = "epic-phone-001-owner-authority-renewal-no-mutator-001"
+RENEWAL_ID = "authority-renewal-002"
+AUTHORITY_SET_ID = "c0p-authority-004"
+PREP_ATTEMPT_ID = "c0p-prep-004"
+SECURITY_ALIAS = "epic-phone-001-security-c0p-004"
+NO_MUTATOR_ALIAS = "epic-phone-001-owner-authority-renewal-no-mutator-002"
 NO_MUTATOR_SCOPE = {
     "ancestors": "all_lexical_ancestors_of_every_listed_or_resolved_path",
     "git_metadata": [".git_marker", "resolved_local_gitdir", "optional_resolved_local_commondir",
-                     "gitdir_HEAD", "exact_active_loose_ref_or_packed_refs"],
+                     "gitdir_HEAD", "optional_active_loose_ref_component_probe",
+                     "exact_active_loose_ref_or_packed_refs"],
     "new_outputs": [
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-001-attempt.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/c0p-plan.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/fixture-authority-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/target-build-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/evidence-cleanup-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/authority-renewal-result.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-002-attempt.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/c0p-plan.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/fixture-authority-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/target-build-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/evidence-cleanup-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/authority-renewal-result.local.json",
     ],
     "public_inputs": ["docs/qa/phone/epic-phone-001-authority-renewal-candidate.json",
                       "docs/qa/phone/epic-phone-001-authority-renewal-plan.json"],
@@ -94,7 +94,7 @@ BUDGET = {
     "application_action_max": 0, "authentication_action_max": 0,
     "candidate_read_max": 1, "child_subprocess_max": 0, "concurrency_max": 1,
     "created_file_readback_max": 6, "device_action_max": 0,
-    "directory_create_max": 2, "execution_max": 1, "file_create_max": 6,
+    "directory_create_max": 1, "execution_max": 1, "file_create_max": 6,
     "host_process_max": 1, "metadata_path_target_max": 32, "network_action_max": 0,
     "git_metadata_content_read_max": 4, "gitignore_content_read_max": 1, "go_env_read_max": 2,
     "old_authority_content_read_max": 0, "overwrite_append_delete_rename_max": 0,
@@ -181,9 +181,9 @@ def build_authority_payloads(*, repository_head: str, controller_sha256: str,
            "classification": "PROD_CONDITIONAL", "execution_status": "planned_separate_literal_go_required_not_run",
            "target_alias": "phone-current-001", "build_alias": "task058-selected-phone-full-001",
            "fixture_alias": "epic-phone-001-fixture-001",
-           "passport_aliases": {"fixture_authority": "epic-phone-001-fixture-authority-003",
-                                "target_build": "epic-phone-001-target-build-003",
-                                "evidence_cleanup": "epic-phone-001-evidence-cleanup-003"},
+           "passport_aliases": {"fixture_authority": "epic-phone-001-fixture-authority-004",
+                                "target_build": "epic-phone-001-target-build-004",
+                                "evidence_cleanup": "epic-phone-001-evidence-cleanup-004"},
            "security_alias": SECURITY_ALIAS, "repository_head": repository_head,
            "controller_source_sha256": controller_sha256, "fixed_plan_path": C0P_PLAN_REL.as_posix(),
            "fixed_token_path": (RUN_REL / "security-go-c0p.local.json").as_posix(),
@@ -319,6 +319,17 @@ def _track_git_path(path: Path, budget: dict[str, Any]) -> None:
     if len(budget["targets"]) > BUDGET["metadata_path_target_max"]: raise RenewalError("git_metadata_path_budget_exhausted")
 
 
+def _probe_optional_git_path(path: Path, budget: dict[str, Any]) -> bool:
+    absolute = path.absolute(); _fixed_local(absolute); cursor = Path(absolute.anchor)
+    for part in absolute.parts[1:]:
+        cursor /= part; _track_git_path(cursor, budget)
+        try: info = cursor.lstat()
+        except FileNotFoundError: return False
+        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & REPARSE_ATTRIBUTE:
+            raise RenewalError("git_metadata_reparse")
+    return True
+
+
 def _read_metadata(path: Path, budget: dict[str, Any], maximum: int = 4096) -> bytes:
     _track_git_path(path, budget)
     budget["content_reads"] += 1
@@ -365,10 +376,7 @@ def _actual_repository_head() -> tuple[str, int, int]:
     if not ref.startswith("refs/") or "\\" in ref or ":" in ref or any(part in ("", ".", "..") for part in ref.split("/")):
         raise RenewalError("git_ref_invalid")
     loose = common.joinpath(*ref.split("/"))
-    _track_git_path(loose, budget)
-    try: loose.lstat()
-    except FileNotFoundError: pass
-    else:
+    if _probe_optional_git_path(loose, budget):
         value = _read_metadata(loose, budget).decode("ascii", errors="strict").strip()
         if len(value) == 40 and all(ch in HEX40 for ch in value): return value, budget["content_reads"], len(budget["targets"])
         raise RenewalError("git_loose_ref_invalid")
@@ -511,8 +519,11 @@ def execute(now: datetime | None = None) -> Mapping[str, Any]:
     gitignore = _read_fixed(REPO_ROOT / GITIGNORE_REL, plan["gitignore_binding"], 1024 * 1024)
     if b".qa_local/" not in gitignore.splitlines(): raise RenewalError("gitignore_contract_invalid")
     _safe_chain(REPO_ROOT / RUN_REL)
-    _safe_chain(REPO_ROOT / SET_PARENT_REL, missing_leaf=True)
-    if (REPO_ROOT / MARKER_REL).exists() or (REPO_ROOT / SET_PARENT_REL).exists() or (REPO_ROOT / SET_ROOT_REL).exists():
+    _safe_chain(REPO_ROOT / SET_PARENT_REL)
+    if not stat.S_ISDIR((REPO_ROOT / SET_PARENT_REL).lstat().st_mode):
+        raise RenewalError("authority_set_parent_invalid")
+    _safe_chain(REPO_ROOT / SET_ROOT_REL, missing_leaf=True)
+    if (REPO_ROOT / MARKER_REL).exists() or (REPO_ROOT / SET_ROOT_REL).exists():
         raise RenewalError("renewal_already_consumed")
     marker = canonical_bytes({"schema_version": ATTEMPT_SCHEMA, "epic_id": EPIC_ID, "run_id": RUN_ID,
                               "contour_id": CONTOUR_ID, "renewal_id": RENEWAL_ID,
@@ -521,7 +532,6 @@ def execute(now: datetime | None = None) -> Mapping[str, Any]:
     actual_head, git_content_reads, git_path_targets = _actual_repository_head()
     if actual_head != plan["repository_head"]: raise RenewalError("repository_head_binding_invalid")
     _write_new(REPO_ROOT / MARKER_REL, marker, deadline_ns)
-    _check_deadline(deadline_ns); os.mkdir(REPO_ROOT / SET_PARENT_REL)
     _check_deadline(deadline_ns); os.mkdir(REPO_ROOT / SET_ROOT_REL)
     created, total = [], len(marker)
     for item in candidate["artifacts"]:
@@ -533,11 +543,11 @@ def execute(now: datetime | None = None) -> Mapping[str, Any]:
     result = {"schema_version": RESULT_SCHEMA, "status": "authority_set_materialized", "epic_id": EPIC_ID,
               "run_id": RUN_ID, "contour_id": CONTOUR_ID, "renewal_id": RENEWAL_ID,
               "authority_set_id": AUTHORITY_SET_ID, "prep_attempt_id": PREP_ATTEMPT_ID,
-              "created_artifact_count": 4, "directory_created_count": 2, "file_created_count": 6,
+              "created_artifact_count": 4, "directory_created_count": 1, "file_created_count": 6,
               "readback_count": 6, "all_secret_serial_device_app_network_runtime_auth_ui_counters": 0,
               "gitignore_content_read_count": 1, "git_metadata_content_read_count": git_content_reads,
               "git_metadata_path_target_count": git_path_targets, "go_env_read_count": 2,
-              "full_envelope_source_read_count": 7,
+              "full_envelope_source_read_count": 7, "old_authority_content_read_count": 0,
               "artifacts": created}
     result_data = canonical_bytes(result); total += len(result_data)
     if total > MAX_TOTAL: raise RenewalError("total_created_bytes_invalid")
@@ -549,7 +559,7 @@ def main() -> int:
     try: result = execute()
     except BaseException: return 2
     print(json.dumps({"schema_version": RESULT_SCHEMA, "status": result["status"], "created_artifact_count": 4,
-                      "directory_created_count": 2, "file_created_count": 6,
+                      "directory_created_count": 1, "file_created_count": 6,
                       "all_forbidden_counters": 0}, sort_keys=True, separators=(",", ":")))
     return 0
 

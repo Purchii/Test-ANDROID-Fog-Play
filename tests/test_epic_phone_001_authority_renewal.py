@@ -5,6 +5,7 @@ import json
 import time
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -32,7 +33,8 @@ def setup_contract(tmp_path: Path, monkeypatch):
         data = f"source-{index}".encode(); write(root / path, data)
         source_bindings.append({"path": path.as_posix(), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
     gitignore = b".qa_local/\n"; write(root / renewal.GITIGNORE_REL, gitignore)
-    (root / renewal.RUN_REL).mkdir(parents=True)
+    (root / renewal.SET_PARENT_REL / "c0p-authority-003").mkdir(parents=True)
+    write(root / renewal.SET_PARENT_REL / "c0p-authority-003/history.local.json", b"generation003-preserved")
     head = "a" * 40
     issued, plan_expiry = stamp(NOW - timedelta(seconds=5)), stamp(NOW + timedelta(minutes=7))
     authority_expiry, retention = stamp(NOW + timedelta(minutes=8)), stamp(NOW + timedelta(minutes=9))
@@ -58,12 +60,13 @@ def setup_contract(tmp_path: Path, monkeypatch):
 
 def test_exact_ids_paths_schemas_and_zero_impact_budget():
     assert renewal.CONTOUR_ID == "epic-phone-001-authority-renewal"
-    assert renewal.RENEWAL_ID == "authority-renewal-001"
-    assert renewal.AUTHORITY_SET_ID == "c0p-authority-003"
-    assert renewal.PREP_ATTEMPT_ID == "c0p-prep-003"
-    assert renewal.SECURITY_ALIAS == "epic-phone-001-security-c0p-003"
-    assert renewal.SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-003")
-    assert renewal.MARKER_REL.name == "authority-renewal-001-attempt.local.json"
+    assert renewal.RENEWAL_ID == "authority-renewal-002"
+    assert renewal.AUTHORITY_SET_ID == "c0p-authority-004"
+    assert renewal.PREP_ATTEMPT_ID == "c0p-prep-004"
+    assert renewal.SECURITY_ALIAS == "epic-phone-001-security-c0p-004"
+    assert renewal.NO_MUTATOR_ALIAS == "epic-phone-001-owner-authority-renewal-no-mutator-002"
+    assert renewal.SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-004")
+    assert renewal.MARKER_REL.name == "authority-renewal-002-attempt.local.json"
     assert (renewal.CANDIDATE_SCHEMA, renewal.PLAN_SCHEMA, renewal.ATTEMPT_SCHEMA, renewal.RESULT_SCHEMA) == (
         "epic-phone-001-authority-renewal-candidate-v1", "epic-phone-001-authority-renewal-plan-v1",
         "epic-phone-001-authority-renewal-attempt-v1", "epic-phone-001-authority-renewal-result-v1")
@@ -84,6 +87,11 @@ def test_candidate_preserves_target_authorization_only_and_task058a_unknown():
     assert target["task058a_row03_evidence_status"] == "unknown"
     assert target["current_freshness_evidence"] is target["runtime_evidence"] is False
     assert payloads[0] == controller.c0p_plan("a" * 40, "b" * 64, stamp(NOW), stamp(NOW + timedelta(minutes=8)))
+    assert payloads[0]["passport_aliases"] == {
+        "fixture_authority": "epic-phone-001-fixture-authority-004",
+        "target_build": "epic-phone-001-target-build-004",
+        "evidence_cleanup": "epic-phone-001-evidence-cleanup-004",
+    }
     controller._validate_fixture_passport(payloads[1])
     controller._validate_target_build_passport(payloads[2])
     controller._validate_evidence_cleanup_passport(payloads[3])
@@ -94,17 +102,17 @@ def test_final_head_placeholder_and_old_generation_are_rejected():
         renewal.build_authority_payloads(repository_head=renewal.REPOSITORY_HEAD_PLACEHOLDER, controller_sha256="b" * 64,
                                          issued_at_utc=stamp(NOW), expires_at_utc=stamp(NOW + timedelta(minutes=8)),
                                          retention_expires_at_utc=stamp(NOW + timedelta(minutes=9)))
-    assert all("c0p-authority-003" in path.as_posix() for path in renewal.ARTIFACT_PATHS)
+    assert all("c0p-authority-004" in path.as_posix() for path in renewal.ARTIFACT_PATHS)
     assert all(path.parent == renewal.SET_ROOT_REL for path in renewal.ARTIFACT_PATHS)
 
 
-def test_success_create_new_six_files_two_dirs_and_category_result(tmp_path, monkeypatch):
+def test_success_create_new_six_files_one_dir_and_category_result(tmp_path, monkeypatch):
     root, _, _, _ = setup_contract(tmp_path, monkeypatch)
     result = renewal.execute(NOW)
     assert result["status"] == "authority_set_materialized"
     assert (root / renewal.MARKER_REL).is_file() and (root / renewal.RESULT_REL).is_file()
     assert all((root / path).is_file() for path in renewal.ARTIFACT_PATHS)
-    assert result["file_created_count"] == 6 and result["directory_created_count"] == 2
+    assert result["file_created_count"] == 6 and result["directory_created_count"] == 1
     assert result["all_secret_serial_device_app_network_runtime_auth_ui_counters"] == 0
     assert result["gitignore_content_read_count"] == 1
     assert result["git_metadata_content_read_count"] == 1
@@ -115,6 +123,7 @@ def test_success_create_new_six_files_two_dirs_and_category_result(tmp_path, mon
     assert renewal.PLAN_REL.as_posix() in renewal.NO_MUTATOR_SCOPE["public_inputs"]
     assert "gitdir_HEAD" in renewal.NO_MUTATOR_SCOPE["git_metadata"]
     assert renewal.RESULT_REL.as_posix() in renewal.NO_MUTATOR_SCOPE["new_outputs"]
+    assert renewal.SET_PARENT_REL.as_posix() not in renewal.NO_MUTATOR_SCOPE["new_outputs"]
     absolute_deadline = 10_000
     delayed_samples = iter((9_000, 10_001))
     with monkeypatch.context() as deadline_patch:
@@ -141,16 +150,78 @@ def test_success_create_new_six_files_two_dirs_and_category_result(tmp_path, mon
     assert not (short_root / renewal.MARKER_REL).exists()
 
 
+def test_existing_generation003_is_never_opened_or_mutated_and_does_not_block_generation004(tmp_path, monkeypatch):
+    root, _, _, _ = setup_contract(tmp_path, monkeypatch)
+    old_root = root / renewal.SET_PARENT_REL / "c0p-authority-003"
+    old_marker = root / renewal.RUN_REL / "authority-renewal-001-attempt.local.json"
+    write(old_marker, b"generation003-consumed")
+
+    def snapshot():
+        return [(".", old_root.lstat().st_size, old_root.lstat().st_mtime_ns, None)] + [
+            (path.relative_to(old_root).as_posix(), path.lstat().st_size, path.lstat().st_mtime_ns,
+             path.read_bytes() if path.is_file() else None)
+            for path in sorted(old_root.rglob("*"))
+        ]
+
+    before = snapshot()
+    real_open = renewal.os.open
+
+    def reject_old_content_read(path, *args, **kwargs):
+        candidate = Path(path).absolute()
+        if candidate == old_marker.absolute() or candidate == old_root.absolute() or old_root.absolute() in candidate.parents:
+            raise AssertionError("old_generation_content_read")
+        return real_open(path, *args, **kwargs)
+
+    monkeypatch.setattr(renewal.os, "open", reject_old_content_read)
+    result = renewal.execute(NOW)
+    assert result["old_authority_content_read_count"] == 0
+    assert result["directory_created_count"] == 1
+    assert snapshot() == before
+    assert old_marker.read_bytes() == b"generation003-consumed"
+    assert (root / renewal.SET_ROOT_REL).is_dir()
+
+
+def test_existing_authority_sets_parent_is_required_before_marker(tmp_path, monkeypatch):
+    root, _, _, _ = setup_contract(tmp_path, monkeypatch)
+    real_lstat = Path.lstat
+
+    def missing_parent(path):
+        if Path(path) == root / renewal.SET_PARENT_REL:
+            raise FileNotFoundError
+        return real_lstat(path)
+
+    with monkeypatch.context() as missing_patch:
+        missing_patch.setattr(Path, "lstat", missing_parent)
+        with pytest.raises(renewal.RenewalError, match="path_missing"):
+            renewal.execute(NOW)
+    assert not (root / renewal.MARKER_REL).exists()
+
+    root, _, _, _ = setup_contract(tmp_path / "wrong-type", monkeypatch)
+    regular_info = real_lstat(root / ".git/HEAD")
+
+    def regular_parent(path):
+        if Path(path) == root / renewal.SET_PARENT_REL:
+            return regular_info
+        return real_lstat(path)
+
+    with monkeypatch.context() as type_patch:
+        type_patch.setattr(Path, "lstat", regular_parent)
+        with pytest.raises(renewal.RenewalError, match="authority_set_parent_invalid"):
+            renewal.execute(NOW)
+    assert not (root / renewal.MARKER_REL).exists()
+
+
 def test_marker_is_first_mutation_and_partial_is_preserved(tmp_path, monkeypatch):
     root, _, _, _ = setup_contract(tmp_path, monkeypatch)
     real_mkdir = renewal.os.mkdir
     def fail_first_directory(path):
-        if Path(path) == root / renewal.SET_PARENT_REL: raise OSError("injected")
+        if Path(path) == root / renewal.SET_ROOT_REL: raise OSError("injected")
         return real_mkdir(path)
     monkeypatch.setattr(renewal.os, "mkdir", fail_first_directory)
     with pytest.raises(OSError, match="injected"): renewal.execute(NOW)
     assert (root / renewal.MARKER_REL).is_file()
-    assert not (root / renewal.SET_PARENT_REL).exists()
+    assert (root / renewal.SET_PARENT_REL).is_dir()
+    assert not (root / renewal.SET_ROOT_REL).exists()
     delayed_leaf = root / "deadline-preflight.local.json"
     with monkeypatch.context() as delayed:
         samples = iter((100, 200))
@@ -183,12 +254,49 @@ def test_replay_and_preexisting_versioned_root_fail_before_new_write(tmp_path, m
     assert renewal._actual_repository_head()[0] == "a" * 40
 
 
+def test_optional_loose_ref_probe_stops_at_first_missing_component_and_rejects_intermediate_reparse(
+    tmp_path, monkeypatch
+):
+    root, _, _, _ = setup_contract(tmp_path, monkeypatch)
+    write(root / ".git/HEAD", b"ref: refs/heads/main\n")
+    write(root / ".git/packed-refs", ("a" * 40 + " refs/heads/main\n").encode())
+    (root / ".git/refs").mkdir()
+    refs = root / ".git/refs"; heads = refs / "heads"; loose = heads / "main"
+    real_lstat = Path.lstat; observed = []
+
+    def missing_first(path):
+        candidate = Path(path)
+        if candidate in (refs, heads, loose): observed.append(candidate)
+        if candidate == refs: raise FileNotFoundError
+        if candidate in (heads, loose): raise AssertionError("probe_continued_after_missing_component")
+        return real_lstat(path)
+
+    with monkeypatch.context() as missing_patch:
+        missing_patch.setattr(Path, "lstat", missing_first)
+        assert renewal._actual_repository_head()[0] == "a" * 40
+    assert observed == [refs]
+    assert not (root / renewal.MARKER_REL).exists()
+
+    def intermediate_reparse(path):
+        if Path(path) == heads:
+            return SimpleNamespace(st_mode=0, st_file_attributes=renewal.REPARSE_ATTRIBUTE)
+        return real_lstat(path)
+
+    with monkeypatch.context() as reparse_patch:
+        reparse_patch.setattr(Path, "lstat", intermediate_reparse)
+        with pytest.raises(renewal.RenewalError, match="git_metadata_reparse"):
+            renewal.execute(NOW)
+    assert not (root / renewal.MARKER_REL).exists()
+
+
 @pytest.mark.parametrize("mutation", [
-    lambda plan: plan.update(authority_set_id="c0p-authority-002"),
-    lambda plan: plan.update(prep_attempt_id="c0p-prep-002"),
-    lambda plan: plan.update(security_alias="epic-phone-001-security-c0p-001"),
+    lambda plan: plan.update(renewal_id="authority-renewal-001"),
+    lambda plan: plan.update(authority_set_id="c0p-authority-003"),
+    lambda plan: plan.update(prep_attempt_id="c0p-prep-003"),
+    lambda plan: plan.update(security_alias="epic-phone-001-security-c0p-003"),
+    lambda plan: plan["owner_no_mutator_authority"].update(alias="epic-phone-001-owner-authority-renewal-no-mutator-001"),
     lambda plan: plan["budget"].update(secret_read_max=1),
-    lambda plan: plan["artifact_paths"].__setitem__(0, ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/c0p-plan.local.json"),
+    lambda plan: plan["artifact_paths"].__setitem__(0, ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-003/c0p-plan.local.json"),
 ])
 def test_plan_drift_old_ids_paths_and_nonzero_forbidden_budget_fail(tmp_path, monkeypatch, mutation):
     root, candidate, plan, _ = setup_contract(tmp_path, monkeypatch); mutation(plan)
@@ -219,11 +327,17 @@ def test_loader_rejects_old_identity_and_systemexit(tmp_path, monkeypatch):
     root, _, plan, plan_data = setup_contract(tmp_path, monkeypatch)
     monkeypatch.chdir(root); monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(plan_data).hexdigest())
     loaded, binding, raw_loaded = loader._plan(root, NOW)
-    assert loaded["authority_set_id"] == "c0p-authority-003" and binding["path"] == renewal.EXECUTOR_REL.as_posix()
+    assert loaded["authority_set_id"] == "c0p-authority-004" and binding["path"] == renewal.EXECUTOR_REL.as_posix()
     assert raw_loaded == plan_data
-    plan["renewal_id"] = "authority-renewal-000"; bad = renewal.canonical_bytes(plan); write(root / renewal.PLAN_REL, bad)
+    plan["renewal_id"] = "authority-renewal-001"; bad = renewal.canonical_bytes(plan); write(root / renewal.PLAN_REL, bad)
     monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(bad).hexdigest())
     with pytest.raises(ValueError): loader._plan(root, NOW)
+    plan["renewal_id"] = renewal.RENEWAL_ID
+    plan["owner_no_mutator_authority"]["alias"] = "epic-phone-001-owner-authority-renewal-no-mutator-001"
+    old_alias = renewal.canonical_bytes(plan); write(root / renewal.PLAN_REL, old_alias)
+    monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(old_alias).hexdigest())
+    with pytest.raises(ValueError): loader._plan(root, NOW)
+    plan["owner_no_mutator_authority"]["alias"] = renewal.NO_MUTATOR_ALIAS
     plan["owner_no_mutator_authority"]["status"] = "accepted_by_owner"
     plan["budget"]["runtime_action_max"] = False
     nested_bool_drift = renewal.canonical_bytes(plan); write(root / renewal.PLAN_REL, nested_bool_drift)
@@ -261,7 +375,7 @@ def test_budget_exact_materialization_envelope():
     assert renewal.BUDGET == {
         "application_action_max": 0, "authentication_action_max": 0, "candidate_read_max": 1,
         "child_subprocess_max": 0, "concurrency_max": 1, "created_file_readback_max": 6,
-        "device_action_max": 0, "directory_create_max": 2, "execution_max": 1, "file_create_max": 6,
+        "device_action_max": 0, "directory_create_max": 1, "execution_max": 1, "file_create_max": 6,
         "host_process_max": 1, "metadata_path_target_max": 32, "network_action_max": 0,
         "git_metadata_content_read_max": 4, "gitignore_content_read_max": 1, "go_env_read_max": 2,
         "old_authority_content_read_max": 0, "overwrite_append_delete_rename_max": 0,

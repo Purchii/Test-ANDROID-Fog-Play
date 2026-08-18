@@ -101,7 +101,7 @@ def test_validate_only_does_not_touch_local_or_environment(tmp_path, monkeypatch
     assert prep.main(["--validate-only"]) == 0
     output = json.loads(capsys.readouterr().out)
     assert output["execution_requires_literal_security_go"] is True
-    assert output["prep_attempt_id"] == "c0p-prep-002"
+    assert output["prep_attempt_id"] == "c0p-prep-003"
     assert output["secret_read_max"] == 0
     assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
 
@@ -119,7 +119,7 @@ def test_unified_prep_budget_counts_host_and_both_public_inputs():
 def test_consumed_attempt_identity_cannot_be_rebound_as_fresh(tmp_path, monkeypatch):
     now = datetime(2026, 8, 18, 10, 0, tzinfo=UTC)
     candidate, _token = _repo(tmp_path, monkeypatch, now)
-    candidate["prep_attempt_id"] = "c0p-prep-001"
+    candidate["prep_attempt_id"] = "c0p-prep-002"
     token = _write_candidate_and_rebind(tmp_path, candidate, now)
     monkeypatch.setenv(prep.GO_ENV, token)
     with pytest.raises(prep.PrepError, match="candidate_fixed_binding_invalid"):
@@ -157,19 +157,22 @@ def test_success_materializes_exact_four_files_without_child_process(tmp_path, m
     plan = json.loads((tmp_path / prep.PREP_PLAN_REL).read_text(encoding="utf-8"))
     assert candidate["schema_version"].endswith("-v2")
     assert plan["schema_version"].endswith("-v2")
-    assert candidate["prep_attempt_id"] == plan["prep_attempt_id"] == "c0p-prep-002"
-    assert candidate["public_aggregate_contract"]["prep_attempt_id"] == "c0p-prep-002"
+    assert candidate["prep_attempt_id"] == plan["prep_attempt_id"] == "c0p-prep-003"
+    assert candidate["public_aggregate_contract"]["prep_attempt_id"] == "c0p-prep-003"
     assert candidate["attempt_root"] == prep.ATTEMPT_ROOT_REL.as_posix()
     assert candidate["durable_attempt_marker"] == "exclusive_attempt_root_creation_first_mutation"
     assert candidate["failure_policy"].startswith("leave_partial_attempt_root")
     monkeypatch.setenv(prep.GO_ENV, token)
     result = prep.execute_prep(now)
-    assert result["status"] == "prepared"
+    assert result["status"] == "superseded_validate_only"
+    assert result["superseded_by_contour"] == "epic-phone-001-authority-renewal"
+    execute_source = Path(prep.__file__).read_text("utf-8").split("def execute_prep", 1)[1].split("def dry_run", 1)[0]
+    assert 'open("xb")' not in execute_source and "_mkdir_new_or_existing(" not in execute_source
     assert result["schema_version"].endswith("-v2")
-    assert result["prep_attempt_id"] == "c0p-prep-002"
-    assert result["directory_target_count"] == 7
-    assert result["directory_created_count"] == 5
-    assert result["file_created_count"] == 4
+    assert result["prep_attempt_id"] == "c0p-prep-003"
+    assert result["directory_target_count"] == 9
+    assert result["directory_created_count"] == 0
+    assert result["file_created_count"] == 0
     assert result["subprocess_count"] == 1
     assert result["host_process_count"] == 1
     assert result["child_subprocess_count"] == 0
@@ -177,9 +180,7 @@ def test_success_materializes_exact_four_files_without_child_process(tmp_path, m
         "secret_read_count", "device_action_count", "application_action_count",
         "network_action_count", "authentication_action_count", "runtime_action_count",
     ))
-    for artifact in candidate["artifacts"]:
-        path = tmp_path / artifact["path"]
-        assert path.read_bytes() == prep.canonical_bytes(artifact["canonical_json"])
+    assert all(not (tmp_path / artifact["path"]).exists() for artifact in candidate["artifacts"])
 
 
 def test_literal_go_is_checked_before_local_mutation(tmp_path, monkeypatch):
@@ -592,9 +593,8 @@ def test_final_readback_cannot_overrun_wall_clock_and_return_prepared(tmp_path, 
     monkeypatch.setattr(
         prep.time, "monotonic", lambda: 301.0 if slow_read_completed["value"] else 0.0
     )
-    with pytest.raises(prep.PrepError, match="wall_clock_budget_exhausted"):
-        prep.execute_prep(now)
-    assert (tmp_path / prep.ATTEMPT_ROOT_REL).is_dir()
+    assert prep.execute_prep(now)["status"] == "superseded_validate_only"
+    assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
 
 
 def test_shared_parents_missing_fails_before_any_mutation(tmp_path, monkeypatch):
@@ -619,12 +619,8 @@ def test_interruption_after_first_mutation_consumes_attempt(tmp_path, monkeypatc
         return original(path)
 
     monkeypatch.setattr(prep, "_mkdir_new_or_existing", interrupt_run_root)
-    with pytest.raises(KeyboardInterrupt):
-        prep.execute_prep(now)
-    assert (tmp_path / prep.ATTEMPT_ROOT_REL).is_dir()
-    monkeypatch.setattr(prep, "_mkdir_new_or_existing", original)
-    with pytest.raises(prep.PrepError, match="prep_attempt_root_already_consumed"):
-        prep.execute_prep(now)
+    assert prep.execute_prep(now)["status"] == "superseded_validate_only"
+    assert not (tmp_path / prep.ATTEMPT_ROOT_REL).exists()
 
 
 def test_preexisting_output_file_is_a_consumed_attempt(tmp_path, monkeypatch):
@@ -650,13 +646,9 @@ def test_partial_failure_leaves_durable_run_root_and_forbids_retry(tmp_path, mon
         return original_open(path, *args, **kwargs)
 
     monkeypatch.setattr(Path, "open", fail_first_artifact)
-    with pytest.raises(OSError):
-        prep.execute_prep(now)
-    assert calls["count"] == 1
-    assert (tmp_path / prep.RUN_ROOT_REL).is_dir()
-    monkeypatch.setattr(Path, "open", original_open)
-    with pytest.raises(prep.PrepError, match="prep_attempt_root_already_consumed"):
-        prep.execute_prep(now)
+    assert prep.execute_prep(now)["status"] == "superseded_validate_only"
+    assert calls["count"] == 0
+    assert not (tmp_path / prep.RUN_ROOT_REL).exists()
 
 
 def test_interruption_after_attempt_creation_leaves_root_and_forbids_retry(tmp_path, monkeypatch):
@@ -671,12 +663,8 @@ def test_interruption_after_attempt_creation_leaves_root_and_forbids_retry(tmp_p
         return original_open(path, *args, **kwargs)
 
     monkeypatch.setattr(Path, "open", interrupt_first_artifact)
-    with pytest.raises(KeyboardInterrupt):
-        prep.execute_prep(now)
-    assert (tmp_path / prep.RUN_ROOT_REL).is_dir()
-    monkeypatch.setattr(Path, "open", original_open)
-    with pytest.raises(prep.PrepError, match="prep_attempt_root_already_consumed"):
-        prep.execute_prep(now)
+    assert prep.execute_prep(now)["status"] == "superseded_validate_only"
+    assert not (tmp_path / prep.RUN_ROOT_REL).exists()
 
 
 def test_interrupt_and_oserror_are_redacted(capsys, monkeypatch):

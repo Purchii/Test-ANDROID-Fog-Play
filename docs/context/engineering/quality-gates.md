@@ -1357,6 +1357,70 @@ committed-source-bound plan/passports and literal token. Any tracked docs commit
 changes repository HEAD and invalidates the candidate plan hash prefix `f883`;
 recompute after final reviewed docs commit before Security considers a token.
 
+### Owner-local provisioner expiry and renewal gate
+
+The accepted repository-only owner-local provisioner snapshot is bound to
+executor SHA-256
+`f47d97769ca1501dadd235776ced5f76f8dfa5230e09100d4fa142b8bb224263`,
+loader SHA-256
+`1cf7ebc750d31c363e21b27622510d0db3e03404ef7025c3b2d1a9cf27503797`
+and focused-test SHA-256
+`b9c92bf887c276fac0a870dfb89162c5f8551ca39883c0e4d93a8f63fa7c9375`.
+Acceptance requires `40` focused passes, the earlier combined EPIC `168`
+passes, retained anomalies 056–070 and QA-A/QA-B/Security repository R0/R1
+`0/0`. It authorizes repository logic only.
+
+Prepared authority expiry `2026-08-18T05:50:28Z` is terminal for that
+generation. Validators and reviewers must reject extension, overwrite,
+relabel, rename, replay or reuse. Fixture write, C0P, C1, secret access, device,
+auth and runtime remain blocked with exact zero counters and no literal GO.
+
+Renewal must use contour
+`ZERO_SECRET_ZERO_DEVICE_CREATE_NEW_VERSIONED_AUTHORITY_RENEWAL`, create-new
+versioned artifacts and immutable old artifacts. Exact resolved identities are
+`authority-renewal-001`, `c0p-authority-003`, `c0p-prep-003` and
+`security-c0p-003`; fixed paths are under
+`authority-sets/c0p-authority-003`. Identity/path resolution is not execution
+authority. The final provisioner source/HEAD rebind and renewal candidate are
+one review/one commit unit; an interim provisioner commit fails the gate.
+
+Rejected discovery/legacy-transform helper/test drafts must remain absent from
+the final tracked candidate. Their anomaly records remain immutable. Cleanup
+does not grant GO and must not touch `.qa_local`.
+
+The final joint renewal/rebind snapshot passes the repository gate only at the
+exact source hashes recorded in `current-state.md` and `active-run.md`.
+Anomalies 071–082 are closed at repository level. Required results are core
+`144 passed`, named safety suites `public_repo_safety` and
+`full_tree_hygiene` `14 passed`, combined `158 passed`, plus compile and diff
+PASS. Final independent review counts are QA-A `0/0/1`, QA-B `0/0/0` and
+Security `0/0/1`; the sole P2 is the disclosed cooperative-timeout residual.
+It requires fresh owner acceptance before later execution but does not create
+an R0/R1 repository-commit blocker.
+
+The authoritative environment-independent regression gate is
+`python -m pytest -q --ignore=tests/test_task045_paired_virtual_gamepad.py` and
+must pass at `1583 passed, 4 skipped`. The unfiltered suite is explicitly
+`environment_blocked`, not green: two identical runs produced `1616 passed`,
+`4 skipped`, `17 failed`, with every failure confined to the TASK-045 module
+whose fixed ignored adapter/coverage source is absent. Under `NO_GO`, the
+source must remain uninspected and must not be restored or synthesized.
+Anomaly 083 preserves this limitation.
+
+The same final gate requires EPIC validate-only/report PASS; manifest
+generation/validation `pass_with_legacy` at `36/13/23`; compileall PASS; both
+hygiene modes PASS; public safety `437/0`; docs consistency `187/0`; and both
+cached and working-tree diff checks PASS.
+
+`c0p-prep-003 --validate-only` is superseded by renewal and must not be treated
+as a pending executable stage or reusable authority. Repository acceptance is
+`NO_GO / NO_EXECUTION`: renewal, fixture write, C0P, C1, secret access, device,
+auth and runtime counters remain zero for this checkpoint, while all expired
+authorities stay immutable and non-replayable. The snapshot must be committed
+and pushed once as a unit. Any later candidate/plan must be rebuilt and bound
+to the resulting post-commit HEAD and receive fresh owner and Security
+authority before execution.
+
 The current repository contour is `PROD_SAFE_REPOSITORY_ONLY`. Its fixed-path
 runner may only validate tracked inputs, publish the deterministic blocked
 baseline and validate that bundle. It must reject arbitrary path/input

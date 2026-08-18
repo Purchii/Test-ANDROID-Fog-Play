@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_resumed_shared_parent_owner_attestation_pending`.
+- Thread status: `active_renewal_rebind_repository_accepted_commit_pending`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -14,7 +14,7 @@
 - Last integrated repository-only closure: epic branch and `main` aligned at
   `b268b1f198f595ec835e066169c97cdf839cc05b` before resumed construction.
 - Current accepted implementation commit before this docs-only handoff delta:
-  `5a7a34c8562ab80adb7c307aa623c70d676a936a`, pushed and aligned with
+  `76375fa49e0117b9ced251fbb51212a893b0c449`, pushed and aligned with
   `origin/qa/epic-phone-001-full-mobile-application-test-coverage`.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
@@ -332,22 +332,532 @@ there is no C0P, C1 or runtime GO.
   attempt identity was treated as payload metadata rather than a required wire
   field. Test implication: bump candidate/plan/result/contract to `v2`, reject
   legacy missing-field envelopes, and assert identity on every exact surface.
+- `EPICPHONE001-PROCESS-ANOMALY-038`, alias
+  `c0p_fixed_synthetic_fixture_absent_in_active_worktree`, is `confirmed`.
+  Trigger: the fixed-path Security readiness check after successful shared-
+  parent provisioning and successful `c0p-prep-002`. Expected: the ignored
+  synthetic fixture source exists as the exact regular file required by the
+  controller. Observed: `lstat` classified that one fixed file as absent;
+  Security did not read secret content, construct a C0P token, or authorize
+  C0P/C1/runtime/auth. Likely cause: the synthetic fixture was supplied in a
+  different checkout and was not provisioned into this fresh worktree. Test-
+  design implication: apply the tracked Fresh Worktree Local-Artifact Gate as
+  a separate exact Security-reviewed contour, inspect only bounded same-repo
+  worktrees, keep all values local-only, and do not issue or retry C0P until
+  the canonical destination passes a fresh fixed-path readiness check.
+- `EPICPHONE001-PROCESS-ANOMALY-039`, alias
+  `synthetic_fixture_schema_contract_mismatch`, is `confirmed`. Trigger: the
+  tracked Fresh Worktree Local-Artifact Gate audit before constructing any
+  transfer helper. Expected: the canonical ignored fixture contract and the
+  EPIC controller accept the same closed field schema. Observed: the general
+  synthetic-user policy documents five `QA_*` fields, while the EPIC
+  controller accepts exactly two different epic-scoped fields; a byte-for-byte
+  transfer can therefore produce a controller-rejected destination. Likely
+  cause: the epic-specific one-shot presence controller was introduced after
+  the general synthetic-user contract without an explicit migration surface.
+  Test-design implication: Security must choose and bind either an already
+  epic-compatible source or a fixed one-shot legacy-to-epic transformation;
+  no source content may be read and no destination may be created until that
+  closed mapping, budget and literal GO are independently reviewed.
+- `EPICPHONE001-PROCESS-ANOMALY-040`, alias
+  `fixture_discovery_plan_type_time_depth_fail_open`, is `confirmed`. Trigger:
+  QA-A synthetic boolean, expiry-boundary and deep-JSON probes against the
+  first ephemeral discovery candidate. Expected: type-strict rejection,
+  expiry strictly after the current instant, and fixed public-safe parser
+  failure. Observed: boolean/integer equality passed, `expiry == now` passed,
+  and deep input raised uncaught recursion. Likely cause: ordinary dictionary
+  equality and incomplete exception/temporal boundaries. Test implication:
+  use exact recursive type equality, strict time bounds and bounded/caught
+  canonical parsing before any subprocess or local-path action.
+- `EPICPHONE001-PROCESS-ANOMALY-041`, alias
+  `fixture_discovery_git_budget_and_cleanliness_drift`, is `confirmed`.
+  Trigger: exact subprocess reconciliation of the first discovery candidate.
+  Expected: at most nine bound Git processes and clean eligible non-active
+  worktrees. Observed: the implementation could invoke 19 Git processes for
+  eight worktrees, did not enforce a shared deadline/counter, suppressed
+  untracked status and would reject the intentionally frozen dirty active
+  checkout. Likely cause: redundant per-worktree common-dir validation and an
+  inherited cleanliness shortcut. Test implication: parse one bounded
+  porcelain worktree record, exclude the active worktree, perform at most
+  eight minimal-environment full-clean checks and expose exact counters.
+- `EPICPHONE001-PROCESS-ANOMALY-042`, alias
+  `fixture_discovery_reparse_network_ancestor_gap`, is `confirmed`. Trigger:
+  Security/QA path-order review. Expected: lexical UNC/device rejection and
+  lstat-first no-reparse validation of every worktree, fixture and result
+  ancestor before traversal. Observed: only the final fixture file was lstat-
+  classified while relative/quoted/UNC worktree paths and reparse ancestors
+  could be followed. Likely cause: final-node checks were mistaken for a
+  complete path-chain gate. Test implication: validate unresolved absolute
+  local-volume ancestor chains before subprocess cwd, stat, open or create.
+- `EPICPHONE001-PROCESS-ANOMALY-043`, alias
+  `fixture_discovery_result_sink_and_replay_gap`, is `confirmed`. Trigger:
+  QA-A result-publication and retry review. Expected: protected ignored sink,
+  lstat-first create-new, complete write/readback, final deadline and a durable
+  one-shot marker. Observed: follow-stat predicates preceded the sink gate,
+  ACL/privacy and complete-write proof were absent, and a pre-result failure
+  could reuse the same GO despite retry zero. Likely cause: the local result
+  file was treated as both output and consumption marker. Test implication:
+  bind a first-mutation attempt marker and exact protected result policy, with
+  interruption, short-write and replay adversarials.
+- `EPICPHONE001-PROCESS-ANOMALY-044`, alias
+  `fixture_discovery_loader_bootstrap_binding_gap`, is `confirmed`. Trigger:
+  independent review of the first no-pyc loader. Expected: both discovery and
+  transform execute only the exact plan-bound same buffer through a separately
+  bound bootstrap, with closed schemas and a caught target boundary. Observed:
+  the loader supported transform only, hashed itself after interpreter load,
+  accepted extra plan fields and could project uncaught target exceptions.
+  Likely cause: the loader was implemented as a transform wrapper rather than
+  a generic exact bootstrap. Test implication: bind exact inline bootstrap,
+  loader and executor bytes/lengths/SHA, strict v2 plan/status allowlists and
+  fixed public-safe exception handling for both contours.
+- `EPICPHONE001-PROCESS-ANOMALY-045`, alias
+  `fixture_discovery_v2_executor_v1_test_skew`, is `confirmed`. Trigger: the
+  first focused repository-only run immediately after the rewritten v2
+  executor materialized but before Builder published its v2 tests. Expected:
+  the focused suite targets the same frozen contract revision. Observed: six
+  legacy tests failed on intentionally removed v1 symbols while one Windows
+  reparse case skipped; no executor/local/runtime action occurred. Likely
+  cause: parent verification raced the Builder's staged-in-time file handoff.
+  Test implication: freeze executor, loader and tests as one exact byte set,
+  then treat only the post-freeze rerun as authoritative; retain this first
+  collection/interface mismatch as process evidence, not product evidence.
+- `EPICPHONE001-PROCESS-ANOMALY-046`, alias
+  `fixture_discovery_plan_requires_undiscovered_count`, is `confirmed`.
+  Trigger: Security attempted deterministic plan construction for the first
+  frozen v2 candidate. Expected: construct the plan from current tracked and
+  owner-confirmed authority without running discovery. Observed: the plan
+  required an exact total worktree count that only the not-yet-authorized
+  contour could learn. Likely cause: a runtime aggregate was modeled as plan
+  authority. Test implication: bind fixed maxima of eight worktrees, nine Git
+  processes and seven non-active candidate checks, then validate actual counts
+  only inside the bounded result aggregate.
+- `EPICPHONE001-PROCESS-ANOMALY-047`, alias
+  `fixture_discovery_metadata_safety_gaps_v2`, is `confirmed`. Trigger:
+  Security's exact Windows/path/ACL metadata review. Expected: local fixed
+  volume, closed ACL policy and a nonempty fixture file no larger than 8192
+  bytes before candidate acceptance. Observed: mapped network drives were not
+  rejected, object-specific allow ACEs were not classified fail-closed, SID
+  buffer lifetime was fragile, and candidate size had no bound. Likely cause:
+  lexical UNC, common allow ACE and regular-file checks were treated as the
+  complete metadata envelope. Test implication: require `DRIVE_FIXED`, reject
+  every unknown allow-ACE type, retain SID buffers and enforce
+  `0 < st_size <= 8192` without opening content.
+- `EPICPHONE001-PROCESS-ANOMALY-048`, alias
+  `fixture_discovery_git_interrupt_child_cleanup_gap`, is `confirmed`. Trigger:
+  Security interrupted the bounded Git-wait control-flow in review. Expected:
+  every exception kills and bounded-waits the one child and joins its reader
+  before category-only failure. Observed: the timeout path cleaned up, but an
+  arbitrary interrupt/BaseException could leave the process alive. Likely
+  cause: cleanup was scoped to `TimeoutExpired`. Test implication: place kill,
+  wait and reader-join in a fail-closed BaseException/finally boundary and
+  adversarially assert zero surviving child.
+- `EPICPHONE001-PROCESS-ANOMALY-049`, alias
+  `fixture_discovery_unbound_git_executable`, is `confirmed`. Trigger: QA-B
+  rebound the plan's Git path to another local executable. Expected: only the
+  exact approved Git binary identity may service the nine-process budget.
+  Observed: a temporary plan using the Python executable passed plan/path
+  validation, and pathname reopening left a further replacement window.
+  Likely cause: the plan bound a path category but not bytes/product/opened
+  identity. Test implication: bind fixed Git bytes/SHA/identity or eliminate
+  the external binary in favor of an independently bound mechanism; revalidate
+  the same opened object before execution and keep network budget zero.
+- `EPICPHONE001-PROCESS-ANOMALY-050`, alias
+  `fixture_discovery_loader_subset_and_duplicate_failure_output`, is
+  `confirmed`. Trigger: QA-B supplied a minimal canonical loader plan and a
+  failing exact executor. Expected: loader accepts only the full closed plan
+  and the bootstrap owns one failure projection. Observed: the subset was
+  sufficient to execute the bound buffer and the failure path emitted two
+  identical blocked JSON lines. Likely cause: loader validation intentionally
+  deferred the full contract to the executor while both executor and bootstrap
+  printed failure. Test implication: loader must bind the exact full-plan
+  digest/keyset or a Security-fixed executor tuple before compile, and exactly
+  one layer may write the category-only terminal line.
+- `EPICPHONE001-PROCESS-ANOMALY-051`, alias
+  `fixture_discovery_cardinality_and_submodule_cleanliness_gap`, is
+  `confirmed`. Trigger: QA-B reconciled the exact-one source claim and Git
+  status arguments. Expected: the active worktree is freshly proven fixture-
+  absent and every non-active candidate is fully tracked-clean. Observed: the
+  active fixed secret path was not lstat-classified, while
+  `--ignore-submodules=all` could hide tracked submodule dirt. Likely cause:
+  the active absence from the earlier Security check was treated as durable
+  and submodules were excluded to bound status. Test implication: include one
+  active fixed-path metadata check in the plan/aggregate and fail closed on
+  any submodule state instead of suppressing it.
+- `EPICPHONE001-PROCESS-ANOMALY-052`, alias
+  `fixture_discovery_final_publish_deadline_and_envelope_budget_gap`, is
+  `confirmed`. Trigger: QA-A reconciled the last publication step and the full
+  two-stage process envelope. Expected: deadline checked immediately before
+  and throughout durable result publication, with plan/GO env reads,
+  bootstrap, loader, host and Git-child counts all bound. Observed: the result
+  could be created after 120 seconds and only then report blocked, while the
+  exact budget omitted those input/process layers. Likely cause: wall time and
+  resource accounting began at executor entry rather than the inline
+  bootstrap. Test implication: pass a plan-bound absolute deadline through
+  bootstrap/loader, checkpoint before/during each write/readback, and bind the
+  complete host/child/input envelope.
+- `EPICPHONE001-PROCESS-ANOMALY-053`, alias
+  `fixture_discovery_v3_env_submodule_and_authority_gap`, is `confirmed`.
+  Trigger: final Security/QA-A v3 budget and authority reconciliation.
+  Expected: three plan-env reads, explicit submodule dirt visibility and owner-
+  sourced candidate/no-mutator authority. Observed: the first v3 budget counted
+  two plan-env reads, Git status did not force `--ignore-submodules=none`, and
+  code hardcoded two broader host attestations not yet present in source of
+  truth. Likely cause: bootstrap was added after the envelope count, while
+  intended owner prerequisites were represented as plan constants. Test
+  implication: count three reads plus two bootstrap env writes, force explicit
+  submodule visibility, and never promote an authority object until the owner
+  provides the exact category-only confirmation.
+- `EPICPHONE001-PROCESS-ANOMALY-054`, alias
+  `fixture_discovery_git_helper_containment_and_global_one_shot_gap`, is
+  `confirmed`. Trigger: final QA-B process-tree and retry review. Expected:
+  zero unbound helpers/network, one global GO consumption point and a hard
+  two-minute process-tree kill switch. Observed: hashing `git.exe` did not bind
+  all repository config/attribute-driven helper behavior, the marker still
+  followed several validation reads, and timeout cleanup bounded only the Git
+  parent with extra post-deadline waits. Likely cause: a general Git porcelain
+  process was used where the contour requires a fully contained metadata
+  reader. Test implication: do not execute this discovery design without an
+  independently reviewed process-tree/job containment and earlier safe one-
+  shot model; prefer owner-local provisioning of the exact EPIC fixture when
+  available, which avoids this helper/network surface entirely.
+- `EPICPHONE001-PROCESS-ANOMALY-055`, alias
+  `consumed_public_prep_artifact_hygiene_recurrence`, is `confirmed`. Trigger:
+  the final public-safe hygiene check at the blocked handoff. Expected: no
+  stale generated public candidate inputs remain after their one-shot plans
+  are consumed and expired. Observed: the two untracked canonical prep JSON
+  inputs intentionally lacked final newlines and the hygiene scanner reported
+  both paths, while normal hygiene, public safety and docs checks passed.
+  Likely cause: exact canonical plan bytes were retained after execution for
+  review. Test implication: record their consumed hashes first, then remove
+  only those two generated public inputs; preserve the ignored executed
+  passports/results and do not rewrite canonical bytes merely to satisfy text
+  formatting.
+- `EPICPHONE001-PROCESS-ANOMALY-056`, alias
+  `owner_provisioner_allowlist_and_authority_semantics_gap`, is `confirmed`.
+  Trigger: independent QA-A/B review of the first owner-local provisioner.
+  Expected: exact contained workspace reads and semantic validation of the
+  four prepared authority artifacts before executing bound source. Observed:
+  Windows backslash/drive forms could escape a `PurePosixPath` allowlist, the
+  loader validated only a nested-plan subset, and artifact contents/status/
+  embedded expiry could be relabeled by plan wrappers. Likely cause: canonical
+  plan binding was treated as permission for dynamic local paths and artifact
+  metadata. Test implication: use a fixed closed allowlist with Windows
+  separator/drive rejection, exact loader envelope, and parse/cross-bind every
+  authority artifact's real canonical schema, alias, status and expiry.
+- `EPICPHONE001-PROCESS-ANOMALY-057`, alias
+  `owner_provisioner_secret_buffer_and_acl_gap`, is `confirmed`. Trigger:
+  Security/QA-B failure-path memory and ACL review. Expected: every partial
+  digit/payload/readback buffer is mutable and zeroed on every exit, with
+  secret ACL allowing exactly current user and SYSTEM. Observed: partial input
+  survived local exceptions, payload slicing/from-buffer-copy made unzeroed
+  copies, failed readback remained, and ACL verification also allowed
+  Administrators/another descriptor owner. Likely cause: caller-level cleanup
+  could not reach callee temporaries and the evidence-sink ACL policy was
+  reused for secrets. Test implication: zero buffers in their own `finally`,
+  use direct mutable views, and enforce exact protected owner+SYSTEM allow ACEs
+  for secret parent/file while keeping the evidence marker policy separate.
+- `EPICPHONE001-PROCESS-ANOMALY-058`, alias
+  `owner_provisioner_marker_deadline_and_budget_order_gap`, is `confirmed`.
+  Trigger: Security/QA mutation-order and resource reconciliation. Expected:
+  marker is the first mutation and every directory/write/flush/readback/ACL/
+  success boundary is inside 120 seconds with exact counters. Observed: an
+  absent secrets parent could be created before marker, post-I/O deadline
+  checks were incomplete, ACL create max was two while absent-parent execution
+  used three, and separator/bootstrap/workspace-read counts were omitted.
+  Likely cause: directory readiness and console presentation were modeled
+  outside the one-shot contour. Test implication: verify all immutable gates,
+  create marker first, then any parent, check deadline before/after every
+  operation, and bind the full ACL/prompt/separator/bootstrap/workspace budget.
+- `EPICPHONE001-PROCESS-ANOMALY-059`, alias
+  `owner_provisioner_parent_and_prewrite_acl_gap`, is `confirmed`. Trigger:
+  final independent QA-A/B review of the 28-test frozen provisioner. Expected:
+  the secret parent and destination handle have a protected exact current-user
+  plus SYSTEM ACL before any secret byte is written. Observed: the parent check
+  still allowed broader principals and descriptor ownership, while the file ACL
+  was checked only after write/flush/readback. Likely cause: evidence-directory
+  ACL semantics and postcondition verification were reused for secret-bearing
+  storage. Test implication: enforce the exact parent policy and verify the
+  destination handle before first-byte write, with a separately budgeted
+  post-write check if retained.
+- `EPICPHONE001-PROCESS-ANOMALY-060`, alias
+  `owner_provisioner_authority_coverage_gap`, is `confirmed`. Trigger: QA-A/B
+  expiry adversarial review. Expected: every embedded prepared authority remains
+  valid through the complete plan/deadline window. Observed: an artifact expiry
+  later than the current instant but earlier than plan expiry was accepted; a
+  synthetic +1 minute passport with a +5 minute plan reproduced the false pass.
+  Likely cause: semantic validation checked present validity without interval
+  coverage. Test implication: require every relevant artifact expiry to cover
+  both plan expiry and the bounded execution deadline.
+- `EPICPHONE001-PROCESS-ANOMALY-061`, alias
+  `owner_provisioner_deadline_and_marker_acl_gap`, is `confirmed`. Trigger:
+  final QA deadline and audit-integrity review. Expected: ACL, console-preflight,
+  marker and success boundaries are fully deadline-bounded and the durable
+  marker has verified protected access. Observed: ACL/console calls lacked
+  immediate deadline checkpoints, marker creation used inherited/default
+  security without readback verification, and blocking WinAPI calls remained
+  cooperatively rather than externally terminated. Likely cause: the 120-second
+  contract modeled syscall boundaries as instantaneous and treated inherited
+  marker ACL as sufficient. Test implication: add before/after checkpoints,
+  exact marker ACL verification and an independently reviewed owner-direct
+  process deadline/termination procedure that never carries secret input in a
+  Codex transcript.
+- `EPICPHONE001-PROCESS-ANOMALY-062`, alias
+  `owner_provisioner_unconfirmed_authority_scope`, is `confirmed`. Trigger:
+  QA-B source-of-truth comparison. Expected: the plan contains only owner/team
+  attestations actually granted for the current window. Observed: the plan
+  self-marked a broader repo/loader/executor/authority/marker/destination
+  no-mutator scope as confirmed, while the consumed owner statement covered
+  only `.qa_local` and `.qa_local/evidence`. Likely cause: an implementation
+  prerequisite was encoded as an already-confirmed authority object. Test
+  implication: never self-issue that object; require a fresh exact owner
+  statement before plan construction and literal Security GO.
+- `EPICPHONE001-PROCESS-ANOMALY-063`, alias
+  `powershell_utc_switch_incompatible`, is `confirmed`. Trigger: repository-only
+  timestamp/status check. Expected: `Get-Date -AsUTC` returns a UTC timestamp.
+  Observed: the installed PowerShell rejected the unsupported `-AsUTC` switch;
+  Git SHA reads still completed and no candidate, local evidence or runtime
+  state changed. Likely cause: host PowerShell version mismatch. Test
+  implication: use `[DateTime]::UtcNow` for subsequent bounded timestamps.
+- `EPICPHONE001-PROCESS-ANOMALY-064`, alias
+  `prepared_authority_expired_fail_closed`, is `confirmed`. Trigger: trusted
+  UTC crossed the prepared passport expiry `2026-08-18T05:50:28Z` while the
+  owner-local provisioner was still under mandatory R0/R1 remediation.
+  Expected: all prepared fixture/target/cleanup authorities remain valid
+  through any conditional plan and execution. Observed: the passports expired
+  before a safe provisioner candidate, fresh owner attestations or literal
+  Security GO existed; no fixture value, local secret, device, app or runtime
+  action was attempted. Likely cause: mandatory safety review correctly took
+  longer than the one-shot authority TTL. Test implication: fail closed,
+  preserve the consumed PREP history and require a separately reviewed renewal
+  design; never replay or extend the expired artifacts in place.
+- `EPICPHONE001-PROCESS-ANOMALY-065`, alias
+  `owner_provisioner_plan_window_undercoverage`, is `confirmed`. Trigger:
+  final QA-B review of the remediated 33-test snapshot. Expected: the plan and
+  every subordinate authority cover the complete bounded execution window.
+  Observed: plan expiry was required only at start while subordinate expiry was
+  compared to a second-truncated bootstrap wall plus 120 seconds, permitting
+  the plan to expire during execution and a sub-second authority shortfall
+  against the monotonic deadline. Likely cause: interval coverage was applied
+  only to child artifacts and two clocks used different precision. Test
+  implication: bind an exact non-truncated execution end and require plan plus
+  all authorities to cover it before any mutation.
+- `EPICPHONE001-PROCESS-ANOMALY-066`, alias
+  `owner_provisioner_bound_source_read_budget_undercount`, is `confirmed`.
+  Trigger: QA-B unified-budget reconciliation. Expected: every bootstrap,
+  loader and executor source-content read is represented by an exact ceiling.
+  Observed: `bound_source_content_read_max=4` counted executor bindings but
+  omitted the bootstrap loader read and loader executor read, for six actual
+  bound source reads. Likely cause: the budget described the innermost stage
+  rather than the complete process envelope. Test implication: bind and assert
+  the exact full-envelope count of six, or split stages into closed counters.
+- `EPICPHONE001-PROCESS-ANOMALY-067`, alias
+  `owner_provisioner_cooperative_timeout_authority_gap`, is `confirmed`.
+  Trigger: QA-B deadline/owner-window review. Expected: execution cannot outlive
+  the owner-authorized window. Observed: the code honestly labels its timeout
+  cooperative, but blocking console/WinAPI calls are not preempted and no
+  approved external watchdog exists; the prior owner two-minute window was
+  consumed and cannot authorize this future contour. Likely cause: accurate
+  code wording exposed an unresolved operational kill-boundary requirement.
+  Test implication: require either an independently reviewed non-secret-bearing
+  process watchdog or fresh explicit owner acceptance of the cooperative-only
+  limitation with a separately bounded window; never route secrets through a
+  transcript-bearing controller.
+- `EPICPHONE001-PROCESS-ANOMALY-068`, alias
+  `security_review_snapshot_drift`, is `confirmed`. Trigger: Security final
+  review overlapped the Builder's authorized remediation of anomalies 065-067.
+  Expected: an immutable exact-hash snapshot for the complete review. Observed:
+  Security first verified the requested `c4fb/2890/c721` snapshot, then detected
+  new shared-worktree hashes and stopped without issuing acceptance or GO; no
+  local evidence, secret, device or runtime action occurred. Likely cause:
+  remediation began after QA-B rejection while Security was still reading the
+  superseded freeze. Test implication: discard that partial review, quiesce all
+  writers and submit only the next explicitly frozen exact hashes.
+- `EPICPHONE001-PROCESS-ANOMALY-069`, alias
+  `owner_provisioner_wall_deadline_gap_undercoverage`, is `confirmed`. Trigger:
+  replacement QA-A review of the second frozen remediation. Expected: plan and
+  authorities cover the actual remaining monotonic execution interval from the
+  validation checkpoint. Observed: bootstrap captured a second-truncated wall
+  before constructing the monotonic deadline, while loader/executor modeled
+  required coverage as only that wall plus 121 seconds; a validation delay over
+  one second could therefore be accepted with an authority expiring before the
+  real deadline. Likely cause: a fixed truncation guard did not include
+  bootstrap-to-validation elapsed time. Test implication: derive required-until
+  from a validation-time wall sample plus ceiling of remaining monotonic time
+  and guard, or fail closed when the elapsed bootstrap gap exceeds its bound;
+  add a synthetic delay adversarial before any mutation.
+- `EPICPHONE001-PROCESS-ANOMALY-070`, alias
+  `owner_provisioner_validation_clock_pair_skew`, is `confirmed`. Trigger:
+  independent QA-A/B/Security micro-review of the third freeze. Expected: the
+  UTC sample used for authority coverage is conservatively paired with the
+  monotonic sample used for remaining deadline. Observed: executor captured UTC
+  before `_read_plan` and loader captured it before later deadline parsing;
+  scheduler delay between UTC and monotonic samples could exceed the guard, and
+  the new tests varied only bootstrap delay rather than intra-validation skew.
+  A backward wall-clock step was also not explicitly bounded. Likely cause: the
+  validation call reused an earlier wall sample. Test implication: sample
+  monotonic first, then fresh UTC immediately after, revalidate plan at that
+  wall, use the conservative maximum of bootstrap and fresh paired coverage,
+  and add deterministic pause/backward-clock adversarials.
+- `EPICPHONE001-PROCESS-ANOMALY-071`, alias
+  `authority_renewal_exclusive_workspace_authority_absent`, is `confirmed`.
+  Trigger: final Security review of the first 10-file renewal/rebind freeze.
+  Expected: path-based marker, directory and create-new mutations are protected
+  by a fresh owner-bound exclusive-workspace/no-external-mutator authority for
+  the complete contour. Observed: the renewal plan contained no such authority
+  object, while the prior two-minute statement was consumed and narrower.
+  Likely cause: the zero-secret classification was mistaken for protection
+  against concurrent path replacement. Test implication: add an exact external
+  owner authority object/scope/expiry to candidate, plan, loader and executor;
+  reject pending/missing/short windows before the first mutation.
+- `EPICPHONE001-PROCESS-ANOMALY-072`, alias
+  `authority_renewal_artifact_time_contract_fail_open`, is `confirmed`.
+  Trigger: Security and QA-A adversarial time review. Expected: candidate,
+  fixture/target authorities and cleanup retention have coherent current
+  issuance/expiry and cover plan plus the full 300-second execution guard.
+  Observed: only renewal-plan TTL was validated; an exact rebound plan accepted
+  an expired candidate, expired fixture/target authorities and expired
+  retention before marker creation. Likely cause: canonical hash binding was
+  treated as temporal validity. Test implication: enforce exact issuance order,
+  present validity, maximum TTL and complete-window coverage in loader and
+  executor before consuming the one-shot attempt.
+- `EPICPHONE001-PROCESS-ANOMALY-073`, alias
+  `c0p_prep_003_post_renewal_root_collision`, is `confirmed`. Trigger: Security
+  lifecycle review of the rebound stage sequence. Expected: the stage after
+  authority renewal has a distinct executable one-shot state transition.
+  Observed: renewal creates `authority-sets/c0p-authority-003`, while the rebound
+  `c0p_prep-003 --execute` treats the same pre-existing authority-set/run roots
+  as consumed and cannot execute. Likely cause: preparation materialization and
+  renewal materialization were both retained as independent writers for the
+  same generation. Test implication: explicitly supersede the redundant PREP
+  execution and let renewal output feed later C0P, or assign PREP its own
+  versioned marker/root and prove the non-overlapping transition.
+- `EPICPHONE001-PROCESS-ANOMALY-074`, alias
+  `provisioner_v2_authority_semantic_rebind_incomplete`, is `confirmed`.
+  Trigger: QA-A full cross-surface review. Expected: the provisioner validates
+  the complete `c0p-authority-003` v2 semantics before any secret input.
+  Observed: it checked selected aliases/status/expiry but not exact
+  `authority_set_id`, `renewal_id`, `prep_attempt_id`, C0P HEAD/controller
+  binding, fixture synthetic scope or target authorization-only fields; current
+  passing fixtures omit those fields. Likely cause: v2 was treated as a path and
+  schema-label change instead of an incompatible closed contract. Test
+  implication: exact-validate and cross-bind every v2 authority object and add
+  missing/wrong/boolean/hash/head/target-scope adversarials before marker/input.
+- `EPICPHONE001-PROCESS-ANOMALY-075`, alias
+  `authority_renewal_repository_head_not_observed`, is `confirmed`. Trigger:
+  QA-B adversarial HEAD-binding review. Expected: execution compares the bound
+  lowercase SHA with the actual current repository HEAD before mutation.
+  Observed: renewal validated only the 40-character format and could materialize
+  passports for a stale or fabricated HEAD. Likely cause: Security-attested plan
+  binding was substituted for the required runtime drift gate. Test implication:
+  add a bounded lstat-first no-subprocess Git HEAD reader with detached/loose/
+  packed/worktree adversarials and exact mismatch rejection before marker.
+- `EPICPHONE001-PROCESS-ANOMALY-076`, alias
+  `authority_renewal_full_envelope_budget_deadline_undercount`, is `confirmed`.
+  Trigger: QA-B loader/executor budget reconciliation. Expected: the unified
+  budget and 300-second clock cover bootstrap, loader and executor. Observed:
+  loader reads executor once and executor rereads six sources for seven total
+  bound source reads while the budget says six; the executor starts the clock
+  after loader work. Likely cause: only the innermost stage was counted/timed.
+  Test implication: count seven or split exact stage counters and propagate a
+  bootstrap-created monotonic deadline across loader/executor with full-window
+  adversarials.
+- `EPICPHONE001-PROCESS-ANOMALY-077`, alias
+  `authority_renewal_fixed_drive_network_guard_absent`, is `confirmed`. Trigger:
+  QA-B path/network review. Expected: every fixed path is rejected lexically if
+  it is UNC/device/remote-volume before the first filesystem touch, consistent
+  with `network_action_max=0`. Observed: renewal lacked an exact fixed-local-
+  drive/UNC guard and relied on later path-chain checks. Likely cause: inherited
+  containment helpers did not carry the host-volume policy. Test implication:
+  add reject-before-stat namespace/drive checks and Windows reparse/UNC ordering
+  regressions; retain the separate fresh no-mutator requirement for residual
+  path-swap races.
+- `EPICPHONE001-PROCESS-ANOMALY-078`, alias
+  `authority_renewal_absolute_deadline_rebased`, is `confirmed`. Trigger: QA-B
+  micro-review of the 071-077 remediation. Expected: loader's absolute
+  monotonic deadline is preserved unchanged in executor. Observed: executor
+  sampled monotonic time, then called it again while converting remaining time
+  to a floating deadline; scheduling delay between samples extended the
+  deadline and could exceed the 300-second authority coverage. Likely cause:
+  an absolute nanosecond deadline was unnecessarily rebased through a second
+  clock sample. Test implication: use the original absolute `deadline_ns`
+  directly, fail if already expired and add deterministic inter-sample pause
+  adversarials.
+- `EPICPHONE001-PROCESS-ANOMALY-079`, alias
+  `authority_renewal_no_mutator_git_metadata_scope_gap`, is `confirmed`.
+  Trigger: QA-B HEAD-race authority review. Expected: the accepted no-mutator
+  scope protects every Git metadata path used to establish HEAD through the
+  first mutation. Observed: scope covered repository sources and `.gitignore`
+  but omitted `.git`, gitdir/commondir, HEAD, loose refs and packed-refs; a
+  concurrent ref change after the observed HEAD could materialize stale
+  passports. Likely cause: logical HEAD was included without its filesystem
+  authority surface. Test implication: add the exact bounded Git metadata paths
+  to the owner authority scope and recheck HEAD immediately before marker, or
+  provide an atomic equivalent.
+- `EPICPHONE001-PROCESS-ANOMALY-080`, alias
+  `authority_renewal_metadata_and_go_read_budget_omissions`, is `confirmed`.
+  Trigger: Security full-envelope budget review. Expected: every content and
+  environment read across loader/executor is represented by exact counters.
+  Observed: the budget still omitted the `.gitignore` content read, up to four
+  Git metadata content reads and two literal-GO environment reads introduced
+  by the hardened HEAD/loader path. Likely cause: the earlier source-read fix
+  did not reconcile non-source inputs. Test implication: add exact separate
+  ceilings and actual/result counters for each input class, then adversarially
+  reject boolean/count drift and cap overflow.
+- `EPICPHONE001-PROCESS-ANOMALY-081`, alias
+  `provisioner_v2_boolean_integer_semantic_drift`, is `confirmed`. Trigger:
+  Security type-strict v2 review. Expected: nested C0P budget and cleanup
+  counters are compared with exact JSON types. Observed: ordinary Python
+  equality allowed booleans to compare equal to integers, so values such as
+  `retry_max=false` or `forbidden_action_count=false` could pass before secret
+  input. Likely cause: nested semantic checks bypassed the existing `_exact`
+  helper. Test implication: use exact type-strict comparison for all nested v2
+  fields and add fully rebound false/zero and true/one adversarials.
+- `EPICPHONE001-PROCESS-ANOMALY-082`, alias
+  `authority_renewal_create_after_deadline_preflight_gap`, is `confirmed`.
+  Trigger: QA-A final mutation-order review of the 078-081 remediation.
+  Expected: the absolute deadline is checked immediately before every create-
+  new mutation. Observed: `_write_new` checked the deadline, then performed two
+  path preflights and called `os.open(O_CREAT|O_EXCL)` without a fresh check; a
+  deterministic delay during the second preflight allowed leaf creation after
+  expiry. Likely cause: preflight duration was assumed negligible. Test
+  implication: check the deadline after all path preflights and directly before
+  `os.open`, with an adversarial proving the leaf is absent on expiry.
+- `EPICPHONE001-PROCESS-ANOMALY-083`, alias
+  `full_pytest_environment_coupled_task045_source_absent`, is `confirmed`.
+  Trigger: final repository-wide pytest gate after the accepted renewal/rebind
+  snapshot. Expected: all environment-independent tests pass and any ignored
+  runtime-evidence dependency remains explicitly blocked. Observed: two
+  identical full runs each produced 17 failures only in
+  `test_task045_paired_virtual_gamepad.py` because its fixed ignored adapter/
+  coverage source is absent (`COVERAGE_SOURCE_MISSING`); the remaining 1616
+  tests passed with four skipped. No ignored path was read or recreated.
+  Likely cause: the full suite includes a legacy runtime-evidence-coupled test
+  module that is not self-skipping when its authorized local input is absent.
+  Test implication: preserve this blocker and rerun the safe repository suite
+  with that exact module excluded; never synthesize, copy or inspect the missing
+  local source under the current NO_GO authority.
 
-For anomalies 013-037, evidence status is `confirmed`; all probes were
+For anomalies 013-083, evidence status is `confirmed`; all probes were
 synthetic/repository-only, screenshot/XML/runtime-log modalities are not
 applicable, and secret/device/app/network/auth counters remain zero. Anomaly
 025 adds one fixed-path local metadata preflight; it read no local file content
-and wrote nothing.
+and wrote nothing. Anomaly 038 adds one fixed secret-path metadata check; it
+read no secret content and wrote nothing.
 
 ### Exact current counters
 
 | Counter | Actual |
 |---|---:|
-| `.qa_local` metadata preflights | 1 |
-| `.qa_local` file-content reads | 0 |
-| `.qa_local` writes | 0 |
+| Failed first C0P-PREP fixed-path metadata preflights | 1 |
+| Shared-parent host-process executions | 1 |
+| Shared ignored directories created | 2 |
+| Successful `c0p-prep-002` host-process executions | 1 |
+| C0P-PREP task directories created | 5 |
+| Ignored public-safe policy/passport files created | 4 |
+| Fixed secret-path existence checks | 1 |
+| Secret fixture file-content reads | 0 |
+| Secret fixture file writes/copies | 0 |
 | Secret-value accesses | 0 |
-| C0P-PREP host-process executions | 1 |
 | Child subprocess/ADB/device actions | 0 |
 | App launches/relaunches | 0 |
 | Runtime/UI actions | 0 |
@@ -362,6 +872,127 @@ three exact TASK-058A inherited covered rows, 33 required blockers and seven
 deferred/audit rows. TASK-058A stays 6/7 with row 03 `unknown`; its one-use
 clean-first-launch state was consumed and cannot be restored by force-stop,
 Home or capture shutdown.
+
+### Current resumed conditional-contour status
+
+The owner confirmed that no external non-Codex process or person would modify,
+replace or convert `.qa_local` or `.qa_local/evidence` into a symlink/junction
+during the next single execution window of at most two minutes. Security bound
+that exact exclusive-workspace attestation to the shared-parent plan. The one
+authorized shared-parent execution for plan SHA-256
+`02fe362e2dc03894bc1539ddbeea3a549c630867305cf615f4942e4a72d8ab5d`
+completed as `shared_parents_prepared`: exactly two ignored directories were
+created and secret/serial/device/app/network/auth/runtime counters stayed zero.
+
+The distinct `c0p-prep-002` plan SHA-256
+`a6186f53b9072a5f8fb68ba0ca8b62868ca1daba6edf9517e73bdd5b1c0403b7`
+then received its own one-shot literal Security GO and completed as `prepared`.
+It created exactly five fixed task directories and four ignored public-safe
+plan/passport/policy files; it did not read or write credential values and did
+not authorize C0P, C1, device, app, auth or runtime. The prepared passport
+expiry is `2026-08-18T05:50:28Z`; expiry or repository drift invalidates the
+next conditional plan and cannot be repaired by replaying this consumed prep.
+
+The subsequent Security readiness check validated the four prepared authority
+artifacts and used `lstat` on only the fixed synthetic-fixture source. That
+source was absent in this worktree. No secret content was read, no C0P token
+was created or written, and C0P/C1/auth/runtime remain blocked. The tracked
+Fresh Worktree Local-Artifact Gate permits a separately reviewed bounded
+same-repository worktree recovery, but no reusable helper currently exists and
+the general five-field `QA_*` fixture contract differs from the EPIC
+controller's exact two-field contract. Current next action is repository-only
+construction and adversarial review of a fixed-path recovery/migration helper,
+followed by a new exact Security plan and literal GO. It must never print,
+commit or request raw phone/OTP values in chat.
+
+Three repository-only discovery candidates were constructed and adversarially
+reviewed without executing the contour. V3 closed the deterministic-plan,
+drive, ACL, metadata-size, loader, deadline, Git-binary and cardinality defects
+and reached 17 temp-only passing tests, but final QA-B still found that a
+general `git status` subprocess is not sufficiently contained against local
+config/attribute-driven helper processes and network access, and that global
+one-shot/process-tree termination is incomplete. Current exact verdict is
+`WITHHOLD_DISCOVERY_GO / BLOCK_FIXTURE_CONTENT_READ / BLOCK_C0P / BLOCK_C1 /
+BLOCK_AUTH / BLOCK_RUNTIME`. The preferred next safe handoff is owner-local
+provisioning of the already-defined exact two-field EPIC fixture at the fixed
+ignored destination, without sending values through chat. The alternate
+bounded-worktree discovery path additionally requires the exact blanket
+candidate/no-mutator attestation and a newly reviewed contained metadata
+reader; neither authority exists yet.
+
+The owner-local provisioner was remediated through anomalies 056-070 and the
+final immutable repository snapshot is executor SHA-256 `f47d97769ca1501dadd235776ced5f76f8dfa5230e09100d4fa142b8bb224263`,
+loader SHA-256 `1cf7ebc750d31c363e21b27622510d0db3e03404ef7025c3b2d1a9cf27503797`
+and focused-test SHA-256 `b9c92bf887c276fac0a870dfb89162c5f8551ca39883c0e4d93a8f63fa7c9375`.
+Focused verification is 40 passed; the earlier combined EPIC repository set is
+168 passed. Independent QA-A, QA-B and Security report repository R0/R1
+`0/0`; exact verdict is `REPOSITORY_LOGIC_ACCEPTED /
+NO_EXECUTION_AUTHORITY / BLOCK_FIXTURE_WRITE / BLOCK_C0P / BLOCK_C1 /
+BLOCK_AUTH / BLOCK_RUNTIME`. The cooperative timeout remains a declared P2
+residual requiring fresh explicit owner acceptance. No secret value may be
+entered through Codex `write_stdin`, chat, logs or any captured console.
+At `2026-08-18T05:50:28Z` the prepared authority artifacts expired before that
+acceptance could be reached. They are now invalid and non-renewable by replaying
+the consumed `c0p-prep-002` plan. Even a later code-only GO cannot authorize
+provisioning or C0P until a separately reviewed authority-renewal contour
+creates fresh artifacts without weakening the one-shot history.
+
+The renewal contour is
+`ZERO_SECRET_ZERO_DEVICE_CREATE_NEW_VERSIONED_AUTHORITY_RENEWAL`. Expired
+artifacts are immutable and may not be overwritten, extended, renamed,
+relabeled or replayed. Security resolved the earlier generation-`002` versus
+authority-`003` nomenclature to exact identities `authority-renewal-001`,
+`c0p-authority-003`, `c0p-prep-003` and `security-c0p-003`, with fixed
+`authority-sets/c0p-authority-003` paths. These identifiers do not issue GO.
+The final source/HEAD rebind and renewal candidate must receive one joint
+review and one repository commit; no interim provisioner commit is allowed.
+
+Four rejected discovery/legacy-transform helper/test drafts were deleted from
+the untracked worktree set. Their anomalies remain retained, cleanup is
+complete, and they never became repository authority. The accepted owner-local
+provisioner candidate remains untracked until the joint rebind/renewal review.
+No `.qa_local`, secret, device, application, network, auth or runtime artifact
+was touched by cleanup.
+
+### Final renewal/rebind repository acceptance
+
+Anomalies `EPICPHONE001-PROCESS-ANOMALY-071` through `-082` are closed at
+repository level and remain retained as `confirmed` process evidence. The
+accepted exact source bindings are:
+
+- renewal `eaa8400c4ee881a3e7ed09067ffd338d42780ef1a5e61776060f10e86ed23468`
+  / `35832` bytes and renewal loader
+  `a34c006ede9543387c78bb09ed605d13d8d2b4f7840c6dc9d9fb93e51070c083`
+  / `13073` bytes;
+- C0P `323a3f6c8db65e10461d0537828aa800e3da958525824182f2f7c623168c4a22`,
+  controller `04bef96a5bd71c48ca80041745eb11fe61ea968ba71f7cc8d854295b81c33397`,
+  provisioner `280d993f55d8833da6397758ab0f5eb97ebc46764938723ac73bbfea3a270121`
+  and provisioner loader
+  `71b3387505a5ae4229315de38ae1d7e2855060ea3fdb1bfe3bf08db1fdf14441`;
+- renewal/C0P/controller/provisioner tests
+  `471d6e985e4de59cd4b1a6ff76e0f0a82efeeaefa4969fe092e14dab2d57df21`,
+  `a73550396cd9a6b261a188d22e36899cab5ab20b59bd962fda01ffc722e5890f`,
+  `868c69cf00ef90f7bdbe1bafbd99db1d97b6117b4a059a33053602dd3c1ee607`
+  and `3bd3121b615c3a1d35105665ce4f0f9ef7de87afc71506f434bbeef199a19231`.
+
+Core tests are `144 passed`; named safety suites `public_repo_safety` and
+`full_tree_hygiene` are `14 passed`; combined result is `158 passed`. Compile
+and diff checks pass. Final QA-A R0/R1/P2 is `0/0/1`, QA-B `0/0/0`, and
+Security `0/0/1`. The only P2 is the declared cooperative-timeout residual.
+It does not block the repository commit and requires fresh owner acceptance
+before any later execution.
+
+`c0p-prep-003 --validate-only` is superseded by renewal and grants no reusable
+stage or execution authority. Exact verdict remains `NO_GO / NO_EXECUTION`.
+This renewal/rebind checkpoint performed zero `.qa_local`, secret, device,
+application, network, authentication or runtime actions; all corresponding
+checkpoint-local counters are zero. Prepared authorities expired at
+`2026-08-18T05:50:28Z` and remain immutable/non-replayable.
+
+Next safe handoff: create one joint repository commit and push only the epic
+branch. Then construct the canonical candidate/plan from the final post-commit
+HEAD and obtain fresh owner and Security authority. `origin/main` is not
+integrated and no runtime/product coverage is claimed.
 
 ### C0P circular-gate correction and current blocker
 
@@ -401,35 +1032,21 @@ is committed because repository HEAD changes. Discard it and recompute the
 canonical plan hash only after final reviewed docs are committed.
 
 The first exact Security-authorized `C0P-PREP` attempt failed closed before
-mutation because the fixed shared ignored parent was absent. Its one-shot GO is
-consumed, invalid and non-reusable; it cannot authorize provisioning or a prep
-retry, and C0P-PREP remains unprepared. The distinct shared-parent executor is
-now committed and independently accepted repository-only. Its prior fixed-path
-failure proves category `both_absent` because `.qa_local` is checked first and
-no later local write occurred. The remaining authority prerequisite is an
-explicit owner/team confirmation that no non-Codex external path mutator will
-touch `.qa_local` or `.qa_local/evidence` during the single bounded execution.
-Only after that confirmation may Security review a fresh post-commit plan and
-issue a literal shared-parent GO. After that contour passes, a newly HEAD-bound
-C0P-PREP plan may receive its own fresh literal GO. C0P remains a separate
-`PROD_CONDITIONAL` one-shot literal-token-gated contour. C1 and every
-runtime/auth contour remain separately blocked even after any future C0P pass.
+mutation because the shared ignored parent was absent; that first GO remains
+consumed and non-reusable. The separately reviewed shared-parent contour and
+the distinct `c0p-prep-002` contour have since completed successfully under
+their own literal GOs, as recorded in the current status above. Neither GO can
+be replayed, renamed or broadened.
 
-Repository construction now includes the proposed fixed executor
-`automation/phone/epic_phone_001_shared_parent_provision.py` for contour
-`epic-phone-001-shared-parent-provision`. Only its `--validate-only` mode is
-authorized during construction. A future `--execute` can create only the two
-fixed shared parents under an exact category-only initial-state attestation,
-canonical plan and independent literal Security GO. It creates no files and
-has zero secret/serial/device/app/network/auth/runtime budget. No shared-parent
-execution authority currently exists. A future plan must additionally bind an
-exclusive-workspace/no-external-path-mutator Security attestation: pre/post
-lstat checkpoints detect ordinary drift, while Windows path-based `mkdir`
-cannot atomically prevent a hostile reparse swap inside that narrow interval.
-Absent the attestation, no GO may be issued.
-Any later prep plan must be a distinct attempt and bind
-`prep_attempt_id=c0p-prep-002` throughout its candidate, plan and aggregate;
-the consumed first GO/plan cannot be renamed or replayed.
+The shared-parent and C0P-PREP executors are committed and independently
+accepted for their completed fixed contours only. Their success does not grant
+C0P, C1, credential entry or runtime authority. A future fixture recovery must
+bind the current HEAD and exact helper bytes without invalidating the prepared
+one-shot passports; any incompatible repository commit, expiry or local drift
+stops the lane. The current recovery design is split into metadata-only source
+discovery and a separate one-shot legacy-to-EPIC transformation because the
+canonical source and destination schemas differ. Each materially different
+contour requires its own plan and literal Security GO.
 
 ## Historical completed EPIC-PHONE-001 repository-only checkpoint
 

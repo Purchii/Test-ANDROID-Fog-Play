@@ -18,7 +18,7 @@ import re
 import stat
 import sys
 import unicodedata
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -27,24 +27,28 @@ EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-c1-launch-free-readiness"
 C0P_CONTOUR_ID = "epic-phone-001-c0p-local-presence"
+AUTHORITY_SET_ID = "c0p-authority-003"
+AUTHORITY_RENEWAL_ID = "authority-renewal-001"
+C0P_PREP_ATTEMPT_ID = "c0p-prep-003"
 TARGET_ALIAS = "phone-current-001"
 BUILD_ALIAS = "task058-selected-phone-full-001"
 FIXTURE_ALIAS = "epic-phone-001-fixture-001"
-FIXTURE_PASSPORT_ALIAS = "epic-phone-001-fixture-authority-001"
-TARGET_BUILD_PASSPORT_ALIAS = "epic-phone-001-target-build-001"
-EVIDENCE_CLEANUP_PASSPORT_ALIAS = "epic-phone-001-evidence-cleanup-001"
-C0P_SECURITY_ALIAS = "epic-phone-001-security-c0p-001"
+FIXTURE_PASSPORT_ALIAS = "epic-phone-001-fixture-authority-003"
+TARGET_BUILD_PASSPORT_ALIAS = "epic-phone-001-target-build-003"
+EVIDENCE_CLEANUP_PASSPORT_ALIAS = "epic-phone-001-evidence-cleanup-003"
+C0P_SECURITY_ALIAS = "epic-phone-001-security-c0p-003"
 C1_SECURITY_ALIAS = "epic-phone-001-security-c1-001"
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUN_ROOT_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
+AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-003"
 SECRET_SOURCE_REL = Path(".qa_local/secrets/qa_user.env")
 SERIAL_ALIAS_MAP_REL = Path(".qa_local/devices/serial_alias_map.json")
 PLAN_REL = RUN_ROOT_REL / "controller-plan.local.json"
-C0P_PLAN_REL = RUN_ROOT_REL / "c0p-plan.local.json"
-FIXTURE_PASSPORT_REL = RUN_ROOT_REL / "fixture-authority-passport.local.json"
-TARGET_BUILD_PASSPORT_REL = RUN_ROOT_REL / "target-build-passport.local.json"
-EVIDENCE_CLEANUP_PASSPORT_REL = RUN_ROOT_REL / "evidence-cleanup-passport.local.json"
+C0P_PLAN_REL = AUTHORITY_SET_ROOT_REL / "c0p-plan.local.json"
+FIXTURE_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "fixture-authority-passport.local.json"
+TARGET_BUILD_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "target-build-passport.local.json"
+EVIDENCE_CLEANUP_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "evidence-cleanup-passport.local.json"
 SECURITY_GO_C1_REL = RUN_ROOT_REL / "security-go-c1.local.json"
 SECURITY_GO_C0P_REL = RUN_ROOT_REL / "security-go-c0p.local.json"
 RAW_REL = RUN_ROOT_REL / "raw"
@@ -54,9 +58,9 @@ C0P_RESULT_REL = PUBLIC_SAFE_REL / "c0p-result.local.json"
 C0P_ATTEMPT_REL = RUN_ROOT_REL / "c0p-attempt.local.json"
 
 PLAN_SCHEMA = "epic-phone-001-controller-plan-v1"
-FIXTURE_PASSPORT_SCHEMA = "epic-phone-001-fixture-authority-passport-v1"
-TARGET_BUILD_PASSPORT_SCHEMA = "epic-phone-001-target-build-passport-v1"
-EVIDENCE_CLEANUP_PASSPORT_SCHEMA = "epic-phone-001-evidence-cleanup-passport-v1"
+FIXTURE_PASSPORT_SCHEMA = "epic-phone-001-fixture-authority-passport-v2"
+TARGET_BUILD_PASSPORT_SCHEMA = "epic-phone-001-target-build-passport-v2"
+EVIDENCE_CLEANUP_PASSPORT_SCHEMA = "epic-phone-001-evidence-cleanup-passport-v2"
 SECURITY_GO_SCHEMA = "epic-phone-001-security-go-c1-v1"
 C0P_SECURITY_GO_SCHEMA = "epic-phone-001-security-go-c0p-v1"
 C0P_RESULT_SCHEMA = "epic-phone-001-c0p-result-v1"
@@ -197,7 +201,7 @@ def expected_c0p_go_token(c0p_plan_hash: str) -> str:
     return C0P_GO_PREFIX + c0p_plan_hash
 
 
-def c0p_plan(repository_head: str, controller_source_sha256: str) -> dict[str, Any]:
+def c0p_plan(repository_head: str, controller_source_sha256: str, issued_at_utc: str, expires_at_utc: str) -> dict[str, Any]:
     """Build a C0P plan bound to Security-attested repository/source state."""
 
     if len(repository_head) != 40 or any(char not in "0123456789abcdef" for char in repository_head):
@@ -208,9 +212,14 @@ def c0p_plan(repository_head: str, controller_source_sha256: str) -> dict[str, A
         raise ContractError("c0p_controller_source_sha256_not_64_lowercase_hex")
 
     return {
-        "schema_version": "epic-phone-001-c0p-plan-v1",
+        "schema_version": "epic-phone-001-c0p-plan-v2",
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": AUTHORITY_SET_ID,
+        "renewal_id": AUTHORITY_RENEWAL_ID,
+        "prep_attempt_id": C0P_PREP_ATTEMPT_ID,
+        "issued_at_utc": issued_at_utc,
+        "expires_at_utc": expires_at_utc,
         "contour_id": C0P_CONTOUR_ID,
         "classification": "PROD_CONDITIONAL",
         "execution_status": "planned_separate_literal_go_required_not_run",
@@ -686,12 +695,16 @@ def _validate_fixture_passport(value: Any) -> None:
         "schema_version", "epic_id", "run_id", "fixture_alias", "synthetic_test_only",
         "not_real_user", "values_local_only", "revoked", "authority_validity",
         "allowed_scope", "forbidden_scope", "issued_at_utc", "expires_at_utc",
+        "authority_set_id", "renewal_id", "prep_attempt_id",
     }
     passport = _strict_object(value, required, "fixture_passport")
     expected = {
         "schema_version": FIXTURE_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": AUTHORITY_SET_ID,
+        "renewal_id": AUTHORITY_RENEWAL_ID,
+        "prep_attempt_id": C0P_PREP_ATTEMPT_ID,
         "fixture_alias": FIXTURE_ALIAS,
         "synthetic_test_only": True,
         "not_real_user": True,
@@ -714,13 +727,17 @@ def _validate_target_build_passport(value: Any) -> None:
         "schema_version", "epic_id", "run_id", "target_alias", "build_alias",
         "target_authorized", "build_authorized", "launch_allowed", "mutation_allowed",
         "issued_at_utc", "expires_at_utc", "passport_purpose",
-        "current_freshness_evidence", "runtime_evidence",
+        "current_freshness_evidence", "runtime_evidence", "task058a_row03_evidence_status",
+        "authority_set_id", "renewal_id", "prep_attempt_id",
     }
     passport = _strict_object(value, required, "target_build_passport")
     expected = {
         "schema_version": TARGET_BUILD_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": AUTHORITY_SET_ID,
+        "renewal_id": AUTHORITY_RENEWAL_ID,
+        "prep_attempt_id": C0P_PREP_ATTEMPT_ID,
         "target_alias": TARGET_ALIAS,
         "build_alias": BUILD_ALIAS,
         "target_authorized": True,
@@ -730,6 +747,7 @@ def _validate_target_build_passport(value: Any) -> None:
         "passport_purpose": "authorization_only",
         "current_freshness_evidence": False,
         "runtime_evidence": False,
+        "task058a_row03_evidence_status": "unknown",
     }
     if any(not _exact_equal(passport.get(key), expected_value) for key, expected_value in expected.items()):
         raise ContractError("target_build_passport_binding_invalid")
@@ -744,13 +762,17 @@ def _validate_evidence_cleanup_passport(value: Any) -> None:
         "schema_version", "epic_id", "run_id", "run_root", "soft_bytes_max",
         "hard_bytes_max", "redaction_default", "direct_capture_no_echo",
         "cleanup_sequence", "forbidden_action_count", "retention_expires_at_utc",
-        "passport_purpose", "execution_evidence",
+        "passport_purpose", "execution_evidence", "issued_at_utc",
+        "authority_set_id", "renewal_id", "prep_attempt_id",
     }
     passport = _strict_object(value, required, "evidence_cleanup_passport")
     expected = {
         "schema_version": EVIDENCE_CLEANUP_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": AUTHORITY_SET_ID,
+        "renewal_id": AUTHORITY_RENEWAL_ID,
+        "prep_attempt_id": C0P_PREP_ATTEMPT_ID,
         "run_root": RUN_ROOT_REL.as_posix(),
         "soft_bytes_max": C1_BUDGET["raw_sink_soft_bytes_max"],
         "hard_bytes_max": C1_BUDGET["raw_sink_hard_bytes_max"],
@@ -784,7 +806,7 @@ def _validate_c0p_plan(value: Mapping[str, Any], source_sha256: str) -> dict[str
     bound_source = value.get("controller_source_sha256")
     if not isinstance(repository_head, str) or not isinstance(bound_source, str):
         raise ContractError("c0p_plan_binding_missing")
-    expected = c0p_plan(repository_head, bound_source)
+    expected = c0p_plan(repository_head, bound_source, value.get("issued_at_utc"), value.get("expires_at_utc"))
     if not _exact_equal(dict(value), expected):
         raise ContractError("c0p_plan_contract_drift")
     if bound_source != source_sha256:
@@ -809,6 +831,10 @@ def _validate_c0p_authority_payloads(
     expected_plan = _validate_c0p_plan(plan, source_sha256)
     if plan_bytes != canonical_plan_bytes(expected_plan):
         raise ContractError("c0p_plan_not_exact_canonical_json")
+    c0p_issued = _parse_utc(plan["issued_at_utc"], "c0p_plan_issued_at")
+    c0p_expires = _parse_utc(plan["expires_at_utc"], "c0p_plan_expires_at")
+    if not c0p_issued <= now < c0p_expires or c0p_expires <= c0p_issued or c0p_expires - c0p_issued > timedelta(minutes=10):
+        raise ContractError("c0p_plan_time_contract_invalid")
     _validate_fixture_passport(fixture_passport)
     _validate_target_build_passport(target_build_passport)
     _validate_evidence_cleanup_passport(evidence_cleanup_passport)

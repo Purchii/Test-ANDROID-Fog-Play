@@ -27,7 +27,7 @@ from typing import Any, Mapping, Sequence
 EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-c0p-prep"
-PREP_ATTEMPT_ID = "c0p-prep-002"
+PREP_ATTEMPT_ID = "c0p-prep-003"
 TARGET_ALIAS = "phone-current-001"
 BUILD_ALIAS = "task058-selected-phone-full-001"
 FIXTURE_ALIAS = "epic-phone-001-fixture-001"
@@ -41,15 +41,16 @@ CANDIDATE_REL = Path("docs/qa/phone/epic-phone-001-c0p-prep-candidate.json")
 PREP_PLAN_REL = Path("docs/qa/phone/epic-phone-001-c0p-prep-plan.json")
 GITIGNORE_REL = Path(".gitignore")
 RUN_ROOT_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
+AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-003"
 ATTEMPT_ROOT_REL = Path(".qa_local/evidence/epic-phone-001")
 RAW_REL = RUN_ROOT_REL / "raw"
 CHECKPOINTS_REL = RUN_ROOT_REL / "checkpoints"
 PUBLIC_SAFE_REL = RUN_ROOT_REL / "public-safe"
 
-C0P_PLAN_REL = RUN_ROOT_REL / "c0p-plan.local.json"
-FIXTURE_PASSPORT_REL = RUN_ROOT_REL / "fixture-authority-passport.local.json"
-TARGET_BUILD_PASSPORT_REL = RUN_ROOT_REL / "target-build-passport.local.json"
-EVIDENCE_CLEANUP_PASSPORT_REL = RUN_ROOT_REL / "evidence-cleanup-passport.local.json"
+C0P_PLAN_REL = AUTHORITY_SET_ROOT_REL / "c0p-plan.local.json"
+FIXTURE_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "fixture-authority-passport.local.json"
+TARGET_BUILD_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "target-build-passport.local.json"
+EVIDENCE_CLEANUP_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "evidence-cleanup-passport.local.json"
 
 CANDIDATE_SCHEMA = "epic-phone-001-c0p-prep-candidate-v2"
 PLAN_SCHEMA = "epic-phone-001-c0p-prep-plan-v2"
@@ -67,6 +68,8 @@ DIRECTORY_TARGETS = [
     ".qa_local/evidence",
     ".qa_local/evidence/epic-phone-001",
     RUN_ROOT_REL.as_posix(),
+    (RUN_ROOT_REL / "authority-sets").as_posix(),
+    AUTHORITY_SET_ROOT_REL.as_posix(),
     RAW_REL.as_posix(),
     CHECKPOINTS_REL.as_posix(),
     PUBLIC_SAFE_REL.as_posix(),
@@ -85,8 +88,8 @@ BUDGET = {
     "child_subprocess_max": 0,
     "concurrency_max": 1,
     "wall_clock_minutes_max": 5,
-    "directory_target_count": 7,
-    "directory_create_max": 5,
+    "directory_target_count": 9,
+    "directory_create_max": 7,
     "file_create_max": 4,
     "candidate_read_max": 1,
     "prep_plan_read_max": 1,
@@ -282,11 +285,14 @@ def build_candidate(
     """Build public-safe canonical candidate bytes; this performs no local writes."""
 
     controller = _load_controller(controller_source_sha256)
-    c0p = controller.c0p_plan(repository_head, controller_source_sha256)
+    c0p = controller.c0p_plan(repository_head, controller_source_sha256, issued_at_utc, passport_expires_at_utc)
     fixture = {
         "schema_version": controller.FIXTURE_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": "c0p-authority-003",
+        "renewal_id": "authority-renewal-001",
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "fixture_alias": FIXTURE_ALIAS,
         "synthetic_test_only": True,
         "not_real_user": True,
@@ -305,6 +311,9 @@ def build_candidate(
         "schema_version": controller.TARGET_BUILD_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": "c0p-authority-003",
+        "renewal_id": "authority-renewal-001",
+        "prep_attempt_id": PREP_ATTEMPT_ID,
         "target_alias": TARGET_ALIAS,
         "build_alias": BUILD_ALIAS,
         "target_authorized": True,
@@ -314,6 +323,7 @@ def build_candidate(
         "passport_purpose": "authorization_only",
         "current_freshness_evidence": False,
         "runtime_evidence": False,
+        "task058a_row03_evidence_status": "unknown",
         "issued_at_utc": issued_at_utc,
         "expires_at_utc": passport_expires_at_utc,
     }
@@ -321,6 +331,10 @@ def build_candidate(
         "schema_version": controller.EVIDENCE_CLEANUP_PASSPORT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
+        "authority_set_id": "c0p-authority-003",
+        "renewal_id": "authority-renewal-001",
+        "prep_attempt_id": PREP_ATTEMPT_ID,
+        "issued_at_utc": issued_at_utc,
         "run_root": RUN_ROOT_REL.as_posix(),
         "soft_bytes_max": controller.C1_BUDGET["raw_sink_soft_bytes_max"],
         "hard_bytes_max": controller.C1_BUDGET["raw_sink_hard_bytes_max"],
@@ -367,8 +381,8 @@ def build_candidate(
             "schema_version": RESULT_SCHEMA,
             "status": "prepared",
             "prep_attempt_id": PREP_ATTEMPT_ID,
-            "directory_target_count": 7,
-            "directory_created_count_on_success": 5,
+            "directory_target_count": 9,
+            "directory_created_count_on_success": 7,
             "file_created_count_on_success": 4,
             "host_process_count_on_success": 1,
             "child_subprocess_count_on_success": 0,
@@ -521,8 +535,8 @@ def _validate_candidate(value: Mapping[str, Any], now: datetime) -> tuple[str, l
             "schema_version": RESULT_SCHEMA,
             "status": "prepared",
             "prep_attempt_id": PREP_ATTEMPT_ID,
-            "directory_target_count": 7,
-            "directory_created_count_on_success": 5,
+            "directory_target_count": 9,
+            "directory_created_count_on_success": 7,
             "file_created_count_on_success": 4,
             "host_process_count_on_success": 1,
             "child_subprocess_count_on_success": 0,
@@ -574,7 +588,9 @@ def _validate_candidate(value: Mapping[str, Any], now: datetime) -> tuple[str, l
         raise PrepError("artifact_total_bytes_invalid")
 
     try:
-        expected_c0p = controller.c0p_plan(repository_head, controller_sha)
+        expected_c0p = controller.c0p_plan(repository_head, controller_sha,
+                                           artifacts[0]["canonical_json"]["issued_at_utc"],
+                                           artifacts[0]["canonical_json"]["expires_at_utc"])
         if not _exact_equal(artifacts[0]["canonical_json"], expected_c0p):
             raise PrepError("c0p_plan_contract_drift")
         controller._validate_fixture_passport(artifacts[1]["canonical_json"])
@@ -907,48 +923,18 @@ def execute_prep(now: datetime | None = None) -> Mapping[str, Any]:
     _validate_fixed_local_targets()
     _check_deadline(deadline)
 
-    created_directories = 0
-    attempt_root = REPO_ROOT / ATTEMPT_ROOT_REL
-    if not _mkdir_new_or_existing(attempt_root):
-        raise PrepError("prep_attempt_root_already_consumed")
-    created_directories += 1
-    _check_deadline(deadline)
-    run_root = REPO_ROOT / RUN_ROOT_REL
-    try:
-        if not _mkdir_new_or_existing(run_root):
-            raise PrepError("run_root_already_consumed")
-    except FileExistsError as exc:
-        raise PrepError("run_root_already_consumed") from exc
-    created_directories += 1
-    for relative in (RAW_REL, CHECKPOINTS_REL, PUBLIC_SAFE_REL):
-        _check_deadline(deadline)
-        if not _mkdir_new_or_existing(REPO_ROOT / relative):
-            raise PrepError("fixed_directory_collision")
-        created_directories += 1
-
-    for path, data in materialized:
-        _check_deadline(deadline)
-        with path.open("xb") as handle:
-            handle.write(data)
-            handle.flush()
-            os.fsync(handle.fileno())
-    for path, expected in materialized:
-        _check_deadline(deadline)
-        actual = path.read_bytes()
-        if actual != expected or _sha256(actual) != _sha256(expected):
-            raise PrepError("artifact_readback_mismatch")
-    _check_deadline(deadline)
-
     return {
         "schema_version": RESULT_SCHEMA,
         "epic_id": EPIC_ID,
         "run_id": RUN_ID,
         "contour_id": CONTOUR_ID,
         "prep_attempt_id": PREP_ATTEMPT_ID,
-        "status": "prepared",
-        "directory_target_count": 7,
-        "directory_created_count": created_directories,
-        "file_created_count": 4,
+        "status": "superseded_validate_only",
+        "superseded_by_contour": "epic-phone-001-authority-renewal",
+        "authority_output_source": "authority-renewal-001_result_feeds_c0p_directly",
+        "directory_target_count": 9,
+        "directory_created_count": 0,
+        "file_created_count": 0,
         "subprocess_count": 1,
         "host_process_count": 1,
         "child_subprocess_count": 0,

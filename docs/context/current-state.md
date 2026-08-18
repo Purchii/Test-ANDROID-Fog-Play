@@ -39,6 +39,107 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## EPIC-PHONE-001 final renewal/rebind repository checkpoint — 2026-08-18
+
+The joint authority-renewal, C0P, controller and owner-local provisioner rebind
+is accepted as a repository-only snapshot. Retained anomalies
+`EPICPHONE001-PROCESS-ANOMALY-071` through `-082` are all closed at repository
+level; they remain append-only process evidence and are not product evidence.
+The exact implementation bindings are:
+
+- authority renewal `eaa8400c4ee881a3e7ed09067ffd338d42780ef1a5e61776060f10e86ed23468`
+  (`35832` bytes) and renewal loader
+  `a34c006ede9543387c78bb09ed605d13d8d2b4f7840c6dc9d9fb93e51070c083`
+  (`13073` bytes);
+- C0P preparer `323a3f6c8db65e10461d0537828aa800e3da958525824182f2f7c623168c4a22`
+  and runtime controller
+  `04bef96a5bd71c48ca80041745eb11fe61ea968ba71f7cc8d854295b81c33397`;
+- owner-local provisioner
+  `280d993f55d8833da6397758ab0f5eb97ebc46764938723ac73bbfea3a270121`
+  and loader
+  `71b3387505a5ae4229315de38ae1d7e2855060ea3fdb1bfe3bf08db1fdf14441`;
+- renewal, C0P, controller and provisioner tests respectively
+  `471d6e985e4de59cd4b1a6ff76e0f0a82efeeaefa4969fe092e14dab2d57df21`,
+  `a73550396cd9a6b261a188d22e36899cab5ab20b59bd962fda01ffc722e5890f`,
+  `868c69cf00ef90f7bdbe1bafbd99db1d97b6117b4a059a33053602dd3c1ee607`
+  and `3bd3121b615c3a1d35105665ce4f0f9ef7de87afc71506f434bbeef199a19231`.
+
+Core verification is `144 passed`; named safety suites
+`public_repo_safety` and `full_tree_hygiene` add `14 passed`, for a combined
+`158 passed`. Compile and diff checks pass. Final QA-A reports R0/R1/P2
+`0/0/1`, QA-B `0/0/0`, and Security `0/0/1`. The only retained P2 is the
+cooperative-timeout contract; it is a disclosed later-execution residual and
+does not authorize execution.
+
+The environment-independent repository suite
+`python -m pytest -q --ignore=tests/test_task045_paired_virtual_gamepad.py`
+passes `1583` tests with `4` skipped. Two unfiltered full-suite attempts each
+returned `1616 passed`, `4 skipped` and `17 failed`; all failures are confined
+to the environment-coupled TASK-045 module because its fixed ignored adapter/
+coverage source is absent. That local source was not inspected, restored or
+synthesized, and the unfiltered suite is not called green. This is retained as
+`EPICPHONE001-PROCESS-ANOMALY-083`, not product evidence.
+
+EPIC validate-only and report validation pass. Report-manifest generation and
+validation pass with `36` records: `13` authoritative and `23` legacy, status
+`pass_with_legacy`. `python -m compileall -q automation tests`, both hygiene
+modes, public safety `437/0`, docs consistency `187/0`, and cached/working diff
+checks all pass.
+
+`c0p-prep-003 --validate-only` is superseded by the accepted renewal contour;
+it is not an executable or reusable authority step. No GO was issued, no
+renewal/C0P/provisioner contour executed, and checkpoint-local `.qa_local`,
+secret, device, application, network, authentication and runtime counters are
+exact zero. The previously prepared authorities expired at
+`2026-08-18T05:50:28Z` and remain immutable and non-replayable.
+
+The next safe repository step is one joint commit and epic-branch push. Only
+after that final HEAD exists may the team construct a new canonical candidate
+and plan bound to that post-commit HEAD and request fresh owner and Security
+authority. No default-branch integration or runtime acceptance is claimed.
+
+## EPIC-PHONE-001 owner-local provisioner expiry checkpoint — 2026-08-18
+
+The owner-local fixture provisioner is accepted as repository logic only after
+the retained adversarial sequence `EPICPHONE001-PROCESS-ANOMALY-056` through
+`EPICPHONE001-PROCESS-ANOMALY-070`. The final immutable review bindings are:
+
+- executor SHA-256
+  `f47d97769ca1501dadd235776ced5f76f8dfa5230e09100d4fa142b8bb224263`;
+- loader SHA-256
+  `1cf7ebc750d31c363e21b27622510d0db3e03404ef7025c3b2d1a9cf27503797`;
+- focused-test SHA-256
+  `b9c92bf887c276fac0a870dfb89162c5f8551ca39883c0e4d93a8f63fa7c9375`.
+
+Focused verification is `40 passed`; the earlier combined EPIC repository set
+is `168 passed`. QA-A, QA-B and Security each report repository R0/R1 `0/0`.
+This acceptance grants no execution authority. No fixture write, secret read,
+device/app/network contact, authentication, runtime action or GO occurred; all
+such counters remain exact zero.
+
+The prepared fixture, target-build and evidence-cleanup authorities expired at
+`2026-08-18T05:50:28Z`. They are immutable, invalid and non-replayable: no
+extension, in-place edit, relabel, overwrite or reuse of their consumed plan is
+permitted. Current verdict remains `NO_GO`; C0P, C1, fixture write, auth and
+runtime are blocked.
+
+The next safe design is a separately reviewed
+`ZERO_SECRET_ZERO_DEVICE_CREATE_NEW_VERSIONED_AUTHORITY_RENEWAL` contour. It
+must create new versioned authority artifacts with create-new semantics while
+leaving every expired artifact untouched. Security has resolved the former
+generation-`002` versus authority-`003` naming conflict to exact identities
+`authority-renewal-001`, `c0p-authority-003`, `c0p-prep-003` and
+`security-c0p-003`, under fixed `authority-sets/c0p-authority-003` paths. This
+resolution is naming/path authority only, not a GO.
+
+The four rejected discovery/legacy-transform helper/test drafts were removed
+from the untracked worktree set; their anomaly history remains immutable and
+cleanup is complete. The accepted owner-local provisioner candidate remains
+untracked pending final source/HEAD rebind plus the versioned renewal candidate.
+Security forbids an interim provisioner commit: the rebind and renewal must be
+reviewed together and then enter one final repository commit. No `.qa_local`
+artifact was touched.
+
 ## Resumed EPIC-PHONE-001 committed-controller checkpoint — 2026-08-16
 
 The owner resumed the same `BOUNDED_AUTONOMOUS` epic, thread and branch after

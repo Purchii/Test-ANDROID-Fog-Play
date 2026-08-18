@@ -303,6 +303,75 @@ Any commit containing this source-of-truth correction changes HEAD, so the
 candidate C0P plan hash prefix `f883` is invalid and must be recomputed after
 the final reviewed docs commit. No token may bind or reuse that candidate hash.
 
+### Owner-local provisioner expiry and authority renewal
+
+The owner-local provisioner is accepted as repository logic only. Its final
+immutable bindings are executor SHA-256
+`f47d97769ca1501dadd235776ced5f76f8dfa5230e09100d4fa142b8bb224263`,
+loader SHA-256
+`1cf7ebc750d31c363e21b27622510d0db3e03404ef7025c3b2d1a9cf27503797`
+and focused-test SHA-256
+`b9c92bf887c276fac0a870dfb89162c5f8551ca39883c0e4d93a8f63fa7c9375`.
+Focused verification is 40 passed; the earlier combined EPIC repository set is
+168 passed. QA-A, QA-B and Security repository R0/R1 are 0/0. Anomalies
+`EPICPHONE001-PROCESS-ANOMALY-056` through `-070` remain append-only evidence.
+
+The prepared authorities expired at `2026-08-18T05:50:28Z` before any fixture
+write or GO. They are immutable and non-replayable. No process may extend,
+overwrite, edit, relabel, rename or reuse them or their consumed plan. Secret,
+device, app, network, auth and runtime counters remain zero; fixture write,
+C0P, C1, auth and runtime remain blocked.
+
+The only next safe design is
+`ZERO_SECRET_ZERO_DEVICE_CREATE_NEW_VERSIONED_AUTHORITY_RENEWAL`. It creates
+new versioned artifacts with create-new semantics and does not modify old
+artifacts. Security-resolved identities are `authority-renewal-001`,
+`c0p-authority-003`, `c0p-prep-003` and `security-c0p-003`; fixed paths are
+under `authority-sets/c0p-authority-003`. These ids and paths do not authorize
+execution or issue GO. The final owner-local provisioner source/HEAD rebind and
+renewal candidate must be reviewed together and committed once; no interim
+provisioner commit is permitted.
+
+Four rejected discovery/legacy-transform helper/test drafts were removed from
+the untracked candidate set. Their anomaly records remain; cleanup is complete
+and touched no `.qa_local` path. The accepted provisioner candidate remains
+untracked until the joint rebind/renewal review and final commit.
+
+### Final renewal/rebind repository snapshot
+
+The joint snapshot is accepted for repository commit only. Anomalies
+`EPICPHONE001-PROCESS-ANOMALY-071` through `-082` are closed at repository
+level and retained. Exact source bindings are renewal
+`eaa8400c4ee881a3e7ed09067ffd338d42780ef1a5e61776060f10e86ed23468`
+(`35832` bytes), renewal loader
+`a34c006ede9543387c78bb09ed605d13d8d2b4f7840c6dc9d9fb93e51070c083`
+(`13073` bytes), C0P
+`323a3f6c8db65e10461d0537828aa800e3da958525824182f2f7c623168c4a22`,
+controller `04bef96a5bd71c48ca80041745eb11fe61ea968ba71f7cc8d854295b81c33397`,
+provisioner `280d993f55d8833da6397758ab0f5eb97ebc46764938723ac73bbfea3a270121`
+and provisioner loader
+`71b3387505a5ae4229315de38ae1d7e2855060ea3fdb1bfe3bf08db1fdf14441`.
+The corresponding renewal/C0P/controller/provisioner test hashes are
+`471d6e985e4de59cd4b1a6ff76e0f0a82efeeaefa4969fe092e14dab2d57df21`,
+`a73550396cd9a6b261a188d22e36899cab5ab20b59bd962fda01ffc722e5890f`,
+`868c69cf00ef90f7bdbe1bafbd99db1d97b6117b4a059a33053602dd3c1ee607`
+and `3bd3121b615c3a1d35105665ce4f0f9ef7de87afc71506f434bbeef199a19231`.
+
+Verification is core `144 passed`, named safety suites
+`public_repo_safety`/`full_tree_hygiene` `14 passed`, combined `158 passed`,
+plus compile and diff PASS. Final QA-A R0/R1/P2 is `0/0/1`, QA-B `0/0/0`,
+and Security `0/0/1`. Cooperative timeout is the only P2 and requires fresh
+owner acceptance before later execution.
+
+`c0p-prep-003 --validate-only` is superseded by renewal. It grants no pending
+execution step and cannot be replayed. No GO was issued and no renewal,
+fixture-write, C0P, C1, secret, device, app, network, authentication or runtime
+action executed; checkpoint-local counters are zero. Expired authorities stay
+immutable/non-replayable. The next safe step is exactly one joint commit and
+epic-branch push, followed by construction of a new canonical candidate/plan
+bound to the final post-commit HEAD and fresh owner/Security authority. Default
+integration and product/runtime coverage are not claimed.
+
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is
 `GO_EPIC_PHONE_001_C1_LAUNCH_FREE_READINESS__epic-phone-001-20260816-r01__<64_lowercase_plan_sha256>`.

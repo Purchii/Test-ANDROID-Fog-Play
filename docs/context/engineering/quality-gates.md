@@ -1312,10 +1312,14 @@ both bound and actual repository HEAD in provisioner paths, and support the
 optional loose-ref form in all three readers. Any regression fails the gate.
 Anomalies 085–088, especially orchestration anomaly 087, remain append-only.
 
-This is repository acceptance pending commit, not GO. Renewal `002` cannot be
-planned until the final commit HEAD exists and requires fresh owner no-mutator
-authority `002`, a combined weekly provision envelope, a canonical plan and a
-fresh literal Security GO. Provisioner/C0P/C1/auth/runtime remain blocked.
+Repository implementation commit
+`6637e074555f1ff501c3beae8cdb5b8fb3d9a361` is pushed/aligned on the epic
+branch and the worktree was clean immediately after push. This is not GO, and
+set `004` is not materialized. The post-doc lifecycle commit becomes the final
+authority-binding HEAD. Renewal `002` requires that HEAD, fresh owner
+no-mutator authority `002`, a combined weekly provision envelope, a canonical
+plan and a fresh literal Security GO. Provisioner/C0P/C1/auth/runtime remain
+blocked.
 
 ### Resumed controller-construction gate
 

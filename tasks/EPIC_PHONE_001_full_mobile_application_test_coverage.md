@@ -422,10 +422,13 @@ create-only set `004`, provisioner dual actual-HEAD validation, and optional
 loose-ref support in all three readers.
 
 Anomalies 085–088 are retained; 087 is the orchestration anomaly. Generation
-`004` is pending commit and has no GO. Renewal `002` requires the final
-committed HEAD, fresh owner no-mutator authority `002`, a combined weekly
-provision envelope, a canonical plan and Security GO. No default integration
-or product/runtime coverage is claimed.
+`004` implementation commit
+`6637e074555f1ff501c3beae8cdb5b8fb3d9a361` is pushed/aligned on the epic
+branch; the worktree was clean immediately after push. It has no GO and set
+`004` is not materialized. The post-doc commit becomes the final authority-
+binding HEAD. Renewal `002` requires that HEAD, fresh owner no-mutator
+authority `002`, a combined weekly provision envelope, a canonical plan and
+Security GO. No default integration or product/runtime coverage is claimed.
 
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is

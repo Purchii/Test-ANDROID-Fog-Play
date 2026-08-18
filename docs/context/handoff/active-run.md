@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_generation004_repository_accepted_commit_pending_no_go`.
+- Thread status: `active_generation004_implementation_pushed_docs_delta_pending_no_go`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -20,6 +20,9 @@
 - Current generation-004 rebind base: repository HEAD
   `92a60f8d585d5887a465563902c66a2aa2b373b4`, pushed and aligned with the epic
   remote before the uncommitted generation-004 snapshot.
+- Generation-004 implementation commit:
+  `6637e074555f1ff501c3beae8cdb5b8fb3d9a361`, pushed and aligned with the epic
+  remote branch; the worktree was clean immediately after push.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
   acceptance and all final gates complete.
@@ -77,8 +80,9 @@ historical evidence only and are not reusable authority.
 
 ### Generation 004 repository-only acceptance
 
-Generation `004` is pending commit and has no GO. Exact source hashes/sizes
-are renewal
+Generation `004` is committed as repository logic only at
+`6637e074555f1ff501c3beae8cdb5b8fb3d9a361` and has no GO. Exact source
+hashes/sizes are renewal
 `11a067beaf5d93d22bac9cb345f26d5eae64f4160b5c2684561f68a03aded007` /
 `36363`, loader
 `44e3d051b9bf5040c8c5b66087b5e74c4d3e2d0ce1cfeb22e11d5b209afde599` /
@@ -112,10 +116,11 @@ actual-HEAD validation, and optional loose-ref handling in all three readers.
 
 Anomalies 085–088 remain confirmed; anomaly 087 is the orchestration ordering
 failure that let downstream passports expire before complete provisioner
-authority. Renewal `002` requires the final committed HEAD, fresh owner
-no-mutator authority `002`, the combined weekly provision envelope, and a new
-canonical plan plus Security GO. No provisioner, C0P, C1, auth or runtime GO is
-present.
+authority. Set `004` has not been materialized. The commit containing this
+docs-only lifecycle delta will become the final authority-binding HEAD.
+Renewal `002` requires that HEAD, fresh owner no-mutator authority `002`, the
+combined weekly provision envelope, and a new canonical plan plus Security GO.
+No provisioner, C0P, C1, auth or runtime GO is present.
 
 ### Current repository checkpoint
 

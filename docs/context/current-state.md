@@ -58,8 +58,10 @@ non-replayable. The generic renewal-001 candidate/plan are expired execution
 inputs: they must remain removed and unstaged; their hashes above are retained
 only as historical evidence and must not be reused.
 
-Generation `004` is accepted as repository logic only and remains pending one
-commit. Exact source hashes are:
+Generation `004` is accepted as repository logic only in implementation commit
+`6637e074555f1ff501c3beae8cdb5b8fb3d9a361`, pushed and aligned with the epic
+remote branch. The worktree was clean immediately after that push. Exact source
+hashes are:
 
 - renewal `11a067beaf5d93d22bac9cb345f26d5eae64f4160b5c2684561f68a03aded007`
   (`36363` bytes), loader
@@ -96,7 +98,9 @@ binding, and optional loose-ref validation in all three readers.
 
 Anomalies 085–088, including orchestration anomaly 087, remain confirmed
 process evidence. Generation `004` has no GO and no execution authority. A
-future renewal `002` requires the final committed HEAD, fresh owner no-mutator
+set `004` has not been materialized. This docs-only lifecycle delta requires a
+post-doc commit, which will become the final authority-binding HEAD. A future
+renewal `002` requires that final HEAD, fresh owner no-mutator
 authority `002`, a combined weekly provision envelope, and a newly canonical
 plan plus Security GO. Provisioning, C0P, C1, authentication and runtime remain
 blocked; `origin/main` remains unintegrated.

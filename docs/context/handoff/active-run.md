@@ -1096,10 +1096,24 @@ there is no C0P, C1 or runtime GO.
   `hypothesis`, not a confirmed child-process cause. Test-design implication:
   treat the one-shot launch and expired GO as non-reusable, never retry from an
   absent marker alone, and require a future generation to expose a bounded,
-  independently queryable category-only parent result without capturing the
-  secret-entry console.
+   independently queryable category-only parent result without capturing the
+   secret-entry console.
+- `EPICPHONE001-PROCESS-ANOMALY-090`, alias
+  `generation005_post_docs_push_tls_read_failure`, is `confirmed`.
+  Trigger/action: the first normal, non-force push of the reviewed post-commit
+  lifecycle checkpoint after `generation005` implementation commit
+  `d99073a7465f370ff6e39713005f6d6d09464849`. Expected: the epic branch remote
+  advances to the local post-doc commit. Observed: Git returned category
+  `SSL_ERROR_SYSCALL` during the HTTPS read; the local branch remained one
+  commit ahead, `origin/qa/epic-phone-001-full-mobile-application-test-coverage`
+  remained at `d99073a7465f370ff6e39713005f6d6d09464849`, and `origin/main` remained
+  unchanged. Evidence status is `confirmed`; candidate/runtime/local-evidence
+  counters are unchanged. Likely cause: transient remote TLS transport failure;
+  repository/content failure is not evidenced. Test-design implication: record
+  the transport anomaly before retry, re-fetch and verify exact remote drift,
+  then retry the same normal push without force or scope expansion.
 
-For anomalies 013-089, evidence status is `confirmed` for their explicitly
+For anomalies 013-090, evidence status is `confirmed` for their explicitly
 recorded observations. Anomaly 089 keeps console-entry/consumption facts
 `unknown`; it is not product evidence. Screenshot/XML/runtime-log modalities
 are not applicable, and device/app/network/auth/runtime counters remain zero.

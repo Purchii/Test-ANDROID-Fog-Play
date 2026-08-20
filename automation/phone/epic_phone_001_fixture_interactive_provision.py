@@ -22,6 +22,9 @@ RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-owner-local-fixture-provision"
 SCHEMA = "epic-phone-001-owner-local-fixture-provision-plan-v1"
 MARKER_SCHEMA = "epic-phone-001-owner-local-fixture-provision-attempt-v1"
+AGGREGATE_SCHEMA = "epic-phone-001-owner-local-fixture-provision-aggregate-v2"
+TERMINAL_RESULT_SCHEMA = "epic-phone-001-owner-local-fixture-provision-terminal-result-v1"
+SECURITY_GO_SCHEMA = "epic-phone-001-owner-local-fixture-provision-security-go-v1"
 PLAN_ENV = "EPIC_PHONE_001_OWNER_LOCAL_FIXTURE_PROVISION_PLAN"
 GO_ENV = "EPIC_PHONE_001_OWNER_LOCAL_FIXTURE_PROVISION_GO"
 GO_PREFIX = f"GO_EPIC_PHONE_001_OWNER_LOCAL_FIXTURE_PROVISION__{RUN_ID}__"
@@ -32,8 +35,11 @@ LOADER_REL = Path("automation/phone/epic_phone_001_owner_local_fixture_loader.py
 CONTROLLER_REL = Path("automation/phone/epic_phone_001_runtime_controller.py")
 GITIGNORE_REL = Path(".gitignore")
 RUN_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
-AUTHORITY_SET_REL = RUN_REL / "authority-sets/c0p-authority-004"
-MARKER_REL = RUN_REL / "fixture-owner-provision-attempt.local.json"
+AUTHORITY_SET_REL = RUN_REL / "authority-sets/c0p-authority-005"
+PROVISION_PLAN_REL = RUN_REL / "fixture-owner-provision-003-plan.local.json"
+PROVISION_GO_REL = RUN_REL / "security-go-owner-local-fixture-provision-003.local.json"
+MARKER_REL = RUN_REL / "fixture-owner-provision-003-attempt.local.json"
+RESULT_REL = RUN_REL / "fixture-owner-provision-003-result.local.json"
 DESTINATION_REL = Path(".qa_local/secrets/qa_user.env")
 AUTHORITY_PATHS = (
     AUTHORITY_SET_REL / "c0p-plan.local.json",
@@ -42,17 +48,34 @@ AUTHORITY_PATHS = (
     AUTHORITY_SET_REL / "evidence-cleanup-passport.local.json",
 )
 WORKSPACE_ALLOWLIST_CONTRACT: tuple[tuple[str, str], ...] = ()
-FIXTURE_AUTHORITY_ALIAS = "epic-phone-001-fixture-authority-owner-provision-002"
-OWNER_CONSOLE_ALIAS = "epic-phone-001-owner-local-console-entry-002"
-NO_MUTATOR_ALIAS = "epic-phone-001-owner-local-provision-no-mutator-002"
-COOPERATIVE_TIMEOUT_ALIAS = "epic-phone-001-owner-cooperative-timeout-acceptance-002"
+FIXTURE_AUTHORITY_ALIAS = "epic-phone-001-fixture-authority-owner-provision-003"
+OWNER_CONSOLE_ALIAS = "epic-phone-001-owner-local-console-entry-003"
+NO_MUTATOR_ALIAS = "epic-phone-001-owner-local-provision-no-mutator-003"
+COOPERATIVE_TIMEOUT_ALIAS = "epic-phone-001-owner-cooperative-timeout-acceptance-003"
+PROVISION_SECURITY_ALIAS = "epic-phone-001-security-owner-local-fixture-provision-003"
+PROVISION_RESULT_ALIAS = "epic-phone-001-owner-local-fixture-provision-result-003"
+READINESS_CONTOUR_ID = "epic-phone-001-owner-local-console-readiness"
+READINESS_ATTEMPT_ID = "owner-local-console-readiness-001"
+READINESS_SECURITY_ALIAS = "epic-phone-001-security-owner-local-console-readiness-001"
+READINESS_RESULT_ALIAS = "epic-phone-001-owner-local-console-readiness-result-001"
+READINESS_PLAN_REL = RUN_REL / "owner-local-console-readiness-001-plan.local.json"
+READINESS_GO_REL = RUN_REL / "security-go-owner-local-console-readiness-001.local.json"
+READINESS_MARKER_REL = RUN_REL / "owner-local-console-readiness-001-attempt.local.json"
+READINESS_RESULT_REL = RUN_REL / "owner-local-console-readiness-001-result.local.json"
+READINESS_PLAN_SCHEMA = "epic-phone-001-owner-local-console-readiness-plan-v1"
+READINESS_GO_SCHEMA = "epic-phone-001-owner-local-console-readiness-security-go-v1"
+READINESS_MARKER_SCHEMA = "epic-phone-001-owner-local-console-readiness-attempt-v1"
+READINESS_RESULT_SCHEMA = "epic-phone-001-owner-local-console-readiness-result-v1"
+READINESS_MODE_ENV = "EPIC_PHONE_001_OWNER_LOCAL_CONSOLE_CONTOUR"
+READINESS_GO_PREFIX = f"GO_EPIC_PHONE_001_OWNER_LOCAL_CONSOLE_READINESS__{RUN_ID}__"
 NO_MUTATOR_SCOPE = {
     "ancestors": "all_lexical_ancestors_of_every_listed_or_resolved_path",
     "git_metadata": [".git_marker", "resolved_local_gitdir", "optional_resolved_local_commondir",
                      "gitdir_HEAD", "optional_active_loose_ref_component_probe",
                      "exact_active_loose_ref_or_packed_refs"],
-    "local_paths": ["bound_repository_sources", "authority_set004_artifacts", "run_root",
-                    "attempt_marker", "secret_parent", "secret_destination"],
+    "local_paths": ["bound_repository_sources", "authority_set005_artifacts", "run_root",
+                    "fixed_plan", "fixed_security_go", "attempt_marker", "terminal_result",
+                    "secret_parent", "secret_destination"],
 }
 LOADER_GIT_CHECK_GLOBAL = "__owner_fixture_loader_git_head_validation_count__"
 LOADER_GIT_CONTENT_GLOBAL = "__owner_fixture_loader_git_metadata_content_read_count__"
@@ -67,6 +90,7 @@ REPARSE_ATTRIBUTE = 0x400
 CREATE_NEW = 1
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 AUTHORITY_COVERAGE_GUARD_SECONDS = 1
+RESULT_FINALIZATION_RESERVE_SECONDS = 5
 
 
 class ProvisionError(RuntimeError):
@@ -74,20 +98,23 @@ class ProvisionError(RuntimeError):
 
 
 BUDGET = {
-    "acl_check_max": 5, "acl_create_max": 3, "application_action_max": 0,
+    "acl_check_max": 6, "acl_create_max": 4, "application_action_max": 0,
     "authority_artifact_read_max": 4, "authentication_action_max": 0,
     "bounded_input_character_max": 128, "concurrency_max": 1,
     "console_api_validation_max": 3, "console_prompt_write_max": 2, "console_separator_write_max": 2, "destination_directory_create_max": 1,
     "destination_secret_file_create_max": 1, "device_action_max": 0,
-    "execution_max": 1, "go_env_read_max": 2, "host_process_max": 1,
+    "execution_max": 1, "fixed_go_file_read_max": 2, "host_process_max": 1,
     "git_head_validation_max": 2, "git_metadata_content_read_max": 8,
     "git_metadata_path_target_max": 64,
-    "marker_file_create_max": 1, "network_action_max": 0,
+    "marker_file_create_max": 1, "network_action_max": 0, "terminal_result_file_create_max": 1,
+    "protected_marker_file_readback_max": 1, "protected_terminal_result_file_readback_max": 1,
+    "loader_terminal_result_content_read_max": 2, "loader_terminal_result_validation_max": 2,
     "no_echo_secret_field_read_max": 2, "overwrite_append_delete_rename_max": 0,
-    "plan_env_read_max": 2, "retry_max": 0, "runtime_action_max": 0,
+    "fixed_plan_file_read_max": 2, "retry_max": 0, "runtime_action_max": 0,
     "secret_payload_bytes_max": 96, "secret_payload_readback_max": 1,
     "secret_payload_write_max": 1, "subprocess_max": 0, "ui_action_max": 0,
-    "cooperative_deadline_seconds_max": 120, "bootstrap_env_write_max": 2,
+    "cooperative_deadline_seconds_max": 120, "bootstrap_env_write_max": 3,
+    "result_finalization_reserve_seconds": RESULT_FINALIZATION_RESERVE_SECONDS,
     "workspace_allowlist_content_read_max": 0, "bound_source_content_read_full_envelope_max": 6,
 }
 TIMEOUT_CONTRACT = {
@@ -100,6 +127,8 @@ TIMEOUT_CONTRACT = {
     "hard_kill_guarantee": False,
     "owner_acceptance_scope": "cooperative_calls_may_return_after_internal_deadline_no_hard_kill",
     "owner_acceptance_window_seconds_min": 121,
+    "result_finalization_reserve_seconds": RESULT_FINALIZATION_RESERVE_SECONDS,
+    "result_finalization_policy": "secret_operations_stop_before_reserved_terminal_result_window",
 }
 
 
@@ -172,6 +201,18 @@ def _utc_now() -> datetime:
     return datetime.now(UTC)
 
 
+def build_security_go(*, plan_sha256: str, issued_at_utc: str, expires_at_utc: str) -> dict[str, Any]:
+    """Build an expected GO object for comparison only; never write or issue authority."""
+    if type(plan_sha256) is not str or HEX64.fullmatch(plan_sha256) is None:
+        raise ProvisionError("go_plan_hash_invalid")
+    return {
+        "schema_version": SECURITY_GO_SCHEMA, "epic_id": EPIC_ID, "run_id": RUN_ID,
+        "contour_id": CONTOUR_ID, "security_alias": PROVISION_SECURITY_ALIAS,
+        "plan_sha256": plan_sha256, "literal_go": GO_PREFIX + plan_sha256,
+        "issued_at_utc": issued_at_utc, "expires_at_utc": expires_at_utc,
+    }
+
+
 def build_inline_bootstrap(*, loader_bytes: int, loader_sha256: str) -> bytes:
     if type(loader_bytes) is not int or type(loader_sha256) is not str:
         raise ProvisionError("bootstrap_binding_invalid")
@@ -179,6 +220,7 @@ def build_inline_bootstrap(*, loader_bytes: int, loader_sha256: str) -> bytes:
         "import ctypes,hashlib,os,pathlib,stat,sys,time,datetime\n"
         f"p={LOADER_REL.as_posix()!r};n={loader_bytes!r};h={loader_sha256!r};c=2\n"
         "try:\n"
+        f" os.environ[{READINESS_MODE_ENV!r}]='provision'\n"
         f" w=datetime.datetime.now(datetime.UTC);os.environ[{BOOTSTRAP_WALL_ENV!r}]=w.replace(microsecond=0).strftime('%Y-%m-%dT%H:%M:%SZ');os.environ[{DEADLINE_ENV!r}]=str(time.monotonic_ns()+120000000000)\n"
         " if os.name!='nt': raise ValueError()\n"
         " a=os.path.abspath(p);r=os.path.abspath('.');q=pathlib.Path(a)\n"
@@ -196,10 +238,64 @@ def build_inline_bootstrap(*, loader_bytes: int, loader_sha256: str) -> bytes:
         " if (o.st_dev,o.st_ino,o.st_size,o.st_mtime_ns)!=i or (t.st_dev,t.st_ino,t.st_size,t.st_mtime_ns)!=i or len(b)!=n or hashlib.sha256(b).hexdigest()!=h: raise ValueError()\n"
         " sys.dont_write_bytecode=True;g={'__name__':'__owner_fixture_loader__','__file__':str(q),'__package__':None};exec(compile(b,str(q),'exec',dont_inherit=True),g,g);c=g['main']()\n"
         "except BaseException: c=2\n"
-        "if c: print('{\"status\":\"blocked\"}')\n"
         "raise SystemExit(c)\n"
     )
     return source.encode("ascii")
+
+
+def build_readiness_inline_bootstrap(*, loader_bytes: int, loader_sha256: str) -> bytes:
+    base = build_inline_bootstrap(loader_bytes=loader_bytes, loader_sha256=loader_sha256).decode("ascii")
+    needle = f" os.environ[{READINESS_MODE_ENV!r}]='provision'\n"
+    replacement = f" os.environ[{READINESS_MODE_ENV!r}]='readiness'\n"
+    if needle not in base: raise ProvisionError("readiness_bootstrap_template_invalid")
+    return base.replace(needle, replacement, 1).encode("ascii")
+
+
+def build_readiness_plan(*, executor_bytes: int, executor_sha256: str, loader_bytes: int,
+                         loader_sha256: str, inline_bootstrap_bytes: int,
+                         inline_bootstrap_sha256: str, repository_head: str,
+                         issued_at_utc: str, expires_at_utc: str) -> dict[str, Any]:
+    return {
+        "schema_version": READINESS_PLAN_SCHEMA, "epic_id": EPIC_ID, "run_id": RUN_ID,
+        "contour_id": READINESS_CONTOUR_ID, "attempt_id": READINESS_ATTEMPT_ID,
+        "classification": "PROD_SAFE", "scope_qualifier": "ZERO_SECRET_ZERO_DEVICE_VISIBLE_CONSOLE_READINESS",
+        "security_alias": READINESS_SECURITY_ALIAS, "repository_head": repository_head,
+        "executor_relative_path": EXECUTOR_REL.as_posix(), "executor_bytes": executor_bytes,
+        "executor_sha256": executor_sha256, "loader_relative_path": LOADER_REL.as_posix(),
+        "loader_bytes": loader_bytes, "loader_sha256": loader_sha256,
+        "inline_bootstrap_bytes": inline_bootstrap_bytes,
+        "inline_bootstrap_sha256": inline_bootstrap_sha256,
+        "plan_relative_path": READINESS_PLAN_REL.as_posix(),
+        "security_go_relative_path": READINESS_GO_REL.as_posix(),
+        "marker_relative_path": READINESS_MARKER_REL.as_posix(),
+        "result_relative_path": READINESS_RESULT_REL.as_posix(),
+        "issued_at_utc": issued_at_utc, "expires_at_utc": expires_at_utc,
+        "budget": {"host_process_max": 1, "source_read_max": 2,
+                   "fixed_plan_file_read_max": 1, "fixed_go_file_read_max": 1,
+                   "git_head_validation_max": 1, "git_metadata_content_read_max": 4,
+                   "git_metadata_path_target_max": 32, "bootstrap_env_write_max": 3,
+                   "console_api_validation_max": 3, "secret_read_max": 0,
+                   "acl_create_max": 2, "acl_check_max": 2, "created_file_readback_max": 2,
+                   "authority_artifact_read_max": 0, "device_action_max": 0,
+                   "application_action_max": 0, "network_action_max": 0,
+                   "marker_file_create_max": 1, "result_file_create_max": 1,
+                   "retry_max": 0, "wall_clock_seconds_max": 120},
+        "failure_policy": "marker_first_result_best_effort_no_retry_no_cleanup_no_reuse",
+    }
+
+
+def build_readiness_security_go(*, plan_sha256: str, issued_at_utc: str,
+                                expires_at_utc: str) -> dict[str, Any]:
+    """Build an expected readiness GO object for comparison only; never write or issue authority."""
+    if type(plan_sha256) is not str or HEX64.fullmatch(plan_sha256) is None:
+        raise ProvisionError("readiness_go_plan_hash_invalid")
+    return {
+        "schema_version": READINESS_GO_SCHEMA, "epic_id": EPIC_ID, "run_id": RUN_ID,
+        "contour_id": READINESS_CONTOUR_ID, "attempt_id": READINESS_ATTEMPT_ID,
+        "security_alias": READINESS_SECURITY_ALIAS, "plan_sha256": plan_sha256,
+        "literal_go": READINESS_GO_PREFIX + plan_sha256,
+        "issued_at_utc": issued_at_utc, "expires_at_utc": expires_at_utc,
+    }
 
 
 def _aggregate(directory_created: int) -> dict[str, Any]:
@@ -210,10 +306,78 @@ def _aggregate(directory_created: int) -> dict[str, Any]:
         "git_head_validation_count": 2, "git_metadata_content_read_count_max": 8,
         "git_metadata_path_target_count_max": 64,
         "network_action_count": 0, "no_echo_secret_field_read_count": 2,
-        "runtime_action_count": 0, "schema_version": "epic-phone-001-owner-local-fixture-provision-result-v1",
+        "runtime_action_count": 0, "schema_version": AGGREGATE_SCHEMA,
         "secret_file_created_count": 1, "secret_payload_readback_count": 1,
         "secret_payload_write_count": 1, "status": "fixture_provisioned",
-        "subprocess_count": 0, "ui_action_count": 0,
+        "subprocess_count": 0, "terminal_result_file_created_count": 1, "ui_action_count": 0,
+    }
+
+
+def terminal_result_contract() -> dict[str, Any]:
+    return {"schema_version": TERMINAL_RESULT_SCHEMA, "result_alias": PROVISION_RESULT_ALIAS,
+            "allowed_terminal_states": ["fixture_provisioned", "blocked_before_attempt", "blocked_after_attempt"],
+            "exit_category_by_terminal_state": {"blocked_after_attempt": "blocked",
+                                                "blocked_before_attempt": "blocked",
+                                                "fixture_provisioned": "success"},
+            "execution_stages_by_terminal_state": {
+                "blocked_after_attempt": ["marker_created", "secret_parent_ready",
+                                          "console_input_in_progress", "destination_write_in_progress",
+                                          "destination_written", "unknown_after_marker"],
+                "blocked_before_attempt": ["pre_attempt"],
+                "fixture_provisioned": ["terminal_result_finalization"]},
+            "always_exact_zero_counters": ["application_action_count", "authentication_action_count",
+                                           "device_action_count", "network_action_count",
+                                           "runtime_action_count", "subprocess_count", "ui_action_count"],
+            "state_counter_rules": {
+                "blocked_after_attempt": {"destination_directory_created_count": [0, 1, "unknown"],
+                                          "marker_file_created_count": 1},
+                "blocked_before_attempt": "all_counters_exact_integer_zero",
+                "fixture_provisioned": {"destination_directory_created_count": [0, 1],
+                                        "marker_file_created_count": 1}},
+            "boolean_counter_values": "forbidden",
+            "secret_derived_values_hashes_lengths": "forbidden"}
+
+
+def _terminal_result(plan_sha: str, *, terminal_state: str, exit_category: str,
+                     directory_created: int | str, execution_stage: str,
+                     marker_created: int = 1) -> dict[str, Any]:
+    contract = terminal_result_contract()
+    if terminal_state not in contract["allowed_terminal_states"]:
+        raise ProvisionError("terminal_state_invalid")
+    if exit_category != contract["exit_category_by_terminal_state"][terminal_state]:
+        raise ProvisionError("exit_category_invalid")
+    if execution_stage not in contract["execution_stages_by_terminal_state"][terminal_state]:
+        raise ProvisionError("execution_stage_invalid")
+    if type(marker_created) is not int or type(directory_created) not in (int, str):
+        raise ProvisionError("terminal_counter_type_invalid")
+    if terminal_state == "blocked_before_attempt":
+        if marker_created != 0 or directory_created != 0:
+            raise ProvisionError("terminal_counter_state_invalid")
+    else:
+        allowed_directory = (0, 1) if terminal_state == "fixture_provisioned" else (0, 1, "unknown")
+        if marker_created != 1 or directory_created not in allowed_directory:
+            raise ProvisionError("terminal_counter_state_invalid")
+    return {
+        "schema_version": TERMINAL_RESULT_SCHEMA,
+        "epic_id": EPIC_ID,
+        "run_id": RUN_ID,
+        "contour_id": CONTOUR_ID,
+        "attempt_id": "fixture-owner-provision-003", "result_alias": PROVISION_RESULT_ALIAS,
+        "plan_sha256": plan_sha,
+        "terminal_state": terminal_state,
+        "exit_category": exit_category,
+        "execution_stage": execution_stage,
+        "aggregate_counters": {
+            "application_action_count": 0,
+            "authentication_action_count": 0,
+            "destination_directory_created_count": directory_created,
+            "device_action_count": 0,
+            "marker_file_created_count": marker_created,
+            "network_action_count": 0,
+            "runtime_action_count": 0,
+            "subprocess_count": 0,
+            "ui_action_count": 0,
+        },
     }
 
 
@@ -250,7 +414,7 @@ def build_plan(*, executor_bytes: int, executor_sha256: str, loader_bytes: int,
         "epic_id": EPIC_ID, "executor_bytes": executor_bytes,
         "executor_relative_path": EXECUTOR_REL.as_posix(), "executor_sha256": executor_sha256,
         "expected_secret_parent_state": expected_secret_parent_state, "expires_at_utc": expires_at_utc,
-        "failure_policy": "marker_consumes_attempt_before_input_no_retry_overwrite_delete_rename_or_cleanup",
+        "failure_policy": "marker_before_console_reads_terminal_result_create_new_best_effort_no_retry_overwrite_delete_rename_or_cleanup",
         "fixture_alias": "epic-phone-001-fixture-001", "gitignore_bytes": gitignore_bytes,
         "gitignore_relative_path": GITIGNORE_REL.as_posix(), "gitignore_sha256": gitignore_sha256,
         "inline_bootstrap_bytes": inline_bootstrap_bytes, "inline_bootstrap_sha256": inline_bootstrap_sha256,
@@ -258,14 +422,21 @@ def build_plan(*, executor_bytes: int, executor_sha256: str, loader_bytes: int,
         "issued_at_utc": issued_at_utc, "loader_bytes": loader_bytes,
         "loader_relative_path": LOADER_REL.as_posix(), "loader_sha256": loader_sha256,
         "marker_relative_path": MARKER_REL.as_posix(), "output_contract": "exact_two_ascii_lf_lines_payload_max_96",
+        "parent_observation_contract": {"stdout": "not_used", "pid": "start_process_pid",
+                                        "exit_code": "zero_success_two_blocked",
+                                        "result_alias": PROVISION_RESULT_ALIAS},
+        "terminal_result_contract": terminal_result_contract(),
         "repository_head": repository_head, "run_id": RUN_ID, "schema_version": SCHEMA,
-        "security_alias": "epic-phone-001-security-owner-local-fixture-provision-002",
+        "plan_relative_path": PROVISION_PLAN_REL.as_posix(),
+        "security_go_relative_path": PROVISION_GO_REL.as_posix(),
+        "result_relative_path": RESULT_REL.as_posix(),
+        "security_alias": PROVISION_SECURITY_ALIAS,
         "timeout_contract": dict(TIMEOUT_CONTRACT),
         "workspace_allowlist": workspace_allowlist,
     }
 
 
-def _validate_plan(plan: Mapping[str, Any], raw: bytes, now: datetime) -> str:
+def _validate_plan(plan: Mapping[str, Any], raw: bytes, now: datetime, literal_go: str) -> str:
     try:
         state = plan["expected_secret_parent_state"]
         if state not in ("present", "absent"): raise ProvisionError("parent_state_invalid")
@@ -312,7 +483,7 @@ def _validate_plan(plan: Mapping[str, Any], raw: bytes, now: datetime) -> str:
     for key in ("executor_sha256", "loader_sha256", "inline_bootstrap_sha256", "controller_sha256", "gitignore_sha256"):
         if type(plan[key]) is not str or HEX64.fullmatch(plan[key]) is None: raise ProvisionError("hash_binding_invalid")
     digest = _sha(raw)
-    if os.environ.get(GO_ENV) != GO_PREFIX + digest: raise ProvisionError("literal_go_invalid")
+    if literal_go != GO_PREFIX + digest: raise ProvisionError("literal_go_invalid")
     return digest
 
 
@@ -327,7 +498,7 @@ def _validate_authority_artifact(path: Path, item: Mapping[str, Any], now: datet
     if artifact.get("schema_version") != item["schema_version"]: raise ProvisionError("authority_schema_drift")
     index = AUTHORITY_PATHS.index(path)
     contracts = (
-        ("epic-phone-001-c0p-plan-v2", "security_alias", "epic-phone-001-security-c0p-004", "execution_status",
+        ("epic-phone-001-c0p-plan-v2", "security_alias", "epic-phone-001-security-c0p-005", "execution_status",
          "planned_separate_literal_go_required_not_run", "expires_at_utc"),
         ("epic-phone-001-fixture-authority-passport-v2", "fixture_alias", "epic-phone-001-fixture-001", "revoked", False, "expires_at_utc"),
         ("epic-phone-001-target-build-passport-v2", "target_alias", "phone-current-001", "target_authorized", True, "expires_at_utc"),
@@ -344,9 +515,9 @@ def _validate_authority_artifact(path: Path, item: Mapping[str, Any], now: datet
         embedded = artifact.get(expiry_field)
         if item["embedded_expiry_value"] != embedded or _utc(embedded, "artifact_expiry") < required_until:
             raise ProvisionError("authority_cross_binding_invalid")
-    common = {"authority_set_id": "c0p-authority-004", "epic_id": EPIC_ID,
-              "renewal_id": "authority-renewal-002", "run_id": RUN_ID,
-              "prep_attempt_id": "c0p-prep-004"}
+    common = {"authority_set_id": "c0p-authority-005", "epic_id": EPIC_ID,
+              "renewal_id": "authority-renewal-003", "run_id": RUN_ID,
+              "prep_attempt_id": "c0p-prep-005"}
     if any(not _exact(artifact.get(key), value) for key, value in common.items()):
         raise ProvisionError("authority_v2_semantic_invalid")
     issued = _utc(artifact.get("issued_at_utc"), "authority_v2_issued")
@@ -367,15 +538,15 @@ def _validate_authority_artifact(path: Path, item: Mapping[str, Any], now: datet
                 artifact.get("target_alias") != "phone-current-001" or artifact.get("build_alias") != "task058-selected-phone-full-001" or
                 artifact.get("fixture_alias") != "epic-phone-001-fixture-001" or artifact.get("c1_token_cannot_authorize") is not True or
                 artifact.get("controller_execution_interface_present") is not True or
-                artifact.get("security_alias") != "epic-phone-001-security-c0p-004" or
+                artifact.get("security_alias") != "epic-phone-001-security-c0p-005" or
                 artifact.get("execution_status") != "planned_separate_literal_go_required_not_run" or
-                artifact.get("passport_aliases") != {"fixture_authority": "epic-phone-001-fixture-authority-004",
-                                                     "target_build": "epic-phone-001-target-build-004",
-                                                     "evidence_cleanup": "epic-phone-001-evidence-cleanup-004"} or
+                artifact.get("passport_aliases") != {"fixture_authority": "epic-phone-001-fixture-authority-005",
+                                                     "target_build": "epic-phone-001-target-build-005",
+                                                     "evidence_cleanup": "epic-phone-001-evidence-cleanup-005"} or
                 artifact.get("fixed_plan_path") != AUTHORITY_PATHS[0].as_posix() or
-                artifact.get("fixed_token_path") != (RUN_REL / "security-go-c0p.local.json").as_posix() or
-                artifact.get("fixed_result_path") != (RUN_REL / "public-safe/c0p-result.local.json").as_posix() or
-                artifact.get("fixed_attempt_marker_path") != (RUN_REL / "c0p-attempt.local.json").as_posix() or
+                artifact.get("fixed_token_path") != (RUN_REL / "security-go-c0p-005.local.json").as_posix() or
+                artifact.get("fixed_result_path") != (RUN_REL / "public-safe/c0p-005-result.local.json").as_posix() or
+                artifact.get("fixed_attempt_marker_path") != (RUN_REL / "c0p-005-attempt.local.json").as_posix() or
                 artifact.get("fixed_secret_source") != DESTINATION_REL.as_posix() or
                 artifact.get("attempt_marker_schema") != "epic-phone-001-c0p-attempt-v1" or
                 artifact.get("security_token_format") != f"GO_EPIC_PHONE_001_C0P_LOCAL_PRESENCE__{RUN_ID}__<64_lowercase_hex>" or
@@ -432,12 +603,40 @@ def _validate_authority_artifact(path: Path, item: Mapping[str, Any], now: datet
 
 
 def _read_plan(now: datetime) -> tuple[Mapping[str, Any], str]:
-    text = os.environ.get(PLAN_ENV)
-    if text is None: raise ProvisionError("plan_missing")
-    try: raw = text.encode("utf-8", errors="strict")
-    except UnicodeError as exc: raise ProvisionError("plan_encoding_invalid") from exc
+    raw = _read_fixed_input(PROVISION_PLAN_REL, "plan")
     plan = _strict_json(raw, "plan")
-    return plan, _validate_plan(plan, raw, now)
+    digest = _sha(raw)
+    go = _strict_json(_read_fixed_input(PROVISION_GO_REL, "security_go"), "security_go")
+    try:
+        expected = build_security_go(plan_sha256=digest, issued_at_utc=go["issued_at_utc"],
+                                     expires_at_utc=go["expires_at_utc"])
+    except (KeyError, TypeError) as exc:
+        raise ProvisionError("security_go_contract_invalid") from exc
+    if not _exact(go, expected): raise ProvisionError("security_go_contract_invalid")
+    issued = _utc(go["issued_at_utc"], "security_go_issued")
+    expires = _utc(go["expires_at_utc"], "security_go_expires")
+    if not issued <= now < expires or expires > _utc(plan.get("expires_at_utc"), "expires"):
+        raise ProvisionError("security_go_expired")
+    return plan, _validate_plan(plan, raw, now, go["literal_go"])
+
+
+def _read_fixed_input(relative: Path, label: str, maximum: int = MAX_PLAN) -> bytes:
+    path = REPO_ROOT / relative
+    _safe_chain(path, leaf_file=True)
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= maximum:
+        raise ProvisionError(f"{label}_size_invalid")
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        opened = os.fstat(fd); data = os.read(fd, maximum + 1); after = os.fstat(fd)
+    finally:
+        os.close(fd)
+    identity = (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
+    if ((opened.st_dev, opened.st_ino, opened.st_size, opened.st_mtime_ns) != identity or
+            (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns) != identity or
+            len(data) != before.st_size):
+        raise ProvisionError(f"{label}_identity_invalid")
+    return data
 
 
 def _fixed_drive(path: Path) -> None:
@@ -737,6 +936,18 @@ def _protected_write_new(path: Path, payload: bytes | bytearray, deadline_ns: in
         ctypes.windll.kernel32.LocalFree(descriptor)
 
 
+def _protected_provision_write_new(path: Path, payload: bytes, deadline_ns: int,
+                                   readback_counts: dict[str, int], counter: str) -> None:
+    budget_key = {"marker": "protected_marker_file_readback_max",
+                  "terminal_result": "protected_terminal_result_file_readback_max"}.get(counter)
+    if budget_key is None or type(readback_counts.get(counter)) is not int:
+        raise ProvisionError("protected_readback_budget_invalid")
+    readback_counts[counter] += 1
+    if readback_counts[counter] > BUDGET[budget_key]:
+        raise ProvisionError("protected_readback_budget_exhausted")
+    _protected_write_new(path, payload, deadline_ns, verify_before_write=False)
+
+
 def _secure_write_new(path: Path, payload: bytearray, deadline_ns: int) -> None:
     _protected_write_new(path, payload, deadline_ns, verify_before_write=True)
 
@@ -850,9 +1061,60 @@ def _real_console_api():
     return msvcrt
 
 
+def _readiness_result(plan_sha: str, terminal_state: str, exit_category: str) -> bytes:
+    return canonical_bytes({
+        "schema_version": READINESS_RESULT_SCHEMA, "epic_id": EPIC_ID, "run_id": RUN_ID,
+        "contour_id": READINESS_CONTOUR_ID, "attempt_id": READINESS_ATTEMPT_ID,
+        "result_alias": READINESS_RESULT_ALIAS,
+        "plan_sha256": plan_sha, "terminal_state": terminal_state,
+        "exit_category": exit_category,
+        "aggregate_counters": {"authority_artifact_read_count": 0, "secret_read_count": 0,
+                               "device_action_count": 0, "application_action_count": 0,
+                               "network_action_count": 0, "marker_file_created_count": 1,
+                               "result_file_created_count": 1},
+    }) + b"\n"
+
+
+def readiness_main(plan: Mapping[str, Any], plan_sha: str) -> int:
+    deadline_text = os.environ.get(DEADLINE_ENV)
+    if type(deadline_text) is not str or not deadline_text.isascii() or not deadline_text.isdigit(): return 2
+    deadline_ns = int(deadline_text)
+    operation_deadline_ns = deadline_ns - RESULT_FINALIZATION_RESERVE_SECONDS * 1_000_000_000
+    marker = REPO_ROOT / READINESS_MARKER_REL
+    result_path = REPO_ROOT / READINESS_RESULT_REL
+    marker_created_this_invocation = False
+    try:
+        _fixed_drive(REPO_ROOT.absolute())
+        _safe_chain(REPO_ROOT / RUN_REL)
+        if _lstat(marker) is not None or _lstat(result_path) is not None:
+            raise ProvisionError("readiness_attempt_consumed")
+        _check_deadline(operation_deadline_ns)
+        marker_payload = canonical_bytes({"schema_version": READINESS_MARKER_SCHEMA,
+                                          "epic_id": EPIC_ID, "run_id": RUN_ID,
+                                          "contour_id": READINESS_CONTOUR_ID,
+                                          "attempt_id": READINESS_ATTEMPT_ID,
+                                          "plan_sha256": plan_sha,
+                                          "attempt_state": "started_before_console_probe"}) + b"\n"
+        _protected_write_new(marker, marker_payload, operation_deadline_ns, verify_before_write=False)
+        marker_created_this_invocation = True
+        _check_deadline(operation_deadline_ns); _preflight_real_console(); _check_deadline(operation_deadline_ns)
+        _protected_write_new(result_path, _readiness_result(plan_sha, "ready", "success"),
+                             deadline_ns, verify_before_write=False)
+        return 0
+    except BaseException:
+        try:
+            if marker_created_this_invocation and _lstat(result_path) is None:
+                _protected_write_new(result_path, _readiness_result(plan_sha, "blocked", "blocked"),
+                                     deadline_ns, verify_before_write=False)
+        except BaseException:
+            pass
+        return 2
+
+
 def execute(now: datetime | None = None) -> dict[str, Any]:
     current = now or _utc_now(); plan, plan_sha = _read_plan(current)
     deadline_ns, conservative_execution_end = _deadline(plan, current)
+    operation_deadline_ns = deadline_ns - RESULT_FINALIZATION_RESERVE_SECONDS * 1_000_000_000
     plan_expires = _utc(plan["expires_at_utc"], "expires")
     if plan_expires < conservative_execution_end:
         raise ProvisionError("plan_runtime_coverage_invalid")
@@ -890,9 +1152,11 @@ def execute(now: datetime | None = None) -> dict[str, Any]:
     for expected_path, item in zip(AUTHORITY_PATHS, plan["authority_artifacts"]):
         _validate_authority_artifact(expected_path, item, current, required_until, plan)
     run_parent = REPO_ROOT / RUN_REL; _safe_chain(run_parent)
-    _check_deadline(deadline_ns); _verify_path_acl(run_parent, exact_secret=False); _check_deadline(deadline_ns)
+    _check_deadline(operation_deadline_ns); _verify_path_acl(run_parent, exact_secret=False); _check_deadline(operation_deadline_ns)
     marker = REPO_ROOT / MARKER_REL
-    if _lstat(marker) is not None: raise ProvisionError("attempt_consumed")
+    result_path = REPO_ROOT / RESULT_REL
+    protected_readback_counts = {"marker": 0, "terminal_result": 0}
+    if _lstat(marker) is not None or _lstat(result_path) is not None: raise ProvisionError("attempt_consumed")
     secret_parent = (REPO_ROOT / DESTINATION_REL).parent; parent_info = _lstat(secret_parent)
     created = 0
     if plan["expected_secret_parent_state"] == "absent":
@@ -900,28 +1164,51 @@ def execute(now: datetime | None = None) -> dict[str, Any]:
         _safe_chain(secret_parent.parent)
     else:
         _safe_chain(secret_parent)
-        _check_deadline(deadline_ns); _verify_path_acl(secret_parent, exact_secret=True); _check_deadline(deadline_ns)
+        _check_deadline(operation_deadline_ns); _verify_path_acl(secret_parent, exact_secret=True); _check_deadline(operation_deadline_ns)
     destination = REPO_ROOT / DESTINATION_REL
     if _lstat(destination) is not None: raise ProvisionError("destination_present")
-    _check_deadline(deadline_ns); _preflight_real_console(); _check_deadline(deadline_ns)
+    _check_deadline(operation_deadline_ns); _preflight_real_console(); _check_deadline(operation_deadline_ns)
     marker_payload = canonical_bytes({"attempt_state": "started_before_secret_input", "contour_id": CONTOUR_ID,
                                       "plan_sha256": plan_sha, "run_id": RUN_ID, "schema_version": MARKER_SCHEMA}) + b"\n"
-    _protected_write_new(marker, marker_payload, deadline_ns, verify_before_write=False)
-    if plan["expected_secret_parent_state"] == "absent":
-        _check_deadline(deadline_ns); _secure_mkdir(secret_parent, deadline_ns); _check_deadline(deadline_ns); created = 1
-        _check_deadline(deadline_ns); _verify_path_acl(secret_parent, exact_secret=True); _check_deadline(deadline_ns)
-    phone = otp = payload = None; budget = [0]
+    _protected_provision_write_new(marker, marker_payload, operation_deadline_ns,
+                                   protected_readback_counts, "marker")
+    stage = "marker_created"
+    created_for_result: int | str = 0 if plan["expected_secret_parent_state"] == "present" else "unknown"
+    phone = otp = payload = None
     try:
-        phone = _read_console_digits(10, 10, deadline_ns, budget, "Synthetic fixture input 1/2: ")
-        otp = _read_console_digits(4, 8, deadline_ns, budget, "Synthetic fixture input 2/2: ")
+        if plan["expected_secret_parent_state"] == "absent":
+            _check_deadline(operation_deadline_ns); _secure_mkdir(secret_parent, operation_deadline_ns); _check_deadline(operation_deadline_ns); created = 1; created_for_result = 1
+            _check_deadline(operation_deadline_ns); _verify_path_acl(secret_parent, exact_secret=True); _check_deadline(operation_deadline_ns)
+        stage = "secret_parent_ready"
+        budget = [0]; stage = "console_input_in_progress"
+        phone = _read_console_digits(10, 10, operation_deadline_ns, budget, "Synthetic fixture input 1/2: ")
+        otp = _read_console_digits(4, 8, operation_deadline_ns, budget, "Synthetic fixture input 2/2: ")
         payload = bytearray(b"EPIC_PHONE_001_PHONE_SUFFIX="); payload.extend(phone); payload.extend(b"\nEPIC_PHONE_001_OTP="); payload.extend(otp); payload.extend(b"\n")
         if len(payload) > MAX_PAYLOAD: raise ProvisionError("payload_budget_exhausted")
-        _secure_write_new(destination, payload, deadline_ns)
+        stage = "destination_write_in_progress"
+        _secure_write_new(destination, payload, operation_deadline_ns)
+        stage = "destination_written"
+        _check_deadline(operation_deadline_ns)
+        terminal = canonical_bytes(_terminal_result(plan_sha, terminal_state="fixture_provisioned",
+                                                    exit_category="success", directory_created=created_for_result,
+                                                    execution_stage="terminal_result_finalization")) + b"\n"
+        _protected_provision_write_new(result_path, terminal, deadline_ns,
+                                       protected_readback_counts, "terminal_result")
+    except BaseException:
+        try:
+            if _lstat(result_path) is None:
+                terminal = canonical_bytes(_terminal_result(plan_sha, terminal_state="blocked_after_attempt",
+                                                            exit_category="blocked", directory_created=created_for_result,
+                                                            execution_stage=stage)) + b"\n"
+                _protected_provision_write_new(result_path, terminal, deadline_ns,
+                                               protected_readback_counts, "terminal_result")
+        except BaseException:
+            pass
+        raise
     finally:
         for value in (phone, otp, payload):
             if isinstance(value, bytearray):
                 for index in range(len(value)): value[index] = 0
-    _check_deadline(deadline_ns)
     result = _aggregate(created)
     result.update({"git_head_validation_count": git_check_count,
                    "git_metadata_content_read_count": git_content_count,
@@ -932,7 +1219,6 @@ def execute(now: datetime | None = None) -> dict[str, Any]:
 def main() -> int:
     try: result = execute()
     except BaseException: return 2
-    print(json.dumps(result, ensure_ascii=True, sort_keys=True, separators=(",", ":")))
     return 0
 
 

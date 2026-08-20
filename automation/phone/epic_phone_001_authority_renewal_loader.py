@@ -16,12 +16,12 @@ from pathlib import Path
 
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-authority-renewal"
-RENEWAL_ID = "authority-renewal-002"
-AUTHORITY_SET_ID = "c0p-authority-004"
-PREP_ATTEMPT_ID = "c0p-prep-004"
-SECURITY_ALIAS = "epic-phone-001-security-c0p-004"
+RENEWAL_ID = "authority-renewal-003"
+AUTHORITY_SET_ID = "c0p-authority-005"
+PREP_ATTEMPT_ID = "c0p-prep-005"
+SECURITY_ALIAS = "epic-phone-001-security-c0p-005"
 PLAN_SCHEMA = "epic-phone-001-authority-renewal-plan-v1"
-PLAN_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-plan.json")
+PLAN_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-003-plan.json")
 EXECUTOR_REL = Path("automation/phone/epic_phone_001_authority_renewal.py")
 GO_ENV = "EPIC_PHONE_001_AUTHORITY_RENEWAL_GO"
 GO_PREFIX = f"GO_EPIC_PHONE_001_AUTHORITY_RENEWAL__{RUN_ID}__"
@@ -32,16 +32,16 @@ NO_MUTATOR_SCOPE = {
                      "gitdir_HEAD", "optional_active_loose_ref_component_probe",
                      "exact_active_loose_ref_or_packed_refs"],
     "new_outputs": [
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-002-attempt.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/c0p-plan.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/fixture-authority-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/target-build-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/evidence-cleanup-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/authority-renewal-result.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-003-attempt.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/c0p-plan.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/fixture-authority-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/target-build-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/evidence-cleanup-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/authority-renewal-result.local.json",
     ],
-    "public_inputs": ["docs/qa/phone/epic-phone-001-authority-renewal-candidate.json",
-                      "docs/qa/phone/epic-phone-001-authority-renewal-plan.json"],
+    "public_inputs": ["docs/qa/phone/epic-phone-001-authority-renewal-003-candidate.json",
+                      "docs/qa/phone/epic-phone-001-authority-renewal-003-plan.json"],
     "repository_inputs": ["six_exact_bound_sources", ".gitignore"],
 }
 MAX_PLAN = 49152
@@ -149,12 +149,12 @@ def _plan(root: Path, wall: datetime):
              "prep_attempt_id": PREP_ATTEMPT_ID, "security_alias": SECURITY_ALIAS, "classification": "PROD_SAFE",
              "scope_qualifier": "ZERO_SECRET_ZERO_DEVICE_CREATE_NEW_VERSIONED_AUTHORITY_RENEWAL",
              "plan_path": PLAN_REL.as_posix(),
-             "marker_path": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-002-attempt.local.json",
-             "set_root": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004",
-             "result_path": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/authority-renewal-result.local.json"}
+             "marker_path": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-003-attempt.local.json",
+             "set_root": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005",
+             "result_path": ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/authority-renewal-result.local.json"}
     if any(type(plan.get(k)) is not type(v) or plan.get(k) != v for k, v in fixed.items()): raise ValueError
     authority = plan.get("owner_no_mutator_authority")
-    expected_authority = {"alias": "epic-phone-001-owner-authority-renewal-no-mutator-002",
+    expected_authority = {"alias": "epic-phone-001-owner-authority-renewal-no-mutator-003",
                           "expires_at_utc": authority.get("expires_at_utc") if type(authority) is dict else None,
                           "scope": NO_MUTATOR_SCOPE, "status": "accepted_by_owner"}
     if not _exact(authority, expected_authority): raise ValueError
@@ -162,7 +162,7 @@ def _plan(root: Path, wall: datetime):
                                           _parse_utc(authority["expires_at_utc"]))
     if not issued <= wall < expires or expires <= issued or expires - issued > timedelta(minutes=10): raise ValueError
     if expires < wall + timedelta(seconds=301) or authority_expires < wall + timedelta(seconds=301): raise ValueError
-    if (not _exact(plan.get("budget"), BUDGET) or plan.get("candidate_path") != "docs/qa/phone/epic-phone-001-authority-renewal-candidate.json" or
+    if (not _exact(plan.get("budget"), BUDGET) or plan.get("candidate_path") != "docs/qa/phone/epic-phone-001-authority-renewal-003-candidate.json" or
             type(plan.get("candidate_bytes")) is not int or not 0 < plan["candidate_bytes"] <= MAX_PLAN or
             type(plan.get("candidate_sha256")) is not str or len(plan["candidate_sha256"]) != 64 or
             plan.get("artifact_paths") != ARTIFACT_PATHS or

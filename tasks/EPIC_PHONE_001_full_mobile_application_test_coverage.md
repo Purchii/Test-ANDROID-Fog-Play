@@ -430,6 +430,89 @@ binding HEAD. Renewal `002` requires that HEAD, fresh owner no-mutator
 authority `002`, a combined weekly provision envelope, a canonical plan and
 Security GO. No default integration or product/runtime coverage is claimed.
 
+### Generation005 repository-only snapshot
+
+Generation `005` is accepted for repository code only at exact source bindings:
+renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+`36391`, renewal loader
+`885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
+`13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
+`42226`, controller
+`6b0cec02f5025a7e4dd295d780485d1071760f4f6f4af7cc901ac9665952a21e` /
+`59275`, provisioner
+`ac20cfe9d1f8a3789ea7e5705884518149491d439507c5656e95a1e25224b734` /
+`77817`, loader
+`d5fc57447f339c8e05f7eb0aec15511e45d48e0233473bdc511f46f68e7d83a5` /
+`44933`; test bindings are
+`d49fed456d2ecd87269505b2cc1b351a0358dcfcd7d2c74612275f2722545e2c` /
+`24203`, `d1af8a933a007309e6e344fefd1da86b7967cb09252766e88fbd9c0b1e347b82` /
+`31084`, `a32eedee6d047b4535a444ddef23e5df78a9cb8ca79da3249ca3a4b024cd3159` /
+`33984`, `8e40fcc207de64ff41219b12f1870f4487676719270d2374912d903a8f13778c` /
+`60806`.
+
+The fixed generation identities are `authority-renewal-003`,
+`c0p-authority-005`, `c0p-prep-005` and
+`epic-phone-001-security-c0p-005`, with versioned renewal-003 public inputs and
+create-new output under `authority-sets/c0p-authority-005`. Owner-local
+provision is a distinct `fixture-owner-provision-003` one-shot using its own
+fixed local plan, Security GO, attempt marker and terminal result. It may run
+only after the separately authorized console-readiness one-shot
+`epic-phone-001-owner-local-console-readiness` /
+`owner-local-console-readiness-001`, which has independent plan/GO/marker/
+result paths. Readiness success grants no provision, C0P or runtime authority.
+
+Expected-GO builders only construct exact expected Security envelopes for
+independent review; they cannot issue, persist, infer or self-authorize a GO.
+Execution requires the final committed HEAD, fresh owner no-mutator003 and the
+remaining exact owner003 attestations, then a fresh canonical plan and distinct
+literal Security GO per one-shot. After an attempt marker is created, terminal-
+result publication is best effort and the attempt is consumed even if that
+result is absent; retry is forbidden.
+
+Focused verification is `200 passed`; safe suite `1639 passed, 4 skipped`;
+unfiltered suite is explicitly not green at `1658 passed, 4 skipped, 17 failed`
+because every failure requires unavailable ignored TASK-045 evidence. Public
+safety `443/0`, both hygiene modes, docs `187/0`, compile and diff pass. QA-A is
+`0/0/0 GO_REPOSITORY_ONLY`; QA-B is `0/0/0 GO` candidate; Security is
+`0/0/1 GO_REPOSITORY_CODE_ONLY`, with cooperative/no-hard-kill plus marker-only/
+result-best-effort/no-retry as the sole P2. No generation005 execution or runtime GO
+exists, and default integration remains blocked.
+
+### Renewal002/set004 execution and owner-local provision hard stop
+
+Renewal `002` used final authority-binding HEAD
+`efc6e85060e15d2d5fd0d4396e0960fbdd56bea8`, candidate SHA-256
+`d0188104c832e8b2c06615c5c6842b352f08edb8865d822daf24525b236255e8`
+(`10101` bytes) and plan SHA-256
+`ff61238ea89aadf61a706d79ae207980d44a87541f5ff30be348bdc194880f25`
+(`5360` bytes). Its one exact Security GO is consumed. The fixed result
+`authority_set_materialized` records four artifacts, one created directory,
+six created files and zero forbidden counters.
+
+The separate metadata preflight used only two exact fixed-path `lstat` checks
+and classified both the secret parent and destination as `absent`; it read no
+content and made no mutation. One authorized visible-console provision launch
+then used plan SHA-256
+`1452b9eb53afda76fd754ad173db15401ea007e209dd065dd9285399ab92672f`
+(`7312` bytes) and bootstrap SHA-256
+`910d084895ddffa9777df0999ab8e8aceb9a222966bcae1df2325dd3b98d1b1e`
+(`1596` bytes). The parent terminal aggregate was lost to output truncation and
+is not accepted as success or failure. A separately authorized post-attempt
+metadata check classified the fixed attempt marker and destination as
+`absent_at_checkpoint`. Confirmed mutation evidence count is `0`, while
+historical/transient mutation is `unknown_not_evidenced`; checkpoint absence
+must never be called proof of no mutation. Secret console entry or consumption
+remains `unknown` and is not inferred.
+
+Anomaly `EPICPHONE001-PROCESS-ANOMALY-089` preserves trigger, expectation,
+observation and the `unknown` cause; transport/context truncation is a
+hypothesis only. The single launch budget is exhausted. Provision GO and all
+set004 passports expired at `2026-08-20T11:44:25Z`; they are immutable and
+non-reusable. C0P did not run, and device/app/auth/runtime/network/payment
+counters remain exact zero. A future attempt requires a fresh versioned
+authority generation and independent review; absence of the prior attempt
+marker is not retry authority.
+
 The C1 plan hash is SHA-256 over canonical NFC-normalized, key-sorted, minified
 UTF-8 JSON. The literal token format is
 `GO_EPIC_PHONE_001_C1_LAUNCH_FREE_READINESS__epic-phone-001-20260816-r01__<64_lowercase_plan_sha256>`.

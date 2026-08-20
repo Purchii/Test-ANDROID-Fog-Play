@@ -231,14 +231,14 @@ def test_fixed_epic_run_contour_aliases_and_paths_are_exact():
     assert controller.TARGET_ALIAS == "phone-current-001"
     assert controller.BUILD_ALIAS == "task058-selected-phone-full-001"
     assert controller.FIXTURE_ALIAS == "epic-phone-001-fixture-001"
-    assert controller.AUTHORITY_SET_ID == "c0p-authority-004"
-    assert controller.AUTHORITY_RENEWAL_ID == "authority-renewal-002"
-    assert controller.C0P_PREP_ATTEMPT_ID == "c0p-prep-004"
-    assert controller.FIXTURE_PASSPORT_ALIAS == "epic-phone-001-fixture-authority-004"
-    assert controller.TARGET_BUILD_PASSPORT_ALIAS == "epic-phone-001-target-build-004"
-    assert controller.EVIDENCE_CLEANUP_PASSPORT_ALIAS == "epic-phone-001-evidence-cleanup-004"
-    assert controller.C0P_SECURITY_ALIAS == "epic-phone-001-security-c0p-004"
-    assert controller.AUTHORITY_SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-004")
+    assert controller.AUTHORITY_SET_ID == "c0p-authority-005"
+    assert controller.AUTHORITY_RENEWAL_ID == "authority-renewal-003"
+    assert controller.C0P_PREP_ATTEMPT_ID == "c0p-prep-005"
+    assert controller.FIXTURE_PASSPORT_ALIAS == "epic-phone-001-fixture-authority-005"
+    assert controller.TARGET_BUILD_PASSPORT_ALIAS == "epic-phone-001-target-build-005"
+    assert controller.EVIDENCE_CLEANUP_PASSPORT_ALIAS == "epic-phone-001-evidence-cleanup-005"
+    assert controller.C0P_SECURITY_ALIAS == "epic-phone-001-security-c0p-005"
+    assert controller.AUTHORITY_SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-005")
     assert controller.C1_SECURITY_ALIAS == "epic-phone-001-security-c1-001"
     assert controller.SECRET_SOURCE_REL.as_posix() == ".qa_local/secrets/qa_user.env"
     assert controller.SERIAL_ALIAS_MAP_REL.as_posix() == ".qa_local/devices/serial_alias_map.json"
@@ -250,9 +250,9 @@ def test_fixed_epic_run_contour_aliases_and_paths_are_exact():
 def test_c0p_is_a_separate_fixed_token_contour_with_guarded_interface():
     plan = controller.c0p_plan("a" * 40, "b" * 64, ISSUED, EXPIRES)
     assert plan["contour_id"] == "epic-phone-001-c0p-local-presence"
-    assert plan["security_alias"] == "epic-phone-001-security-c0p-004"
+    assert plan["security_alias"] == "epic-phone-001-security-c0p-005"
     assert plan["fixed_plan_path"].endswith("/c0p-plan.local.json")
-    assert plan["fixed_token_path"].endswith("/security-go-c0p.local.json")
+    assert plan["fixed_token_path"].endswith("/security-go-c0p-005.local.json")
     assert plan["public_result_allowlist"] == [
         "required_field_count",
         "required_fields_present",

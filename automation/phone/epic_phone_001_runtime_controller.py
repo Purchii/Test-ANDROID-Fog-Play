@@ -27,21 +27,21 @@ EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-c1-launch-free-readiness"
 C0P_CONTOUR_ID = "epic-phone-001-c0p-local-presence"
-AUTHORITY_SET_ID = "c0p-authority-004"
-AUTHORITY_RENEWAL_ID = "authority-renewal-002"
-C0P_PREP_ATTEMPT_ID = "c0p-prep-004"
+AUTHORITY_SET_ID = "c0p-authority-005"
+AUTHORITY_RENEWAL_ID = "authority-renewal-003"
+C0P_PREP_ATTEMPT_ID = "c0p-prep-005"
 TARGET_ALIAS = "phone-current-001"
 BUILD_ALIAS = "task058-selected-phone-full-001"
 FIXTURE_ALIAS = "epic-phone-001-fixture-001"
-FIXTURE_PASSPORT_ALIAS = "epic-phone-001-fixture-authority-004"
-TARGET_BUILD_PASSPORT_ALIAS = "epic-phone-001-target-build-004"
-EVIDENCE_CLEANUP_PASSPORT_ALIAS = "epic-phone-001-evidence-cleanup-004"
-C0P_SECURITY_ALIAS = "epic-phone-001-security-c0p-004"
+FIXTURE_PASSPORT_ALIAS = "epic-phone-001-fixture-authority-005"
+TARGET_BUILD_PASSPORT_ALIAS = "epic-phone-001-target-build-005"
+EVIDENCE_CLEANUP_PASSPORT_ALIAS = "epic-phone-001-evidence-cleanup-005"
+C0P_SECURITY_ALIAS = "epic-phone-001-security-c0p-005"
 C1_SECURITY_ALIAS = "epic-phone-001-security-c1-001"
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUN_ROOT_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
-AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-004"
+AUTHORITY_SET_ROOT_REL = RUN_ROOT_REL / "authority-sets/c0p-authority-005"
 SECRET_SOURCE_REL = Path(".qa_local/secrets/qa_user.env")
 SERIAL_ALIAS_MAP_REL = Path(".qa_local/devices/serial_alias_map.json")
 PLAN_REL = RUN_ROOT_REL / "controller-plan.local.json"
@@ -50,12 +50,12 @@ FIXTURE_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "fixture-authority-passport.loca
 TARGET_BUILD_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "target-build-passport.local.json"
 EVIDENCE_CLEANUP_PASSPORT_REL = AUTHORITY_SET_ROOT_REL / "evidence-cleanup-passport.local.json"
 SECURITY_GO_C1_REL = RUN_ROOT_REL / "security-go-c1.local.json"
-SECURITY_GO_C0P_REL = RUN_ROOT_REL / "security-go-c0p.local.json"
+SECURITY_GO_C0P_REL = RUN_ROOT_REL / "security-go-c0p-005.local.json"
 RAW_REL = RUN_ROOT_REL / "raw"
 CHECKPOINTS_REL = RUN_ROOT_REL / "checkpoints"
 PUBLIC_SAFE_REL = RUN_ROOT_REL / "public-safe"
-C0P_RESULT_REL = PUBLIC_SAFE_REL / "c0p-result.local.json"
-C0P_ATTEMPT_REL = RUN_ROOT_REL / "c0p-attempt.local.json"
+C0P_RESULT_REL = PUBLIC_SAFE_REL / "c0p-005-result.local.json"
+C0P_ATTEMPT_REL = RUN_ROOT_REL / "c0p-005-attempt.local.json"
 
 PLAN_SCHEMA = "epic-phone-001-controller-plan-v1"
 FIXTURE_PASSPORT_SCHEMA = "epic-phone-001-fixture-authority-passport-v2"
@@ -1017,7 +1017,7 @@ def _assert_c0p_one_shot_paths_clear() -> None:
     candidates = (
         REPO_ROOT / C0P_ATTEMPT_REL,
         REPO_ROOT / C0P_RESULT_REL,
-        REPO_ROOT / PUBLIC_SAFE_REL / "c0p-result.local.json.tmp",
+        REPO_ROOT / PUBLIC_SAFE_REL / "c0p-005-result.local.json.tmp",
     )
     if any(path.exists() or path.is_symlink() for path in candidates):
         raise ContractError("c0p_one_shot_path_already_exists")
@@ -1141,7 +1141,7 @@ def _write_c0p_result(result: Mapping[str, Any]) -> None:
     _assert_fixed_ignored_dir(parent, "c0p_result_parent")
     if output.exists() or output.is_symlink():
         raise ContractError("c0p_result_already_exists_one_shot_only")
-    temporary = parent / "c0p-result.local.json.tmp"
+    temporary = parent / "c0p-005-result.local.json.tmp"
     if temporary.exists() or temporary.is_symlink():
         raise ContractError("c0p_result_temporary_path_not_clean")
     data = canonical_plan_bytes(result)
@@ -1161,7 +1161,7 @@ def _assert_c0p_result_output_clean() -> None:
     output = REPO_ROOT / C0P_RESULT_REL
     parent = output.parent
     _assert_fixed_ignored_dir(parent, "c0p_result_parent")
-    temporary = parent / "c0p-result.local.json.tmp"
+    temporary = parent / "c0p-005-result.local.json.tmp"
     if output.exists() or output.is_symlink():
         raise ContractError("c0p_result_already_exists_one_shot_only")
     if temporary.exists() or temporary.is_symlink():

@@ -18,27 +18,27 @@ from typing import Any, Mapping
 EPIC_ID = "EPIC-PHONE-001"
 RUN_ID = "epic-phone-001-20260816-r01"
 CONTOUR_ID = "epic-phone-001-authority-renewal"
-RENEWAL_ID = "authority-renewal-002"
-AUTHORITY_SET_ID = "c0p-authority-004"
-PREP_ATTEMPT_ID = "c0p-prep-004"
-SECURITY_ALIAS = "epic-phone-001-security-c0p-004"
-NO_MUTATOR_ALIAS = "epic-phone-001-owner-authority-renewal-no-mutator-002"
+RENEWAL_ID = "authority-renewal-003"
+AUTHORITY_SET_ID = "c0p-authority-005"
+PREP_ATTEMPT_ID = "c0p-prep-005"
+SECURITY_ALIAS = "epic-phone-001-security-c0p-005"
+NO_MUTATOR_ALIAS = "epic-phone-001-owner-authority-renewal-no-mutator-003"
 NO_MUTATOR_SCOPE = {
     "ancestors": "all_lexical_ancestors_of_every_listed_or_resolved_path",
     "git_metadata": [".git_marker", "resolved_local_gitdir", "optional_resolved_local_commondir",
                      "gitdir_HEAD", "optional_active_loose_ref_component_probe",
                      "exact_active_loose_ref_or_packed_refs"],
     "new_outputs": [
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-002-attempt.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/c0p-plan.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/fixture-authority-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/target-build-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/evidence-cleanup-passport.local.json",
-        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-004/authority-renewal-result.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-renewal-003-attempt.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/c0p-plan.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/fixture-authority-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/target-build-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/evidence-cleanup-passport.local.json",
+        ".qa_local/evidence/epic-phone-001/epic-phone-001-20260816-r01/authority-sets/c0p-authority-005/authority-renewal-result.local.json",
     ],
-    "public_inputs": ["docs/qa/phone/epic-phone-001-authority-renewal-candidate.json",
-                      "docs/qa/phone/epic-phone-001-authority-renewal-plan.json"],
+    "public_inputs": ["docs/qa/phone/epic-phone-001-authority-renewal-003-candidate.json",
+                      "docs/qa/phone/epic-phone-001-authority-renewal-003-plan.json"],
     "repository_inputs": ["six_exact_bound_sources", ".gitignore"],
 }
 CLASSIFICATION = "PROD_SAFE"
@@ -55,8 +55,8 @@ PROVISION_LOADER_REL = Path("automation/phone/epic_phone_001_owner_local_fixture
 GITIGNORE_REL = Path(".gitignore")
 SOURCE_PATHS = (EXECUTOR_REL, LOADER_REL, C0P_PREP_REL, CONTROLLER_REL, PROVISIONER_REL, PROVISION_LOADER_REL)
 
-CANDIDATE_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-candidate.json")
-PLAN_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-plan.json")
+CANDIDATE_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-003-candidate.json")
+PLAN_REL = Path("docs/qa/phone/epic-phone-001-authority-renewal-003-plan.json")
 RUN_REL = Path(".qa_local/evidence/epic-phone-001") / RUN_ID
 SET_PARENT_REL = RUN_REL / "authority-sets"
 SET_ROOT_REL = SET_PARENT_REL / AUTHORITY_SET_ID
@@ -181,15 +181,15 @@ def build_authority_payloads(*, repository_head: str, controller_sha256: str,
            "classification": "PROD_CONDITIONAL", "execution_status": "planned_separate_literal_go_required_not_run",
            "target_alias": "phone-current-001", "build_alias": "task058-selected-phone-full-001",
            "fixture_alias": "epic-phone-001-fixture-001",
-           "passport_aliases": {"fixture_authority": "epic-phone-001-fixture-authority-004",
-                                "target_build": "epic-phone-001-target-build-004",
-                                "evidence_cleanup": "epic-phone-001-evidence-cleanup-004"},
+           "passport_aliases": {"fixture_authority": "epic-phone-001-fixture-authority-005",
+                                "target_build": "epic-phone-001-target-build-005",
+                                "evidence_cleanup": "epic-phone-001-evidence-cleanup-005"},
            "security_alias": SECURITY_ALIAS, "repository_head": repository_head,
            "controller_source_sha256": controller_sha256, "fixed_plan_path": C0P_PLAN_REL.as_posix(),
-           "fixed_token_path": (RUN_REL / "security-go-c0p.local.json").as_posix(),
+           "fixed_token_path": (RUN_REL / "security-go-c0p-005.local.json").as_posix(),
            "fixed_secret_source": ".qa_local/secrets/qa_user.env",
-           "fixed_result_path": (RUN_REL / "public-safe/c0p-result.local.json").as_posix(),
-           "fixed_attempt_marker_path": (RUN_REL / "c0p-attempt.local.json").as_posix(),
+           "fixed_result_path": (RUN_REL / "public-safe/c0p-005-result.local.json").as_posix(),
+           "fixed_attempt_marker_path": (RUN_REL / "c0p-005-attempt.local.json").as_posix(),
            "attempt_marker_schema": "epic-phone-001-c0p-attempt-v1",
            "public_result_allowlist": ["required_field_count", "required_fields_present", "unexpected_fields_absent",
                                        "phone_format_policy_pass", "otp_format_policy_pass"],

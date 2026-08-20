@@ -1321,6 +1321,78 @@ no-mutator authority `002`, a combined weekly provision envelope, a canonical
 plan and a fresh literal Security GO. Provisioner/C0P/C1/auth/runtime remain
 blocked.
 
+### Generation005 repository-code-only gate
+
+Generation005 repository acceptance requires these exact source hash/size
+bindings: renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+`36391`, renewal loader
+`885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
+`13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
+`42226`, controller
+`6b0cec02f5025a7e4dd295d780485d1071760f4f6f4af7cc901ac9665952a21e` /
+`59275`, provisioner
+`ac20cfe9d1f8a3789ea7e5705884518149491d439507c5656e95a1e25224b734` /
+`77817`, loader
+`d5fc57447f339c8e05f7eb0aec15511e45d48e0233473bdc511f46f68e7d83a5` /
+`44933`, and four tests `d49fed456d2ecd87269505b2cc1b351a0358dcfcd7d2c74612275f2722545e2c` /
+`24203`, `d1af8a933a007309e6e344fefd1da86b7967cb09252766e88fbd9c0b1e347b82` /
+`31084`, `a32eedee6d047b4535a444ddef23e5df78a9cb8ca79da3249ca3a4b024cd3159` /
+`33984`, `8e40fcc207de64ff41219b12f1870f4487676719270d2374912d903a8f13778c` /
+`60806`.
+
+Required static gates are focused `200 passed`; safe suite `1639 passed,
+4 skipped`; public safety `443/0`; both hygiene modes; docs `187/0`; compile
+and diff PASS. The unfiltered suite must remain explicitly not green at
+`1658 passed, 4 skipped, 17 failed`, with every failure confined to unavailable
+ignored TASK-045 evidence. Expired untracked execution-input JSON must remain
+removed before the public-safe-tree gate.
+
+Exact fixed identities are renewal003/set005/prep005/security-c0p005.
+Console readiness attempt001 and fixture provision attempt003 must remain
+separate one-shot contours with separate fixed plan/GO/marker/result paths.
+Readiness may only prove local console readiness; it cannot issue or reuse the
+provision GO. Provision cannot issue C0P/runtime GO. Expected-GO builders are
+expected-envelope constructors only and must never be treated as self-GO.
+
+Final QA-A is `0/0/0 GO_REPOSITORY_ONLY`; QA-B is `0/0/0 GO` candidate;
+Security is `0/0/1 GO_REPOSITORY_CODE_ONLY`. The retained P2 is cooperative/
+no-hard-kill plus marker-only/result-best-effort/no-retry: after marker
+creation, missing terminal-result publication still consumes the attempt. Execution
+requires the final committed HEAD, fresh owner no-mutator003 and all other
+exact owner003 attestations, then a fresh canonical plan and distinct literal
+Security GO per contour. No generation005 authority set, readiness, provision,
+C0P or runtime contour has executed. Default integration remains blocked.
+
+### Renewal002/set004 execution and provision-result gate
+
+Renewal002/set004 is accepted as an executed authority-materialization contour
+only at repository HEAD
+`efc6e85060e15d2d5fd0d4396e0960fbdd56bea8`, candidate
+`d0188104c832e8b2c06615c5c6842b352f08edb8865d822daf24525b236255e8`
+(`10101` bytes) and plan
+`ff61238ea89aadf61a706d79ae207980d44a87541f5ff30be348bdc194880f25`
+(`5360` bytes). Its required fixed result is exactly four artifacts, one
+created directory, six created files and zero forbidden counters. The renewal
+GO is consumed.
+
+The owner-local provision result gate does not pass. Its exact public plan is
+`1452b9eb53afda76fd754ad173db15401ea007e209dd065dd9285399ab92672f`
+(`7312` bytes) and bootstrap is
+`910d084895ddffa9777df0999ab8e8aceb9a222966bcae1df2325dd3b98d1b1e`
+(`1596` bytes). One visible-console launch occurred, but no fixed parent
+terminal aggregate was retained. Preflight parent/destination and post-attempt
+marker/destination are metadata-classified `absent_at_checkpoint`. This proves
+only zero confirmed mutation evidence at that checkpoint. Historical/transient
+mutation is `unknown_not_evidenced`, and the checkpoint is never proof of no
+mutation. Whether console values were entered or consumed remains `unknown`.
+
+The launch budget is exhausted. Provision GO and set004 passports expired at
+`2026-08-20T11:44:25Z` and fail every replay/retry/extension/relabel gate.
+Anomaly 089 is mandatory append-only evidence. C0P, C1, device, app,
+authentication, runtime/UI, network, payment and default integration remain
+blocked. No later gate may infer fixture provisioning from renewal success,
+the truncated launch, or absent marker/destination metadata.
+
 ### Resumed controller-construction gate
 
 Owner authority now confirms `epic-phone-001-fixture-001` is synthetic/test-

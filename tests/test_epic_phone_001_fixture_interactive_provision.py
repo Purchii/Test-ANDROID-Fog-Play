@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import inspect
 import json
+import os
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
@@ -12,6 +13,8 @@ import pytest
 import automation.phone.epic_phone_001_fixture_interactive_provision as provision
 import automation.phone.epic_phone_001_owner_local_fixture_loader as loader
 import automation.phone.epic_phone_001_authority_renewal as renewal
+import automation.phone.epic_phone_001_c0p_prep as prep
+import automation.phone.epic_phone_001_runtime_controller as controller
 
 
 def _stamp(value: datetime) -> str:
@@ -48,7 +51,7 @@ def _setup(tmp_path: Path, monkeypatch, *, parent_state: str = "present"):
         issued_at_utc=_stamp(now - timedelta(seconds=5)), expires_at_utc=expiry,
         retention_expires_at_utc=expiry)
     artifact_contracts = (
-        ("epic-phone-001-security-c0p-004", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc", expiry),
+        ("epic-phone-001-security-c0p-005", "execution_status", "planned_separate_literal_go_required_not_run", "expires_at_utc", expiry),
         ("epic-phone-001-fixture-001", "revoked", False, "expires_at_utc", expiry),
         ("phone-current-001", "target_authorized", True, "expires_at_utc", expiry),
         ("policy_readiness_only", "execution_evidence", False, "retention_expires_at_utc", expiry),
@@ -85,6 +88,20 @@ def _setup(tmp_path: Path, monkeypatch, *, parent_state: str = "present"):
     )
     raw = provision.canonical_bytes(plan)
     monkeypatch.setenv(provision.PLAN_ENV, raw.decode("utf-8")); monkeypatch.setenv(provision.GO_ENV, provision.GO_PREFIX + hashlib.sha256(raw).hexdigest())
+    real_fixed_input = provision._read_fixed_input
+    def fixed_input(relative, label, maximum=provision.MAX_PLAN):
+        if relative == provision.PROVISION_PLAN_REL:
+            return os.environ[provision.PLAN_ENV].encode("utf-8")
+        if relative == provision.PROVISION_GO_REL:
+            plan_raw = os.environ[provision.PLAN_ENV].encode("utf-8")
+            current_plan = json.loads(plan_raw)
+            go = provision.build_security_go(plan_sha256=hashlib.sha256(plan_raw).hexdigest(),
+                                              issued_at_utc=current_plan["issued_at_utc"],
+                                              expires_at_utc=current_plan["expires_at_utc"])
+            go["literal_go"] = os.environ.get(provision.GO_ENV)
+            return provision.canonical_bytes(go)
+        return real_fixed_input(relative, label, maximum)
+    monkeypatch.setattr(provision, "_read_fixed_input", fixed_input)
     monkeypatch.setenv(provision.BOOTSTRAP_WALL_ENV, _stamp(now)); monkeypatch.setenv(provision.DEADLINE_ENV, str(121_000_000_000))
     monkeypatch.setattr(provision, "_verify_path_acl", lambda path, **kwargs: None)
     return SimpleNamespace(now=now, root=root, plan=plan, bootstrap=bootstrap)
@@ -94,23 +111,32 @@ def test_exact_security_literals_and_bootstrap_never_parses_plan():
     bootstrap = provision.build_inline_bootstrap(loader_bytes=10, loader_sha256="a" * 64)
     assert provision.CONTOUR_ID == "epic-phone-001-owner-local-fixture-provision"
     assert provision.SCHEMA == "epic-phone-001-owner-local-fixture-provision-plan-v1"
-    assert provision.MARKER_REL.name == "fixture-owner-provision-attempt.local.json"
-    assert provision.AUTHORITY_SET_REL.as_posix().endswith("authority-sets/c0p-authority-004")
-    assert provision.FIXTURE_AUTHORITY_ALIAS == "epic-phone-001-fixture-authority-owner-provision-002"
-    assert provision.OWNER_CONSOLE_ALIAS == "epic-phone-001-owner-local-console-entry-002"
-    assert provision.NO_MUTATOR_ALIAS == "epic-phone-001-owner-local-provision-no-mutator-002"
-    assert provision.COOPERATIVE_TIMEOUT_ALIAS == "epic-phone-001-owner-cooperative-timeout-acceptance-002"
+    assert provision.MARKER_REL.name == "fixture-owner-provision-003-attempt.local.json"
+    assert provision.RESULT_REL.name == "fixture-owner-provision-003-result.local.json"
+    assert provision.AUTHORITY_SET_REL.as_posix().endswith("authority-sets/c0p-authority-005")
+    assert provision.FIXTURE_AUTHORITY_ALIAS == "epic-phone-001-fixture-authority-owner-provision-003"
+    assert provision.OWNER_CONSOLE_ALIAS == "epic-phone-001-owner-local-console-entry-003"
+    assert provision.NO_MUTATOR_ALIAS == "epic-phone-001-owner-local-provision-no-mutator-003"
+    assert provision.COOPERATIVE_TIMEOUT_ALIAS == "epic-phone-001-owner-cooperative-timeout-acceptance-003"
     assert provision.NO_MUTATOR_SCOPE == loader.NO_MUTATOR_SCOPE
     assert "exact_active_loose_ref_or_packed_refs" in provision.NO_MUTATOR_SCOPE["git_metadata"]
     assert provision.GO_PREFIX == "GO_EPIC_PHONE_001_OWNER_LOCAL_FIXTURE_PROVISION__epic-phone-001-20260816-r01__"
     assert provision.PLAN_ENV.encode() not in bootstrap
-    assert bootstrap.count(b'print(\'{"status":"blocked"}\')') == 1
+    assert b"print(" not in bootstrap
+    assert b"='provision'" in bootstrap
+    readiness_bootstrap = provision.build_readiness_inline_bootstrap(loader_bytes=10, loader_sha256="a" * 64)
+    assert b"='readiness'" in readiness_bootstrap and b"='provision'" not in readiness_bootstrap
+    assert provision.PLAN_ENV not in inspect.getsource(provision._read_plan)
+    assert provision.GO_ENV not in inspect.getsource(provision._read_plan)
+    assert loader.PLAN_ENV not in inspect.getsource(loader._plan)
+    assert loader.GO_ENV not in inspect.getsource(loader._plan)
 
 
 @pytest.mark.parametrize(
     "mutation",
     [
         lambda plan: plan.update(security_alias="epic-phone-001-security-owner-local-fixture-provision-001"),
+        lambda plan: plan.update(security_alias="epic-phone-001-security-owner-local-fixture-provision-002"),
         lambda plan: plan["authority_objects"]["fixture_authority"].update(
             alias="epic-phone-001-fixture-authority-owner-provision-001"
         ),
@@ -153,11 +179,19 @@ def test_success_marker_before_input_exact_payload_and_aggregate(tmp_path, monke
     expected = b"EPIC_PHONE_001_PHONE_SUFFIX=0123456789\nEPIC_PHONE_001_OTP=0042\n"
     assert (fx.root / provision.DESTINATION_REL).read_bytes() == expected
     assert events[0][0] == provision.MARKER_REL.name and events[1][0] == "input"
-    assert events[-1] == ("qa_user.env", expected, True)
+    assert ("qa_user.env", expected, True) in events
+    assert events[-1][0] == provision.RESULT_REL.name
     assert {key: result[key] for key in fx.plan["aggregate_contract"]} == fx.plan["aggregate_contract"] == provision._aggregate(0)
     assert result["git_head_validation_count"] == 2
     assert 0 < result["git_metadata_content_read_count"] <= provision.BUDGET["git_metadata_content_read_max"]
     assert 0 < result["git_metadata_path_target_count"] <= provision.BUDGET["git_metadata_path_target_max"]
+    terminal = json.loads((fx.root / provision.RESULT_REL).read_text("utf-8"))
+    assert terminal["terminal_state"] == "fixture_provisioned"
+    assert terminal["attempt_id"] == "fixture-owner-provision-003"
+    assert terminal["result_alias"] == "epic-phone-001-owner-local-fixture-provision-result-003"
+    serialized = json.dumps(terminal, sort_keys=True)
+    assert "0123456789" not in serialized and "0042" not in serialized
+    assert "EPIC_PHONE_001_PHONE_SUFFIX" not in serialized and "EPIC_PHONE_001_OTP" not in serialized
 
 
 def test_absent_parent_is_created_once_before_destination(tmp_path, monkeypatch):
@@ -176,7 +210,7 @@ def test_absent_parent_is_created_once_before_destination(tmp_path, monkeypatch)
 @pytest.mark.parametrize("mutation,reason", [
     (lambda plan: plan.update(extra=0), "plan_contract_invalid"),
     (lambda plan: plan["budget"].update(runtime_action_max=False), "plan_contract_invalid"),
-    (lambda plan: plan.update(expires_at_utc=plan["issued_at_utc"]), "plan_or_authority_expired"),
+    (lambda plan: plan.update(expires_at_utc=plan["issued_at_utc"]), "security_go_expired"),
 ])
 def test_plan_exact_type_extra_and_ttl_fail_before_marker(tmp_path, monkeypatch, mutation, reason):
     fx = _setup(tmp_path, monkeypatch); mutation(fx.plan); raw = provision.canonical_bytes(fx.plan)
@@ -187,7 +221,7 @@ def test_plan_exact_type_extra_and_ttl_fail_before_marker(tmp_path, monkeypatch,
 
 def test_go_source_authority_and_replay_fail_before_console(tmp_path, monkeypatch):
     fx = _setup(tmp_path, monkeypatch); monkeypatch.setenv(provision.GO_ENV, "wrong")
-    with pytest.raises(provision.ProvisionError, match="literal_go_invalid"): provision.execute(fx.now)
+    with pytest.raises(provision.ProvisionError, match="security_go_contract_invalid"): provision.execute(fx.now)
     fx = _setup(tmp_path / "source", monkeypatch); (fx.root / provision.CONTROLLER_REL).write_bytes(b"drift")
     with pytest.raises(provision.ProvisionError, match="bound_identity_invalid"): provision.execute(fx.now)
     fx = _setup(tmp_path / "replay", monkeypatch); _write(fx.root / provision.MARKER_REL, b"used")
@@ -221,8 +255,7 @@ def test_forbidden_actions_and_public_output_are_category_only(tmp_path, monkeyp
     monkeypatch.setattr(provision, "execute", lambda: provision._aggregate(0))
     assert provision.main() == 0
     stdout = capsys.readouterr().out
-    assert "PHONE_SUFFIX" not in stdout and "OTP" not in stdout and str(tmp_path) not in stdout
-    assert json.loads(stdout)["status"] == "fixture_provisioned"
+    assert stdout == ""
     monkeypatch.setattr(provision, "execute", lambda: (_ for _ in ()).throw(provision.ProvisionError("blocked")))
     assert provision.main() == 2 and capsys.readouterr().out == ""
 
@@ -236,11 +269,12 @@ def test_loader_rejects_extra_plan_and_executor_systemexit(monkeypatch, tmp_path
     raw = provision.canonical_bytes(fx.plan)
     monkeypatch.setenv(loader.PLAN_ENV, raw.decode()); monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(raw).hexdigest())
     monkeypatch.setenv(loader.BOOTSTRAP_WALL_ENV, _stamp(fx.now)); monkeypatch.setenv(loader.DEADLINE_ENV, str(121_000_000_000))
-    assert loader._plan()["schema_version"] == provision.SCHEMA
+    _loader_env(fx, monkeypatch, fx.plan)
+    assert loader._plan()[0]["schema_version"] == provision.SCHEMA
     extra = dict(fx.plan); extra["extra"] = 0; raw = provision.canonical_bytes(extra)
     monkeypatch.setenv(loader.PLAN_ENV, raw.decode()); monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(raw).hexdigest())
     with pytest.raises(ValueError): loader._plan()
-    monkeypatch.setattr(loader, "_plan", lambda: {"executor_bytes": 1, "executor_sha256": "a" * 64})
+    monkeypatch.setattr(loader, "_plan", lambda: ({"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "a" * 64}, "b" * 64))
     monkeypatch.setattr(loader, "_load_executor", lambda *args: b"raise SystemExit(0)\n")
     assert loader.main() == 2
 
@@ -344,7 +378,7 @@ def test_optional_loose_ref_component_probe_is_bounded_and_fail_closed_before_ma
 
 def test_loader_binds_head_and_injects_exact_git_counters_before_executor(monkeypatch):
     plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "b" * 64}
-    monkeypatch.setattr(loader, "_plan", lambda: plan)
+    monkeypatch.setattr(loader, "_plan", lambda: (plan, "c" * 64))
     monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 2, 5))
     source = (
         b"def main():\n"
@@ -353,6 +387,13 @@ def test_loader_binds_head_and_injects_exact_git_counters_before_executor(monkey
         b"and __owner_fixture_loader_git_metadata_path_target_count__==5 else 2\n"
     )
     monkeypatch.setattr(loader, "_load_executor", lambda *args: source)
+    monkeypatch.setattr(loader, "_provision_attempt_consumed", lambda digest: False)
+    monkeypatch.setenv(loader.READINESS_MODE_ENV, "provision")
+    monkeypatch.setenv(loader.DEADLINE_ENV, "999999999999999999")
+    success = provision.canonical_bytes(provision._terminal_result(
+        "c" * 64, terminal_state="fixture_provisioned", exit_category="success",
+        directory_created=0, execution_stage="terminal_result_finalization")) + b"\n"
+    monkeypatch.setattr(loader, "_load_fixed_input", lambda *args: success)
     assert loader.main() == 0
     monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("b" * 40, 1, 3))
     monkeypatch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(AssertionError("executor_loaded")))
@@ -374,6 +415,20 @@ def _loader_env(fx, monkeypatch, plan):
     monkeypatch.setattr(loader, "datetime", FixedDateTime); monkeypatch.setattr(loader.time, "monotonic_ns", lambda: 1_000_000_000)
     raw = provision.canonical_bytes(plan)
     monkeypatch.setenv(loader.PLAN_ENV, raw.decode()); monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(raw).hexdigest())
+    real_load = loader._load_fixed_input
+    def fixed_input(path, maximum):
+        if str(path).endswith(loader.PLAN_REL.replace("/", os.sep)):
+            return os.environ[loader.PLAN_ENV].encode("utf-8")
+        if str(path).endswith(loader.SECURITY_GO_REL.replace("/", os.sep)):
+            plan_raw = os.environ[loader.PLAN_ENV].encode("utf-8")
+            current_plan = json.loads(plan_raw)
+            go = provision.build_security_go(plan_sha256=hashlib.sha256(plan_raw).hexdigest(),
+                                              issued_at_utc=current_plan["issued_at_utc"],
+                                              expires_at_utc=current_plan["expires_at_utc"])
+            go["literal_go"] = os.environ.get(loader.GO_ENV)
+            return provision.canonical_bytes(go)
+        return real_load(path, maximum)
+    monkeypatch.setattr(loader, "_load_fixed_input", fixed_input)
     monkeypatch.setenv(loader.BOOTSTRAP_WALL_ENV, _stamp(fx.now)); monkeypatch.setenv(loader.DEADLINE_ENV, str(121_000_000_000))
 
 
@@ -464,7 +519,8 @@ def test_anomaly058_console_preflight_marker_first_mutation_then_optional_direct
     monkeypatch.setattr(provision, "_read_console_digits", lambda *args: next(answers))
     monkeypatch.setattr(provision, "_secure_write_new", lambda path, payload, deadline: events.append("destination"))
     provision.execute(fx.now)
-    assert events[:3] == ["console", "marker", "mkdir"] and events[-1] == "destination"
+    assert events[:3] == ["console", "marker", "mkdir"] and "destination" in events
+    assert events[-1] == "marker"  # durable terminal result is the final create-new write
 
 
 def test_anomaly058_acl_marker_and_deadline_contract_are_exact():
@@ -473,10 +529,10 @@ def test_anomaly058_acl_marker_and_deadline_contract_are_exact():
     assert "for kind in ((22,) if exact_secret else (22, 26))" in source
     assert "acl_exact_ace_count_invalid" in source and "acl_required_principal_missing" in source
     assert source.count("_check_deadline(deadline_ns)") >= 12
-    assert provision.BUDGET["acl_create_max"] == 3 and provision.BUDGET["acl_check_max"] == 5
+    assert provision.BUDGET["acl_create_max"] == 4 and provision.BUDGET["acl_check_max"] == 6
     assert provision.BUDGET["console_prompt_write_max"] == 2
     assert provision.BUDGET["console_separator_write_max"] == 2
-    assert provision.BUDGET["bootstrap_env_write_max"] == 2
+    assert provision.BUDGET["bootstrap_env_write_max"] == 3
 
 
 def test_anomaly059_secret_parent_uses_exact_current_user_and_system_acl(tmp_path, monkeypatch):
@@ -526,7 +582,7 @@ def test_anomaly061_embedded_authority_expiry_covers_plan_and_runtime(tmp_path, 
 def test_anomaly062_deadline_brackets_console_and_acl_and_budget_is_explicit():
     execute_source = inspect.getsource(provision.execute)
     input_source = inspect.getsource(provision._read_console_digits)
-    assert "_check_deadline(deadline_ns); _preflight_real_console(); _check_deadline(deadline_ns)" in execute_source
+    assert "_check_deadline(operation_deadline_ns); _preflight_real_console(); _check_deadline(operation_deadline_ns)" in execute_source
     assert "_check_deadline(deadline_ns)\n    msvcrt = _real_console_api()\n    _check_deadline(deadline_ns)" in input_source
     assert execute_source.count("_verify_path_acl") == 3
     assert provision.BUDGET["console_api_validation_max"] == 3
@@ -540,8 +596,8 @@ def test_anomaly063_marker_protected_owner_authority_and_cooperative_timeout(tmp
     with pytest.raises(provision.ProvisionError, match="owner_no_mutator_authority_required"):
         provision.execute(fx.now)
     source = inspect.getsource(provision.execute)
-    assert "_protected_write_new(marker, marker_payload, deadline_ns, verify_before_write=False)" in source
-    assert provision.BUDGET["acl_create_max"] == 3 and provision.BUDGET["acl_check_max"] == 5
+    assert "_protected_provision_write_new(marker, marker_payload, operation_deadline_ns," in source
+    assert provision.BUDGET["acl_create_max"] == 4 and provision.BUDGET["acl_check_max"] == 6
     assert provision.TIMEOUT_CONTRACT == loader.TIMEOUT_CONTRACT
     assert provision.TIMEOUT_CONTRACT["hard_kill_guarantee"] is False
     assert provision.TIMEOUT_CONTRACT["blocking_winapi_preemption"] == "not_claimed"
@@ -643,3 +699,289 @@ def test_anomaly070_loader_fresh_wall_covers_intra_validation_pause_and_rejects_
     monkeypatch.setattr(loader, "datetime", BackwardDateTime)
     with pytest.raises(ValueError): loader._plan()
     assert loader.TIMEOUT_CONTRACT["clock_continuity_policy"] == "fresh_wall_not_before_initial_and_monotonic_non_decreasing"
+
+
+def test_generation005_fixed_file_observability_and_readiness_contracts_are_exact():
+    bootstrap = provision.build_readiness_inline_bootstrap(loader_bytes=10, loader_sha256="a" * 64)
+    assert provision.READINESS_MODE_ENV.encode() in bootstrap
+    plan = provision.build_readiness_plan(
+        executor_bytes=11, executor_sha256="b" * 64, loader_bytes=10, loader_sha256="a" * 64,
+        inline_bootstrap_bytes=len(bootstrap), inline_bootstrap_sha256=hashlib.sha256(bootstrap).hexdigest(),
+        repository_head="c" * 40, issued_at_utc="2026-08-20T10:00:00Z",
+        expires_at_utc="2026-08-20T10:05:00Z")
+    assert plan["contour_id"] == "epic-phone-001-owner-local-console-readiness"
+    assert plan["attempt_id"] == "owner-local-console-readiness-001"
+    assert plan["security_alias"] == "epic-phone-001-security-owner-local-console-readiness-001"
+    assert plan["budget"]["secret_read_max"] == plan["budget"]["authority_artifact_read_max"] == 0
+    assert plan["plan_relative_path"].endswith("owner-local-console-readiness-001-plan.local.json")
+    assert provision.PROVISION_PLAN_REL.name == "fixture-owner-provision-003-plan.local.json"
+    assert provision.PROVISION_GO_REL.name == "security-go-owner-local-fixture-provision-003.local.json"
+
+
+@pytest.mark.parametrize("console_ready,expected_state,expected_exit", [(True, "ready", 0), (False, "blocked", 2)])
+def test_readiness_success_and_failure_are_durable_redacted_and_zero_secret(
+    tmp_path, monkeypatch, console_ready, expected_state, expected_exit
+):
+    root = tmp_path / ("ready" if console_ready else "blocked")
+    (root / provision.RUN_REL).mkdir(parents=True)
+    monkeypatch.setattr(provision, "REPO_ROOT", root)
+    monkeypatch.setattr(provision, "_fixed_drive", lambda path: None)
+    monkeypatch.setattr(provision, "_safe_chain", lambda path, **kwargs: None)
+    monkeypatch.setattr(provision, "_protected_write_new",
+                        lambda path, payload, deadline, **kwargs: _write(path, bytes(payload)))
+    monkeypatch.setattr(provision.time, "monotonic_ns", lambda: 1)
+    monkeypatch.setenv(provision.DEADLINE_ENV, "10000000000")
+    if console_ready:
+        monkeypatch.setattr(provision, "_preflight_real_console", lambda: None)
+    else:
+        monkeypatch.setattr(provision, "_preflight_real_console",
+                            lambda: (_ for _ in ()).throw(provision.ProvisionError("real_console_required")))
+    assert provision.readiness_main({}, "d" * 64) == expected_exit
+    result = json.loads((root / provision.READINESS_RESULT_REL).read_text("utf-8"))
+    assert result["terminal_state"] == expected_state
+    assert result["aggregate_counters"]["secret_read_count"] == 0
+    assert set(result) == {"schema_version", "epic_id", "run_id", "contour_id", "attempt_id", "result_alias",
+                           "plan_sha256", "terminal_state", "exit_category", "aggregate_counters"}
+    assert "value" not in json.dumps(result).lower() and "length" not in json.dumps(result).lower()
+
+
+def test_loader_pre_executor_failure_records_fixed_result_without_stdout(monkeypatch, capsys):
+    plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "b" * 64}
+    monkeypatch.setenv(loader.READINESS_MODE_ENV, "provision")
+    monkeypatch.setenv(loader.DEADLINE_ENV, "999999999999999999")
+    monkeypatch.setattr(loader, "_plan", lambda: (plan, "e" * 64))
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 1, 3))
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(ValueError()))
+    monkeypatch.setattr(loader, "_provision_attempt_consumed", lambda digest: False)
+    recorded = []
+    monkeypatch.setattr(loader, "_write_blocked_result", lambda digest: recorded.append(digest))
+    assert loader.main() == 2
+    assert recorded == ["e" * 64]
+    assert capsys.readouterr().out == ""
+
+
+@pytest.mark.parametrize("mode", [None, "unexpected", "readiness"])
+def test_loader_never_infers_provision_from_missing_invalid_or_inherited_readiness_mode(monkeypatch, mode):
+    if mode is None: monkeypatch.delenv(loader.READINESS_MODE_ENV, raising=False)
+    else: monkeypatch.setenv(loader.READINESS_MODE_ENV, mode)
+    provision_called = []
+    monkeypatch.setattr(loader, "_plan", lambda: provision_called.append(True))
+    if mode == "readiness": monkeypatch.setattr(loader, "_readiness_plan", lambda: (_ for _ in ()).throw(ValueError()))
+    assert loader.main() == 2 and provision_called == []
+
+
+def test_preexisting_result_without_marker_consumes_before_console_or_destination(tmp_path, monkeypatch):
+    fx = _setup(tmp_path, monkeypatch); events = []
+    raw_plan = provision.canonical_bytes(fx.plan); digest = hashlib.sha256(raw_plan).hexdigest()
+    prior = provision.canonical_bytes(provision._terminal_result(
+        digest, terminal_state="blocked_before_attempt", exit_category="blocked",
+        directory_created=0, execution_stage="pre_attempt", marker_created=0)) + b"\n"
+    _write(fx.root / provision.RESULT_REL, prior)
+    monkeypatch.setattr(provision, "_preflight_real_console", lambda: events.append("console"))
+    monkeypatch.setattr(provision, "_secure_write_new", lambda *args: events.append("destination"))
+    with pytest.raises(provision.ProvisionError, match="attempt_consumed"):
+        provision.execute(fx.now)
+    assert events == [] and not (fx.root / provision.MARKER_REL).exists()
+    assert (fx.root / provision.RESULT_REL).read_bytes() == prior
+
+
+def test_loader_executor_return_two_creates_durable_blocked_result_without_stdout(tmp_path, monkeypatch, capsys):
+    root = tmp_path / "loader-return-two"; (root / Path(loader.RESULT_REL).parent).mkdir(parents=True)
+    monkeypatch.chdir(root); monkeypatch.setenv(loader.READINESS_MODE_ENV, "provision")
+    monkeypatch.setenv(loader.DEADLINE_ENV, "999999999999999999")
+    plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "b" * 64}
+    monkeypatch.setattr(loader, "_plan", lambda: (plan, "f" * 64))
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 1, 3))
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: b"def main(): return 2\n")
+    assert loader.main() == 2 and capsys.readouterr().out == ""
+    result = json.loads((root / loader.RESULT_REL).read_text("utf-8"))
+    assert result["terminal_state"] == "blocked_before_attempt"
+    assert result["execution_stage"] == "pre_attempt"
+    assert result["aggregate_counters"]["marker_file_created_count"] == 0
+
+
+def test_loader_post_marker_partial_state_uses_unknown_not_false_zero(tmp_path, monkeypatch):
+    root = tmp_path / "partial"; (root / Path(loader.RESULT_REL).parent).mkdir(parents=True)
+    monkeypatch.chdir(root); monkeypatch.setenv(loader.DEADLINE_ENV, "999999999999999999")
+    _write(root / loader.PROVISION_MARKER_REL, b"consumed\n")
+    loader._write_blocked_result("a" * 64)
+    result = json.loads((root / loader.RESULT_REL).read_text("utf-8"))
+    assert result["terminal_state"] == "blocked_after_attempt"
+    assert result["execution_stage"] == "unknown_after_marker"
+    assert result["aggregate_counters"]["destination_directory_created_count"] == "unknown"
+
+
+@pytest.mark.parametrize("consumed_kind", ["marker", "result"])
+def test_loader_preexisting_marker_or_result_never_executes_again(tmp_path, monkeypatch, consumed_kind):
+    root = tmp_path / consumed_kind; (root / Path(loader.RESULT_REL).parent).mkdir(parents=True)
+    monkeypatch.chdir(root); monkeypatch.setenv(loader.READINESS_MODE_ENV, "provision")
+    plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "b" * 64}
+    digest = "c" * 64
+    if consumed_kind == "marker":
+        _write(root / loader.PROVISION_MARKER_REL, b"prior\n")
+    else:
+        prior = provision.canonical_bytes(provision._terminal_result(
+            digest, terminal_state="blocked_before_attempt", exit_category="blocked",
+            directory_created=0, execution_stage="pre_attempt", marker_created=0)) + b"\n"
+        _write(root / loader.RESULT_REL, prior)
+    monkeypatch.setattr(loader, "_plan", lambda: (plan, digest))
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 1, 3))
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: (_ for _ in ()).throw(AssertionError("replayed")))
+    assert loader.main() == 2
+    assert not (root / loader.RESULT_REL).exists() if consumed_kind == "marker" else (root / loader.RESULT_REL).exists()
+
+
+def test_inherited_readiness_marker_never_creates_new_result(tmp_path, monkeypatch):
+    root = tmp_path / "readiness-replay"; (root / provision.RUN_REL).mkdir(parents=True)
+    _write(root / provision.READINESS_MARKER_REL, b"prior\n")
+    monkeypatch.setattr(provision, "REPO_ROOT", root); monkeypatch.setattr(provision, "_fixed_drive", lambda path: None)
+    monkeypatch.setattr(provision, "_safe_chain", lambda path, **kwargs: None)
+    monkeypatch.setattr(provision.time, "monotonic_ns", lambda: 1)
+    monkeypatch.setenv(provision.DEADLINE_ENV, "10000000000")
+    writes = []; monkeypatch.setattr(provision, "_protected_write_new", lambda *args, **kwargs: writes.append(args[0]))
+    assert provision.readiness_main({}, "b" * 64) == 2
+    assert writes == [] and not (root / provision.READINESS_RESULT_REL).exists()
+
+
+def test_finalization_reserve_schemas_budgets_and_expectation_builders_are_exact():
+    assert provision.AGGREGATE_SCHEMA != provision.TERMINAL_RESULT_SCHEMA
+    assert provision.RESULT_FINALIZATION_RESERVE_SECONDS == 5
+    assert provision.TIMEOUT_CONTRACT["result_finalization_reserve_seconds"] == 5
+    assert provision.BUDGET["result_finalization_reserve_seconds"] == 5
+    exact_terminal_io_budget = {
+        "protected_marker_file_readback_max": 1,
+        "protected_terminal_result_file_readback_max": 1,
+        "loader_terminal_result_content_read_max": 2,
+        "loader_terminal_result_validation_max": 2,
+    }
+    assert {key: provision.BUDGET[key] for key in exact_terminal_io_budget} == exact_terminal_io_budget
+    assert {key: loader.BUDGET[key] for key in exact_terminal_io_budget} == exact_terminal_io_budget
+    assert provision.BUDGET == loader.BUDGET
+    readiness_budget = provision.build_readiness_plan(
+        executor_bytes=1, executor_sha256="a" * 64, loader_bytes=1, loader_sha256="b" * 64,
+        inline_bootstrap_bytes=1, inline_bootstrap_sha256="c" * 64, repository_head="d" * 40,
+        issued_at_utc="2026-08-20T10:00:00Z", expires_at_utc="2026-08-20T10:05:00Z")["budget"]
+    assert {key: readiness_budget[key] for key in ("acl_create_max", "acl_check_max", "created_file_readback_max")} == {
+        "acl_create_max": 2, "acl_check_max": 2, "created_file_readback_max": 2}
+    for builder in (provision.build_security_go, provision.build_readiness_security_go):
+        source = inspect.getsource(builder)
+        assert "expect" in (builder.__doc__ or "").lower()
+        assert not any(token in source for token in ("open(", "write(", "os.open", "Path("))
+
+
+def _mutate_terminal_forbidden_counter(value):
+    value["aggregate_counters"]["application_action_count"] = 999
+
+
+def _mutate_terminal_marker_zero(value):
+    value["aggregate_counters"]["marker_file_created_count"] = 0
+
+
+def _mutate_terminal_directory_above_one(value):
+    value["aggregate_counters"]["destination_directory_created_count"] = 2
+
+
+def _mutate_terminal_garbage_category(value):
+    value["exit_category"] = "garbage"
+
+
+def _mutate_terminal_garbage_stage(value):
+    value["execution_stage"] = "garbage"
+
+
+def _mutate_terminal_boolean_counter(value):
+    value["aggregate_counters"]["destination_directory_created_count"] = True
+
+
+TERMINAL_CROSS_FIELD_MUTATIONS = (
+    _mutate_terminal_forbidden_counter,
+    _mutate_terminal_marker_zero,
+    _mutate_terminal_directory_above_one,
+    _mutate_terminal_garbage_category,
+    _mutate_terminal_garbage_stage,
+    _mutate_terminal_boolean_counter,
+)
+
+
+@pytest.mark.parametrize("mutate", TERMINAL_CROSS_FIELD_MUTATIONS)
+def test_loader_terminal_result_cross_fields_fail_closed(mutate):
+    digest = "a" * 64
+    value = provision._terminal_result(
+        digest, terminal_state="fixture_provisioned", exit_category="success",
+        directory_created=1, execution_stage="terminal_result_finalization")
+    mutate(value)
+    with pytest.raises(ValueError):
+        loader._validate_terminal_result(provision.canonical_bytes(value) + b"\n", digest)
+
+
+@pytest.mark.parametrize("mutate", TERMINAL_CROSS_FIELD_MUTATIONS)
+def test_loader_cannot_return_zero_for_invalid_terminal_cross_fields(monkeypatch, mutate):
+    digest = "b" * 64
+    plan = {"repository_head": "a" * 40, "executor_bytes": 1, "executor_sha256": "c" * 64}
+    value = provision._terminal_result(
+        digest, terminal_state="fixture_provisioned", exit_category="success",
+        directory_created=0, execution_stage="terminal_result_finalization")
+    mutate(value)
+    invalid = provision.canonical_bytes(value) + b"\n"
+    monkeypatch.setenv(loader.READINESS_MODE_ENV, "provision")
+    monkeypatch.setenv(loader.DEADLINE_ENV, "999999999999999999")
+    monkeypatch.setattr(loader, "_plan", lambda: (plan, digest))
+    monkeypatch.setattr(loader, "_actual_repository_head", lambda root: ("a" * 40, 1, 3))
+    monkeypatch.setattr(loader, "_provision_attempt_consumed", lambda plan_sha: False)
+    monkeypatch.setattr(loader, "_load_executor", lambda *args: b"def main(): return 0\n")
+    monkeypatch.setattr(loader, "_load_fixed_input", lambda *args: invalid)
+    monkeypatch.setattr(loader, "_write_blocked_result", lambda plan_sha: None)
+    assert loader.main() == 2
+
+
+def test_terminal_contract_state_rules_and_loader_io_budget_are_exact(monkeypatch):
+    contract = provision.terminal_result_contract()
+    assert contract == loader._terminal_result_contract()
+    assert contract["exit_category_by_terminal_state"] == {
+        "blocked_after_attempt": "blocked", "blocked_before_attempt": "blocked",
+        "fixture_provisioned": "success"}
+    assert contract["execution_stages_by_terminal_state"]["blocked_before_attempt"] == ["pre_attempt"]
+    assert contract["execution_stages_by_terminal_state"]["fixture_provisioned"] == ["terminal_result_finalization"]
+    assert set(contract["always_exact_zero_counters"]) == {
+        "application_action_count", "authentication_action_count", "device_action_count",
+        "network_action_count", "runtime_action_count", "subprocess_count", "ui_action_count"}
+    digest = "d" * 64
+    raw = provision.canonical_bytes(provision._terminal_result(
+        digest, terminal_state="fixture_provisioned", exit_category="success",
+        directory_created=0, execution_stage="terminal_result_finalization")) + b"\n"
+    monkeypatch.setattr(loader, "_load_fixed_input", lambda *args: raw)
+    loader._ACTIVE_TERMINAL_IO_BUDGET = {"content_reads": 0, "validations": 0}
+    try:
+        loader._load_and_validate_terminal_result(Path("ignored"), digest)
+        loader._load_and_validate_terminal_result(Path("ignored"), digest)
+        with pytest.raises(ValueError):
+            loader._load_and_validate_terminal_result(Path("ignored"), digest)
+        assert loader._ACTIVE_TERMINAL_IO_BUDGET == {"content_reads": 3, "validations": 2}
+    finally:
+        loader._ACTIVE_TERMINAL_IO_BUDGET = None
+
+
+def test_protected_marker_and_terminal_readbacks_have_one_attempt_each(monkeypatch):
+    calls = []
+    monkeypatch.setattr(provision, "_protected_write_new", lambda *args, **kwargs: calls.append(args[0]))
+    counters = {"marker": 0, "terminal_result": 0}
+    provision._protected_provision_write_new(Path("marker"), b"m", 1, counters, "marker")
+    provision._protected_provision_write_new(Path("result"), b"r", 1, counters, "terminal_result")
+    with pytest.raises(provision.ProvisionError, match="protected_readback_budget_exhausted"):
+        provision._protected_provision_write_new(Path("result-2"), b"r", 1, counters, "terminal_result")
+    assert calls == [Path("marker"), Path("result")]
+
+
+def test_generation004_immediate_predecessor_is_rejected_and_not_read(tmp_path, monkeypatch):
+    assert renewal.BUDGET["old_authority_content_read_max"] == 0
+    assert all("c0p-authority-005" in path.as_posix() for path in renewal.ARTIFACT_PATHS)
+    assert controller.AUTHORITY_SET_ID == "c0p-authority-005" and prep.PREP_ATTEMPT_ID == "c0p-prep-005"
+    assert provision.AUTHORITY_SET_REL.as_posix().endswith("c0p-authority-005")
+    fx = _setup(tmp_path, monkeypatch)
+    fx.plan["authority_artifacts"][0]["alias"] = "epic-phone-001-security-c0p-004"
+    raw = provision.canonical_bytes(fx.plan)
+    monkeypatch.setenv(provision.PLAN_ENV, raw.decode())
+    monkeypatch.setenv(provision.GO_ENV, provision.GO_PREFIX + hashlib.sha256(raw).hexdigest())
+    with pytest.raises(provision.ProvisionError, match="authority_cross_binding_invalid"):
+        provision.execute(fx.now)
+    assert not (fx.root / provision.MARKER_REL).exists()

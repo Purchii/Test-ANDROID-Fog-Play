@@ -39,6 +39,106 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 - Old completed threads become inactive, not deleted.
 - Subagents from inactive threads are closed when no longer needed.
 
+## EPIC-PHONE-001 generation 005 repository acceptance — 2026-08-20
+
+Generation `005` is accepted as repository logic only; it has no execution or
+runtime GO. Exact source bindings are renewal
+`aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420`
+(`36391` bytes), renewal loader
+`885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c`
+(`13067`), C0P
+`5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09`
+(`42226`), controller
+`6b0cec02f5025a7e4dd295d780485d1071760f4f6f4af7cc901ac9665952a21e`
+(`59275`), provisioner
+`ac20cfe9d1f8a3789ea7e5705884518149491d439507c5656e95a1e25224b734`
+(`77817`) and provision loader
+`d5fc57447f339c8e05f7eb0aec15511e45d48e0233473bdc511f46f68e7d83a5`
+(`44933`). Renewal/prep/controller/provision tests are respectively
+`d49fed456d2ecd87269505b2cc1b351a0358dcfcd7d2c74612275f2722545e2c`
+(`24203`),
+`d1af8a933a007309e6e344fefd1da86b7967cb09252766e88fbd9c0b1e347b82`
+(`31084`),
+`a32eedee6d047b4535a444ddef23e5df78a9cb8ca79da3249ca3a4b024cd3159`
+(`33984`) and
+`8e40fcc207de64ff41219b12f1870f4487676719270d2374912d903a8f13778c`
+(`60806`).
+
+Fixed renewal identities are `authority-renewal-003`, `c0p-authority-005`,
+`c0p-prep-005` and `epic-phone-001-security-c0p-005`; create-new authority
+paths are under the run-local `authority-sets/c0p-authority-005`, and the
+canonical public inputs are the versioned renewal-003 candidate/plan. Owner-
+local provisioning is a distinct one-shot `fixture-owner-provision-003`
+contour with its own plan, Security-GO, attempt-marker and terminal-result
+paths. Before it, console readiness is a separate one-shot contour
+`epic-phone-001-owner-local-console-readiness` / attempt
+`owner-local-console-readiness-001`, also with distinct plan, GO, marker and
+result paths. Readiness success cannot authorize provision; provision success
+cannot authorize C0P or runtime.
+
+The tracked security-GO builders only construct the exact expected envelope
+for independent review. They cannot issue, infer, persist or self-authorize a
+GO. Any generation005 execution requires the final committed repository HEAD,
+fresh owner no-mutator authority alias `003`, the exact remaining owner003
+host/console authorities, a fresh canonical plan and a distinct literal
+Security GO for each one-shot contour. Final QA-A is
+`0/0/0 GO_REPOSITORY_ONLY`; final QA-B is `0/0/0 GO` candidate; Security is
+`0/0/1 GO_REPOSITORY_CODE_ONLY`. Security's sole P2 is the cooperative/no-hard-
+kill plus marker-only/result-best-effort contract: after marker creation the
+attempt is consumed even if terminal-result publication is absent, so retry
+remains forbidden.
+
+Verification is focused `200 passed`; safe repository suite `1639 passed,
+4 skipped`; unfiltered `1658 passed, 4 skipped, 17 failed`, with all failures
+confined to TASK-045's unavailable ignored local evidence and therefore not
+called green. Public safety is `443/0`; both hygiene modes, docs `187/0`,
+compile and diff checks pass after removal of the expired untracked execution-
+input JSON. No authority set005, readiness, provision, C0P, device, app,
+authentication, runtime, network or payment contour has run. Fresh final-HEAD
+binding and owner003/Security authority remain mandatory; default integration
+is blocked.
+
+## EPIC-PHONE-001 renewal002/set004 and provision-attempt checkpoint — 2026-08-20
+
+Renewal `002` successfully materialized immutable authority set `004` against
+the final authority-binding repository HEAD
+`efc6e85060e15d2d5fd0d4396e0960fbdd56bea8`. The exact public candidate was
+SHA-256 `d0188104c832e8b2c06615c5c6842b352f08edb8865d822daf24525b236255e8`
+(`10101` bytes) and the plan was
+`ff61238ea89aadf61a706d79ae207980d44a87541f5ff30be348bdc194880f25`
+(`5360` bytes). Independent QA-B and Security review preceded one exact
+renewal-only GO. Its fixed aggregate was `authority_set_materialized`: four
+artifacts, one created directory, six created files and
+`all_forbidden_counters=0`. The renewal GO is consumed and non-reusable.
+
+The separate Security-authorized metadata preflight performed exactly two
+fixed-path `lstat` classifications. It returned
+`secret_parent_state=absent` and `secret_destination_state=absent`; it did not
+read secret content or mutate either path. One visible-console owner-local
+provision launch was then started under the exact public plan SHA-256
+`1452b9eb53afda76fd754ad173db15401ea007e209dd065dd9285399ab92672f`
+(`7312` bytes) and exact bootstrap SHA-256
+`910d084895ddffa9777df0999ab8e8aceb9a222966bcae1df2325dd3b98d1b1e`
+(`1596` bytes). The parent result was not retained because the execution output
+was truncated; no terminal `fixture_provisioned` or `blocked` aggregate was
+observed. A separately authorized post-attempt metadata check classified the
+fixed attempt marker and destination as `absent_at_checkpoint`. Confirmed
+fixture-destination mutation evidence count is `0`; historical or transient
+mutation is `unknown_not_evidenced`, and absence at that checkpoint must never
+be represented as proof that no mutation occurred. Whether any values were
+entered or consumed inside the uncaptured visible console is also `unknown`.
+
+`EPICPHONE001-PROCESS-ANOMALY-089`, alias
+`owner_local_provision_parent_result_truncated_no_mutation_observed`, records
+the launch/result mismatch as `confirmed` process evidence. Its cause is
+`unknown`; output-transport/context truncation is only a hypothesis. The
+one-launch budget is exhausted. The provision GO and set004 passports expired
+at `2026-08-20T11:44:25Z` and are non-reusable; there is no retry, extension or
+relabel authority. C0P did not run. Device, application, authentication,
+runtime/UI, network, payment, external-link and forbidden-action counters are
+exact zero. Product coverage and release state remain `partial_blocked` and
+`blocks_release`; `origin/main` remains unintegrated.
+
 ## EPIC-PHONE-001 generation 004 repository snapshot — 2026-08-18
 
 Renewal `001` successfully materialized authority set `003` against repository

@@ -60,13 +60,15 @@ def setup_contract(tmp_path: Path, monkeypatch):
 
 def test_exact_ids_paths_schemas_and_zero_impact_budget():
     assert renewal.CONTOUR_ID == "epic-phone-001-authority-renewal"
-    assert renewal.RENEWAL_ID == "authority-renewal-002"
-    assert renewal.AUTHORITY_SET_ID == "c0p-authority-004"
-    assert renewal.PREP_ATTEMPT_ID == "c0p-prep-004"
-    assert renewal.SECURITY_ALIAS == "epic-phone-001-security-c0p-004"
-    assert renewal.NO_MUTATOR_ALIAS == "epic-phone-001-owner-authority-renewal-no-mutator-002"
-    assert renewal.SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-004")
-    assert renewal.MARKER_REL.name == "authority-renewal-002-attempt.local.json"
+    assert renewal.RENEWAL_ID == "authority-renewal-003"
+    assert renewal.AUTHORITY_SET_ID == "c0p-authority-005"
+    assert renewal.PREP_ATTEMPT_ID == "c0p-prep-005"
+    assert renewal.SECURITY_ALIAS == "epic-phone-001-security-c0p-005"
+    assert renewal.NO_MUTATOR_ALIAS == "epic-phone-001-owner-authority-renewal-no-mutator-003"
+    assert renewal.CANDIDATE_REL.name == "epic-phone-001-authority-renewal-003-candidate.json"
+    assert renewal.PLAN_REL.name == "epic-phone-001-authority-renewal-003-plan.json"
+    assert renewal.SET_ROOT_REL.as_posix().endswith("authority-sets/c0p-authority-005")
+    assert renewal.MARKER_REL.name == "authority-renewal-003-attempt.local.json"
     assert (renewal.CANDIDATE_SCHEMA, renewal.PLAN_SCHEMA, renewal.ATTEMPT_SCHEMA, renewal.RESULT_SCHEMA) == (
         "epic-phone-001-authority-renewal-candidate-v1", "epic-phone-001-authority-renewal-plan-v1",
         "epic-phone-001-authority-renewal-attempt-v1", "epic-phone-001-authority-renewal-result-v1")
@@ -88,9 +90,9 @@ def test_candidate_preserves_target_authorization_only_and_task058a_unknown():
     assert target["current_freshness_evidence"] is target["runtime_evidence"] is False
     assert payloads[0] == controller.c0p_plan("a" * 40, "b" * 64, stamp(NOW), stamp(NOW + timedelta(minutes=8)))
     assert payloads[0]["passport_aliases"] == {
-        "fixture_authority": "epic-phone-001-fixture-authority-004",
-        "target_build": "epic-phone-001-target-build-004",
-        "evidence_cleanup": "epic-phone-001-evidence-cleanup-004",
+        "fixture_authority": "epic-phone-001-fixture-authority-005",
+        "target_build": "epic-phone-001-target-build-005",
+        "evidence_cleanup": "epic-phone-001-evidence-cleanup-005",
     }
     controller._validate_fixture_passport(payloads[1])
     controller._validate_target_build_passport(payloads[2])
@@ -102,7 +104,7 @@ def test_final_head_placeholder_and_old_generation_are_rejected():
         renewal.build_authority_payloads(repository_head=renewal.REPOSITORY_HEAD_PLACEHOLDER, controller_sha256="b" * 64,
                                          issued_at_utc=stamp(NOW), expires_at_utc=stamp(NOW + timedelta(minutes=8)),
                                          retention_expires_at_utc=stamp(NOW + timedelta(minutes=9)))
-    assert all("c0p-authority-004" in path.as_posix() for path in renewal.ARTIFACT_PATHS)
+    assert all("c0p-authority-005" in path.as_posix() for path in renewal.ARTIFACT_PATHS)
     assert all(path.parent == renewal.SET_ROOT_REL for path in renewal.ARTIFACT_PATHS)
 
 
@@ -327,7 +329,7 @@ def test_loader_rejects_old_identity_and_systemexit(tmp_path, monkeypatch):
     root, _, plan, plan_data = setup_contract(tmp_path, monkeypatch)
     monkeypatch.chdir(root); monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(plan_data).hexdigest())
     loaded, binding, raw_loaded = loader._plan(root, NOW)
-    assert loaded["authority_set_id"] == "c0p-authority-004" and binding["path"] == renewal.EXECUTOR_REL.as_posix()
+    assert loaded["authority_set_id"] == "c0p-authority-005" and binding["path"] == renewal.EXECUTOR_REL.as_posix()
     assert raw_loaded == plan_data
     plan["renewal_id"] = "authority-renewal-001"; bad = renewal.canonical_bytes(plan); write(root / renewal.PLAN_REL, bad)
     monkeypatch.setenv(loader.GO_ENV, loader.GO_PREFIX + hashlib.sha256(bad).hexdigest())

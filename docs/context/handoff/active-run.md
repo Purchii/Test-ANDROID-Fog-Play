@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_generation004_implementation_pushed_docs_delta_pending_no_go`.
+- Thread status: `active_generation005_repository_accepted_final_head_owner003_pending_no_go`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -31,6 +31,104 @@
   their exact literal Security GO; payment, paid session, external/QR traversal,
   account/profile/entitlement/subscription mutation and destructive/bypass
   actions remain `PROD_FORBIDDEN`.
+
+### Generation005 repository-only acceptance — 2026-08-20
+
+Generation `005` is accepted as repository logic only. Exact source hash/size
+bindings are renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+`36391`, renewal loader
+`885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
+`13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
+`42226`, controller
+`6b0cec02f5025a7e4dd295d780485d1071760f4f6f4af7cc901ac9665952a21e` /
+`59275`, provisioner
+`ac20cfe9d1f8a3789ea7e5705884518149491d439507c5656e95a1e25224b734` /
+`77817`, and loader
+`d5fc57447f339c8e05f7eb0aec15511e45d48e0233473bdc511f46f68e7d83a5` /
+`44933`. Test bindings are
+`d49fed456d2ecd87269505b2cc1b351a0358dcfcd7d2c74612275f2722545e2c` /
+`24203`, `d1af8a933a007309e6e344fefd1da86b7967cb09252766e88fbd9c0b1e347b82` /
+`31084`, `a32eedee6d047b4535a444ddef23e5df78a9cb8ca79da3249ca3a4b024cd3159` /
+`33984`, and `8e40fcc207de64ff41219b12f1870f4487676719270d2374912d903a8f13778c` /
+`60806`.
+
+Fixed identities are renewal `authority-renewal-003`, set
+`c0p-authority-005`, prep `c0p-prep-005`, Security
+`epic-phone-001-security-c0p-005`, and versioned renewal-003 public
+candidate/plan. Authority outputs are create-new under
+`authority-sets/c0p-authority-005`. Provision is the separate one-shot attempt
+`fixture-owner-provision-003`, using the `-003` fixed plan, Security-GO,
+attempt-marker and terminal-result paths plus owner/security aliases `-003`.
+Console readiness is an earlier, independently authorized one-shot contour
+`epic-phone-001-owner-local-console-readiness`, attempt
+`owner-local-console-readiness-001`, with its own fixed plan/GO/marker/result
+paths and Security alias `epic-phone-001-security-owner-local-console-readiness-001`.
+Neither one-shot can lend or infer authority to the other or to C0P/runtime.
+
+Expected-GO builders are deterministic expected-envelope constructors only;
+they do not issue, persist, infer or self-authorize GO. Generation005 requires
+the final committed HEAD, fresh owner no-mutator alias `003`, all exact
+owner003 readiness/provision host attestations, a canonical plan and a fresh
+literal Security GO per contour. Final QA-A is
+`0/0/0 GO_REPOSITORY_ONLY`; final QA-B is `0/0/0 GO` candidate; Security is
+`0/0/1 GO_REPOSITORY_CODE_ONLY`. Security's sole P2 is cooperative/no-hard-
+kill plus marker-only/result-best-effort/no-retry: once the marker exists the
+attempt is consumed even if terminal-result finalization is absent or
+interrupted. No runtime GO exists.
+
+Focused tests are `200 passed`; safe suite is `1639 passed, 4 skipped`.
+Unfiltered suite is not green at `1658 passed, 4 skipped, 17 failed`; every
+failure is the known TASK-045 unavailable ignored-local-evidence dependency.
+Public safety `443/0`, both hygiene modes, docs `187/0`, compile and diff pass
+after expired untracked execution-input JSON removal. No generation005
+renewal/readiness/provision/C0P/device/app/auth/runtime/network/payment action
+has executed, and default integration remains blocked.
+
+### Renewal002/set004 and provision-attempt checkpoint — 2026-08-20
+
+Owner no-mutator authority alias
+`epic-phone-001-owner-authority-renewal-no-mutator-002` and the combined
+owner-console/provision-no-mutator/cooperative-timeout envelope were accepted
+for the exact current epic run and final authority-binding HEAD
+`efc6e85060e15d2d5fd0d4396e0960fbdd56bea8`. They were category/host
+preconditions only and did not themselves issue GO.
+
+The canonical renewal002 candidate was SHA-256
+`d0188104c832e8b2c06615c5c6842b352f08edb8865d822daf24525b236255e8`
+(`10101` bytes); its plan was
+`ff61238ea89aadf61a706d79ae207980d44a87541f5ff30be348bdc194880f25`
+(`5360` bytes), issued `2026-08-20T11:34:25Z` and expiring
+`2026-08-20T11:44:25Z`. QA-B and Security validated the exact inputs before
+Security issued one renewal-only literal GO. The loader executed once and
+returned `authority_set_materialized` with four artifacts, one created
+directory, six created files and `all_forbidden_counters=0`. That GO is
+consumed and cannot authorize any downstream contour.
+
+The separately authorized metadata preflight executed exactly two fixed-path
+`lstat` checks and returned `secret_parent_state=absent` and
+`secret_destination_state=absent`. It read no secret content and performed no
+mutation. The exact public owner-local provision plan was SHA-256
+`1452b9eb53afda76fd754ad173db15401ea007e209dd065dd9285399ab92672f`
+(`7312` bytes), issued `2026-08-20T11:39:16Z`, with the same
+`2026-08-20T11:44:25Z` expiry. Its exact visible-console bootstrap was
+`910d084895ddffa9777df0999ab8e8aceb9a222966bcae1df2325dd3b98d1b1e`
+(`1596` bytes); the launch cutoff was `2026-08-20T11:42:23Z`.
+
+Exactly one visible-console provision launch was started. Expected parent
+projection was one fixed terminal `fixture_provisioned` or `blocked` aggregate;
+observed parent output was lost to truncation, so neither terminal result was
+accepted. A distinct authorized post-attempt metadata-only check classified
+the fixed attempt marker and fixture destination as `absent_at_checkpoint`.
+Confirmed mutation evidence count is `0`, while historical/transient mutation
+is `unknown_not_evidenced`; checkpoint absence is not proof of no mutation.
+Whether values were entered or consumed inside the uncaptured console is also
+`unknown`, and no secret value is reconstructed, logged or inferred.
+
+The one-launch budget is exhausted. Provision GO and the set004 passports
+expired at `2026-08-20T11:44:25Z`; they are non-reusable and cannot be retried,
+extended, rewritten, relabeled or used for C0P. C0P did not run. No device,
+application, authentication, runtime/UI, network, payment, external/QR or
+forbidden action occurred. Runtime and default integration remain blocked.
 
 ### Resumed owner authority
 
@@ -973,15 +1071,69 @@ there is no C0P, C1 or runtime GO.
   same Builder once; if transport remains unavailable, record the unavailable
   delegated execution and continue the repository patch locally while keeping
   independent QA/Security review mandatory.
+- `EPICPHONE001-PROCESS-ANOMALY-089`, alias
+  `owner_local_provision_parent_result_truncated_no_mutation_observed`, is
+  `confirmed`. Trigger/action: the single authorized visible-console
+  owner-local provision launch under the exact plan and bootstrap bindings.
+  Expected: the parent receives exactly one fixed terminal
+  `fixture_provisioned` or `blocked` aggregate. Observed: the parent result was
+  lost when the execution output was truncated; a separately authorized
+  post-attempt metadata check then classified both the fixed attempt marker and
+  destination as `absent_at_checkpoint`. Confirmed mutation evidence count is
+  `0`; historical/transient mutation is `unknown_not_evidenced`, and the
+  checkpoint is never proof of no mutation. Evidence status is `confirmed` for
+  the launch, lost projection and two checkpoint states; whether values were
+  entered or consumed in the uncaptured console is `unknown`. Cause: `unknown`;
+  output-transport/context truncation is a
+  `hypothesis`, not a confirmed child-process cause. Test-design implication:
+  treat the one-shot launch and expired GO as non-reusable, never retry from an
+  absent marker alone, and require a future generation to expose a bounded,
+  independently queryable category-only parent result without capturing the
+  secret-entry console.
 
-For anomalies 013-088, evidence status is `confirmed`; all probes were
-synthetic/repository-only, screenshot/XML/runtime-log modalities are not
-applicable, and secret/device/app/network/auth counters remain zero. Anomaly
-025 adds one fixed-path local metadata preflight; it read no local file content
-and wrote nothing. Anomaly 038 adds one fixed secret-path metadata check; it
-read no secret content and wrote nothing.
+For anomalies 013-089, evidence status is `confirmed` for their explicitly
+recorded observations. Anomaly 089 keeps console-entry/consumption facts
+`unknown`; it is not product evidence. Screenshot/XML/runtime-log modalities
+are not applicable, and device/app/network/auth/runtime counters remain zero.
+Anomaly 025 adds one fixed-path local metadata preflight; it read no local file
+content and wrote nothing. Anomaly 038 adds one fixed secret-path metadata
+check; it read no secret content and wrote nothing.
 
 ### Exact current counters
+
+The current renewal002/set004 and provision-attempt delta is:
+
+| Counter | Actual |
+|---|---:|
+| Renewal002 loader executions | 1 |
+| Set004 artifacts materialized | 4 |
+| Set004 directories created | 1 |
+| Set004 files created | 6 |
+| Renewal002 forbidden counters | 0 |
+| Pre-provision fixed-path `lstat` checks | 2 |
+| Visible-console provision launches | 1 |
+| Accepted provision terminal aggregates | 0 |
+| Post-attempt fixed-path `lstat` checks | 2 |
+| Post-attempt marker-present observations | 0 |
+| Post-attempt destination-present observations | 0 |
+| Confirmed fixture-destination mutation evidence | 0 |
+| Historical/transient fixture-destination mutation | `unknown_not_evidenced` |
+| C0P executions | 0 |
+| Device actions | 0 |
+| Application actions | 0 |
+| Application authentication/credential-entry actions | 0 |
+| Runtime/UI actions | 0 |
+| Network actions | 0 |
+| Payment/external/QR actions | 0 |
+| Forbidden actions | 0 |
+
+Secret console entry/consumption is `unknown` because the visible console was
+not captured and the parent result was not retained. This unknown is not
+converted into a positive or negative counter. The absent post-attempt marker
+and destination establish only zero confirmed mutation evidence at the
+checkpoint; they do not establish historical absence of mutation.
+
+Historical counters from the preceding contours remain:
 
 | Counter | Actual |
 |---|---:|

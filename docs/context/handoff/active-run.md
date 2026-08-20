@@ -3,7 +3,7 @@
 ## Active resumed EPIC-PHONE-001 — Full mobile application test coverage
 
 - Mode: `BOUNDED_AUTONOMOUS`.
-- Thread status: `active_generation005_repository_accepted_final_head_owner003_pending_no_go`.
+- Thread status: `active_generation005_implementation_pushed_docs_delta_pending_final_head_owner003_no_go`.
 - Task/epic id: `EPIC-PHONE-001`.
 - Thread title: `EPIC-PHONE-001 — Full mobile application test coverage`.
 - Fresh thread verified: yes; this is a resume of the same epic, not a new
@@ -23,6 +23,9 @@
 - Generation-004 implementation commit:
   `6637e074555f1ff501c3beae8cdb5b8fb3d9a361`, pushed and aligned with the epic
   remote branch; the worktree was clean immediately after push.
+- Generation-005 implementation commit:
+  `d99073a7465f370ff6e39713005f6d6d09464849`, pushed and aligned with the epic
+  remote branch; the worktree was clean immediately after push.
 - Default integration: intentionally not performed. `origin/main` remains
   `b268b1f198f595ec835e066169c97cdf839cc05b` until terminal epic runtime
   acceptance and all final gates complete.
@@ -34,8 +37,10 @@
 
 ### Generation005 repository-only acceptance — 2026-08-20
 
-Generation `005` is accepted as repository logic only. Exact source hash/size
-bindings are renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+Generation `005` is accepted as repository logic only in implementation commit
+`d99073a7465f370ff6e39713005f6d6d09464849`, pushed/aligned on the epic branch
+with a clean worktree immediately afterward. Exact source hash/size bindings
+are renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
 `36391`, renewal loader
 `885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
 `13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
@@ -66,10 +71,11 @@ paths and Security alias `epic-phone-001-security-owner-local-console-readiness-
 Neither one-shot can lend or infer authority to the other or to C0P/runtime.
 
 Expected-GO builders are deterministic expected-envelope constructors only;
-they do not issue, persist, infer or self-authorize GO. Generation005 requires
-the final committed HEAD, fresh owner no-mutator alias `003`, all exact
-owner003 readiness/provision host attestations, a canonical plan and a fresh
-literal Security GO per contour. Final QA-A is
+they do not issue, persist, infer or self-authorize GO. The post-doc lifecycle
+commit becomes the final authority-binding HEAD. Generation005 requires that
+exact HEAD, fresh owner no-mutator alias `003`, all exact owner003 readiness/
+provision host attestations, fresh canonical readiness/renewal003/provision003
+plans and a fresh literal Security GO per contour. Final QA-A is
 `0/0/0 GO_REPOSITORY_ONLY`; final QA-B is `0/0/0 GO` candidate; Security is
 `0/0/1 GO_REPOSITORY_CODE_ONLY`. Security's sole P2 is cooperative/no-hard-
 kill plus marker-only/result-best-effort/no-retry: once the marker exists the
@@ -82,7 +88,9 @@ failure is the known TASK-045 unavailable ignored-local-evidence dependency.
 Public safety `443/0`, both hygiene modes, docs `187/0`, compile and diff pass
 after expired untracked execution-input JSON removal. No generation005
 renewal/readiness/provision/C0P/device/app/auth/runtime/network/payment action
-has executed, and default integration remains blocked.
+has executed. `origin/main` remains
+`b268b1f198f595ec835e066169c97cdf839cc05b`, and default integration remains
+blocked.
 
 ### Renewal002/set004 and provision-attempt checkpoint — 2026-08-20
 

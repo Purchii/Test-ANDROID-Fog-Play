@@ -1323,8 +1323,11 @@ blocked.
 
 ### Generation005 repository-code-only gate
 
-Generation005 repository acceptance requires these exact source hash/size
-bindings: renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+Generation005 implementation commit
+`d99073a7465f370ff6e39713005f6d6d09464849` is pushed/aligned on the epic
+branch, and the worktree was clean immediately after push. Repository
+acceptance requires these exact source hash/size bindings: renewal
+`aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
 `36391`, renewal loader
 `885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
 `13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
@@ -1357,11 +1360,14 @@ expected-envelope constructors only and must never be treated as self-GO.
 Final QA-A is `0/0/0 GO_REPOSITORY_ONLY`; QA-B is `0/0/0 GO` candidate;
 Security is `0/0/1 GO_REPOSITORY_CODE_ONLY`. The retained P2 is cooperative/
 no-hard-kill plus marker-only/result-best-effort/no-retry: after marker
-creation, missing terminal-result publication still consumes the attempt. Execution
-requires the final committed HEAD, fresh owner no-mutator003 and all other
-exact owner003 attestations, then a fresh canonical plan and distinct literal
-Security GO per contour. No generation005 authority set, readiness, provision,
-C0P or runtime contour has executed. Default integration remains blocked.
+creation, missing terminal-result publication still consumes the attempt. The
+post-doc lifecycle commit becomes the final authority-binding HEAD. Execution
+requires that exact HEAD, fresh owner no-mutator003 and all other exact
+owner003 attestations, then fresh canonical readiness/renewal003/provision003
+plans and distinct literal Security GO per contour. No generation005 authority
+set, readiness, provision, C0P or runtime contour has executed. `origin/main`
+remains `b268b1f198f595ec835e066169c97cdf839cc05b`; default integration remains
+blocked.
 
 ### Renewal002/set004 execution and provision-result gate
 

@@ -432,8 +432,10 @@ Security GO. No default integration or product/runtime coverage is claimed.
 
 ### Generation005 repository-only snapshot
 
-Generation `005` is accepted for repository code only at exact source bindings:
-renewal `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
+Generation `005` is accepted for repository code only in implementation commit
+`d99073a7465f370ff6e39713005f6d6d09464849`, pushed/aligned on the epic branch
+with a clean worktree immediately after push. Exact source bindings are renewal
+`aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420` /
 `36391`, renewal loader
 `885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c` /
 `13067`, C0P `5242a709a5e6a8f9fdd1fa0195452bd207571ccf4acac44b75baa12a48370a09` /
@@ -463,11 +465,12 @@ result paths. Readiness success grants no provision, C0P or runtime authority.
 
 Expected-GO builders only construct exact expected Security envelopes for
 independent review; they cannot issue, persist, infer or self-authorize a GO.
-Execution requires the final committed HEAD, fresh owner no-mutator003 and the
-remaining exact owner003 attestations, then a fresh canonical plan and distinct
-literal Security GO per one-shot. After an attempt marker is created, terminal-
-result publication is best effort and the attempt is consumed even if that
-result is absent; retry is forbidden.
+The post-doc lifecycle commit becomes the final authority-binding HEAD.
+Execution requires that exact HEAD, fresh owner no-mutator003 and the remaining
+exact owner003 attestations, then fresh canonical readiness/renewal003/
+provision003 plans and distinct literal Security GO per one-shot. After an
+attempt marker is created, terminal-result publication is best effort and the
+attempt is consumed even if that result is absent; retry is forbidden.
 
 Focused verification is `200 passed`; safe suite `1639 passed, 4 skipped`;
 unfiltered suite is explicitly not green at `1658 passed, 4 skipped, 17 failed`
@@ -475,8 +478,10 @@ because every failure requires unavailable ignored TASK-045 evidence. Public
 safety `443/0`, both hygiene modes, docs `187/0`, compile and diff pass. QA-A is
 `0/0/0 GO_REPOSITORY_ONLY`; QA-B is `0/0/0 GO` candidate; Security is
 `0/0/1 GO_REPOSITORY_CODE_ONLY`, with cooperative/no-hard-kill plus marker-only/
-result-best-effort/no-retry as the sole P2. No generation005 execution or runtime GO
-exists, and default integration remains blocked.
+result-best-effort/no-retry as the sole P2. No generation005 execution or
+runtime GO exists. `origin/main` remains
+`b268b1f198f595ec835e066169c97cdf839cc05b`; default integration remains
+blocked.
 
 ### Renewal002/set004 execution and owner-local provision hard stop
 

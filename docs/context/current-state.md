@@ -41,8 +41,10 @@ The project starts from a sanitized QA reverse-analysis pack for a signed Androi
 
 ## EPIC-PHONE-001 generation 005 repository acceptance — 2026-08-20
 
-Generation `005` is accepted as repository logic only; it has no execution or
-runtime GO. Exact source bindings are renewal
+Generation `005` is accepted as repository logic only in implementation commit
+`d99073a7465f370ff6e39713005f6d6d09464849`, pushed and aligned with the epic
+remote branch; the worktree was clean immediately after push. It has no
+execution or runtime GO. Exact source bindings are renewal
 `aa319c67e0ed30e25f765c439d63a137dc07be62f8d71fcd9ed4b58aa2280420`
 (`36391` bytes), renewal loader
 `885b316b2464c55a6ea54634fa9f42f00845a8f168de48dd1411dba8798a596c`
@@ -78,10 +80,12 @@ cannot authorize C0P or runtime.
 
 The tracked security-GO builders only construct the exact expected envelope
 for independent review. They cannot issue, infer, persist or self-authorize a
-GO. Any generation005 execution requires the final committed repository HEAD,
-fresh owner no-mutator authority alias `003`, the exact remaining owner003
-host/console authorities, a fresh canonical plan and a distinct literal
-Security GO for each one-shot contour. Final QA-A is
+GO. The commit containing this post-implementation lifecycle delta becomes the
+final authority-binding HEAD. Any generation005 execution requires that exact
+post-doc HEAD, fresh owner no-mutator authority alias `003`, the exact remaining
+owner003 host/console authorities, fresh canonical readiness/renewal003/
+provision003 plans and a distinct literal Security GO for each one-shot
+contour. Final QA-A is
 `0/0/0 GO_REPOSITORY_ONLY`; final QA-B is `0/0/0 GO` candidate; Security is
 `0/0/1 GO_REPOSITORY_CODE_ONLY`. Security's sole P2 is the cooperative/no-hard-
 kill plus marker-only/result-best-effort contract: after marker creation the
@@ -94,9 +98,10 @@ confined to TASK-045's unavailable ignored local evidence and therefore not
 called green. Public safety is `443/0`; both hygiene modes, docs `187/0`,
 compile and diff checks pass after removal of the expired untracked execution-
 input JSON. No authority set005, readiness, provision, C0P, device, app,
-authentication, runtime, network or payment contour has run. Fresh final-HEAD
-binding and owner003/Security authority remain mandatory; default integration
-is blocked.
+authentication, runtime, network or payment contour has run. Fresh post-doc
+final-HEAD binding and owner003/Security authority remain mandatory.
+`origin/main` remains `b268b1f198f595ec835e066169c97cdf839cc05b`;
+default integration is blocked.
 
 ## EPIC-PHONE-001 renewal002/set004 and provision-attempt checkpoint — 2026-08-20
 
